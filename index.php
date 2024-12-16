@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="image-content relative mt-10 lg:mt-0">
-                <img alt="A bowl of dessert with raspberries on top" class="rounded-full w-80 h-80 object-cover" height="400" src="https://storage.googleapis.com/a1aa/image/gKAR7oJ0S6bzBNz5sOqFzgPvfeRxBcXTKf50mxLkfEiyyCsPB.jpg" width="400"/>
+                <img alt="A bowl of dessert with raspberries on top" class="rounded-full w-80 h-80 object-cover" height="400" src="lib\image\RotiCanai1.jpg" width="400"/>
                 <div class="rating absolute top-5 right-5 bg-white py-2 px-4 rounded-full shadow-lg flex items-center gap-2">
                     <span class="font-bold">5.0 Ratings</span>
                     <i class="fas fa-star text-orange-500"></i>
