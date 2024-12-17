@@ -19,14 +19,14 @@ if(!isset($_SESSION['orders'])){
     });
 
 
-
+    $tarikh = date('Y-m-d H:i:s');
     # Mendapatkan data menu dan menyimpankannya dalam jadual tempahan
     foreach($sama as $key => $bil) { 
       
-
         $sqltempah  =   "insert into tempahan set
                         email              = '".$_SESSION['email']."',
                         kod_makanan        =   '$key',
+                        tarikh             =  '$tarikh',
                         jumlah_harga      =   '".$_SESSION['jumlah_harga']."',
                         kuantiti        =   '$bil' ";
         $laktempah  =   mysqli_query($condb,$sqltempah);
@@ -36,9 +36,8 @@ if(!isset($_SESSION['orders'])){
 # Memadam nilai pembolehubah session
 unset($_SESSION['orders']);
 unset($_SESSION['jumlah_harga']);
-$timestamp = date('Y-m-d H:i:s'); // Format timestamp semasa
 echo "<script>alert('Tempahan Selesai'); 
-window.location.href='tempah-resit.php?timestamp=$timestamp';
+window.location.href='tempah-resit.php?tarikh=$tarikh';
 </script>";
 
 

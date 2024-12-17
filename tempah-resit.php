@@ -8,13 +8,13 @@ $jumlah_harga = 0;
 
 # Dapatkan email dan tarikh daripada URL
 $email = $_SESSION['email'];
-$timestamp = $_GET['timestamp'];
+$tarikh = $_GET['tarikh'];
 
 # Mendapatkan data tempahan berdasarkan email dan tarikh
 $sql_pilih = "SELECT tempahan.*, makanan.nama_makanan, makanan.harga
               FROM tempahan
               JOIN makanan ON tempahan.kod_makanan = makanan.kod_makanan
-              WHERE tempahan.email = '$email' AND tempahan.tarikh = '$timestamp'";
+              WHERE tempahan.email = '$email' AND tempahan.tarikh = '$tarikh'";
 
 $laksana = mysqli_query($condb, $sql_pilih);
 ?>

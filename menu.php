@@ -277,9 +277,9 @@ if (!$caridata) {
                     <i class="fas fa-home mr-1"></i>
                     <span>LAMAN UTAMA</span>
                 </a>
-                <a class="text-black font-medium" href="#">
+                <a class="text-black font-medium" href="tempah-sejarah.php">
                     <i class="fas fa-info-circle mr-1"></i>
-                    <span>INFO</span>
+                    <span>INFO TEMPAHAN</span>
                 </a>
                 <a class="text-black font-medium" href="tempah-cart.php">
                     <i class="fas fa-shopping-cart mr-1"></i>
