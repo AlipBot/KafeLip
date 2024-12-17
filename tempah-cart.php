@@ -4,6 +4,7 @@ session_start();;
 include('function/connection.php');
 $jumlah_harga = 0;
 
+
 # menyemak jika tatasusunan order kosong
 if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
     die("<script>
@@ -86,7 +87,8 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                     <?php
                                     $harga = $bil * $m['harga'];
                                     $jumlah_harga = $jumlah_harga + $harga;
-                                    echo number_format($harga, 2)
+                                    echo number_format($harga, 2);
+                                    $_SESSION['jumlah_harga'] = $jumlah_harga;
                                     ?>
                                 </td>
 
@@ -100,7 +102,10 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 </table>
             </div>
             <div class="mt-5">
-                <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Sahkan Tempahan</button>
+                
+                <button onclick="location.href='tempah-sah.php';" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Sahkan Tempahan
+                </button>
             </div>
         </div>
     </body>
