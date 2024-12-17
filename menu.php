@@ -1,7 +1,7 @@
 <?php
 // Memulai sesi untuk menyimpan data pengguna seperti cart
 session_start();
-if (empty($_SESSION['tahap'])): ?>
+if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])): ?>
     <script>
         window.location.href = 'index.php';
     </script>
@@ -27,6 +27,8 @@ if (!$caridata) {
     die("Query gagal: " . mysqli_error($condb)); // Menampilkan pesan error jika query gagal
 }
 ?>
+
+
 
 
 <html>
@@ -117,8 +119,6 @@ if (!$caridata) {
         .menu-item .add-to-cart:hover {
             transform: scale(1.1);
         }
-
-
 
         .menu-item.visible {
             opacity: 1;
@@ -254,6 +254,7 @@ if (!$caridata) {
             }
 
         }
+
         .footerkaki {
             padding: 2%;
             display: grid;
@@ -268,41 +269,25 @@ if (!$caridata) {
     <div class="w-full bg-green-100 fade-in">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
             <div class="logo text-2xl font-bold flex items-center mr-4">
-                <i class="fas fa-coffee text-green-500 mr-2">
-                </i>
-                Kafe
-                <span class="text-green-500">
-                    lip
-                </span>
+                <i class="fas fa-coffee text-green-500 mr-2"></i>
+                Kafe <span class="text-green-500">lip</span>
             </div>
             <div class="nav flex gap-6">
                 <a class="text-black font-medium active:text-green-500" href="index.php">
-                    <i class="fas fa-home mr-1">
-                    </i>
-                    <span>
-                        LAMAN UTAMA
-                    </span>
+                    <i class="fas fa-home mr-1"></i>
+                    <span>LAMAN UTAMA</span>
                 </a>
                 <a class="text-black font-medium" href="#">
-                    <i class="fas fa-info-circle mr-1">
-                    </i>
-                    <span>
-                        INFO
-                    </span>
+                    <i class="fas fa-info-circle mr-1"></i>
+                    <span>INFO</span>
                 </a>
-                <a class="text-black font-medium" href="login.php">
-                    <i class="fas fa-sign-in-alt mr-1">
-                    </i>
-                    <span>
-                        LOG MASUK
-                    </span>
+                <a class="text-black font-medium" href="tempah-cart.php">
+                    <i class="fas fa-shopping-cart mr-1"></i>
+                    <span>CART <?= $bil ?></span>
                 </a>
-                <a class="text-black font-medium" href="signup.php">
-                    <i class="fas fa-user-plus mr-1">
-                    </i>
-                    <span>
-                        DAFTAR MASUK
-                    </span>
+                <a class="text-black font-medium" href="logout.php">
+                    <i class="fas fa-sign-out-alt mr-1"></i>
+                    <span>LOG KELUAR</span>
                 </a>
             </div>
         </div>
@@ -318,12 +303,10 @@ if (!$caridata) {
                     <p>Sudah lapar ke?</p>
                 </div>
                 <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
-                    <h2>REWARDS</h2>
-                    <p>BONUS UP TO <span>45%!</span></p>
+
                 </div>
                 <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
-                    <h2>AFFILIATE PROGRAM</h2>
-                    <p>Earn while you play!</p>
+
                 </div>
             </div>
 
