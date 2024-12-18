@@ -242,9 +242,7 @@ body{
 </script>
 
   
-  
-<!-- Code injected by Five-server -->
-  <script async="" data-id="five-server" data-file="c:\AppServ\www\kafelip\singup.php" type="application/javascript" src="./DAFTAR MASUK_files/fiveserver.js.download"></script>
+ 
   <style>      
       /* Injected by five-server */
       /*[data-highlight="true"] {
@@ -336,26 +334,26 @@ if(!empty($_POST)){
     $email = $_POST["email"];
     $password = $_POST["pass"];
 
-    if(strlen($password) < 9){
-        die("<script>alert('KATA LAUAN MESTI LEBIH 8 AKSARA');
-        window.location.href='singup.php';</script>");    
+    if(strlen($password) < 7){
+        die("<script>alert('KATA LAUAN MESTI 8 AKSARA KE ATAS');
+        window.location.href='signup.php';</script>");    
 
     }
 
-    if(strlen($password) > 12){
+    if(strlen($password) > 13){
         die("<script>alert('KATA LAUAN MESTI TIDAK BOLEH LEBIH 12 AKSARA');
-        window.location.href='singup.php';</script>");    
+        window.location.href='signup.php';</script>");    
     }
 
-    if(strlen($notel) < 11){
-        die("<script>alert('NOMBOR TELEFON MESTI  LEBIH 10');
-        window.location.href='singup.php';</script>");    
+    if(strlen($notel) < 10){
+        die("<script>alert('NOMBOR TELEFON MESTI 10 KE ATAS');
+        window.location.href='signup.php';</script>");    
 
     }
 
     if(strlen($notel) > 15){
-        die("<script>alert('NOMBOR TELEFON MESTI TIDAK BOLEH LEBIH 14 AKSARA');
-        window.location.href='singup.php';</script>");    
+        die("<script>alert('NOMBOR TELEFON MESTI TIDAK BOLEH LEBIH 14');
+        window.location.href='signup.php';</script>");    
 
     }
 
@@ -363,7 +361,7 @@ if(!empty($_POST)){
     $check =mysqli_query($condb, $sql_semak);
     if(mysqli_num_rows($check)== 1) {
         die("<script>alert('EMAIL SUDAH DIGUNAKAN SILA GUNA EMAIL LAIN');
-        window.location.href='singup.php';</script>");   
+        window.location.href='signup.php';</script>");   
 
     }
 

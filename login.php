@@ -252,7 +252,7 @@ if (!empty($_SESSION['tahap'])) { ?>
             </div>
             <div class="links">
                 <a href="#">Lupa kata laluan?</a>
-                <a href="#">DAFTAR MASUK?</a>
+                <a href="signup.php">DAFTAR MASUK?</a>
             </div>
             <input type="submit" id="submit" value="Login">
         </form>
