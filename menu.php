@@ -277,9 +277,15 @@ if (!$caridata) {
                     <i class="fas fa-home mr-1"></i>
                     <span>LAMAN UTAMA</span>
                 </a>
+                <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
+                    <a class="text-black font-medium" href="pengguna-senarai.php">
+                    <i class="fa fa-list-alt mr-1"></i>
+                    <span>  SENARAI PENGGUNA </span>
+                </a>
+                    <?php endif; ?>
                 <a class="text-black font-medium" href="tempah-sejarah.php">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    <span>INFO TEMPAHAN</span>
+                    <i class="fas fa-history mr-1"></i>
+                    <span>  SEJARAH TEMPAHAN </span>
                 </a>
                 <a class="text-black font-medium" href="tempah-cart.php">
                     <i class="fas fa-shopping-cart mr-1"></i>
