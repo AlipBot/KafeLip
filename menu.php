@@ -18,14 +18,6 @@ if (isset($_SESSION['orders'])) {
 include("function/connection.php"); // Pastikan path file koneksi benar
 
 
-// Query untuk mengambil semua data dari tabel 'makanan'
-$sql = "SELECT * FROM makanan";
-$caridata = mysqli_query($condb, $sql);
-
-// Periksa apakah query berhasil dijalankan
-if (!$caridata) {
-    die("Query gagal: " . mysqli_error($condb)); // Menampilkan pesan error jika query gagal
-}
 ?>
 
 
@@ -53,7 +45,7 @@ if (!$caridata) {
 
 
 
-        .container {
+        .List-Makanan {
             padding: 5%;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -61,7 +53,9 @@ if (!$caridata) {
             justify-items: center;
         }
 
+
         .menu-item {
+            opacity: 1 !important;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 5px 4px rgba(0, 0, 0, 0.1);
@@ -70,9 +64,6 @@ if (!$caridata) {
             align-items: center;
             padding: 7%;
             text-align: center;
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            opacity: 0;
-            transform: translateY(20px);
             width: 100%;
             max-width: 90%;
             height: 100%;
@@ -113,27 +104,17 @@ if (!$caridata) {
             cursor: pointer;
             font-size: 16px;
             margin-top: 10%;
-            transition: transform 0.2s;
         }
 
-        .menu-item .add-to-cart:hover {
-            transform: scale(1.1);
-        }
-
-        .menu-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-            animation: fadeInUp 0.3s ease-in-out;
-        }
 
         @media (max-width: 768px) {
-            .container {
+            .List-Makanan {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 480px) {
-            .container {
+            .List-Makanan {
                 grid-template-columns: 1fr;
             }
         }
@@ -279,13 +260,13 @@ if (!$caridata) {
                 </a>
                 <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                     <a class="text-black font-medium" href="pengguna-senarai.php">
-                    <i class="fa fa-list-alt mr-1"></i>
-                    <span>  SENARAI PENGGUNA </span>
-                </a>
-                    <?php endif; ?>
+                        <i class="fa fa-list-alt mr-1"></i>
+                        <span> SENARAI PENGGUNA </span>
+                    </a>
+                <?php endif; ?>
                 <a class="text-black font-medium" href="tempah-sejarah.php">
                     <i class="fas fa-history mr-1"></i>
-                    <span>  SEJARAH TEMPAHAN </span>
+                    <span> SEJARAH TEMPAHAN </span>
                 </a>
                 <a class="text-black font-medium" href="tempah-cart.php">
                     <i class="fas fa-shopping-cart mr-1"></i>
@@ -327,38 +308,7 @@ if (!$caridata) {
 
     </div>
 
-    <div class="container">
-
-        <?php if (mysqli_num_rows($caridata) > 0): ?>
-            <!-- Loop untuk menampilkan setiap baris makanan dari database -->
-            <?php while ($m = mysqli_fetch_assoc($caridata)): ?>
-
-                <div class="menu-item">
-                    <img src="lib/imagemenu/<?= htmlspecialchars($m['gambar']) ?>" />
-                    <div>
-                        <h2>
-                            <?= htmlspecialchars($m['nama_makanan']) ?>
-                        </h2>
-
-                        <p class="price">
-                            RM <?= htmlspecialchars($m['harga']) ?>
-                        </p>
-                    </div>
-                    <button class="add-to-cart" onclick="location.href='function/add-cart.php?page=menu&id_menu=<?= htmlspecialchars($m['kod_makanan']) ?>';">
-                        Add to Cart
-                    </button>
-                </div>
-
-            <?php endwhile; ?>
-        <?php else: ?>
-            <tr>
-                <td align='center' colspan='3'>
-                    <p style='color: red;'>TIADA MAKANAN TERSEDIA SEKARANG</p>
-                </td>
-            </tr>
-        <?php endif; ?>
-    </div>
-    </div>
+    <div class="List-Makanan"></div>
 
     <footer class="w-full bg-gray-800 text-white py-[0px] px-[0px] fade-in">
         <div class="footerkaki mx-auto flex flex-col lg:flex-row justify-between items-center">
@@ -382,24 +332,7 @@ if (!$caridata) {
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuItems = document.querySelectorAll('.menu-item');
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
 
-            menuItems.forEach(item => {
-                observer.observe(item);
-            });
-        });
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelector('.slides');
@@ -523,6 +456,18 @@ if (!$caridata) {
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        function fetchMenu() {
+            fetch('fetch_menu.php')
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector('.List-Makanan').innerHTML = html;
+                })
+                .catch(error => console.error('Error fetching menu:', error));
+        }
+        setInterval(fetchMenu, 500);
+        fetchMenu();
+    </script>
 
 
 </body>
