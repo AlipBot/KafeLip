@@ -12,7 +12,7 @@ array_push($_SESSION['orders'],$_GET['id_menu']);
 if($_GET['page']=="menu"){
     echo"<script>window.location.href='../menu.php';</script>";
 } else {
-    echo"<script>window.location.href='../tempah-cart.php';</script>";
+    echo"<script>window.location.href='../cart.php';</script>";
 }
 
 ?>

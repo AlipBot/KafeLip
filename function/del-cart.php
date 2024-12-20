@@ -13,5 +13,5 @@ if ($key !== false) {
 # menyusun semula indeks elemen dalam tatasusunan SESSION['order']
 $_SESSION['orders'] = array_values($_SESSION['orders']);
 
-echo"<script>window.location.href='../tempah-cart.php';</script>";
+echo"<script>window.location.href='../cart.php';</script>";
 ?>

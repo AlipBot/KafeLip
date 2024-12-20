@@ -1,8 +1,8 @@
 <?php
 # Memulakan fungsi session
 session_start();
-include('function/connection.php');
-include('function/kawalan-admin.php');
+include('connection.php');
+include('kawalan-admin.php');
 
 # Menyemak kewujudan data POST
 if(!empty($_POST)){
@@ -18,14 +18,14 @@ if(!empty($_POST)){
         $nama_fail          =   $_FILES['gambar']['name'];
         $lokasi             =   $_FILES['gambar']['tmp_name'];
         $tambahan = $tambahan."gambar = '".$nama_fail ."',";
-        move_uploaded_file($lokasi,"lib/imagemenu/".$nama_fail);
+        move_uploaded_file($lokasi,"../menu-images".$nama_fail);
     } 
 
     # Data validation : had atas
     if(!is_numeric($harga) and $harga > 0){
         die("<script>
                 alert('Ralat Harga');
-                location.href='daftar-menu.php';
+                location.href='../admin/info-menu.php';
             </script>" );
     }
     
@@ -43,7 +43,7 @@ if(!empty($_POST)){
         #jika berjaya
         echo "  <script>
                 alert('Kemaskini Berjaya');
-                location.href='menu-senarai.php';
+                location.href='../admin/list-menu.php';
                 </script>";  
     }else{
         #jika gagal papar punca error

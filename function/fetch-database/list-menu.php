@@ -1,6 +1,6 @@
 <?php
 // Sambungan ke database
-include("function/connection.php");
+include('../connection.php');
 
 // Query untuk mendapatkan semua data dari tabel 'makanan'
 $sql = "SELECT * FROM makanan";
@@ -15,7 +15,7 @@ if (!$result) {
 if (mysqli_num_rows($result) > 0) {
     while ($m = mysqli_fetch_assoc($result)): ?>
         <div class="menu-item">
-            <img src="lib/imagemenu/<?= htmlspecialchars($m['gambar']) ?>" />
+            <img src="menu-images/<?= htmlspecialchars($m['gambar']) ?>" />
             <div>
                 <h2><?= htmlspecialchars($m['nama_makanan']) ?></h2>
                 <p class="price">RM <?= htmlspecialchars($m['harga']) ?></p>

@@ -264,11 +264,11 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                         <span> SENARAI PENGGUNA </span>
                     </a>
                 <?php endif; ?>
-                <a class="text-black font-medium" href="tempah-sejarah.php">
+                <a class="text-black font-medium" href="sejarah-tempah.php">
                     <i class="fas fa-history mr-1"></i>
                     <span> SEJARAH TEMPAHAN </span>
                 </a>
-                <a class="text-black font-medium" href="tempah-cart.php">
+                <a class="text-black font-medium" href="cart.php">
                     <i class="fas fa-shopping-cart mr-1"></i>
                     <span>CART <?= $bil ?></span>
                 </a>
@@ -305,7 +305,6 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             </button>
             <div class="slider-nav"></div>
         </div>
-
     </div>
 
     <div class="List-Makanan"></div>
@@ -458,7 +457,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         function fetchMenu() {
-            fetch('fetch_menu.php')
+            fetch('function/fetch-database/list-menu.php')
                 .then(response => response.text())
                 .then(html => {
                     document.querySelector('.List-Makanan').innerHTML = html;
@@ -468,8 +467,5 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         setInterval(fetchMenu, 500);
         fetchMenu();
     </script>
-
-
 </body>
-
 </html>
