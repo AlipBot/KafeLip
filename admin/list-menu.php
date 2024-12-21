@@ -3,9 +3,9 @@
 session_start();
 
 # Memanggil fail header.php, connection.php, dan kawalan-admin.php
-include('function/header.php');
-include('function/connection.php');
-include('function/kawalan-admin.php');
+include('../function/header.php');
+include('../function/connection.php');
+include('../function/kawalan-admin.php');
 
 # Syarat tambahan yang akan dimasukkan dalam arahan (query) senarai pengguna
 $tambahan = "";
@@ -43,9 +43,9 @@ $result = mysqli_stmt_get_result($stmt);
             </form>
         </td>
         <td colspan='4' align='right'>
-            | <a href='menu-daftar.php'>Daftar Menu Baru</a> |
-            | <a href='menu-upload.php'>Upload Menu Baru</a> |<br>
-            <?php include('function/butang-saiz.php'); ?>
+            | <a href='add-menu.php'>Daftar Menu Baru</a> |
+            | <a href='upload-menu.php'>Upload Menu Baru</a> |<br>
+            <?php include('../function/butang-saiz.php'); ?>
         </td>
     </tr>
     <tr bgcolor='yellow'>
@@ -58,12 +58,12 @@ $result = mysqli_stmt_get_result($stmt);
     # Mengambil data yang ditemui
     while ($m = mysqli_fetch_assoc($result)) {
         echo "<tr>
-            <td><img src='lib/imagemenu/" . htmlspecialchars($m['gambar']) . "' width='100%'></td>
+            <td><img src='../menu-images/" . htmlspecialchars($m['gambar']) . "' width='100%'></td>
             <td>" . htmlspecialchars($m['nama_makanan']) . "</td>
             <td>" . htmlspecialchars($m['harga']) . "</td>
             <td>
-                | <a href='menu-kemaskini-borang.php?id_menu=" . urlencode($m['kod_makanan']) . "'>Kemaskini</a> |
-                | <a href='menu-padam-proses.php?id_menu=" . urlencode($m['kod_makanan']) . "' 
+                | <a href='tukar-menu.php?id_menu=" . urlencode($m['kod_makanan']) . "'>Kemaskini</a> |
+                | <a href='../function/del-menu.php?id_menu=" . urlencode($m['kod_makanan']) . "' 
                    onClick=\"return confirm('Anda pasti anda ingin memadam data ini?')\">Hapus</a> |
             </td>
         </tr>";
@@ -71,4 +71,4 @@ $result = mysqli_stmt_get_result($stmt);
     ?>
 </table>
 
-<?php include('footer.php'); ?>
+<?php include('../function/footer.php'); ?>

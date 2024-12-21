@@ -1,8 +1,8 @@
 <?php 
 # memulakan fungsi session & fail header
 session_start();
-include('function/header.php');
-include('function/kawalan-admin.php');
+include('../function/header.php');
+include('../function/kawalan-admin.php');
 ?>
  
 <!-- Tajuk Laman -->
@@ -16,7 +16,7 @@ include('function/kawalan-admin.php');
    <button      type='submit'   name='upload'>Muat Naik</button>
 
 </form>
-<?php include ('footer.php'); ?>
+<?php include ('../function/footer.php'); ?>
 
 <!-- Bahagian Memproses Data yang dimuat naik -->
 <?PHP
@@ -24,7 +24,7 @@ include('function/kawalan-admin.php');
 if (isset($_POST['upload']))
 {
     # memanggil fail connection
-    include ('function/connection.php');
+    include ('../function/connection.php');
 
     # mengambil nama sementara fail
     $namafailsementara  =   $_FILES['data']['tmp_name'];
@@ -77,7 +77,7 @@ if(mysqli_num_rows($pilih)==1){
            
     echo"<script>
             alert('import fail Data Selesai. Sebanyak $bil data telah disimpan. KEMASKINI MENU DAN UPLOAD GAMBAR');
-            window.location.href='menu-senarai.php'; 
+            window.location.href='list-menu.php'; 
         </script>";   
     }
     else

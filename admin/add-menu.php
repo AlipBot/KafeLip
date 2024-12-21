@@ -1,9 +1,9 @@
 <?php
 # Memulakan fungsi session dan memanggil fail header.php
 session_start();
-include('function/header.php');
+include('../function/header.php');
 # Memanggil fail connection
-include('function/connection.php');
+include('../function/connection.php');
 
 $sql_kat    =   "select* from makanan";
 $lak_kat    =   mysqli_query($condb, $sql_kat);
@@ -37,7 +37,7 @@ if (!empty($_POST)) {
     if (!is_numeric($harga) and $harga > 0) {
         die("<script>
                 alert('Ralat Harga');
-                location.href='daftar-menu.php';
+                location.href='add-menu.php';
             </script>");
     }
     # Semak id_menu dah wujud atau belum
@@ -46,7 +46,7 @@ if (!empty($_POST)) {
     if (mysqli_num_rows($laksana_semak) == 1) {
         die("<script>
             alert('id_menu telah digunakan. Sila guna kod_makanan yang lain');
-            location.href='menu-daftar.php';
+            location.href='add-menu.php.php';
         </script>");
     }
 
@@ -64,11 +64,11 @@ if (!empty($_POST)) {
         #jika berjaya
         echo "  <script>
             alert('Pendaftaran Berjaya');
-            location.href='menu-senarai.php';
+            location.href='list-menu.php';
             </script>";
 
         # muat naik gambar
-        move_uploaded_file($lokasi, "lib/imagemenu/" . $nama_fail);
+        move_uploaded_file($lokasi, "../menu-images/" . $nama_fail);
     } else {
         #jika gagal papar punca error
         echo "<p style='color:red;'>Pendaftaran Gagal</p>";
@@ -76,4 +76,4 @@ if (!empty($_POST)) {
     }
 }
 ?>
-<?php include('footer.php'); ?>
+<?php include('../function/footer.php'); ?>

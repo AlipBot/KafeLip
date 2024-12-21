@@ -259,7 +259,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     <span>LAMAN UTAMA</span>
                 </a>
                 <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
-                    <a class="text-black font-medium" href="pengguna-senarai.php">
+                    <a class="text-black font-medium" href="admin/list-user.php">
                         <i class="fa fa-list-alt mr-1"></i>
                         <span> SENARAI PENGGUNA </span>
                     </a>

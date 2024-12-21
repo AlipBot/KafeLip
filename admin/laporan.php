@@ -1,9 +1,9 @@
 <?php
 # Memulakan fungsi session dan memanggil fail connection & header.php
 session_start();
-include('function/header.php');
-include('function/connection.php');
-include('function/kawalan-admin.php');
+include('../function/header.php');
+include('../function/connection.php');
+include('../function/kawalan-admin.php');
 
 if (isset($_POST['tarikh_semasa'])) {
     $tarikhsemasa = $_POST['tarikh_semasa'];

@@ -3,13 +3,13 @@
 session_start();
 
 # Memanggil fail header dan fail kawalan-admin.php
-include('function/header.php');
-include('function/kawalan-admin.php');
-include('function/connection.php');
+include('../function/header.php');
+include('../function/admin-only.php');
+include('../function/connection.php');
 
 # Menyemak kewujudan data GET.
 if (empty($_GET)) {
-    die("<script>window.location.href='menu-senarai.php';</script>");
+    die("<script>window.location.href='list-menu.php';</script>");
 }
 # Mendapatkan maklumat menu
 $sql_menu       =   "select* from makanan where 
@@ -20,9 +20,9 @@ $m              =   mysqli_fetch_array($lak_menu);
 
 ?>
 
-<h3>kemaskini pengguna Baru</h3>
+<h3>kemaskini makanan</h3>
 <form enctype="multipart/form-data" method='POST'
-    action='menu-kemaskini-proses.php?id_menu=<?= $_GET['id_menu'] ?>'>
+    action='../function/update-menu.php?id_menu=<?= $_GET['id_menu'] ?>'>
 
     Nama Menu
     <input required type='text' name='nama_menu' value='<?= $m['nama_makanan'] ?>'><br>
@@ -36,4 +36,4 @@ $m              =   mysqli_fetch_array($lak_menu);
     <input type='submit' value='Kemaskini'>
 </form>
 
-<?php include('footer.php'); ?>
+<?php include('../function/footer.php'); ?>

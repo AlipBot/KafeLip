@@ -3,8 +3,8 @@
 session_start();
 
 # memanggil fail header, kawalan-admin 
-include('function/header.php');
-include('function/kawalan-admin.php');
+include('../function/header.php');
+include('../function/kawalan-admin.php');
 ?>
 
 <!-- Tajuk Laman -->
@@ -18,14 +18,14 @@ include('function/kawalan-admin.php');
     <button type='submit' name='upload'>Muat Naik</button>
 
 </form>
-<?php include('function/footer.php'); ?>
+<?php include('../function/footer.php'); ?>
 
 <!-- Bahagian Memproses Data yang dimuat naik -->
 <?PHP
 # data validation : menyemak kewujudan data dari borang
 if (isset($_POST['upload'])) {
     # memanggil fail connection
-    include('function/connection.php');
+    include('../function/connection.php');
 
     # mengambil nama sementara fail
     $namafailsementara = $_FILES["data_pengguna"]["tmp_name"];
@@ -76,7 +76,7 @@ if (isset($_POST['upload'])) {
 
         echo "<script>
     alert('import fail Data Selesai. Sebanyak $bil data telah disimpan');
-    window.location.href='pengguna-senarai.php'; 
+    window.location.href='list-user.php'; 
 </script>";
     } else {
         # jika fail yang dimuat naik kosong atau tersalah format.

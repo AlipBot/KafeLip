@@ -103,7 +103,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             </div>
             <div class="mt-5">
                 
-                <button onclick="location.href='tempah-sah.php';" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                <button onclick="location.href='sah-tempah.php';" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
                     Sahkan Tempahan
                 </button>
             </div>

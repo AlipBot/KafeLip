@@ -3,13 +3,13 @@
 session_start();
 
 # Memanggil fail header dan fail kawalan-admin.php
-include('function/header.php');
-include('function/kawalan-admin.php');
-include('function/connection.php');
+include('../function/header.php');
+include('../function/admin-only.php');
+include('../function/connection.php');
 
 # Menyemak kewujudan data GET. Jika data GET empty, buka fail pengguna-senarai.php
 if (empty($_GET)) {
-    die("<script>window.location.href='pengguna-senarai.php';</script>");
+    die("<script>window.location.href='list-user.php';</script>");
 }
 
 # Mendapatkan data daripada pangkalan data
@@ -20,7 +20,7 @@ $m          =   mysqli_fetch_array($laksana);
 
 <h3>Kemaskini Pengguna</h3>
 
-<form action='pengguna-kemaskini-proses.php?notel_lama=<?= $_GET['notel'] ?>' method='POST'>
+<form action='../function/update-user.php?notel_lama=<?= $_GET['notel'] ?>' method='POST'>
     nama
     <input type='text' name='nama' value='<?= $m['nama'] ?>' required><br>
 
@@ -52,4 +52,4 @@ $m          =   mysqli_fetch_array($laksana);
     <input type='submit' value='Kemaskini'>
 
 </form>
-<?php include('footer.php'); ?>
+<?php include('../function/footer.php'); ?>

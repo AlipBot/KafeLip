@@ -2,7 +2,7 @@
 # Memulakan fungsi session
 session_start();
 include('connection.php');
-include('kawalan-admin.php');
+include('admin-only.php');
 
 # Menyemak kewujudan data POST
 if(!empty($_POST)){
@@ -18,14 +18,14 @@ if(!empty($_POST)){
         $nama_fail          =   $_FILES['gambar']['name'];
         $lokasi             =   $_FILES['gambar']['tmp_name'];
         $tambahan = $tambahan."gambar = '".$nama_fail ."',";
-        move_uploaded_file($lokasi,"../menu-images".$nama_fail);
+        move_uploaded_file($lokasi,"../menu-images/".$nama_fail);
     } 
 
     # Data validation : had atas
     if(!is_numeric($harga) and $harga > 0){
         die("<script>
                 alert('Ralat Harga');
-                location.href='../admin/info-menu.php';
+                location.href='../admin/tukar-menu.php';
             </script>" );
     }
     

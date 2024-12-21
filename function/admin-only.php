@@ -1,5 +1,4 @@
 <?php
-
 if(!empty($_SESSION['tahap'])) {
 
    if($_SESSION['tahap'] != "ADMIN") {

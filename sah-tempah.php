@@ -37,7 +37,7 @@ if(!isset($_SESSION['orders'])){
 unset($_SESSION['orders']);
 unset($_SESSION['jumlah_harga']);
 echo "<script>alert('Tempahan Selesai'); 
-window.location.href='tempah-resit.php?tarikh=$tarikh';
+window.location.href='resit.php?tarikh=$tarikh';
 </script>";
 
 
