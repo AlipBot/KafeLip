@@ -281,7 +281,11 @@ if (!empty($_POST)) {
         $_SESSION['notel'] = $m['notel'];
         $_SESSION['email'] = $m['email'];
         $_SESSION['tahap'] = $m['tahap'];
-        echo "<script> window.location.href='menu.php'; </script>";
+        if ($m['tahap'] == "ADMIN"){
+            echo "<script> window.location.href='admin/panel.php'; </script>";
+        } else {
+            echo "<script> window.location.href='menu.php'; </script>";
+        }
     } else {
         echo "<script>alert('GAGAL LOG MASUK sila semak semula');</script>";
     }

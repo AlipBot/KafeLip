@@ -289,11 +289,11 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     <h2>SELAMAT KEMBALI, <br> <?= $_SESSION['nama'] ?> </h2>
                     <p>Sudah lapar ke?</p>
                 </div>
-                <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
 
+                <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
                 </div>
-                <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
 
+                <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
                 </div>
             </div>
 
@@ -457,7 +457,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         function fetchMenu() {
-            fetch('function/fetch-database/list-menu.php')
+            fetch('function/api/list-menu.php')
                 .then(response => response.text())
                 .then(html => {
                     document.querySelector('.List-Makanan').innerHTML = html;

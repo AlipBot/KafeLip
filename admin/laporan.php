@@ -3,7 +3,7 @@
 session_start();
 include('../function/header.php');
 include('../function/connection.php');
-include('../function/kawalan-admin.php');
+include('../function/admin-only.php');
 
 if (isset($_POST['tarikh_semasa'])) {
     $tarikhsemasa = $_POST['tarikh_semasa'];
