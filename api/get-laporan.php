@@ -1,6 +1,8 @@
 <?php
 session_start();
-include('../connection.php');
+include('../function/connection.php');
+include('../function/admin-only.php');
+
 
 // Jumlah Tempah Hari Ini
 $sql_kiraharini = "SELECT COUNT(*) AS jumlah_pelanggan_harini
@@ -25,8 +27,13 @@ $sql_untungbulani = "SELECT SUM(jumlah_harga) AS total_bulanan FROM tempahan WHE
 $untung_bulan = mysqli_fetch_assoc(mysqli_query($condb, $sql_untungbulani));
 
 // Jumlah Pelanggan
-$sql_pelanggan = "SELECT COUNT(*) AS total_pelanggan FROM pelanggan";
+$sql_pelanggan = "SELECT COUNT(*) AS total_pelanggan FROM pelanggan  WHERE tahap = 'PELANGGAN'";
 $total_pelanggan = mysqli_fetch_assoc(mysqli_query($condb, $sql_pelanggan));
+
+// Jumlah Pekerja
+$sql_pekerja = "SELECT COUNT(*) AS total_pekerja FROM pelanggan  WHERE tahap = 'ADMIN'";
+$total_pekerja = mysqli_fetch_assoc(mysqli_query($condb, $sql_pekerja));
+
 
 // Laporan Tempahan Pelanggan Hari Ini
 // Laporan Tempahan Pelanggan Hari Ini
@@ -56,8 +63,8 @@ while ($row = mysqli_fetch_assoc($laptoday)) {
     $laptoday_data[] = [
         'nama' => $row['nama'],
         'email' => $row['email'],
-        'tarikh' => date_format($tarikh, "d/m/Y"),
         'masa' => date_format($tarikh, "g:i:s A"),
+        'timestap' => date_format($tarikh, "Y-m-d\TH:i:s"),  // Format ISO 8601
         'senarai_makanan' => $row['senarai_makanan'],
         'jumlah_harga' => $row['jumlah_harga']
     ];
@@ -70,5 +77,6 @@ echo json_encode([
     'total_harian' => $untung_hari['total_harian'] ?? 0,
     'total_bulanan' => $untung_bulan['total_bulanan'] ?? 0,
     'total_pelanggan' => $total_pelanggan['total_pelanggan'],
+    'total_pekerja' => $total_pekerja['total_pekerja'],
     'laporan_hari_ini' => $laptoday_data
 ]);

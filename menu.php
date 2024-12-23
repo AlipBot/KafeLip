@@ -258,12 +258,6 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     <i class="fas fa-home mr-1"></i>
                     <span>LAMAN UTAMA</span>
                 </a>
-                <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
-                    <a class="text-black font-medium" href="admin/list-user.php">
-                        <i class="fa fa-list-alt mr-1"></i>
-                        <span> SENARAI PENGGUNA </span>
-                    </a>
-                <?php endif; ?>
                 <a class="text-black font-medium" href="sejarah-tempah.php">
                     <i class="fas fa-history mr-1"></i>
                     <span> SEJARAH TEMPAHAN </span>
@@ -272,6 +266,12 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     <i class="fas fa-shopping-cart mr-1"></i>
                     <span>CART <?= $bil ?></span>
                 </a>
+                <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
+                    <a class="text-black font-medium" href="admin/panel.php">
+                        <i class="fa fa-list-alt mr-1"></i>
+                        <span> PANEL ADMIN</span>
+                    </a>
+                <?php endif; ?>
                 <a class="text-black font-medium" href="logout.php">
                     <i class="fas fa-sign-out-alt mr-1"></i>
                     <span>LOG KELUAR</span>
@@ -312,7 +312,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     <footer class="w-full bg-gray-800 text-white py-[0px] px-[0px] fade-in">
         <div class="footerkaki mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div class="mb-4 lg:mb-0">
-                © 2023 KAFELIP. All rights reserved.
+                © 2024 KAFELIP. All rights reserved.
             </div>
             <div class="flex gap-6">
                 <a class="text-white" href="#">
@@ -457,7 +457,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         function fetchMenu() {
-            fetch('function/api/list-menu.php')
+            fetch('api/list-menu.php')
                 .then(response => response.text())
                 .then(html => {
                     document.querySelector('.List-Makanan').innerHTML = html;
@@ -468,4 +468,5 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         fetchMenu();
     </script>
 </body>
+
 </html>

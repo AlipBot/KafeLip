@@ -1,6 +1,6 @@
 <?php
 // Sambungan ke database
-include('../connection.php');
+include('../function/connection.php');
 
 // Query untuk mendapatkan semua data dari tabel 'makanan'
 $sql = "SELECT * FROM makanan";
