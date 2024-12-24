@@ -1,4 +1,6 @@
 <?php
+$lifetime = 60 * 60 * 24 * 30;  // 30 days
+session_set_cookie_params($lifetime);
 session_start();
 include('../function/connection.php');
 include('../function/admin-only.php');
@@ -41,19 +43,6 @@ include('../function/admin-only.php');
             overflow: auto;
         }
 
-        .toggle-bg {
-            background-color: #1e3a8a; /* Tailwind's blue-800 */
-        }
-
-        .toggle-dot {
-            background-color: #ef4444; /* Tailwind's red-500 */
-        }
-
-        .toggle-dot-checked {
-            transform: translateX(1.5rem); /* Move the dot to the right when checked */
-            background-color: #10b981; /* Tailwind's green-500 */
-        }
-
         .laporan-pelanggan.fullscreen-mode table {
             max-height: 80vh;
             overflow-y: auto;
@@ -78,13 +67,9 @@ include('../function/admin-only.php');
             table-layout: fixed;
         }
 
-        .laporan-pelanggan.fullscreen-mode .no-data {
-            text-align: center;
-        }
-
-        .laporan-pelanggan.fullscreen-mode .right-align {
-            text-align: right;
-            padding-right: 2rem;
+        .laporan-pelanggan.fullscreen-mode .px-\[47px\] {
+            padding-left: 45px;
+            padding-right: 106px;
         }
     </style>
 </head>
@@ -206,10 +191,10 @@ include('../function/admin-only.php');
                         <table class="w-full table-auto rounded-lg overflow-hidden">
                             <thead>
                                 <tr class="bg-blue-200 text-blue-800">
-                                    <th class="px-4 py-2">Nama Pelanggan</th>
-                                    <th class="px-4 py-2">Pesanan</th>
-                                    <th class="px-4 py-2 right-align">Junlah Harga (RM)</th>
-                                    <th class="px-4 py-2 right-align">Masa</th>
+                                    <th class="px-[47px] py-2">Nama Pelanggan</th>
+                                    <th class="px-[47px] py-2">Pesanan</th>
+                                    <th class="px-[47px] py-2">Jumlah Harga (RM)</th>
+                                    <th class="px-[47px] py-2">Masa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -314,10 +299,10 @@ include('../function/admin-only.php');
                         data.laporan_hari_ini.forEach(tempahan => {
                             let masaLalu = timeSince(tempahan.timestap);
                             let row = `<tr class="bg-white border-b hover:bg-blue-50">
-                                <td class="px-4 py-2">${tempahan.nama}</td>
+                                <td class="px-4 py-2 ">${tempahan.nama}</td>
                                 <td class="px-4 py-2">${tempahan.senarai_makanan}</td>
-                                <td class="px-4 py-2 right-align">RM ${parseFloat(tempahan.jumlah_harga).toFixed(2)}</td>
-                                <td class="px-4 py-2 right-align">${tempahan.masa} <br> ${masaLalu}</td>
+                                <td class="px-4 py-2 text-center">RM ${parseFloat(tempahan.jumlah_harga).toFixed(2)}</td>
+                                <td class="px-4 py-2 text-center">${tempahan.masa} <br> ${masaLalu}</td>
                             </tr>`;
                             laporanTable.innerHTML += row;
                         });

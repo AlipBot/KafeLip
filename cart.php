@@ -1,6 +1,6 @@
 <?php
-# Memulakan fungsi session dan memanggil fail header.php
-session_start();;
+$lifetime = 60 * 60 * 24 * 30;  // 30 days
+session_set_cookie_params($lifetime);session_start();;
 include('function/connection.php');
 $jumlah_harga = 0;
 
@@ -82,8 +82,8 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                     <span><?= $bil ?></span>
                                     <button onclick="location.href='function/del-cart.php?id_menu=<?= $m['kod_makanan'] ?>';" class="bg-[#CA0000D9] text-white px-3 py-1 rounded ">-</button>
                                 </td>
-                                <td class="border border-gray-300 px-4 py-2 font-semibold custom-font">RM <?= $m['harga'] ?></td>
-                                <td class="border border-gray-300 px-4 py-2 font-semibold custom-font">RM
+                                <td class="border text-center border-gray-300 px-4 py-2 font-semibold custom-font">RM <?= $m['harga'] ?></td>
+                                <td class="border text-center border-gray-300 px-4 py-2 font-semibold custom-font">RM
                                     <?php
                                     $harga = $bil * $m['harga'];
                                     $jumlah_harga = $jumlah_harga + $harga;
@@ -96,7 +96,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         <?php } ?>
                         <tr class="bg-cyan-100 hover:bg-cyan-200">
                             <td class="border border-gray-300 px-4 py-2 font-semibold custom-font" colspan="3">Jumlah Bayaran (RM)</td>
-                            <td class="border border-gray-300 px-4 py-2 font-semibold custom-font">RM <?php echo number_format($jumlah_harga, 2) ?></td>
+                            <td class="border text-center border-gray-300 px-4 py-2 font-semibold custom-font">RM <?php echo number_format($jumlah_harga, 2) ?></td>
                         </tr>
                     </tbody>
                 </table>

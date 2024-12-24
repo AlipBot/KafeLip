@@ -14,9 +14,15 @@ FROM (
 ";
 $kira_harini = mysqli_fetch_assoc(mysqli_query($condb, $sql_kiraharini));
 
-// Jumlah Tempah Bulan Ini
-$sql_kirabulanini = "SELECT COUNT(*) AS jumlahSebulan FROM tempahan WHERE MONTH(tarikh) = MONTH(CURDATE()) AND YEAR(tarikh) = YEAR(CURDATE())";
+// Jumlah Tempah Bulan Ini (unik berdasarkan masa dan email)
+$sql_kirabulanini = "
+    SELECT COUNT(DISTINCT CONCAT(tarikh, '-', email)) AS jumlahSebulan 
+    FROM tempahan 
+    WHERE MONTH(tarikh) = MONTH(CURDATE()) 
+    AND YEAR(tarikh) = YEAR(CURDATE())
+";
 $kira_bulanini = mysqli_fetch_assoc(mysqli_query($condb, $sql_kirabulanini));
+
 
 // Jumlah Keuntungan Hari Ini
 $sql_untungharini = "SELECT SUM(jumlah_harga) AS total_harian FROM tempahan WHERE DATE(tarikh) = CURDATE()";

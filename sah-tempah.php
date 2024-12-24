@@ -1,5 +1,6 @@
 <?php
-# Memulakan fungsi session dan memanggil fail header.php
+$lifetime = 60 * 60 * 24 * 30;  // 30 days
+session_set_cookie_params($lifetime);
 session_start();
 
 include('function/connection.php');
