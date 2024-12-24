@@ -19,7 +19,7 @@ if(!empty($_POST)){
         $nama_fail          =   $_FILES['gambar']['name'];
         $lokasi             =   $_FILES['gambar']['tmp_name'];
         $tambahan = $tambahan."gambar = '".$nama_fail ."',";
-        move_uploaded_file($lokasi,"../menu-images/".$nama_fail);
+        copy($lokasi,"../menu-images/".$nama_fail);
     } 
 
     # Data validation : had atas

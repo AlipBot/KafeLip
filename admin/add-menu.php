@@ -69,7 +69,7 @@ if (!empty($_POST)) {
             </script>";
 
         # muat naik gambar
-        move_uploaded_file($lokasi, "../menu-images/" . $nama_fail);
+        copy($lokasi, "../menu-images/" . $nama_fail);
     } else {
         #jika gagal papar punca error
         echo "<p style='color:red;'>Pendaftaran Gagal</p>";

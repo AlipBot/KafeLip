@@ -190,9 +190,9 @@ $result = mysqli_stmt_get_result($stmt);
         </div>
 
         <!-- Footer -->
-        <footer class="bg-blue-800 text-white p-4 text-center">
-            &copy; 2024 Kedai KafeLip. All rights reserved.
-        </footer>
+        <footer class="bg-blue-800 text-white p-4 text-center bottom-0 w-full">
+        &copy; 2024 Kedai KafeLip. All rights reserved.
+    </footer>
     </div>
 
     <script>

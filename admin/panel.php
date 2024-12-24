@@ -208,10 +208,10 @@ include('../function/admin-only.php');
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="bg-blue-800 text-white p-4 text-center">
-            &copy; 2024 Kedai KafeLip. All rights reserved.
-        </footer>
+         <!-- Footer -->
+         <footer class="bg-blue-800 text-white p-4 text-center bottom-0 w-full">
+        &copy; 2024 Kedai KafeLip. All rights reserved.
+    </footer>
     </div>
 
     <script>
@@ -356,7 +356,6 @@ include('../function/admin-only.php');
                 .catch(error => console.error('Error:', error));
         }
 
-        // Semak pesanan baru setiap 5 saat (boleh laras)
         setInterval(checkNewOrder, 1000); // 5000 ms = 5 saat
     </script>
 </body>
