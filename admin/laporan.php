@@ -2,12 +2,11 @@
 $lifetime = 60 * 60 * 24 * 30;  // 30 days
 session_set_cookie_params($lifetime);
 session_start();
-include('../function/header.php');
 include('../function/connection.php');
 include('../function/admin-only.php');
 
-if (isset($_POST['tarikh_semasa'])) {
-    $tarikhsemasa = $_POST['tarikh_semasa'];
+if (isset($_GET['tarikh_semasa'])) {
+    $tarikhsemasa = $_GET['tarikh_semasa'];
 } else {
     $tarikhsemasa = date("Y-m-d");
 }
@@ -33,55 +32,206 @@ $laksql = mysqli_query($condb, $sql);
 
 ?>
 
-<h3>Laporan Tempahan</h3>
-<form action='' method='POST'>
-    Pilih Tarikh
-    <select name='tarikh_semasa'>
-        <option value='<?= $tarikhsemasa ?>'>
-            <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?></option>
-        <option disabled>Pilih Tarikh Lain Di bawah</option>
-        <?php while ($mm = mysqli_fetch_array($laktarikh)): ?>
-            <option value='<?= $mm['tarikh'] ?>'>
-                <?= date_format(date_create($mm['tarikh']), "d/m/Y") ?>
-            </option>
-        <?php endwhile; ?>
-    </select>
-    <input type='submit' value='PAPAR'>
-</form>
 
-<!-- Memaparkan senarai tempahan berdasarkan tarikh -->
-<table align='center' border='1' width='50%'>
-    <tr align='center'>
-        <td>Pelanggan</td>
-        <td>Tarikh</td>
-        <td>Jumlah<br>Bayaran (RM)</td>
-    </tr>
-    <?php while ($m = mysqli_fetch_array($laksql)) { ?>
-    <tr align='center'>
-        <td align='left'>
-            <?php
-            echo "<b><u>" . $m['email'] . "</u></b><br>";
 
-            # Dapatkan butiran tempahan bagi setiap email dan tarikh (termasuk masa dan saat)
-            $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
-                             FROM tempahan t
-                             JOIN makanan m ON t.kod_makanan = m.kod_makanan
-                             WHERE t.email = '" . $m['email'] . "'
-                             AND t.tarikh = '" . $m['tarikh'] . "'";
-            $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
+<html lang="en">
 
-            while ($mm = mysqli_fetch_array($lakpaparmenu)) {
-                echo $mm['nama_makanan'] . " ( " . $mm['kuantiti'] . " X RM " . number_format($mm['harga'], 2) . " )<br>";
-            }
-            ?>
-        </td>
-        <td>
-            <?php
-            $tarikh = date_create($m['tarikh']);
-            echo "Tarikh : " . date_format($tarikh, "d/m/Y") . "<br>";
-            echo "Masa : " . date_format($tarikh, "H:i:s");
-            ?>
-        </td>
-        <td><?= number_format($m['jumlah_harga'], 2) ?></td>
-    </tr>
-<?php } ?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sejarah Laporan KafeLip</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .drawer-open {
+            transform: translateX(0);
+        }
+
+        .drawer-closed {
+            transform: translateX(-100%);
+        }
+
+        .content-expanded {
+            margin-left: 0;
+        }
+
+        .content-collapsed {
+            margin-left: 16rem;
+        }
+    </style>
+</head>
+
+<body class="font-roboto bg-gray-100 ">
+    <div class="flex min-h-screen flex-col">
+        <!-- Header -->
+        <header class="bg-blue-800 text-white p-4 flex justify-between items-center fixed w-full z-10">
+            <button id="drawerToggle" class="bg-blue-700 text-white p-2 rounded">
+                <i class="fas fa-bars"></i> Menu
+            </button>
+            <div class="text-[150%] font-bold mx-auto">Sejarah Laporan Tempahan KafeLip</div>
+            <div class="w-12"></div>
+        </header>
+
+        <div class="flex flex-1 pt-16">
+            <!-- Sidebar -->
+            <div id="drawer" class="w-64 bg-blue-800 text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
+                <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
+                    Admin
+                </div>
+                <nav class="flex-1 p-4 overflow-y-auto">
+                    <ul>
+                        <li class="mb-4">
+                            <a href="panel.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
+                            </a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="list-user.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-users mr-2"></i> Senarai Pengguna
+                            </a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="list-menu.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-utensils mr-2"></i> Senarai Makanan
+                            </a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="laporan.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-file-alt mr-2"></i> Sejarah Laporan
+                            </a>
+                        </li>
+                        <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
+                            Pelanggan
+                        </div>
+                        <li class="mb-4">
+                            <a href="../menu.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-arrow-left mr-2"></i> Kembali Ke Menu
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div id="mainContent" class="flex-1 p-6 transition-all duration-300 content-expanded">
+                <div class="senarai-menu bg-white p-6 rounded-lg shadow relative">
+                    <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
+                        <span>Sejarah Laporan Tempahan</span>
+                    </div>
+                    <div class="text-center text-gray-600 mb-4">
+                        <span class="font-bold text-lg">Tarikh: </span>
+                        <span id="currentDate" class="font-bold text-lg"></span>
+                        <br>
+                        <span class="font-bold text-lg">Masa: </span>
+                        <span id="currentTime" class="font-bold text-lg"></span>
+                        <form action="laporan.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
+                            <select name='tarikh_semasa'>
+                                <option value='<?= $tarikhsemasa ?>' class="border rounded p-2 w-2/5">
+                                    <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?></option>
+                                <option disabled>Pilih Tarikh Lain Di bawah</option>
+                                <?php while ($mm = mysqli_fetch_array($laktarikh)): ?>
+                                    <option value='<?= $mm['tarikh'] ?>'>
+                                        <?= date_format(date_create($mm['tarikh']), "d/m/Y") ?>
+                                    </option>
+                                <?php endwhile; ?>
+                            </select>
+                            <button type="submit" class="bg-blue-800 text-white p-2 rounded flex items-center">
+                                <i class="fas fa-search mr-1"></i> Cari
+                            </button>
+                        </form>
+                        <div class="table-container">
+                            <table class="w-full table-auto rounded-lg overflow-hidden">
+                                <thead>
+                                    <tr class="bg-blue-200 text-blue-800">
+                                        <th width='30%' class="px-[47px] py-2">Pelanggan</th>
+                                        <th width='30%' class="px-[47px] py-2">Pesanan</th>
+                                        <th width='20%' class="px-[47px] py-2">Jumlah Harga (RM)</th>
+                                        <th width='20%' class="px-[47px] py-2">Masa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (mysqli_num_rows($laksql) > 0) { ?>
+                                        <?php while ($m = mysqli_fetch_array($laksql)) { ?>
+
+                                            <tr class='bg-white border-b hover:bg-blue-50'>
+                                                <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['email']); ?></td>
+                                                <td class='px-4 py-2 '><?php
+                                                                        $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
+                                              FROM tempahan t
+                                              JOIN makanan m ON t.kod_makanan = m.kod_makanan
+                                              WHERE t.email = '" . $m['email'] . "'
+                                              AND t.tarikh = '" . $m['tarikh'] . "'";
+                                                                        $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
+
+                                                                        while ($mm = mysqli_fetch_array($lakpaparmenu)) {
+                                                                            echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
+                                                                        }
+                                                                        ?></td>
+                                                <td class='px-4 py-2 text-center'>RM <?php echo htmlspecialchars($m['jumlah_harga']); ?></td>
+                                                <td class='px-4 py-2 text-center'>
+                                                    <?php
+                                                    $tarikh = date_create($m['tarikh']);
+                                                    echo date_format($tarikh, "g:i:s A");
+                                                    ?></td>
+                                            </tr>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <tr>
+                                            <td colspan="4" class="text-center py-6 text-gray-500">
+                                                <i class="fas fa-exclamation-circle text-4xl mb-2"></i>
+                                                <p class="text-lg font-semibold">Tiada dalam senarai</p>
+                                                <p class="text-sm">Sila cuba kata kunci lain.</p>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer class="bg-blue-800 text-white p-4 text-center bottom-0 w-full">
+            &copy; 2024 Kedai KafeLip. All rights reserved.
+        </footer>
+
+    </div>
+
+    <script>
+        const drawerToggle = document.getElementById('drawerToggle');
+        const drawer = document.getElementById('drawer');
+        const mainContent = document.getElementById('mainContent');
+        const currentDate = document.getElementById('currentDate');
+        const currentTime = document.getElementById('currentTime');
+
+        drawerToggle.addEventListener('click', () => {
+            drawer.classList.toggle('drawer-open');
+            drawer.classList.toggle('drawer-closed');
+            mainContent.classList.toggle('content-expanded');
+            mainContent.classList.toggle('content-collapsed');
+        });
+
+        function updateDateTime() {
+            const now = new Date();
+
+            // Extract day, month, year
+            const day = String(now.getDate()).padStart(2, '0'); // Add leading zero if needed
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = now.getFullYear();
+
+            // Format to day/month/year
+            currentDate.textContent = `${day}/${month}/${year}`;
+            currentTime.textContent = now.toLocaleTimeString();
+        }
+
+
+        // Update date and time every second
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Initial call to set the date and time immediately
+    </script>
+
+</body>
+
+</html>

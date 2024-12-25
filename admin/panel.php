@@ -191,10 +191,10 @@ include('../function/admin-only.php');
                         <table class="w-full table-auto rounded-lg overflow-hidden">
                             <thead>
                                 <tr class="bg-blue-200 text-blue-800">
-                                    <th class="px-[47px] py-2">Nama Pelanggan</th>
-                                    <th class="px-[47px] py-2">Pesanan</th>
-                                    <th class="px-[47px] py-2">Jumlah Harga (RM)</th>
-                                    <th class="px-[47px] py-2">Masa</th>
+                                    <th width='30%' class="px-[47px] py-2">Nama Pelanggan</th>
+                                    <th width='30%' class="px-[47px] py-2">Pesanan</th>
+                                    <th width='20%' class="px-[47px] py-2">Jumlah Harga (RM)</th>
+                                    <th width='20%' class="px-[47px] py-2">Masa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -208,10 +208,10 @@ include('../function/admin-only.php');
             </div>
         </div>
 
-         <!-- Footer -->
-         <footer class="bg-blue-800 text-white p-4 text-center bottom-0 w-full">
-        &copy; 2024 Kedai KafeLip. All rights reserved.
-    </footer>
+        <!-- Footer -->
+        <footer class="bg-blue-800 text-white p-4 text-center bottom-0 w-full">
+            &copy; 2024 Kedai KafeLip. All rights reserved.
+        </footer>
     </div>
 
     <script>
@@ -315,9 +315,17 @@ include('../function/admin-only.php');
 
         function updateDateTime() {
             const now = new Date();
-            currentDate.textContent = now.toLocaleDateString();
+
+            // Extract day, month, year
+            const day = String(now.getDate()).padStart(2, '0'); // Add leading zero if needed
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = now.getFullYear();
+
+            // Format to day/month/year
+            currentDate.textContent = `${day}/${month}/${year}`;
             currentTime.textContent = now.toLocaleTimeString();
         }
+
 
         // Update date and time every second
         setInterval(updateDateTime, 1000);

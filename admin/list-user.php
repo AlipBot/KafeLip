@@ -119,7 +119,7 @@ $laksana = mysqli_query($condb, $arahan_papar);
                         <div class="flex items-center justify-between space-x-5">
 
                             <form action="list-user.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
-                                <input type="text" name="nama" placeholder="Carian Nama pengguna" value="<?php echo htmlspecialchars($_GET['nama_menu'] ?? ''); ?>" class="border rounded p-2 w-2/5">
+                                <input type="text" name="nama" placeholder="Carian Nama pengguna" value="<?= $_GET['nama'] ?>" class="border rounded p-2 w-2/5">
                                 <button type="submit" class="bg-blue-800 text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
@@ -146,7 +146,7 @@ $laksana = mysqli_query($condb, $arahan_papar);
                                     <td width='10%' class="text-center  py-2">Tindakan</td>
                                 </tr>
                             </thead>
-                            <tbody class="text-[15px] font-bold">
+                            <tbody>
                                 <?php if (mysqli_num_rows($laksana) > 0) { ?>
                                     <?php while ($m = mysqli_fetch_array($laksana)) { ?>
                                         <tr class='bg-white border-b hover:bg-blue-50'>
@@ -190,8 +190,8 @@ $laksana = mysqli_query($condb, $arahan_papar);
 
         <!-- Footer -->
         <footer class="bg-blue-800 text-white p-4 text-center bottom-0 w-full">
-        &copy; 2024 Kedai KafeLip. All rights reserved.
-    </footer>
+            &copy; 2024 Kedai KafeLip. All rights reserved.
+        </footer>
     </div>
 
     <script>
@@ -228,9 +228,17 @@ $laksana = mysqli_query($condb, $arahan_papar);
 
         function updateDateTime() {
             const now = new Date();
-            currentDate.textContent = now.toLocaleDateString();
+
+            // Extract day, month, year
+            const day = String(now.getDate()).padStart(2, '0'); // Add leading zero if needed
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = now.getFullYear();
+
+            // Format to day/month/year
+            currentDate.textContent = `${day}/${month}/${year}`;
             currentTime.textContent = now.toLocaleTimeString();
         }
+
 
         // Update date and time every second
         setInterval(updateDateTime, 1000);

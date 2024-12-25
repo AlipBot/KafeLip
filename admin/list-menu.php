@@ -78,7 +78,7 @@ $result = mysqli_stmt_get_result($stmt);
                     <ul>
                         <li class="mb-4">
                             <a href="panel.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
-                            <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
+                                <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
                             </a>
                         </li>
                         <li class="mb-4">
@@ -144,20 +144,20 @@ $result = mysqli_stmt_get_result($stmt);
                         <table class="w-full table-auto rounded-lg overflow-hidden">
                             <thead>
                                 <tr class="bg-blue-200 text-blue-800">
-                                    <th width='13%' class="px-[47px] py-2">Kod Menu</th>
+                                    <th width='20%' class="px-[47px] py-2">Kod Menu</th>
                                     <th width='30%' class="px-[47px] py-2">Gambar</th>
                                     <th width='30%' class="px-[47px] py-2">Nama Menu</th>
-                                    <th width='15%' class="px-[47px] py-2">Harga (RM)</th>
+                                    <th width='20%' class="px-[47px] py-2">Harga (RM)</th>
                                     <th width='20%' class="px-[47px] py-2">Tindakan</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-[20px] font-bold">
+                            <tbody>
                                 <?php if (mysqli_num_rows($result) > 0) { ?>
                                     <?php while ($m = mysqli_fetch_assoc($result)) { ?>
                                         <tr class='bg-white border-b hover:bg-blue-50'>
                                             <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['kod_makanan']); ?></td>
                                             <td class='px-8 py-4 flex justify-center items-center'>
-                                                <img src='../menu-images/<?php echo htmlspecialchars($m['gambar']); ?>' alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>' width='50%'>
+                                                <img src='../menu-images/<?php echo htmlspecialchars($m['gambar']); ?>' alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>' width='60%'>
                                             </td>
                                             <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['nama_makanan']); ?></td>
                                             <td class='px-4 py-2 text-center'>RM <?php echo htmlspecialchars($m['harga']); ?></td>
@@ -190,9 +190,9 @@ $result = mysqli_stmt_get_result($stmt);
         </div>
 
         <!-- Footer -->
-        <footer class="bg-blue-800 text-white p-4 text-center bottom-0 w-full">
-        &copy; 2024 Kedai KafeLip. All rights reserved.
-    </footer>
+        <footer class="bg-blue-800 text-white p-4 text-center w-full">
+            &copy; 2024 Kedai KafeLip. All rights reserved.
+        </footer>
     </div>
 
     <script>
@@ -211,9 +211,17 @@ $result = mysqli_stmt_get_result($stmt);
 
         function updateDateTime() {
             const now = new Date();
-            currentDate.textContent = now.toLocaleDateString();
+
+            // Extract day, month, year
+            const day = String(now.getDate()).padStart(2, '0'); // Add leading zero if needed
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = now.getFullYear();
+
+            // Format to day/month/year
+            currentDate.textContent = `${day}/${month}/${year}`;
             currentTime.textContent = now.toLocaleTimeString();
         }
+
 
         // Update date and time every second
         setInterval(updateDateTime, 1000);
