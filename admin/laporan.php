@@ -140,6 +140,12 @@ $laksql = mysqli_query($condb, $sql);
                                 <i class="fas fa-search mr-1"></i> Cari
                             </button>
                         </form>
+                        
+                        <div class="flex space-x-2">
+                        <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">Laporan pada Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>                            
+                        </div>
+
+
                         <div class="table-container">
                             <table class="w-full table-auto rounded-lg overflow-hidden">
                                 <thead>
@@ -179,9 +185,9 @@ $laksql = mysqli_query($condb, $sql);
                                     <?php } else { ?>
                                         <tr>
                                             <td colspan="4" class="text-center py-6 text-gray-500">
-                                                <i class="fas fa-exclamation-circle text-4xl mb-2"></i>
+                                           <i class="fas fa-exclamation-circle text-4xl mb-2"></i>
                                                 <p class="text-lg font-semibold">Tiada dalam senarai</p>
-                                                <p class="text-sm">Sila cuba kata kunci lain.</p>
+                                                <p class="text-sm">Sila cuba pilih tarikh lain.</p>
                                             </td>
                                         </tr>
                                     <?php } ?>
