@@ -41,14 +41,14 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #A1CCA5;
+            background-color: #FAF3DD;
             color: #333;
         }
 
 
 
         .List-Makanan {
-            padding: 5%;
+            padding: 2%;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 5%;
@@ -98,8 +98,8 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         }
 
         .menu-item .add-to-cart {
-            background-color: #ffcc00;
-            color: #333;
+            background-color: #4A7C59;
+            color: #fff;
             padding: 10px 20px;
             border: none;
             border-radius: 7px;
@@ -123,7 +123,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
 
         .slidebro {
             max-width: 1800px;
-            background-color: #709775;
+            background-color: #FAF3DD;
             margin: 0px auto;
             padding: 5rem;
 
@@ -238,45 +238,134 @@ include("function/connection.php"); // Pastikan path file koneksi benar
 
         }
 
-        .footerkaki {
-            padding: 2%;
-            display: grid;
-            background-color: #111D13;
-            grid-template-columns: repeat(3, 1fr);
-            justify-items: center;
+        @media (max-width: 768px) {
+            .nav a span {
+                display: none;
+            }
+
+            .comment {
+                padding: 2px;
+                gap: 2px;
+            }
+
+            .comment img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .comment .text .name {
+                font-size: 12px;
+            }
+
+            .comment .text .time {
+                font-size: 10px;
+            }
+
+            .comment .text .message {
+                font-size: 10px;
+            }
+        }
+
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF3DD;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #000;
+            border-radius: 6px;
+            border: 3px solid #FAF3DD;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #333;
+        }
+
+        /* Scroll to top button */
+        #scrollToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            right: 20px;
+            z-index: 100;
+            background-color: #4A7C59;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 10px 15px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Hover effect for header navigation links */
+        .nav a::after,
+        .goMenu a::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #4A7C59;
+            transition: width 0.3s;
+        }
+
+        .nav a:hover::after,
+        .goMenu a:hover::after {
+            width: 100%;
+        }
+
+        .add-to-cart:hover,
+        #scrollToTopBtn:hover {
+            background-color: #68B0AB;
+            color: #fff;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
     </style>
 </head>
 
-<body>
-    <div class="w-full bg-green-100 fade-in">
+<body class="bg-[#FAF3DD] font-poppins">
+    <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
             <div class="logo text-2xl font-bold flex items-center mr-4">
-                <i class="fas fa-coffee text-green-500 mr-2"></i>
-                Kafe <span class="text-green-500">lip</span>
+                <i class="fas fa-coffee text-[#4A7C59] mr-2">
+                </i>
+                <span class="text-black">
+                    Kafe
+                </span>
+                <span class="text-black">
+                    lip
+                </span>
             </div>
-            <div class="nav flex gap-6">
-                <a class="text-black font-medium active:text-green-500" href="index.php">
-                    <i class="fas fa-home mr-1"></i>
+            <div class="nav flex gap-6 mx-auto">
+                <a class="text-black font-medium active:text-[#4A7C59]" href="index.php">
+                    <i class="fas fa-home text-[#4A7C59] mr-1"></i>
                     <span>LAMAN UTAMA</span>
                 </a>
-                <a class="text-black font-medium" href="sejarah-tempah.php">
-                    <i class="fas fa-history mr-1"></i>
-                    <span> SEJARAH TEMPAHAN </span>
-                </a>
                 <a class="text-black font-medium" href="cart.php">
-                    <i class="fas fa-shopping-cart mr-1"></i>
+                    <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART <?= $bil ?></span>
                 </a>
+                <a class="text-black font-medium" href="sejarah-tempah.php">
+                    <i class="fas fa-history text-[#4A7C59] mr-1"></i>
+                    <span>Sejarah Tempahan</span>
+                </a>
+            </div>
+            <div class="goMenu flex gap-6">
                 <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                     <a class="text-black font-medium" href="admin/panel.php">
-                        <i class="fa fa-list-alt mr-1"></i>
+                        <i class="fa fa-list-alt mr-1 text-[#4A7C59]"></i>
                         <span> PANEL ADMIN</span>
                     </a>
                 <?php endif; ?>
                 <a class="text-black font-medium" href="logout.php">
-                    <i class="fas fa-sign-out-alt mr-1"></i>
-                    <span>LOG KELUAR</span>
+                    <i class="fas fa-sign-out-alt mr-1 text-[#4A7C59]"></i>
+                    </i>
+                    <span>
+                        LOG KELUAR
+                    </span>
                 </a>
             </div>
         </div>
@@ -308,33 +397,62 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             <div class="slider-nav"></div>
         </div>
     </div>
+    <div class="mx-auto px-10">
+        <h2 class="text-4xl font-bold mb-6 relative inline-block text-center w-full text-[#111811]">
+            Menu
+            <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-1 bg-[#4A7C59]">
+            </span>
+        </h2>
+    </div>
+    <div class="bg-[#A1CCA5] overflow-auto	m-8 rounded-2xl p-6 shadow-lg items-center">
 
-    <div class="List-Makanan"></div>
 
-    <footer class="w-full bg-gray-800 text-white py-[0px] px-[0px] fade-in">
-        <div class="footerkaki mx-auto flex flex-col lg:flex-row justify-between items-center">
+        <div class="List-Makanan"></div>
+    </div>
+
+    <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
+        <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div class="mb-4 lg:mb-0">
-                © 2024 KAFELIP. All rights reserved.
+                © 2023 KAFELIP. All rights reserved.
             </div>
             <div class="flex gap-6">
-                <a class="text-white" href="#">
+                <a class="text-[#4A7C59]" href="#">
                     <i class="fab fa-facebook-f">
                     </i>
                 </a>
-                <a class="text-white" href="#">
+                <a class="text-[#4A7C59]" href="#">
                     <i class="fab fa-twitter">
                     </i>
                 </a>
-                <a class="text-white" href="#">
+                <a class="text-[#4A7C59]" href="#">
                     <i class="fab fa-instagram">
                     </i>
                 </a>
             </div>
         </div>
     </footer>
-
+    <button id="scrollToTopBtn" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up">
+        </i>
+    </button>
 
     <script>
+        // Show or hide the scroll to top button
+        window.onscroll = function() {
+            var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+
+        // Scroll to top function
+        function scrollToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelector('.slides');
             const sliderNav = document.querySelector('.slider-nav');
