@@ -160,7 +160,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
                 <a class="text-black font-medium active:text-[#4A7C59]" href="menu.php">
                     <i class="fas fa-home text-[#4A7C59] mr-1"></i>
                     <span>MENU</span>
-                    </a>
+                </a>
                 <a class="text-black font-medium" href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART
@@ -193,7 +193,14 @@ $laksana = mysqli_query($condb, $sql_pilih);
             <div class="text-left mb-4">
                 <p class="text-lg font-semibold">KafeLip</p>
                 <p class="text-sm">Tarikh:
-                    <?= $tarikh ?>
+                    <?php
+                    $masa = date_create($tarikh);
+                    echo date_format($masa, "d/m/Y") ?>
+                </p>
+                <p class="text-sm">Masa:
+                    <?php
+                    $masa = date_create($tarikh);
+                    echo date_format($masa, "g:i:s A") ?>
                 </p>
                 <p class="text-sm">Email:
                     <?= $email ?>
@@ -233,7 +240,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
                         <tr class="font-semibold">
                             <td colspan="3" class="p-2 text-right border border-gray-300">Jumlah Bayaran (RM)</td>
                             <td class="p-2 text-center border border-gray-300">
-                                <?= number_format($jumlah_harga , 2) ?>
+                                <?= number_format($jumlah_harga, 2) ?>
                             </td>
                         </tr>
                     </tbody>

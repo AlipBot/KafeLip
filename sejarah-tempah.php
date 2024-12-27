@@ -200,7 +200,7 @@ $laksql = mysqli_query($condb, $sql);
                     </thead>
                     <tbody>
                         <?php while ($m = mysqli_fetch_array($laksql)):
-                            $tarikh = date_create($m['tarikh']);
+                            $tarikh = date_create( $m['tarikh']);
                         ?>
                             <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
                                 <td class="border-0 shadow-lg  px-4 py-2 	">
