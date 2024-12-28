@@ -26,6 +26,72 @@ if (!empty($searchTerm)) {
 
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
+
+
+$popup_message = "";
+$popup_visible = false;
+
+if (isset($_POST['upload'])) {
+
+    # mengambil nama sementara fail
+    $namafailsementara  =   $_FILES['data']['tmp_name'];
+    $namafail           =   $_FILES['data']['name'];
+    $jenisfail          =   $_FILES['data']['type'];
+
+    # menguji jenis fail dan sail fail 
+    if ($_FILES["data"]["size"] > 0 and $jenisfail == "text/plain") {
+        # membuka fail yang diambil
+        $fail_data = fopen($namafailsementara, "r");
+
+        $bil = 0;
+
+        # mendapatkan data dari fail baris demi baris
+        while (!feof($fail_data)) {
+            # mengambil data sebaris sahaja bg setiap pusingan 
+            $ambilbarisdata = fgets($fail_data);
+
+            # memecahkan baris data mengikut tanda pipe
+            $data = explode("|", $ambilbarisdata);
+
+            # Umpukkan data yang dipecahkan
+            $id_menu        = trim($data[0]);
+            $nama_menu      = trim($data[1]);
+            $harga          = trim($data[2]);
+            # semak jika id menu telah ada dalam  pangkalan data
+            $pilih = mysqli_query($condb, "select* from makanan where kod_makanan='" . $id_menu . "'");
+            if (mysqli_num_rows($pilih) == 1) {
+                $popup_message = "kod_makanan $id_menu di fail txt telah ada di pangkalan data.TUKAR id_menu DALAM FAIL TXT";
+                $popup_visible = true;
+            } else {
+                # arahan SQL untuk menyimpan data
+                $sql_simpan =   "insert into makanan set
+                                 kod_makanan    = '$id_menu',
+                                 nama_makanan   = '$nama_menu',
+                                 harga          = '$harga' 
+                                ";
+
+                # memasukkan data kedalam jadual pengguna 
+                $laksana_arahan_simpan = mysqli_query($condb, $sql_simpan);
+                $bil++;
+            }
+        }
+        # menutup fail txt yang dibuka
+        fclose($fail_data);
+
+        if (mysqli_num_rows($pilih) == 1) {
+            $popup_message = "kod_makanan $id_menu di fail txt telah ada di pangkalan data.TUKAR id_menu DALAM FAIL TXT";
+            $popup_visible = true;
+        } else {
+            $popup_message = "import fail Data Selesai. Sebanyak $bil data telah disimpan. KEMASKINI MENU DAN UPLOAD GAMBAR";
+            $popup_visible = true;
+        }
+       
+    } else {
+        $popup_message = "hanya fail berformat txt sahaja dibenarkan";
+        $popup_visible = true;
+    }
+}
+
 ?>
 
 
@@ -54,10 +120,80 @@ $result = mysqli_stmt_get_result($stmt);
         .content-collapsed {
             margin-left: 16rem;
         }
+
+        .notif {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .notif-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .menu {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .menu-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body class="font-roboto bg-gray-100">
+
+
+    <?php if ($popup_visible) : ?>
+        <div id="notif" class="notif" style="display:block;">
+            <div class="notif-content">
+                <span class="close">&times;</span>
+                <p><?php echo htmlspecialchars($popup_message); ?></p>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
     <div class="flex h-screen flex-col">
         <!-- Header -->
         <header class="bg-blue-800 text-white p-4 flex justify-between items-center fixed w-full z-10">
@@ -134,9 +270,9 @@ $result = mysqli_stmt_get_result($stmt);
                                 <a href="add-menu.php" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Daftar Menu
                                 </a>
-                                <a href="upload-menu.php" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
-                                    <i class="fas fa-upload mr-1"></i> Upload Menu
-                                </a>
+                                <button id="uploadButton" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
+                                    <i class="fas fa-plus mr-1"></i> Upload Menu
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -195,6 +331,23 @@ $result = mysqli_stmt_get_result($stmt);
         </footer>
     </div>
 
+    <!-- menu -->
+    <div id="uploadmenu" class="menu">
+        <div class="menu-content">
+            <span class="close">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Upload Menu</h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="file" class="block text-gray-700">Pilih fail txt:</label>
+                    <input type="file" id="file" name='data' accept=".txt" class="border rounded p-2 w-full">
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" name='upload' class="bg-blue-800 text-white p-2 rounded">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         const drawerToggle = document.getElementById('drawerToggle');
         const drawer = document.getElementById('drawer');
@@ -226,6 +379,34 @@ $result = mysqli_stmt_get_result($stmt);
         // Update date and time every second
         setInterval(updateDateTime, 1000);
         updateDateTime(); // Initial call to set the date and time immediately
+
+
+        // menu functionality
+        const menu = document.getElementById("uploadmenu");
+        const btn = document.getElementById("uploadButton");
+        const span = document.getElementsByClassName("close")[0];
+        const notif = document.getElementById("notif");
+
+        btn.onclick = function() {
+            menu.style.display = "block";
+        }
+
+        span.onclick = function() {
+            window.location.href = window.location.href;
+            notif.style.display = "none";
+            menu.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == menu) {
+                window.location.href = window.location.href;
+                menu.style.display = "none";
+            }
+            if (event.target == notif) {
+                window.location.href = window.location.href
+                notif.style.display = "none";
+            }
+        }
     </script>
 
 </body>

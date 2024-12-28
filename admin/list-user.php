@@ -16,6 +16,50 @@ if (!empty($_GET['nama'])) {
 $arahan_papar = "select* from pelanggan $tambahan ";
 $laksana = mysqli_query($condb, $arahan_papar);
 
+
+$popup_message = "";
+$popup_visible = false;
+
+if (isset($_POST['upload'])) {
+    $namafailsementara = $_FILES["data_pengguna"]["tmp_name"];
+    $namafail = $_FILES['data_pengguna']['name'];
+    $jenisfail = pathinfo($namafail, PATHINFO_EXTENSION);
+
+    if ($_FILES["data_pengguna"]["size"] > 0 and $jenisfail == "txt") {
+        $fail_data_pengguna = fopen($namafailsementara, "r");
+        $bil = 0;
+
+        while (!feof($fail_data_pengguna)) {
+            $ambilbarisdata = fgets($fail_data_pengguna);
+            $pecahkanbaris = explode("|", $ambilbarisdata);
+            list($email, $notel, $nama, $katalaluan) = $pecahkanbaris;
+
+            $pilih = mysqli_query($condb, "select* from pelanggan where notel = '" . $notel . "'");
+            if (mysqli_num_rows($pilih) == 1) {
+                $popup_message = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
+                $popup_visible = true;
+            } else {
+                $arahan_sql_simpan = "insert into pelanggan (email, notel, nama, password, tahap) values ('$email','$notel','$nama','$katalaluan','ADMIN')";
+                mysqli_query($condb, $arahan_sql_simpan);
+                $bil++;
+            }
+        }
+        fclose($fail_data_pengguna);
+
+        if (mysqli_num_rows($pilih) == 1) {
+            $popup_message = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
+            $popup_visible = true;
+        } else {
+            $popup_message = "Import fail Data Selesai. Sebanyak $bil data telah disimpan";
+            $popup_visible = true;
+        }
+
+
+    } else {
+        $popup_message = "Hanya fail berformat txt sahaja dibenarkan";
+        $popup_visible = true;
+    }
+}
 ?>
 
 
@@ -50,10 +94,78 @@ $laksana = mysqli_query($condb, $arahan_papar);
             display: inline;
             /* Show by default */
         }
+
+        .notif {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .notif-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .pekerja {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .pekerja-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body class="font-roboto bg-gray-100">
+
+<?php if ($popup_visible) : ?>
+        <div id="notif" class="notif" style="display:block;">
+            <div class="notif-content">
+                <span class="close">&times;</span>
+                <p><?php echo htmlspecialchars($popup_message); ?></p>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
     <div class="flex h-screen flex-col">
         <!-- Header -->
         <header class="bg-blue-800 text-white p-4 flex justify-between items-center fixed w-full z-10">
@@ -128,9 +240,9 @@ $laksana = mysqli_query($condb, $arahan_papar);
                                 </button>
                             </form>
                             <div class="flex space-x-2">
-                                <a href="upload-user.php" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
+                                <button id="uploadButton" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Upload Pekerja
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -194,6 +306,24 @@ $laksana = mysqli_query($condb, $arahan_papar);
         </footer>
     </div>
 
+    <!-- pekerja -->
+    <div id="uploadPekerja" class="pekerja">
+        <div class="pekerja-content">
+            <span class="close">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Upload Pekerja</h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="file" class="block text-gray-700">Pilih fail txt:</label>
+                    <input type="file" id="file" name='data_pengguna' accept=".txt" class="border rounded p-2 w-full">
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" name='upload' class="bg-blue-800 text-white p-2 rounded">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script>
         function togglePasswordVisibility(notel) {
             const passwordField = document.getElementById(`password-${notel}`);
@@ -243,6 +373,36 @@ $laksana = mysqli_query($condb, $arahan_papar);
         // Update date and time every second
         setInterval(updateDateTime, 1000);
         updateDateTime(); // Initial call to set the date and time immediately
+
+        // pekerja functionality
+        const pekerja = document.getElementById("uploadPekerja");
+        const btn = document.getElementById("uploadButton");
+        const span = document.getElementsByClassName("close")[0];
+        const notif = document.getElementById("notif");
+
+        btn.onclick = function() {
+            pekerja.style.display = "block";
+        }
+
+        span.onclick = function() {
+            window.location.href = window.location.href;
+            notif.style.display = "none";
+            pekerja.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == pekerja) {
+                window.location.href = window.location.href;
+                pekerja.style.display = "none";
+            }
+            if (event.target == notif) {
+                window.location.href = window.location.href;
+                notif.style.display = "none";
+            }
+        }
+
+
+
     </script>
 
 </body>
