@@ -239,7 +239,8 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         }
 
         @media (max-width: 768px) {
-            .nav a span {
+            .nav a span,
+            .goMenu a span {
                 display: none;
             }
 
@@ -344,23 +345,23 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     <i class="fas fa-home text-[#4A7C59] mr-1"></i>
                     <span>LAMAN UTAMA</span>
                 </a>
-                <a class="text-black font-medium" href="cart.php">
+                <a class="text-black font-medium active:text-[#4A7C59]" href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART <?= $bil ?></span>
                 </a>
-                <a class="text-black font-medium" href="sejarah-tempah.php">
+                <a class="text-black font-medium active:text-[#4A7C59]" href="sejarah-tempah.php">
                     <i class="fas fa-history text-[#4A7C59] mr-1"></i>
                     <span>Sejarah Tempahan</span>
                 </a>
             </div>
-            <div class="goMenu flex gap-6">
+            <div class="goMenu flex gap-6 ">
                 <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
-                    <a class="text-black font-medium" href="admin/panel.php">
+                    <a class="text-black font-medium active:text-[#4A7C59]" href="admin/panel.php">
                         <i class="fa fa-list-alt mr-1 text-[#4A7C59]"></i>
                         <span> PANEL ADMIN</span>
                     </a>
                 <?php endif; ?>
-                <a class="text-black font-medium" href="logout.php">
+                <a class="text-black font-medium active:text-[#4A7C59]" href="logout.php">
                     <i class="fas fa-sign-out-alt mr-1 text-[#4A7C59]"></i>
                     </i>
                     <span>

@@ -38,7 +38,8 @@ $laksana = mysqli_query($condb, $sql_pilih);
         }
 
         @media (max-width: 768px) {
-            .nav a span {
+            .nav a span,
+            .goMenu a span {
                 display: none;
             }
 
@@ -161,25 +162,25 @@ $laksana = mysqli_query($condb, $sql_pilih);
                     <i class="fas fa-home text-[#4A7C59] mr-1"></i>
                     <span>MENU</span>
                 </a>
-                <a class="text-black font-medium" href="cart.php">
+                <a class="text-black font-medium active:text-[#4A7C59]" href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART
                         <?= $bil ?>
                     </span>
                 </a>
-                <a class="text-black font-medium" href="sejarah-tempah.php">
+                <a class="text-black font-medium active:text-[#4A7C59]" href="sejarah-tempah.php">
                     <i class="fas fa-history text-[#4A7C59] mr-1"></i>
                     <span>Sejarah Tempahan</span>
                 </a>
             </div>
             <div class="goMenu flex gap-6">
                 <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
-                    <a class="text-black font-medium" href="admin/panel.php">
+                    <a class="text-black font-medium active:text-[#4A7C59]" href="admin/panel.php">
                         <i class="fa fa-list-alt mr-1 text-[#4A7C59]"></i>
                         <span> PANEL ADMIN</span>
                     </a>
                 <?php endif; ?>
-                <a class="text-black font-medium" href="logout.php">
+                <a class="text-black font-medium active:text-[#4A7C59]" href="logout.php">
                     <i class="fas fa-sign-out-alt mr-1 text-[#4A7C59]"></i>
                     <span>LOG KELUAR</span>
                 </a>
@@ -187,7 +188,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
         </div>
     </div>
 
-    <div class="container mx-auto text-center py-8 px-4 print-area">
+    <div class="conten container mx-auto text-center py-8 px-4 print-area">
         <h2 class="text-2xl font-bold mb-4 text-black"><i class="fas fa-receipt text-[#4A7C59] mr-1"></i> Resit</h2>
         <div class="bg-white shadow-md rounded-lg p-6 max-w-[700px] mx-auto ">
             <div class="text-left mb-4">

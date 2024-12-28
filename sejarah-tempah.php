@@ -42,16 +42,10 @@ $laksql = mysqli_query($condb, $sql);
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .footerkaki {
-            padding: 2%;
-            display: grid;
-            background-color: #FAF3DD;
-            grid-template-columns: repeat(3, 1fr);
-            justify-items: center;
-        }
-
         @media (max-width: 768px) {
-            .nav a span {
+
+            .nav a span,
+            .goMenu a span {
                 display: none;
             }
 
@@ -129,11 +123,18 @@ $laksql = mysqli_query($condb, $sql);
             width: 100%;
         }
 
-        .add-to-cart:hover,
         #scrollToTopBtn:hover {
             background-color: #68B0AB;
             color: #fff;
             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
     </style>
 </head>
@@ -155,7 +156,7 @@ $laksql = mysqli_query($condb, $sql);
                 <a class="text-black font-medium active:text-[#4A7C59]" href="menu.php">
                     <i class="fas fa-home text-[#4A7C59] mr-1"></i>
                     <span>MENU</span>
-                    </a>
+                </a>
                 <a class="text-black font-medium" href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART <?= $bil ?></span>
@@ -183,45 +184,47 @@ $laksql = mysqli_query($condb, $sql);
         </div>
     </div>
 
-    <div class="container mx-auto text-center py-8 px-4">
-        <h2 class="text-2xl font-bold mb-6 relative inline-block text-center w-full text-black">
-        <i class="fas fa-history text-[#4A7C59] mr-1"></i> Sejarah Tempahan
-                
-            </h2> 
-        <div class="overflow-x-auto">
-            <?php if (mysqli_num_rows($laksql) > 0): ?>
-                <table class="table-auto mx-auto border-collapse border-2 border-[#4A7C59] border-separate shadow-lg w-full sm:w-auto rounded-lg">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tl-lg"><i class="fas fa-calendar-alt"></i> Tarikh</th>
-                            <th class="px-4 py-2 bg-[#4A7C59] text-white"><i class="fas fa-money-bill-wave"></i> Jumlah Bayaran (RM)</th>
-                            <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tr-lg"><i class="fas fa-receipt"></i> Semak Resit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($m = mysqli_fetch_array($laksql)):
-                            $tarikh = date_create( $m['tarikh']);
-                        ?>
-                            <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
-                                <td class="border-0 shadow-lg  px-4 py-2 	">
-                                    <i class="fas fa-calendar-day"></i> Tarikh: <?php echo date_format($tarikh, "d/m/Y") ?> <br>
-                                    <i class="fas fa-clock"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
-                                </td>
-                                <td class="border-0 shadow-lg  px-4 py-2 text-center">RM <?= number_format($m['jum'], 2) ?> </td>
-                                <td class="border-0 shadow-lg  px-4 py-2 text-center 	">
-                                    <?php $masa = date_format($tarikh, "Y-m-d H:i:s"); ?>
-                                    <button onclick="location.href='resit.php?tarikh=<?= $masa ?>';" class="SemakResit bg-[#4A7C59]  hover:bg-[#68B0AB] text-white px-4 py-2 rounded-md"><i class="fas fa-search"></i> Semak</button>
-                                </td>
+    <div class="content">
+        <div class="container mx-auto text-center py-8 px-4">
+            <h2 class="text-2xl font-bold mb-6 relative inline-block text-center w-full text-black">
+                <i class="fas fa-history text-[#4A7C59] mr-1"></i> Sejarah Tempahan
+
+            </h2>
+            <div class="overflow-x-auto">
+                <?php if (mysqli_num_rows($laksql) > 0): ?>
+                    <table class="table-auto mx-auto border-collapse border-2 border-[#4A7C59] border-separate shadow-lg w-full sm:w-auto rounded-lg">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tl-lg"><i class="fas fa-calendar-alt"></i> Tarikh</th>
+                                <th class="px-4 py-2 bg-[#4A7C59] text-white"><i class="fas fa-money-bill-wave"></i> Jumlah Bayaran (RM)</th>
+                                <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tr-lg"><i class="fas fa-receipt"></i> Semak Resit</th>
                             </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <div class="overflow-x-auto">
-                    <p class="text-2xl text-white bg-[#A3B18A] p-4 rounded-lg shadow-lg inline-block">
-                        <i class="fas fa-exclamation-circle"></i> Tiada tempahan atau kosong
-                    </p>
-                </div> <?php endif; ?>
+                        </thead>
+                        <tbody>
+                            <?php while ($m = mysqli_fetch_array($laksql)):
+                                $tarikh = date_create($m['tarikh']);
+                            ?>
+                                <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
+                                    <td class="border-0 shadow-lg  px-4 py-2 	">
+                                        <i class="fas fa-calendar-day"></i> Tarikh: <?php echo date_format($tarikh, "d/m/Y") ?> <br>
+                                        <i class="fas fa-clock"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
+                                    </td>
+                                    <td class="border-0 shadow-lg  px-4 py-2 text-center">RM <?= number_format($m['jum'], 2) ?> </td>
+                                    <td class="border-0 shadow-lg  px-4 py-2 text-center 	">
+                                        <?php $masa = date_format($tarikh, "Y-m-d H:i:s"); ?>
+                                        <button onclick="location.href='resit.php?tarikh=<?= $masa ?>';" class="SemakResit bg-[#4A7C59]  hover:bg-[#68B0AB] text-white px-4 py-2 rounded-md"><i class="fas fa-search"></i> Semak</button>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="overflow-x-auto">
+                        <p class="text-2xl text-white bg-[#A3B18A] p-4 rounded-lg shadow-lg inline-block">
+                            <i class="fas fa-exclamation-circle"></i> Tiada tempahan atau kosong
+                        </p>
+                    </div> <?php endif; ?>
+            </div>
         </div>
     </div>
     <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
@@ -266,6 +269,29 @@ $laksql = mysqli_query($condb, $sql);
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
+
+        function adjustFooter() {
+            const content = document.querySelector('.content');
+            const footer = document.querySelector('footer');
+            const windowHeight = window.innerHeight;
+            const contentHeight = content.offsetHeight;
+            const footerHeight = footer.offsetHeight;
+
+            // Kira margin top footer supaya sentiasa berada di bawah
+            const marginTop = windowHeight - (contentHeight + footerHeight);
+
+            if (marginTop > 0) {
+                footer.style.marginTop = marginTop + 'px';
+            } else {
+                footer.style.marginTop = '0px';
+            }
+        }
+
+        // Panggil fungsi setiap kali halaman dimuat
+        window.onload = adjustFooter;
+
+        // Panggil fungsi semasa resize window
+        window.onresize = adjustFooter;
     </script>
 </body>
 

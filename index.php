@@ -20,7 +20,9 @@
         }
 
         @media (max-width: 768px) {
-            .nav a span {
+
+            .nav a span,
+            .goMenu a span {
                 display: none;
             }
 
