@@ -1,9 +1,6 @@
 <?php
-$lifetime = 60 * 60 * 24 * 30;  // 30 days
-session_set_cookie_params($lifetime);
-session_start();
+include('../function/autoKeluarAdmin.php');
 include('../function/connection.php');
-include('../function/admin-only.php');
 ?>
 
 <html lang="en">

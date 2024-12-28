@@ -1,14 +1,5 @@
 <?php
-// Memulai sesi untuk menyimpan data pengguna seperti cart
-$lifetime = 60 * 60 * 24 * 30;  // 30 days
-session_set_cookie_params($lifetime);
-session_start();
-if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])): ?>
-    <script>
-        window.location.href = 'index.php';
-    </script>
-<?php endif;
-
+include("function/autoKeluar.php");
 
 if (isset($_SESSION['orders'])) {
     $bil = "<span style='color:red';'>[" . count($_SESSION['orders']) . "]</span>";

@@ -1,9 +1,6 @@
 <?php 
-$lifetime = 60 * 60 * 24 * 30;  // 30 days
-session_set_cookie_params($lifetime);
-session_start();
+include('../function/autoKeluarAdmin.php');
 include('../function/header.php');
-include('../function/kawalan-admin.php');
 ?>
  
 <!-- Tajuk Laman -->

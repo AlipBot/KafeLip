@@ -1,11 +1,7 @@
 <?php
-$lifetime = 60 * 60 * 24 * 30;  // 30 days
-session_set_cookie_params($lifetime);
-session_start();
-
+include('../function/autoKeluarAdmin.php');
 # Memanggil fail header dan fail kawalan-admin.php
 include('../function/header.php');
-include('../function/admin-only.php');
 include('../function/connection.php');
 
 # Menyemak kewujudan data GET. Jika data GET empty, buka fail pengguna-senarai.php
