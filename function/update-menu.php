@@ -17,6 +17,21 @@ if(!empty($_POST)){
         $lokasi             =   $_FILES['gambar']['tmp_name'];
         $tambahan = $tambahan."gambar = '".$nama_fail ."',";
         copy($lokasi,"../menu-images/".$nama_fail);
+        
+        // Get the filename from the database
+        $sql = "SELECT gambar FROM makanan WHERE kod_makanan = '$id_menu'";
+        $result = mysqli_query($condb, $sql);
+    
+        if ($row = mysqli_fetch_assoc($result)) {
+            $filename = $row['gambar'];
+            $filepath = "../menu-images/" . $filename;
+    
+            // Check if the file exists and delete it
+            if (file_exists($filepath)) {
+                unlink($filepath);  // Delete the file
+            }
+        }
+
     } 
 
     # Data validation : had atas

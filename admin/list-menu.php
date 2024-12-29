@@ -407,7 +407,7 @@ if (isset($_POST['upload'])) {
     <div id="DaftarMenu" class="DaftarMenu">
         <div class="DaftarMenu-content">
             <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
-            <h2 class="text-2xl font-bold mb-4">Kemaskini Menu Baru</h2>
+            <h2 class="text-2xl font-bold mb-4">Pendaftaran Menu Baru</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
@@ -433,7 +433,7 @@ if (isset($_POST['upload'])) {
         <div id="KemaskiniMenu" class="KemaskiniMenu">
         <div class="KemaskiniMenu-content">
             <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
-            <h2 class="text-2xl font-bold mb-4">Pendaftaran Menu Baru</h2>
+            <h2 class="text-2xl font-bold mb-4">Kemaskini Menu Baru</h2>
             <form action="../function/update-menu.php" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
