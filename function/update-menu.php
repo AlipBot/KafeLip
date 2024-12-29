@@ -6,7 +6,7 @@ include('connection.php');
 if(!empty($_POST)){
 
     # Mengambil data daripada borang (form)
-    $id_menu        =   $_GET['id_menu'];
+    $id_menu        =   $_POST['id_menu'];
     $nama_menu      =   $_POST['nama_menu'];
     $harga          =   $_POST['harga'];
     $tambahan       =   '';

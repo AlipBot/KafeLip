@@ -9,16 +9,13 @@ if (empty($_GET)) {
 }
 
 # Mendapatkan data daripada pangkalan data
-$sql        =   "select* from pelanggan where notel = '" . $_GET['notel'] . "'";
-$laksana    =   mysqli_query($condb, $sql);
-$m          =   mysqli_fetch_array($laksana);
-
+$sql_menu       =   "select* from makanan where kod_makanan = '" . $_GET['kod_menu'] . "'";
+$lak_menu       =   mysqli_query($condb, $sql_menu);
+$m              =   mysqli_fetch_array($lak_menu);
 
 echo json_encode([
-    'nama' => $m['nama'],
-    'notel' => $m['notel'],
-    'password' => $m['password'],
-    'tahap' => $m['tahap']
+    'nama_makanan' => $m['nama_makanan'],
+    'harga' => $m['harga']
 ]);
 
 ?>

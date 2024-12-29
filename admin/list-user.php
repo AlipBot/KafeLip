@@ -291,7 +291,7 @@ if (isset($_POST['upload'])) {
 
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
-                                                    <button onclick="openModal('<?= $m['notel'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
+                                                    <button onclick="updateUser('<?= $m['notel'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
                                                     <button onclick="if(confirm('Anda pasti anda ingin memadam pengguna <?= $m['nama'] ?>  ini?')) location.href='../function/del-user.php?notel=<?php echo urlencode($m['notel']); ?>'" class="bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
@@ -371,7 +371,7 @@ if (isset($_POST['upload'])) {
 
 
     <script>
-        function openModal(notel) {
+        function updateUser(notel) {
             
             fetch(`../api/get-user.php?notel=${notel}`)
                 .then(response => response.json())

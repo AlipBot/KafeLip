@@ -137,7 +137,6 @@ if (isset($_POST['upload'])) {
             $popup_message = "import fail Data Selesai. Sebanyak $bil data telah disimpan. KEMASKINI MENU DAN UPLOAD GAMBAR";
             $popup_visible = true;
         }
-       
     } else {
         $popup_message = "hanya fail berformat txt sahaja dibenarkan";
         $popup_visible = true;
@@ -196,6 +195,7 @@ if (isset($_POST['upload'])) {
         }
 
         .DaftarMenu,
+        .KemaskiniMenu,
         .menu {
             display: none;
             position: fixed;
@@ -207,8 +207,9 @@ if (isset($_POST['upload'])) {
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
         }
-         
+
         .DaftarMenu-content,
+        .KemaskiniMenu-content,
         .menu-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -353,7 +354,7 @@ if (isset($_POST['upload'])) {
                                             <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?> </td>
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
-                                                    <button onclick="location.href='tukar-menu.php?id_menu=<?php echo urlencode($m['kod_makanan']); ?>'" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
+                                                    <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
                                                     <button onclick="if(confirm('Anda pasti anda ingin memadam data ini?')) location.href='../function/del-menu.php?id_menu=<?php echo urlencode($m['kod_makanan']); ?>'" class="bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
@@ -402,18 +403,50 @@ if (isset($_POST['upload'])) {
         </div>
     </div>
 
-        <!-- Daftar Menu -->
-        <div id="DaftarMenu" class="DaftarMenu">
+    <!-- Daftar Menu -->
+    <div id="DaftarMenu" class="DaftarMenu">
         <div class="DaftarMenu-content">
             <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
-            <h2 class="text-2xl font-bold mb-4">Pendaftaran Menu Baru</h2>
+            <h2 class="text-2xl font-bold mb-4">Kemaskini Menu Baru</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label  class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
+                    <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     ID Menu:<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
                     Nama Menu: <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3" required>
-                    Harga <input required type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
-                    Gambar <input required type='file' name='gambar' class="border rounded p-2 w-full" required>
+                    Harga <input type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    <div class="flex justify-center" >
+                        <img id="preview" style="max-width: 300px; display: none;">
+                    </div>
+                    Gambar
+                    <input type="file" id="gambar" name="gambar" class="border rounded p-2 w-full" accept="image/*" onchange="previewGambar(event)" required>
+                    <!-- Tempat untuk paparkan preview gambar -->
+                    
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <!-- Kemaskini Menu -->
+        <div id="KemaskiniMenu" class="KemaskiniMenu">
+        <div class="KemaskiniMenu-content">
+            <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Pendaftaran Menu Baru</h2>
+            <form action="../function/update-menu.php" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
+                    <input type="hidden" name="id_menu" id="id_menu">
+                    Nama Menu: <input id="nama_makanan" type="text" name='nama_menu'  class="w-full border p-2 mb-3" required>
+                    Harga <input id="harga_makanan" type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    <div class="flex justify-center" >
+                        <img id="preview_kemas" style="max-width: 300px; display: none;">
+                    </div>
+                    Gambar
+                    <input type="file" id="gambar" name="gambar" class="border rounded p-2 w-full" accept="image/*" onchange="previewGambarKemas(event)" >
+                    <!-- Tempat untuk paparkan preview gambar -->
+                    
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
@@ -435,6 +468,34 @@ if (isset($_POST['upload'])) {
             mainContent.classList.toggle('content-expanded');
             mainContent.classList.toggle('content-collapsed');
         });
+
+        function previewGambar(event) {
+            var input = event.target;
+            var reader = new FileReader();
+
+            reader.onload = function() {
+                var imgElement = document.getElementById('preview');
+                imgElement.src = reader.result;
+                imgElement.style.display = 'block';
+            }
+
+            reader.readAsDataURL(input.files[0]); // Baca fail sebagai URL
+        }
+
+        function previewGambarKemas(event) {
+            var input = event.target;
+            var reader = new FileReader();
+
+            reader.onload = function() {
+                var imgElement = document.getElementById('preview_kemas');
+                imgElement.src = reader.result;
+                imgElement.style.display = 'block';
+            }
+
+            reader.readAsDataURL(input.files[0]); // Baca fail sebagai URL
+        }
+
+
 
         function updateDateTime() {
             const now = new Date();
@@ -458,21 +519,39 @@ if (isset($_POST['upload'])) {
         // menu functionality
         const menu = document.getElementById("uploadmenu");
         const Daftarmenu = document.getElementById("DaftarMenu");
+        const Kemaskinimenu = document.getElementById("KemaskiniMenu");
         const btnDaftarmenu = document.getElementById("DaftarMenuButton");
+        const btnUpdateButton = document.getElementById("KemaskiniMenuButton");
         const btn = document.getElementById("uploadButton");
         const notif = document.getElementById("notif");
 
+        function updateMenu(kod_menu) {
+            fetch(`../api/get-menu.php?kod_menu=${kod_menu}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('id_menu').value = kod_menu;
+                    document.getElementById('nama_makanan').value = data.nama_makanan;
+                    document.getElementById('harga_makanan').value = data.harga;
+                    Kemaskinimenu.style.display = "block";
+                });
+            
+        }
+        
         btn.onclick = function() {
             menu.style.display = "block";
 
         }
 
-        btnDaftarmenu.onclick = function (){
+        btnDaftarmenu.onclick = function() {
             Daftarmenu.style.display = "block";
         }
 
 
         window.onclick = function(event) {
+            if (event.target == Kemaskinimenu) {
+                window.location.href = window.location.href;
+                Kemaskinimenu.style.display = "none";
+            }
             if (event.target == Daftarmenu) {
                 window.location.href = window.location.href;
                 Daftarmenu.style.display = "none";
