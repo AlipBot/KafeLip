@@ -397,8 +397,6 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         </h2>
     </div>
     <div class="bg-[#A1CCA5] overflow-auto	m-8 rounded-2xl p-6 shadow-lg items-center">
-
-
         <div class="List-Makanan"></div>
     </div>
 

@@ -27,6 +27,62 @@ $result = mysqli_stmt_get_result($stmt);
 $popup_message = "";
 $popup_visible = false;
 
+if (isset($_POST['DaftarMenu'])) {
+
+    # Mengambil data daripada borang (form)
+    $kod_makanan      =   $_POST['kod_makanan'];
+    $nama_makanan     =   $_POST['nama_makanan'];
+    $harga          =   $_POST['harga'];
+
+    # Mengambil data gambar
+    $nama_fail          =   basename($_FILES['gambar']['name']);
+    $lokasi             =   $_FILES['gambar']['tmp_name'];
+
+    # Data validation : had atas
+    if (!is_numeric($harga) and $harga > 0) {
+        die("<script>
+                alert('Ralat Harga');
+                location.href='list-menu.php';
+            </script>");
+    }
+    # Semak id_menu dah wujud atau belum
+    $sql_semak  =   "select kod_makanan from makanan where kod_makanan = '$kod_makanan' ";
+    $laksana_semak  =   mysqli_query($condb, $sql_semak);
+    if (mysqli_num_rows($laksana_semak) == 1) {
+        die("<script>
+            alert('id_menu telah digunakan. Sila guna kod_makanan yang lain');
+            location.href='list-menu.php';
+        </script>");
+    }
+
+    # proses menyimpan data
+    $sql_simpan =   "insert into makanan set
+                    kod_makanan     = '$kod_makanan',
+                    nama_makanan   = '$nama_makanan',
+                    harga       = '$harga',
+                    gambar      = '$nama_fail'
+                ";
+    $laksana    =   mysqli_query($condb, $sql_simpan);
+
+    # Pengujian proses menyimpan data 
+    if ($laksana) {
+        #jika berjaya
+        echo "  <script>
+            alert('Pendaftaran Berjaya');
+            location.href='list-menu.php';
+            </script>";
+
+        # muat naik gambar
+        copy($lokasi, "../menu-images/" . $nama_fail);
+    } else {
+        #jika gagal papar punca error
+        echo "<p style='color:red;'>Pendaftaran Gagal</p>";
+        echo $sql_simpan . mysqli_error($condb);
+    }
+}
+
+
+
 if (isset($_POST['upload'])) {
 
     # mengambil nama sementara fail
@@ -139,6 +195,7 @@ if (isset($_POST['upload'])) {
             border-radius: 8px;
         }
 
+        .DaftarMenu,
         .menu {
             display: none;
             position: fixed;
@@ -150,7 +207,8 @@ if (isset($_POST['upload'])) {
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
         }
-
+         
+        .DaftarMenu-content,
         .menu-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -183,7 +241,7 @@ if (isset($_POST['upload'])) {
     <?php if ($popup_visible) : ?>
         <div id="notif" class="notif" style="display:block;">
             <div class="notif-content">
-                <span class="close">&times;</span>
+                <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
                 <p><?php echo htmlspecialchars($popup_message); ?></p>
             </div>
         </div>
@@ -263,9 +321,9 @@ if (isset($_POST['upload'])) {
                                 </button>
                             </form>
                             <div class="flex space-x-2">
-                                <a href="add-menu.php" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
+                                <button id="DaftarMenuButton" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Daftar Menu
-                                </a>
+                                </button>
                                 <button id="uploadButton" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Upload Menu
                                 </button>
@@ -292,7 +350,7 @@ if (isset($_POST['upload'])) {
                                                 <img src='../menu-images/<?php echo htmlspecialchars($m['gambar']); ?>' alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>' width='60%'>
                                             </td>
                                             <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['nama_makanan']); ?></td>
-                                            <td class='px-4 py-2 text-center'>RM <?php echo htmlspecialchars($m['harga']); ?></td>
+                                            <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?> </td>
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
                                                     <button onclick="location.href='tukar-menu.php?id_menu=<?php echo urlencode($m['kod_makanan']); ?>'" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
@@ -330,7 +388,7 @@ if (isset($_POST['upload'])) {
     <!-- menu -->
     <div id="uploadmenu" class="menu">
         <div class="menu-content">
-            <span class="close">&times;</span>
+            <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Upload Menu</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
@@ -339,6 +397,26 @@ if (isset($_POST['upload'])) {
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='upload' class="bg-blue-800 text-white p-2 rounded">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <!-- Daftar Menu -->
+        <div id="DaftarMenu" class="DaftarMenu">
+        <div class="DaftarMenu-content">
+            <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Pendaftaran Menu Baru</h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label  class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
+                    ID Menu:<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
+                    Nama Menu: <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3" required>
+                    Harga <input required type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    Gambar <input required type='file' name='gambar' class="border rounded p-2 w-full" required>
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
                 </div>
             </form>
         </div>
@@ -379,21 +457,26 @@ if (isset($_POST['upload'])) {
 
         // menu functionality
         const menu = document.getElementById("uploadmenu");
+        const Daftarmenu = document.getElementById("DaftarMenu");
+        const btnDaftarmenu = document.getElementById("DaftarMenuButton");
         const btn = document.getElementById("uploadButton");
-        const span = document.getElementsByClassName("close")[0];
         const notif = document.getElementById("notif");
 
         btn.onclick = function() {
             menu.style.display = "block";
+
         }
 
-        span.onclick = function() {
-            window.location.href = window.location.href;
-            notif.style.display = "none";
-            menu.style.display = "none";
+        btnDaftarmenu.onclick = function (){
+            Daftarmenu.style.display = "block";
         }
+
 
         window.onclick = function(event) {
+            if (event.target == Daftarmenu) {
+                window.location.href = window.location.href;
+                Daftarmenu.style.display = "none";
+            }
             if (event.target == menu) {
                 window.location.href = window.location.href;
                 menu.style.display = "none";

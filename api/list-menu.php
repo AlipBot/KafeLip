@@ -18,7 +18,7 @@ if (mysqli_num_rows($result) > 0) {
             <img src="menu-images/<?= htmlspecialchars($m['gambar']) ?>" />
             <div>
                 <h2><?= htmlspecialchars($m['nama_makanan']) ?></h2>
-                <p class="price">RM <?= htmlspecialchars($m['harga']) ?></p>
+                <p class="price">RM <?= $m['harga'] ?></p>
             </div>
             <button class="add-to-cart" onclick="location.href='function/add-cart.php?page=menu&id_menu=<?= htmlspecialchars($m['kod_makanan']) ?>';">
                 Add to Cart

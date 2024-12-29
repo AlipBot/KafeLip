@@ -20,13 +20,10 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
     # dapatkan bilangan setiap elemen 
     $bilangan = array_count_values($_SESSION['orders']);
-
     # Filter elemen yang muncul lebih dari satu kali
     $sama = array_filter($bilangan, function ($count) {
         return $count >= 1;
     });
-
-
 
 ?>
     <html>
