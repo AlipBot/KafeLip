@@ -5,14 +5,29 @@ include('../function/autoKeluarAdmin.php');
 #memanggil fail 
 include('../function/connection.php');
 
-$tambahan = "";
-if (!empty($_GET['nama'])) {
-    $tambahan = " where pelanggan.nama like '%" . $_GET['nama'] . "%'";
+
+$sql = "SELECT * FROM pelanggan";
+
+// Logik untuk carian nama
+if (isset($_GET['nama']) && !empty($_GET['nama'])) {
+    $nama = $_GET['nama'];
+    $sql .= " WHERE nama LIKE '%$nama%'";
+}
+
+// Logik untuk filter tahap
+if (isset($_GET['tahap']) && !empty($_GET['tahap'])) {
+    $tahap = $_GET['tahap'];
+    
+    // Jika carian nama sudah ditetapkan, tambahkan AND, jika tidak WHERE
+    if (strpos($sql, 'WHERE') !== false) {
+        $sql .= " AND tahap = '$tahap'";
+    } else {
+        $sql .= " WHERE tahap = '$tahap'";
+    }
 }
 
 # Mendapatkan data pengguna dari pangkalan data 
-$arahan_papar = "select* from pelanggan $tambahan ";
-$laksana = mysqli_query($condb, $arahan_papar);
+$laksana = mysqli_query($condb,  $sql);
 
 
 $popup_message = "";
@@ -51,8 +66,6 @@ if (isset($_POST['upload'])) {
             $popup_message = "Import fail Data Selesai. Sebanyak $bil data telah disimpan";
             $popup_visible = true;
         }
-
-
     } else {
         $popup_message = "Hanya fail berformat txt sahaja dibenarkan";
         $popup_visible = true;
@@ -102,8 +115,9 @@ if (isset($_POST['upload'])) {
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0, 0, 0, 0.4);
         }
+
         .notif-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -154,7 +168,7 @@ if (isset($_POST['upload'])) {
 
 <body class="font-roboto bg-gray-100">
 
-<?php if ($popup_visible) : ?>
+    <?php if ($popup_visible) : ?>
         <div id="notif" class="notif" style="display:block;">
             <div class="notif-content">
                 <span class="close">&times;</span>
@@ -230,6 +244,11 @@ if (isset($_POST['upload'])) {
 
                             <form action="list-user.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama" placeholder="Carian Nama pengguna" value="<?= $_GET['nama'] ?>" class="border rounded p-2 w-2/5">
+                                <select name="tahap" class="border p-2 rounded ">
+                                    <option value="">Semua</option>
+                                    <option value="ADMIN" <?php if (isset($_GET['tahap']) && $_GET['tahap'] == 'ADMIN') echo 'selected'; ?>>Admin</option>
+                                    <option value="PELANGGAN" <?php if (isset($_GET['tahap']) && $_GET['tahap'] == 'PELANGGAN') echo 'selected'; ?>>Pelanggan</option>
+                                </select>
                                 <button type="submit" class="bg-blue-800 text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
@@ -398,9 +417,6 @@ if (isset($_POST['upload'])) {
                 notif.style.display = "none";
             }
         }
-
-
-
     </script>
 
 </body>
