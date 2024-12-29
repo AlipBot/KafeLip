@@ -15,14 +15,14 @@ if (isset($_GET['nama']) && !empty($_GET['nama'])) {
 }
 
 // Logik untuk filter tahap
-if (isset($_GET['tahap']) && !empty($_GET['tahap'])) {
-    $tahap = $_GET['tahap'];
-    
+if (isset($_GET['tapis_tahap']) && !empty($_GET['tapis_tahap'])) {
+    $tapis_tahap= $_GET['tapis_tahap'];
+
     // Jika carian nama sudah ditetapkan, tambahkan AND, jika tidak WHERE
     if (strpos($sql, 'WHERE') !== false) {
-        $sql .= " AND tahap = '$tahap'";
+        $sql .= " AND tahap = '$tapis_tahap'";
     } else {
-        $sql .= " WHERE tahap = '$tahap'";
+        $sql .= " WHERE tahap = '$tapis_tahap'";
     }
 }
 
@@ -244,10 +244,10 @@ if (isset($_POST['upload'])) {
 
                             <form action="list-user.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama" placeholder="Carian Nama pengguna" value="<?= $_GET['nama'] ?>" class="border rounded p-2 w-2/5">
-                                <select name="tahap" class="border p-2 rounded ">
+                                <select name="tapis_tahap" class="border p-2 rounded ">
                                     <option value="">Semua</option>
-                                    <option value="ADMIN" <?php if (isset($_GET['tahap']) && $_GET['tahap'] == 'ADMIN') echo 'selected'; ?>>Admin</option>
-                                    <option value="PELANGGAN" <?php if (isset($_GET['tahap']) && $_GET['tahap'] == 'PELANGGAN') echo 'selected'; ?>>Pelanggan</option>
+                                    <option value="ADMIN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'ADMIN') echo 'selected'; ?>>Admin</option>
+                                    <option value="PELANGGAN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'PELANGGAN') echo 'selected'; ?>>Pelanggan</option>
                                 </select>
                                 <button type="submit" class="bg-blue-800 text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
@@ -291,7 +291,7 @@ if (isset($_POST['upload'])) {
 
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
-                                                    <button onclick="location.href='tukar-user.php?notel=<?php echo urlencode($m['notel']); ?>'" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
+                                                    <button onclick="openModal('<?= $m['notel'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
                                                     <button onclick="if(confirm('Anda pasti anda ingin memadam pengguna <?= $m['nama'] ?>  ini?')) location.href='../function/del-user.php?notel=<?php echo urlencode($m['notel']); ?>'" class="bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
@@ -340,8 +340,55 @@ if (isset($_POST['upload'])) {
         </div>
     </div>
 
+    <!-- Popup Modal -->
+    <div id="editModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-5 rounded-lg w-1/3">
+            <h3 class="text-lg font-bold">Kemaskini Pengguna</h3>
+            <form id="updateForm" action="../function/update-user.php" method="POST">
+                <input type="hidden" name="notel_lama" id="notel_lama">
+                Nama:
+                <input type="text" name="nama" id="nama" class="w-full border p-2 mb-3" required>
+
+                No Telefon:
+                <input type="text" name="notel" id="notel" class="w-full border p-2 mb-3" required>
+
+                Kata Laluan:
+                <input type="text" name="katalaluan" id="katalaluan" class="w-full border p-2 mb-3" required>
+
+                Tahap:
+                <select name="tahap" id="tahap" class="w-full border p-2 mb-3">
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="PELANGGAN">PELANGGAN</option>
+                </select>
+
+                <div class="flex justify-end">
+                    <button type="button" onclick="closeModal()" class="bg-gray-500 text-white p-2 mr-2">Batal</button>
+                    <button type="submit" class="bg-blue-500 text-white p-2">Kemaskini</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <script>
+        function openModal(notel) {
+            
+            fetch(`../api/get-user.php?notel=${notel}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('nama').value = data.nama;
+                    document.getElementById('notel').value = data.notel;
+                    document.getElementById('katalaluan').value = data.password;
+                    document.getElementById('tahap').value = data.tahap;
+                    document.getElementById('notel_lama').value = notel;
+                    document.getElementById('editModal').classList.remove('hidden');
+                });
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
         function togglePasswordVisibility(notel) {
             const passwordField = document.getElementById(`password-${notel}`);
             const hiddenPasswordField = document.getElementById(`hidden-password-${notel}`);

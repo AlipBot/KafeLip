@@ -1,10 +1,6 @@
 <?php
-$lifetime = 60 * 60 * 24 * 30;  // 30 days
-session_set_cookie_params($lifetime);
-session_start();
+include('autoKeluarAdmin.php');
 
-# memanggil fail kawalan-admin.php
-include('admin-only.php');
 
 # menyemak kewujudan data POST
 if(!empty($_POST))
@@ -26,7 +22,7 @@ if(!empty($_POST))
     password      =   '".$_POST['katalaluan']."' ,
     tahap           =   '".$_POST['tahap']."'
     where       
-    notel           =   '".$_GET['notel_lama']."' ";
+    notel           =   '".$_POST['notel_lama']."' ";
 
     # melaksana dan menyemak proses kemaskini
     if(mysqli_query($condb,$arahan))

@@ -1,10 +1,7 @@
 <?php
-$lifetime = 60 * 60 * 24 * 30;  // 30 days
-session_set_cookie_params($lifetime);
-session_start();
 
 # memanggil fail kawalan-admin.php
-include('admin-only.php');
+include('autoKeluarAdmin.php');
 
 # menyemak kewujudan data GET notel pengguna
 if(!empty($_GET))

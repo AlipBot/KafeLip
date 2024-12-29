@@ -1,7 +1,6 @@
 <?php
-session_start();
 include('../function/connection.php');
-include('../function/admin-only.php');
+include('../function/autoKeluarAdmin.php');
 
 
 // Jumlah Tempah Hari Ini
