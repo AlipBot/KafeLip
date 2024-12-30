@@ -1,3 +1,4 @@
+<html lang="en"></html>
 <?php
 include('../function/autoKeluarAdmin.php');
 include('../function/connection.php');
@@ -27,6 +28,9 @@ $result = mysqli_stmt_get_result($stmt);
 $popup_message = "";
 $popup_visible = false;
 
+// Tambah pembolehubah untuk jenis notifikasi
+$notification_type = "";  // 'success', 'error', atau 'warning'
+
 if (isset($_POST['DaftarMenu'])) {
 
     # Mengambil data daripada borang (form)
@@ -35,24 +39,29 @@ if (isset($_POST['DaftarMenu'])) {
     $harga          =   $_POST['harga'];
 
     # Mengambil data gambar
-    $nama_fail          =   basename($_FILES['gambar']['name']);
-    $lokasi             =   $_FILES['gambar']['tmp_name'];
+    $file_extension    =   pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
+    # Buang jarak dan tukar kepada huruf kecil
+    $nama_fail_baru    =   strtolower(str_replace(' ', '', $nama_makanan)) . '.' . $file_extension;
+    $lokasi           =   $_FILES['gambar']['tmp_name'];
 
     # Data validation : had atas
     if (!is_numeric($harga) and $harga > 0) {
-        die("<script>
-                alert('Ralat Harga');
-                location.href='list-menu.php';
-            </script>");
+        $popup_message = "Ralat: Sila masukkan harga yang sah";
+        $notification_type = "error";
+        $popup_visible = true;
+        header("Location: list-menu.php");
+        exit();
     }
     # Semak id_menu dah wujud atau belum
     $sql_semak  =   "select kod_makanan from makanan where kod_makanan = '$kod_makanan' ";
     $laksana_semak  =   mysqli_query($condb, $sql_semak);
     if (mysqli_num_rows($laksana_semak) == 1) {
-        die("<script>
-            alert('id_menu telah digunakan. Sila guna kod_makanan yang lain');
-            location.href='list-menu.php';
-        </script>");
+        $popup_message = "ID Menu telah digunakan. Sila guna kod makanan yang lain";
+        $notification_type = "error";
+        $popup_visible = true;
+        // Gunakan header untuk redirect selepas set session
+        header("Location: list-menu.php");
+        exit();
     }
 
     # proses menyimpan data
@@ -60,24 +69,24 @@ if (isset($_POST['DaftarMenu'])) {
                     kod_makanan     = '$kod_makanan',
                     nama_makanan   = '$nama_makanan',
                     harga       = '$harga',
-                    gambar      = '$nama_fail'
+                    gambar      = '$nama_fail_baru'
                 ";
     $laksana    =   mysqli_query($condb, $sql_simpan);
 
     # Pengujian proses menyimpan data 
     if ($laksana) {
         #jika berjaya
-        echo "  <script>
-            alert('Pendaftaran Berjaya');
-            location.href='list-menu.php';
-            </script>";
+        $popup_message = "Pendaftaran Berjaya";
+        $notification_type = "success";
+        $popup_visible = true;
 
-        # muat naik gambar
-        copy($lokasi, "../menu-images/" . $nama_fail);
+        # muat naik gambar dengan nama baru
+        copy($lokasi, "../menu-images/" . $nama_fail_baru);
     } else {
         #jika gagal papar punca error
-        echo "<p style='color:red;'>Pendaftaran Gagal</p>";
-        echo $sql_simpan . mysqli_error($condb);
+        $popup_message = "Pendaftaran Gagal: " . mysqli_error($condb);
+        $notification_type = "error";
+        $popup_visible = true;
     }
 }
 
@@ -113,6 +122,7 @@ if (isset($_POST['upload'])) {
             $pilih = mysqli_query($condb, "select* from makanan where kod_makanan='" . $id_menu . "'");
             if (mysqli_num_rows($pilih) == 1) {
                 $popup_message = "kod_makanan $id_menu di fail txt telah ada di pangkalan data.TUKAR id_menu DALAM FAIL TXT";
+                $notification_type = "error";
                 $popup_visible = true;
             } else {
                 # arahan SQL untuk menyimpan data
@@ -131,14 +141,17 @@ if (isset($_POST['upload'])) {
         fclose($fail_data);
 
         if (mysqli_num_rows($pilih) == 1) {
-            $popup_message = "kod_makanan $id_menu di fail txt telah ada di pangkalan data.TUKAR id_menu DALAM FAIL TXT";
+            $popup_message = "kod_makanan $id_menu di fail txt telah ada di pangkalan data. TUKAR id_menu DALAM FAIL TXT";
+            $notification_type = "error";
             $popup_visible = true;
         } else {
-            $popup_message = "import fail Data Selesai. Sebanyak $bil data telah disimpan. KEMASKINI MENU DAN UPLOAD GAMBAR";
+            $popup_message = "Import fail Data Selesai. Sebanyak $bil data telah disimpan. KEMASKINI MENU DAN UPLOAD GAMBAR";
+            $notification_type = "success";
             $popup_visible = true;
         }
     } else {
         $popup_message = "hanya fail berformat txt sahaja dibenarkan";
+        $notification_type = "error";
         $popup_visible = true;
     }
 }
@@ -146,7 +159,7 @@ if (isset($_POST['upload'])) {
 ?>
 
 
-<html lang="en">
+
 
 <head>
     <meta charset="UTF-8">
@@ -233,6 +246,85 @@ if (isset($_POST['upload'])) {
             text-decoration: none;
             cursor: pointer;
         }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease-in-out;
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .toast.success {
+            background-color: #4ade80;
+            color: #064e3b;
+            border-left: 4px solid #059669;
+        }
+
+        .toast.error {
+            background-color: #f87171;
+            color: #7f1d1d;
+            border-left: 4px solid #dc2626;
+        }
+
+        .toast.warning {
+            background-color: #fbbf24;
+            color: #92400e;
+            border-left: 4px solid #d97706;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        .dropzone {
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dropzone.dragover {
+            background: #e1f5fe;
+            border-color: #2196f3;
+        }
+
+        .dropzone p {
+            margin: 0;
+            color: #666;
+        }
+
+        .dropzone i {
+            font-size: 2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
@@ -240,11 +332,20 @@ if (isset($_POST['upload'])) {
 
 
     <?php if ($popup_visible) : ?>
-        <div id="notif" class="notif" style="display:block;">
-            <div class="notif-content">
-                <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
-                <p><?php echo htmlspecialchars($popup_message); ?></p>
+        <div id="toast" class="toast <?php echo $notification_type; ?>">
+            <?php if ($notification_type == 'success') : ?>
+                <i class="fas fa-check-circle"></i>
+            <?php elseif ($notification_type == 'error') : ?>
+                <i class="fas fa-exclamation-circle"></i>
+            <?php else : ?>
+                <i class="fas fa-exclamation-triangle"></i>
+            <?php endif; ?>
+            <div class="toast-content">
+                <span><?php echo htmlspecialchars($popup_message); ?></span>
             </div>
+            <button class="close-toast">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
     <?php endif; ?>
 
@@ -394,7 +495,11 @@ if (isset($_POST['upload'])) {
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="file" class="block text-gray-700">Pilih fail txt:</label>
-                    <input type="file" id="file" name='data' accept=".txt" class="border rounded p-2 w-full">
+                    <div class="dropzone" id="uploadDropzone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Seret fail txt ke sini atau klik untuk memilih</p>
+                        <input type="file" id="file" name='data' accept=".txt" class="hidden">
+                    </div>
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='upload' class="bg-blue-800 text-white p-2 rounded">Submit</button>
@@ -414,13 +519,14 @@ if (isset($_POST['upload'])) {
                     ID Menu:<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
                     Nama Menu: <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3" required>
                     Harga <input type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
-                    <div class="flex justify-center" >
+                    <div class="dropzone" id="daftarDropzone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Seret gambar ke sini atau klik untuk memilih</p>
+                        <input type="file" id="gambar" name="gambar" class="hidden" accept="image/*" onchange="previewGambar(event)" required>
+                    </div>
+                    <div class="flex justify-center">
                         <img id="preview" style="max-width: 300px; display: none;">
                     </div>
-                    Gambar
-                    <input type="file" id="gambar" name="gambar" class="border rounded p-2 w-full" accept="image/*" onchange="previewGambar(event)" required>
-                    <!-- Tempat untuk paparkan preview gambar -->
-                    
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
@@ -440,13 +546,14 @@ if (isset($_POST['upload'])) {
                     <input type="hidden" name="id_menu" id="id_menu">
                     Nama Menu: <input id="nama_makanan" type="text" name='nama_menu'  class="w-full border p-2 mb-3" required>
                     Harga <input id="harga_makanan" type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
-                    <div class="flex justify-center" >
+                    <div class="dropzone" id="kemaskiniDropzone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Seret gambar ke sini atau klik untuk memilih</p>
+                        <input type="file" id="gambar" name="gambar" class="hidden" accept="image/*" onchange="previewGambarKemas(event)">
+                    </div>
+                    <div class="flex justify-center">
                         <img id="preview_kemas" style="max-width: 300px; display: none;">
                     </div>
-                    Gambar
-                    <input type="file" id="gambar" name="gambar" class="border rounded p-2 w-full" accept="image/*" onchange="previewGambarKemas(event)" >
-                    <!-- Tempat untuk paparkan preview gambar -->
-                    
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
@@ -565,6 +672,71 @@ if (isset($_POST['upload'])) {
                 notif.style.display = "none";
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                // Hilangkan toast selepas 5 saat
+                setTimeout(() => {
+                    toast.style.animation = 'fadeOut 0.3s ease-in-out forwards';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 5000);
+            }
+        });
+
+        // Fungsi untuk setup dropzone
+        function setupDropzone(dropzoneId, inputId, previewId = null) {
+            const dropzone = document.getElementById(dropzoneId);
+            const input = document.getElementById(inputId);
+
+            dropzone.addEventListener('click', () => input.click());
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, () => {
+                    dropzone.classList.add('dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, () => {
+                    dropzone.classList.remove('dragover');
+                });
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                input.files = files;
+                
+                // Jika ada preview dan fail adalah gambar
+                if (previewId && files[0].type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        const preview = document.getElementById(previewId);
+                        preview.src = reader.result;
+                        preview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+        }
+
+        // Setup semua dropzone apabila dokumen siap
+        document.addEventListener('DOMContentLoaded', () => {
+            setupDropzone('uploadDropzone', 'file');
+            setupDropzone('daftarDropzone', 'gambar', 'preview');
+            setupDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas');
+        });
     </script>
 
 </body>

@@ -13,10 +13,13 @@ if(!empty($_POST)){
 
     # Dapatkan data gambar
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === 0) {
-        $nama_fail          =   $_FILES['gambar']['name'];
+    # Mengambil data gambar
+    $file_extension    =   pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
+    # Buang jarak dan tukar kepada huruf kecil
+    $nama_fail_baru    =   strtolower(str_replace(' ', '', $nama_menu)) . '.' . $file_extension;
         $lokasi             =   $_FILES['gambar']['tmp_name'];
-        $tambahan = $tambahan."gambar = '".$nama_fail ."',";
-        copy($lokasi,"../menu-images/".$nama_fail);
+        $tambahan = $tambahan."gambar = '".$nama_fail_baru ."',";
+        
         
         // Get the filename from the database
         $sql = "SELECT gambar FROM makanan WHERE kod_makanan = '$id_menu'";
@@ -30,6 +33,7 @@ if(!empty($_POST)){
             if (file_exists($filepath)) {
                 unlink($filepath);  // Delete the file
             }
+            copy($lokasi,"../menu-images/". $nama_fail_baru);
         }
 
     } 

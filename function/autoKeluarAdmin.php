@@ -7,12 +7,6 @@ if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
     echo " <script> window.location.href = 'index.php'; </script>";
 } else {
 
-        if($_SESSION['tahap'] != "ADMIN") {
-         die("<script>alert('sila login');
-         window.location.href='../logout.php';</script>");
-         }
-
-
     include("connection.php");
 
     $email = $_SESSION['email'];
@@ -23,9 +17,15 @@ if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
               and notel = '$notel' limit 1";
 
     $cek = mysqli_query($condb, $cari);
+    $m = mysqli_fetch_array($cek);
+
+    
 
     if (mysqli_num_rows($cek) != 1) {
         echo " <script> window.location.href = '../logout.php'; </script>";
+    }elseif ($m['tahap'] != "ADMIN"){
+        die("<script>alert('sila login');
+         window.location.href='../logout.php';</script>");
     }
 }
 ?>
