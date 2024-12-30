@@ -25,9 +25,6 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 
-$popup_message = "";
-$popup_visible = false;
-
 // Tambah pembolehubah untuk jenis notifikasi
 $notification_type = "";  // 'success', 'error', atau 'warning'
 
@@ -46,9 +43,7 @@ if (isset($_POST['DaftarMenu'])) {
 
     # Data validation : had atas
     if (!is_numeric($harga) and $harga > 0) {
-        $popup_message = "Ralat: Sila masukkan harga yang sah";
-        $notification_type = "error";
-        $popup_visible = true;
+        $_SESSION['error'] = "Ralat: Sila masukkan harga yang sah";
         header("Location: list-menu.php");
         exit();
     }
@@ -56,10 +51,7 @@ if (isset($_POST['DaftarMenu'])) {
     $sql_semak  =   "select kod_makanan from makanan where kod_makanan = '$kod_makanan' ";
     $laksana_semak  =   mysqli_query($condb, $sql_semak);
     if (mysqli_num_rows($laksana_semak) == 1) {
-        $popup_message = "ID Menu telah digunakan. Sila guna kod makanan yang lain";
-        $notification_type = "error";
-        $popup_visible = true;
-        // Gunakan header untuk redirect selepas set session
+        $_SESSION['error'] = "ID Menu telah digunakan. Sila guna kod makanan yang lain";
         header("Location: list-menu.php");
         exit();
     }
@@ -75,18 +67,13 @@ if (isset($_POST['DaftarMenu'])) {
 
     # Pengujian proses menyimpan data 
     if ($laksana) {
-        #jika berjaya
-        $popup_message = "Pendaftaran Berjaya";
-        $notification_type = "success";
-        $popup_visible = true;
-
-        # muat naik gambar dengan nama baru
-        copy($lokasi, "../menu-images/" . $nama_fail_baru);
+        $_SESSION['success'] = "Pendaftaran Berjaya";
+        header("Location: list-menu.php");
+        exit();
     } else {
-        #jika gagal papar punca error
-        $popup_message = "Pendaftaran Gagal: " . mysqli_error($condb);
-        $notification_type = "error";
-        $popup_visible = true;
+        $_SESSION['error'] = "Pendaftaran Gagal: " . mysqli_error($condb);
+        header("Location: list-menu.php");
+        exit();
     }
 }
 
@@ -121,9 +108,9 @@ if (isset($_POST['upload'])) {
             # semak jika id menu telah ada dalam  pangkalan data
             $pilih = mysqli_query($condb, "select* from makanan where kod_makanan='" . $id_menu . "'");
             if (mysqli_num_rows($pilih) == 1) {
-                $popup_message = "kod_makanan $id_menu di fail txt telah ada di pangkalan data.TUKAR id_menu DALAM FAIL TXT";
-                $notification_type = "error";
-                $popup_visible = true;
+                $_SESSION['error'] = "kod_makanan $id_menu di fail txt telah ada di pangkalan data.TUKAR id_menu DALAM FAIL TXT";
+                header("Location: list-menu.php");
+                exit();
             } else {
                 # arahan SQL untuk menyimpan data
                 $sql_simpan =   "insert into makanan set
@@ -141,18 +128,18 @@ if (isset($_POST['upload'])) {
         fclose($fail_data);
 
         if (mysqli_num_rows($pilih) == 1) {
-            $popup_message = "kod_makanan $id_menu di fail txt telah ada di pangkalan data. TUKAR id_menu DALAM FAIL TXT";
-            $notification_type = "error";
-            $popup_visible = true;
+            $_SESSION['error'] = "kod_makanan $id_menu di fail txt telah ada di pangkalan data. TUKAR id_menu DALAM FAIL TXT";
+            header("Location: list-menu.php");
+            exit();
         } else {
-            $popup_message = "Import fail Data Selesai. Sebanyak $bil data telah disimpan. KEMASKINI MENU DAN UPLOAD GAMBAR";
-            $notification_type = "success";
-            $popup_visible = true;
+            $_SESSION['success'] = "Import fail Data Selesai. Sebanyak $bil data telah disimpan. KEMASKINI MENU DAN UPLOAD GAMBAR";
+            header("Location: list-menu.php");
+            exit();
         }
     } else {
-        $popup_message = "hanya fail berformat txt sahaja dibenarkan";
-        $notification_type = "error";
-        $popup_visible = true;
+        $_SESSION['error'] = "hanya fail berformat txt sahaja dibenarkan";
+        header("Location: list-menu.php");
+        exit();
     }
 }
 
@@ -247,59 +234,6 @@ if (isset($_POST['upload'])) {
             cursor: pointer;
         }
 
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.3s ease-in-out;
-            z-index: 1000;
-            min-width: 300px;
-        }
-
-        .toast.success {
-            background-color: #4ade80;
-            color: #064e3b;
-            border-left: 4px solid #059669;
-        }
-
-        .toast.error {
-            background-color: #f87171;
-            color: #7f1d1d;
-            border-left: 4px solid #dc2626;
-        }
-
-        .toast.warning {
-            background-color: #fbbf24;
-            color: #92400e;
-            border-left: 4px solid #d97706;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
-
         .dropzone {
             border: 2px dashed #ccc;
             border-radius: 4px;
@@ -340,28 +274,14 @@ if (isset($_POST['upload'])) {
             border-radius: 4px;
         }
     </style>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="font-roboto bg-gray-100">
-
-
-    <?php if ($popup_visible) : ?>
-        <div id="toast" class="toast <?php echo $notification_type; ?>">
-            <?php if ($notification_type == 'success') : ?>
-                <i class="fas fa-check-circle"></i>
-            <?php elseif ($notification_type == 'error') : ?>
-                <i class="fas fa-exclamation-circle"></i>
-            <?php else : ?>
-                <i class="fas fa-exclamation-triangle"></i>
-            <?php endif; ?>
-            <div class="toast-content">
-                <span><?php echo htmlspecialchars($popup_message); ?></span>
-            </div>
-            <button class="close-toast">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    <?php endif; ?>
 
 
     <div class="flex h-screen flex-col">
@@ -472,7 +392,9 @@ if (isset($_POST['upload'])) {
                                                     <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button onclick="if(confirm('Anda pasti anda ingin memadam data ini?')) location.href='../function/del-menu.php?id_menu=<?php echo urlencode($m['kod_makanan']); ?>'" class="bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
+                                                    <button 
+                                                        data-id="<?php echo urlencode($m['kod_makanan']); ?>" 
+                                                        class="delete-btn bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
                                                 </div>
@@ -705,19 +627,146 @@ if (isset($_POST['upload'])) {
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const toast = document.getElementById('toast');
-            if (toast) {
-                // Hilangkan toast selepas 5 saat
-                setTimeout(() => {
-                    toast.style.animation = 'fadeOut 0.3s ease-in-out forwards';
-                    setTimeout(() => {
-                        toast.remove();
-                    }, 300);
-                }, 5000);
-            }
+            // Untuk popup success
+            <?php if(isset($_SESSION['success'])): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: '<?php echo $_SESSION['success']; ?>',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = window.location.href;
+                });
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+            // Untuk popup error
+            <?php if(isset($_SESSION['error'])): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: '<?php echo $_SESSION['error']; ?>',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = window.location.href;
+                });
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+
+            
         });
 
-        // Fungsi untuk setup dropzone
+        // Fungsi untuk SweetAlert2
+        function showAlert(title, icon = 'success') {
+            Swal.fire({
+                title: title,
+                icon: icon,
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = window.location.href;
+            });
+        }
+
+        // Fungsi untuk confirmation SweetAlert2
+        function confirmAction(title, text, callback) {
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    callback();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Untuk popup success/error dari PHP
+            <?php if(isset($_SESSION['success'])): ?>
+                showAlert('<?php echo $_SESSION['success']; ?>', 'success');
+            <?php endif; ?>
+
+            <?php if(isset($_SESSION['error'])): ?>
+                showAlert('<?php echo $_SESSION['error']; ?>', 'error');
+            <?php endif; ?>
+
+            // Untuk delete button
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const id = this.dataset.id;
+                    
+                    Swal.fire({
+                        title: 'Anda pasti?',
+                        text: "Anda tidak boleh memulihkan data ini selepas dipadam!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, padam!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = `../function/del-menu.php?id_menu=${id}`;
+                        }
+                    });
+                });
+            });
+
+            // Untuk validation errors
+            const showValidationError = (message) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ralat',
+                    text: message,
+                    showConfirmButton: true
+                });
+            };
+
+            // Form validation dengan SweetAlert
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    // Contoh validasi untuk fail
+                    const fileInput = this.querySelector('input[type="file"]');
+                    if (fileInput && fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        const acceptedTypes = fileInput.accept.split(',');
+                        
+                        if (fileInput.accept.includes('.txt')) {
+                            if (!file.name.endsWith('.txt')) {
+                                e.preventDefault();
+                                showValidationError('Sila pilih fail .txt sahaja');
+                                return;
+                            }
+                        } else if (fileInput.accept.includes('image')) {
+                            if (!file.type.startsWith('image/')) {
+                                e.preventDefault();
+                                showValidationError('Sila pilih fail gambar sahaja');
+                                return;
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        // Untuk error handling pada dropzone
+        function handleDropzoneError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Ralat',
+                text: message,
+                showConfirmButton: true
+            });
+        }
+
+        // Update dropzone error handling
         function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
             const dropzone = document.getElementById(dropzoneId);
             const input = document.getElementById(inputId);
@@ -758,7 +807,7 @@ if (isset($_POST['upload'])) {
                         (acceptType === 'image/*' && file.type.startsWith('image/'))) {
                         showPreview(file);
                     } else {
-                        alert('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
+                        handleDropzoneError('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
                         input.value = '';
                     }
                 }
@@ -795,7 +844,7 @@ if (isset($_POST['upload'])) {
                     input.files = e.dataTransfer.files;
                     showPreview(file);
                 } else {
-                    alert('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
+                    handleDropzoneError('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
                 }
             });
 
@@ -814,6 +863,32 @@ if (isset($_POST['upload'])) {
             setupDropzone('uploadDropzone', 'file', null, 'fileDisplay', 'removeFile', '.txt');
             setupDropzone('daftarDropzone', 'gambarDaftar', 'preview', 'daftarPreviewContainer', 'closeDaftarPreview', 'image/*');
             setupDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas', 'previewContainer', 'closePreview', 'image/*');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Untuk popup success
+            <?php if(isset($_SESSION['success'])): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: '<?php echo $_SESSION['success']; ?>',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = window.location.href;
+                });
+            <?php endif; ?>
+
+            // Untuk popup error
+            <?php if(isset($_SESSION['error'])): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: '<?php echo $_SESSION['error']; ?>',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = window.location.href;
+                });
+            <?php endif; ?>
         });
     </script>
 

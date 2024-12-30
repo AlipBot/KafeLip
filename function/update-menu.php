@@ -4,22 +4,27 @@ include('connection.php');
 
 # Menyemak kewujudan data POST
 if(!empty($_POST)){
-
     # Mengambil data daripada borang (form)
     $id_menu        =   $_POST['id_menu'];
     $nama_menu      =   $_POST['nama_menu'];
     $harga          =   $_POST['harga'];
     $tambahan       =   '';
 
+    # Data validation : had atas
+    if(!is_numeric($harga) and $harga > 0){
+        $_SESSION['error'] = "Ralat: Sila masukkan harga yang sah";
+        header("Location: ../admin/list-menu.php");
+        exit();
+    }
+
     # Dapatkan data gambar
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === 0) {
-    # Mengambil data gambar
-    $file_extension    =   pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
-    # Buang jarak dan tukar kepada huruf kecil
-    $nama_fail_baru    =   strtolower(str_replace(' ', '', $nama_menu)) . '.' . $file_extension;
+        # Mengambil data gambar
+        $file_extension    =   pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
+        # Buang jarak dan tukar kepada huruf kecil
+        $nama_fail_baru    =   strtolower(str_replace(' ', '', $nama_menu)) . '.' . $file_extension;
         $lokasi             =   $_FILES['gambar']['tmp_name'];
         $tambahan = $tambahan."gambar = '".$nama_fail_baru ."',";
-        
         
         // Get the filename from the database
         $sql = "SELECT gambar FROM makanan WHERE kod_makanan = '$id_menu'";
@@ -35,16 +40,7 @@ if(!empty($_POST)){
             }
             copy($lokasi,"../menu-images/". $nama_fail_baru);
         }
-
     } 
-
-    # Data validation : had atas
-    if(!is_numeric($harga) and $harga > 0){
-        die("<script>
-                alert('Ralat Harga');
-                location.href='../admin/tukar-menu.php';
-            </script>" );
-    }
     
     # proses kemaskini data
     $sql_kemaskini  =   "update makanan set
@@ -58,13 +54,14 @@ if(!empty($_POST)){
     # Pengujian proses menyimpan data 
     if($laksana){
         #jika berjaya
-        echo "  <script>
-                alert('Kemaskini Berjaya');
-                location.href='../admin/list-menu.php';
-                </script>";  
+        $_SESSION['success'] = "Kemaskini Berjaya";
+        header("Location: ../admin/list-menu.php");
+        exit();
     }else{
         #jika gagal papar punca error
-        echo "<p style='color:red;'>Kemaskini Gagal</p>";
-        echo $sql_kemaskini.mysqli_error($condb);
+        $_SESSION['error'] = "Kemaskini Gagal: " . mysqli_error($condb);
+        header("Location: ../admin/list-menu.php");
+        exit();
     }
-} ?>
+} 
+?>
