@@ -325,6 +325,20 @@ if (isset($_POST['upload'])) {
             color: #666;
             margin-bottom: 10px;
         }
+
+        .hidden {
+            display: none;
+        }
+        
+        #fileDisplay {
+            border: 1px solid #e2e8f0;
+            margin-top: 8px;
+        }
+        
+        #removeFile {
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -500,6 +514,13 @@ if (isset($_POST['upload'])) {
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
                         <input type="file" id="file" name='data' accept=".txt" class="hidden">
                     </div>
+                    <!-- Tambah elemen baru untuk paparan nama fail -->
+                    <div id="fileDisplay" class="hidden p-3 bg-gray-100 rounded flex justify-between items-center">
+                        <span id="fileName" class="text-gray-700"></span>
+                        <button type="button" id="removeFile" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='upload' class="bg-blue-800 text-white p-2 rounded">Submit</button>
@@ -519,13 +540,19 @@ if (isset($_POST['upload'])) {
                     ID Menu:<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
                     Nama Menu: <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3" required>
                     Harga <input type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    
+                    <!-- Container untuk preview gambar -->
+                    <div class="flex justify-center mb-4 relative" id="daftarPreviewContainer" style="display: none;">
+                        <img id="preview" style="max-width: 300px;">
+                        <button type="button" id="closeDaftarPreview" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
                     <div class="dropzone" id="daftarDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret gambar ke sini atau klik untuk memilih</p>
-                        <input type="file" id="gambar" name="gambar" class="hidden" accept="image/*" onchange="previewGambar(event)" required>
-                    </div>
-                    <div class="flex justify-center">
-                        <img id="preview" style="max-width: 300px; display: none;">
+                        <input type="file" id="gambarDaftar" name="gambar" class="hidden" accept="image/*" required>
                     </div>
                 </div>
                 <div class="flex justify-center">
@@ -546,14 +573,18 @@ if (isset($_POST['upload'])) {
                     <input type="hidden" name="id_menu" id="id_menu">
                     Nama Menu: <input id="nama_makanan" type="text" name='nama_menu'  class="w-full border p-2 mb-3" required>
                     Harga <input id="harga_makanan" type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    <div class="flex justify-center mb-4 relative" id="previewContainer" style="display: none;">
+                        <img id="preview_kemas" style="max-width: 300px;">
+                        <button type="button" id="closePreview" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                     <div class="dropzone" id="kemaskiniDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret gambar ke sini atau klik untuk memilih</p>
-                        <input type="file" id="gambar" name="gambar" class="hidden" accept="image/*" onchange="previewGambarKemas(event)">
+                        <input type="file" id="gambar" name="gambar" class="hidden" accept="image/*">
                     </div>
-                    <div class="flex justify-center">
-                        <img id="preview_kemas" style="max-width: 300px; display: none;">
-                    </div>
+                    
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
@@ -687,10 +718,53 @@ if (isset($_POST['upload'])) {
         });
 
         // Fungsi untuk setup dropzone
-        function setupDropzone(dropzoneId, inputId, previewId = null) {
+        function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
             const dropzone = document.getElementById(dropzoneId);
             const input = document.getElementById(inputId);
+            const previewContainer = previewContainerId ? document.getElementById(previewContainerId) : null;
+            const closePreview = closePreviewId ? document.getElementById(closePreviewId) : null;
 
+            function showPreview(file) {
+                if (acceptType === 'image/*' && file.type.startsWith('image/')) {
+                    // Logik untuk preview gambar
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        const preview = document.getElementById(previewId);
+                        if (previewContainer) {
+                            previewContainer.style.display = 'flex';
+                        }
+                        preview.src = reader.result;
+                        dropzone.style.display = 'none';
+                    }
+                    reader.readAsDataURL(file);
+                } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
+                    // Logik untuk fail txt
+                    dropzone.style.display = 'none';
+                    if (previewContainer) {
+                        previewContainer.style.display = 'flex';
+                        const fileName = document.getElementById('fileName');
+                        if (fileName) {
+                            fileName.textContent = file.name;
+                        }
+                    }
+                }
+            }
+
+            // Handle file input change
+            input.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) || 
+                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
+                        showPreview(file);
+                    } else {
+                        alert('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
+                        input.value = '';
+                    }
+                }
+            });
+
+            // Handle drag and drop
             dropzone.addEventListener('click', () => input.click());
 
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -715,27 +789,31 @@ if (isset($_POST['upload'])) {
             });
 
             dropzone.addEventListener('drop', (e) => {
-                const files = e.dataTransfer.files;
-                input.files = files;
-                
-                // Jika ada preview dan fail adalah gambar
-                if (previewId && files[0].type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function() {
-                        const preview = document.getElementById(previewId);
-                        preview.src = reader.result;
-                        preview.style.display = 'block';
-                    }
-                    reader.readAsDataURL(files[0]);
+                const file = e.dataTransfer.files[0];
+                if ((acceptType === '.txt' && file.name.endsWith('.txt')) || 
+                    (acceptType === 'image/*' && file.type.startsWith('image/'))) {
+                    input.files = e.dataTransfer.files;
+                    showPreview(file);
+                } else {
+                    alert('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
                 }
             });
+
+            // Handle close preview button
+            if (closePreview) {
+                closePreview.addEventListener('click', () => {
+                    previewContainer.style.display = 'none';
+                    dropzone.style.display = 'block';
+                    input.value = ''; // Reset input file
+                });
+            }
         }
 
         // Setup semua dropzone apabila dokumen siap
         document.addEventListener('DOMContentLoaded', () => {
-            setupDropzone('uploadDropzone', 'file');
-            setupDropzone('daftarDropzone', 'gambar', 'preview');
-            setupDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas');
+            setupDropzone('uploadDropzone', 'file', null, 'fileDisplay', 'removeFile', '.txt');
+            setupDropzone('daftarDropzone', 'gambarDaftar', 'preview', 'daftarPreviewContainer', 'closeDaftarPreview', 'image/*');
+            setupDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas', 'previewContainer', 'closePreview', 'image/*');
         });
     </script>
 
