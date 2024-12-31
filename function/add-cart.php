@@ -3,17 +3,26 @@ $lifetime = 60 * 60 * 24 * 30;  // 30 days
 session_set_cookie_params($lifetime);
 session_start();
 
-# mengistihar tatasusun session['orders'] jika belum wujud
 if(!isset($_SESSION['orders'])){ 
-    $_SESSION['orders']=array();
+    $_SESSION['orders'] = array();
 }
 
-# menambah elemen ke dalam session['orders']
-array_push($_SESSION['orders'],$_GET['id_menu']);
-if($_GET['page']=="menu"){
-    echo"<script>window.location.href='../menu.php';</script>";
-} else {
-    echo"<script>window.location.href='../cart.php';</script>";
+if (isset($_GET['id_menu']) && isset($_GET['quantity'])) {
+    $id_menu = $_GET['id_menu'];
+    $quantity = intval($_GET['quantity']);
+    
+    // Tambah item sebanyak quantity yang dipilih
+    for ($i = 0; $i < $quantity; $i++) {
+        array_push($_SESSION['orders'], $id_menu);
+    }
+    
+    $_SESSION['success'] = "$quantity item telah ditambah ke troli";
+    
+    if($_GET['page'] == "menu"){
+        header("Location: ../menu.php");
+    } else {
+        header( "Location: ../cart.php");
+    }
+    exit;
 }
-
 ?>

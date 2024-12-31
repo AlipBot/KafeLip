@@ -20,7 +20,7 @@ if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
     
 
     if (mysqli_num_rows($cek) != 1) {
-        echo " <script> window.location.href = 'logout.php'; </script>";
+        die("<script> window.location.href='../logout.php';</script>");
     }elseif ($_SESSION['tahap'] != $m['tahap']){
         $_SESSION['tahap'] = $m['tahap'];
     }

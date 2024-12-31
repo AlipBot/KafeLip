@@ -3,11 +3,54 @@ $lifetime = 60 * 60 * 24 * 30;  // 30 days
 session_set_cookie_params($lifetime);
 session_start();
 
-if (!empty($_SESSION['tahap'])) { ?>
-    <script>
-        window.location.href = 'menu.php';
-    </script>
-<?php } ?>
+// Periksa login terlebih dahulu
+if (!empty($_POST)) {
+    include("function/connection.php");
+    $email = $_POST['email'];
+    $password = $_POST['pass'];
+
+    $cari = "select * from pelanggan
+             where email = '$email'
+             and password = '$password' limit 1";
+
+    $cek = mysqli_query($condb, $cari);
+
+    if (mysqli_num_rows($cek) == 1) {
+        $m = mysqli_fetch_array($cek);
+        $_SESSION['nama'] = $m['nama'];
+        $_SESSION['notel'] = $m['notel'];
+        $_SESSION['email'] = $m['email'];
+        $_SESSION['tahap'] = $m['tahap'];
+
+        if ($m['tahap'] == "ADMIN") {
+            $_SESSION['success'] = "Hai Boss  <br>" . $_SESSION['nama'];
+            header("Location: admin/panel.php");
+            exit();
+        } else {
+            $_SESSION['success'] = "Log Masuk Berjaya";
+            header("Location: menu.php");
+            exit();
+        }
+    } else {
+        $_SESSION['error'] = "Tolong Semak Semula Email Dan Password";
+        header("Location: login.php");
+        exit();
+    }
+}
+
+// Periksa jika sudah log masuk
+if (!empty($_SESSION['tahap'])) {
+    header("Location: menu.php");
+    exit();
+}
+
+// Tambah kod ini sebelum HTML output bermula
+if (isset($_GET['status']) && $_GET['status'] === 'logout') {
+    $_SESSION['success'] = "Berjaya Log Keluar";
+}
+
+// HTML output bermula selepas semua logic PHP
+?>
 
 <!DOCTYPE html>
 <!-- saved from url=(0012)about:srcdoc -->
@@ -20,7 +63,10 @@ if (!empty($_SESSION['tahap'])) { ?>
     <meta name="apple-mobile-web-app-title" content="CodePen">
     <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
     <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111">
-
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>LOG MASUK</title>
 
     <link rel="canonical" href="https://codepen.io/wahidullah_karimi/pen/QwLLNrM">
@@ -260,37 +306,47 @@ if (!empty($_SESSION['tahap'])) { ?>
             <input type="submit" id="submit" value="Login">
         </form>
     </div>
+    <script>
+         const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php if (isset($_SESSION['success'])): ?>
+                Toast.fire({
+                    icon: "success",
+                    title: "<?= $_SESSION['success'] ?>"
+                });
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['info'])): ?>
+                Toast.fire({
+                    icon: "info",
+                    title: "<?= $_SESSION['info'] ?>"
+                });
+                <?php unset($_SESSION['info']); ?>
+            <?php endif; ?>
+
+            // Untuk popup error
+            <?php if (isset($_SESSION['error'])): ?>
+                Toast.fire({
+                    icon: "error",
+                    title: "<?= $_SESSION['error'] ?>"
+                });
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        })
+    </script>
 
 </body>
 
 </html>
-
-<?php
-if (!empty($_POST)) {
-
-    include("function/connection.php");
-    $email = $_POST['email'];
-    $password = $_POST['pass'];
-
-    $cari = "select * from pelanggan
-             where email = '$email'
-             and password = '$password' limit 1";
-
-    $cek = mysqli_query($condb, $cari);
-
-    if (mysqli_num_rows($cek) == 1) {
-        $m = mysqli_fetch_array($cek);
-        $_SESSION['nama'] = $m['nama'];
-        $_SESSION['notel'] = $m['notel'];
-        $_SESSION['email'] = $m['email'];
-        $_SESSION['tahap'] = $m['tahap'];
-        if ($m['tahap'] == "ADMIN"){
-            echo "<script> window.location.href='admin/panel.php'; </script>";
-        } else {
-            echo "<script> window.location.href='menu.php'; </script>";
-        }
-    } else {
-        echo "<script>alert('GAGAL LOG MASUK sila semak semula');</script>";
-    }
-}
-?>

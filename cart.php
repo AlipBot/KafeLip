@@ -12,10 +12,9 @@ if (isset($_SESSION['orders'])) {
 
 # menyemak jika tatasusunan order kosong
 if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
-    die("<script>
-    alert('Cart anda kosong');
-    window.location.href='menu.php';
-    </script>");
+    $_SESSION['info'] = "Cart Anda Kosong";
+    header("Location: menu.php");
+    exit();
 } else {
 
     # dapatkan bilangan setiap elemen 
@@ -33,6 +32,10 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+        <!-- SweetAlert2 CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <style>
             .content {
                 flex: 1;
@@ -253,7 +256,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 <tr class="bg-[#FAF3DD] hover:bg-white">
                                     <td class="shadow-lg px-4 py-2 font-semibold custom-font"><?= $m['nama_makanan'] ?></td>
                                     <td class="shadow-lg px-4 py-2 flex justify-center font-semibold items-center space-x-2">
-                                        <button onclick="location.href='function/add-cart.php?page=cart&id_menu=<?= $m['kod_makanan'] ?>';" class="bg-[#48bd4e] text-white px-2.5 py-1 rounded ">+</button>
+                                        <button onclick="location.href='function/add-cart.php?page=cart&id_menu=<?= $m['kod_makanan'] ?>&quantity=1';" class="bg-[#48bd4e] text-white px-2.5 py-1 rounded ">+</button>
                                         <span><?= $bil ?></span>
                                         <button onclick="location.href='function/del-cart.php?id_menu=<?= $m['kod_makanan'] ?>';" class="bg-[#CA0000D9] text-white px-3 py-1 rounded ">-</button>
                                     </td>
@@ -276,7 +279,10 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                     </table>
                 </div>
                 <div class="mt-5">
-                    <button onclick="location.href='sah-tempah.php';" class="bg-[#4A7C59] text-white px-4 py-2 rounded hover:bg-[#68B0AB]">
+                    <button class="buang-btn bg-[#CA0000D9] text-white px-4 py-2 rounded hover:bg-[#d33]">
+                        Kosongkan Senarai Tempahan
+                    </button>
+                    <button class="Sahkan-btn bg-[#4A7C59] text-white px-4 py-2 rounded hover:bg-[#68B0AB]">
                         Sahkan Tempahan
                     </button>
                 </div>
@@ -347,6 +353,89 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 document.body.scrollTop = 0;
                 document.documentElement.scrollTop = 0;
             }
+
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                <?php if (isset($_SESSION['success'])): ?>
+                    Toast.fire({
+                        icon: "success",
+                        title: "<?= $_SESSION['success'] ?>"
+                    });
+                    <?php unset($_SESSION['success']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['info'])): ?>
+                    Toast.fire({
+                        icon: "info",
+                        title: "<?= $_SESSION['info'] ?>"
+                    });
+                    <?php unset($_SESSION['info']); ?>
+                <?php endif; ?>
+
+                // Untuk popup error
+                <?php if (isset($_SESSION['error'])): ?>
+                    Toast.fire({
+                        icon: "error",
+                        title: "<?= $_SESSION['error'] ?>"
+                    });
+                    <?php unset($_SESSION['error']); ?>
+                <?php endif; ?>
+
+                document.querySelectorAll('.Sahkan-btn').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+
+                        Swal.fire({
+                            title: 'Anda pasti?',
+                            text: "Sahkan tempah",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = `sah-tempah.php`;
+                            }
+                        });
+                    });
+                });
+
+                document.querySelectorAll('.buang-btn').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+
+                        Swal.fire({
+                            title: 'Anda pasti?',
+                            text: "Mahu Kosongkan Semua Senarai Tempahan",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Ya',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = 'function/kosongkan-cart.php';
+                            }
+                        });
+                    });
+                });
+
+            })
         </script>
     </body>
 

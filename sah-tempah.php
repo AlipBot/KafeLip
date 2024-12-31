@@ -3,10 +3,9 @@ include("function/autoKeluar.php");
 include('function/connection.php');
 
 if (!isset($_SESSION['orders'])) {
-    die("<script>
-        alert('Cart anda kosong');
-        window.location.href='menu.php';
-    </script>");
+    $_SESSION['info'] = "Cart Anda Kosong";
+    header("Location: menu.php");
+    exit();
 } else {
     # dapatkan bilangan setiap elemen
     $frekuensi = array_count_values($_SESSION['orders']);
@@ -33,7 +32,8 @@ if (!isset($_SESSION['orders'])) {
     # Memadam nilai pembolehubah session
     unset($_SESSION['orders']);
     unset($_SESSION['jumlah_harga']);
-    echo "<script>alert('Tempahan Selesai'); 
-window.location.href='resit.php?tarikh=$tarikh';
-</script>";
+    $_SESSION['success'] = "Tempahan Selesai";
+    header("Location: resit.php?tarikh=$tarikh");
+    exit();
+
 }

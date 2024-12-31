@@ -22,10 +22,9 @@ if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
     
 
     if (mysqli_num_rows($cek) != 1) {
-        echo " <script> window.location.href = '../logout.php'; </script>";
+        die("<script> window.location.href='../logout.php';</script>");
     }elseif ($m['tahap'] != "ADMIN"){
-        die("<script>alert('sila login');
-         window.location.href='../logout.php';</script>");
+        die("<script> window.location.href='../logout.php';</script>");
     }
 }
 ?>

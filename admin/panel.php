@@ -12,6 +12,10 @@ include('../function/connection.php');
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .drawer-open {
             transform: translateX(0);
@@ -362,6 +366,38 @@ include('../function/connection.php');
         }
 
         setInterval(checkNewOrder, 1000); // 5000 ms = 5 saat
+        
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php if (isset($_SESSION['success'])): ?>
+                Toast.fire({
+                    icon: "success",
+                    title: "<?= $_SESSION['success'] ?>"
+                });
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+
+            // Untuk popup error
+            <?php if (isset($_SESSION['error'])): ?>
+                Toast.fire({
+                    icon: "error",
+                    title: "<?= $_SESSION['error'] ?>"
+                });
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        })
     </script>
 </body>
 

@@ -20,8 +20,13 @@ if (mysqli_num_rows($result) > 0) {
                 <h2><?= htmlspecialchars($m['nama_makanan']) ?></h2>
                 <p class="price">RM <?= $m['harga'] ?></p>
             </div>
-            <button class="add-to-cart" onclick="location.href='function/add-cart.php?page=menu&id_menu=<?= htmlspecialchars($m['kod_makanan']) ?>';">
-                Add to Cart
+            <div class="quantity-controls">
+                <button class="quantity-btn minus" onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'decrease')">-</button>
+                <span id="quantity-<?= $m['kod_makanan'] ?>" class="quantity-value">1</span>
+                <button class="quantity-btn plus" onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'increase')">+</button>
+            </div>
+            <button class="add-to-cart" onclick="addToCartWithQuantity('<?= htmlspecialchars($m['kod_makanan']) ?>')">
+                Tambah ke Troli
             </button>
         </div>
     <?php endwhile;

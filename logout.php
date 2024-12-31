@@ -8,5 +8,5 @@ if (ini_get("session.use_cookies")) {
     setcookie(session_name(), '', time() - 3600, '/');
 }
 
-echo "<script>window.location.href='login.php';</script>";
-?>
+header("Location: login.php?status=logout");
+exit();

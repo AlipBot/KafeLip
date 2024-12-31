@@ -1,4 +1,6 @@
-<html lang="en"></html>
+<html lang="en">
+
+</html>
 <?php
 include('../function/autoKeluarAdmin.php');
 include('../function/connection.php');
@@ -68,7 +70,7 @@ if (isset($_POST['DaftarMenu'])) {
 
     # Pengujian proses menyimpan data 
     if ($laksana) {
-        copy($lokasi, "../menu-images/". $nama_fail_baru);
+        copy($lokasi, "../menu-images/" . $nama_fail_baru);
 
         $_SESSION['success'] = "Pendaftaran Berjaya";
         header("Location: list-menu.php");
@@ -158,6 +160,10 @@ if (isset($_POST['upload'])) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .drawer-open {
             transform: translateX(0);
@@ -266,22 +272,18 @@ if (isset($_POST['upload'])) {
         .hidden {
             display: none;
         }
-        
+
         #fileDisplay {
             border: 1px solid #e2e8f0;
             margin-top: 8px;
         }
-        
+
         #removeFile {
             padding: 4px 8px;
             border-radius: 4px;
         }
     </style>
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="font-roboto bg-gray-100">
@@ -395,8 +397,8 @@ if (isset($_POST['upload'])) {
                                                     <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button 
-                                                        data-id="<?php echo urlencode($m['kod_makanan']); ?>" 
+                                                    <button
+                                                        data-id="<?php echo urlencode($m['kod_makanan']); ?>"
                                                         class="delete-btn bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
@@ -465,7 +467,7 @@ if (isset($_POST['upload'])) {
                     ID Menu:<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
                     Nama Menu: <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3" required>
                     Harga <input type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
-                    
+
                     <!-- Container untuk preview gambar -->
                     <div class="flex justify-center mb-4 relative" id="daftarPreviewContainer" style="display: none;">
                         <img id="preview" style="max-width: 300px;">
@@ -473,7 +475,7 @@ if (isset($_POST['upload'])) {
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    
+
                     <div class="dropzone" id="daftarDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret gambar ke sini atau klik untuk memilih</p>
@@ -487,8 +489,8 @@ if (isset($_POST['upload'])) {
         </div>
     </div>
 
-        <!-- Kemaskini Menu -->
-        <div id="KemaskiniMenu" class="KemaskiniMenu">
+    <!-- Kemaskini Menu -->
+    <div id="KemaskiniMenu" class="KemaskiniMenu">
         <div class="KemaskiniMenu-content">
             <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Kemaskini Menu Baru</h2>
@@ -496,7 +498,7 @@ if (isset($_POST['upload'])) {
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     <input type="hidden" name="id_menu" id="id_menu">
-                    Nama Menu: <input id="nama_makanan" type="text" name='nama_menu'  class="w-full border p-2 mb-3" required>
+                    Nama Menu: <input id="nama_makanan" type="text" name='nama_menu' class="w-full border p-2 mb-3" required>
                     Harga <input id="harga_makanan" type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
                     <div class="flex justify-center mb-4 relative" id="previewContainer" style="display: none;">
                         <img id="preview_kemas" style="max-width: 300px;">
@@ -509,7 +511,7 @@ if (isset($_POST['upload'])) {
                         <p>Seret gambar ke sini atau klik untuk memilih</p>
                         <input type="file" id="gambar" name="gambar" class="hidden" accept="image/*">
                     </div>
-                    
+
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
@@ -586,7 +588,6 @@ if (isset($_POST['upload'])) {
         const btnDaftarmenu = document.getElementById("DaftarMenuButton");
         const btnUpdateButton = document.getElementById("KemaskiniMenuButton");
         const btn = document.getElementById("uploadButton");
-        const notif = document.getElementById("notif");
 
         function updateMenu(kod_menu) {
             fetch(`../api/get-menu.php?kod_menu=${kod_menu}`)
@@ -597,9 +598,9 @@ if (isset($_POST['upload'])) {
                     document.getElementById('harga_makanan').value = data.harga;
                     Kemaskinimenu.style.display = "block";
                 });
-            
+
         }
-        
+
         btn.onclick = function() {
             menu.style.display = "block";
 
@@ -623,15 +624,12 @@ if (isset($_POST['upload'])) {
                 window.location.href = window.location.href;
                 menu.style.display = "none";
             }
-            if (event.target == notif) {
-                window.location.href = window.location.href
-                notif.style.display = "none";
-            }
+
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             // Untuk popup success
-            <?php if(isset($_SESSION['success'])): ?>
+            <?php if (isset($_SESSION['success'])): ?>
                 Swal.fire({
                     icon: 'success',
                     title: '<?php echo $_SESSION['success']; ?>',
@@ -644,7 +642,7 @@ if (isset($_POST['upload'])) {
             <?php endif; ?>
 
             // Untuk popup error
-            <?php if(isset($_SESSION['error'])): ?>
+            <?php if (isset($_SESSION['error'])): ?>
                 Swal.fire({
                     icon: 'error',
                     title: '<?php echo $_SESSION['error']; ?>',
@@ -656,14 +654,14 @@ if (isset($_POST['upload'])) {
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
 
-        
+
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const id = this.dataset.id;
-                    
+
                     Swal.fire({
                         title: 'Anda pasti?',
                         text: "Anda tidak boleh memulihkan data ini selepas dipadam!",
@@ -699,7 +697,7 @@ if (isset($_POST['upload'])) {
                     if (fileInput && fileInput.files.length > 0) {
                         const file = fileInput.files[0];
                         const acceptedTypes = fileInput.accept.split(',');
-                        
+
                         if (fileInput.accept.includes('.txt')) {
                             if (!file.name.endsWith('.txt')) {
                                 e.preventDefault();
@@ -765,7 +763,7 @@ if (isset($_POST['upload'])) {
             input.addEventListener('change', (e) => {
                 if (e.target.files && e.target.files[0]) {
                     const file = e.target.files[0];
-                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) || 
+                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
                         (acceptType === 'image/*' && file.type.startsWith('image/'))) {
                         showPreview(file);
                     } else {
@@ -801,7 +799,7 @@ if (isset($_POST['upload'])) {
 
             dropzone.addEventListener('drop', (e) => {
                 const file = e.dataTransfer.files[0];
-                if ((acceptType === '.txt' && file.name.endsWith('.txt')) || 
+                if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
                     (acceptType === 'image/*' && file.type.startsWith('image/'))) {
                     input.files = e.dataTransfer.files;
                     showPreview(file);
@@ -826,7 +824,6 @@ if (isset($_POST['upload'])) {
             setupDropzone('daftarDropzone', 'gambarDaftar', 'preview', 'daftarPreviewContainer', 'closeDaftarPreview', 'image/*');
             setupDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas', 'previewContainer', 'closePreview', 'image/*');
         });
-
     </script>
 
 </body>

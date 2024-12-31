@@ -26,7 +26,10 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
-
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -38,7 +41,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
 
 
 
-        .List-Makanan {
+        .menu-container {
             padding: 2%;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -99,15 +102,18 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             margin-top: 10%;
         }
 
+        .menu-item .add-to-cart:hover {
+            background-color: #68B0AB;
+        }
 
         @media (max-width: 768px) {
-            .List-Makanan {
+            .menu-container {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 480px) {
-            .List-Makanan {
+            .menu-container {
                 grid-template-columns: 1fr;
             }
         }
@@ -230,6 +236,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         }
 
         @media (max-width: 768px) {
+
             .nav a span,
             .goMenu a span {
                 display: none;
@@ -315,7 +322,40 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             color: #fff;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .quantity-btn {
+            background-color: #4A7C59;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background-color: #68B0AB;
+        }
+
+        .quantity-value {
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
     </style>
+
 </head>
 
 <body class="bg-[#FAF3DD] font-poppins">
@@ -397,7 +437,41 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         </h2>
     </div>
     <div class="bg-[#A1CCA5] overflow-auto	m-8 rounded-2xl p-6 shadow-lg items-center">
-        <div class="List-Makanan"></div>
+        <div class="menu-container">
+            <?php
+            // Query untuk mendapatkan semua data dari tabel 'makanan'
+            $sql = "SELECT * FROM makanan";
+            $result = mysqli_query($condb, $sql);
+
+            // Periksa apakah query berhasil dijalankan
+            if (!$result) {
+                die("Query gagal: " . mysqli_error($condb));
+            }
+
+            // Tampilkan menu-item
+            if (mysqli_num_rows($result) > 0) {
+                while ($m = mysqli_fetch_assoc($result)): ?>
+                    <div class="menu-item">
+                        <img src="menu-images/<?= htmlspecialchars($m['gambar']) ?>" />
+                        <div>
+                            <h2><?= htmlspecialchars($m['nama_makanan']) ?></h2>
+                            <p class="price">RM <?= $m['harga'] ?></p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'decrease')">-</button>
+                            <span id="quantity-<?= $m['kod_makanan'] ?>" class="quantity-value">1</span>
+                            <button class="quantity-btn plus" onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'increase')">+</button>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCartWithQuantity('<?= htmlspecialchars($m['kod_makanan']) ?>')">
+                            Tambah ke Troli
+                        </button>
+                    </div>
+                <?php endwhile;
+            } else {
+                echo "<p style='color: red;'>TIADA MAKANAN TERSEDIA SEKARANG</p>";
+            }
+            ?>
+        </div>
     </div>
 
     <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
@@ -566,16 +640,65 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        function fetchMenu() {
-            fetch('api/list-menu.php')
-                .then(response => response.text())
-                .then(html => {
-                    document.querySelector('.List-Makanan').innerHTML = html;
-                })
-                .catch(error => console.error('Error fetching menu:', error));
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php if (isset($_SESSION['success'])): ?>
+                Toast.fire({
+                    icon: "success",
+                    title: "<?= $_SESSION['success'] ?>"
+                });
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['info'])): ?>
+                Toast.fire({
+                    icon: "info",
+                    title: "<?= $_SESSION['info'] ?>"
+                });
+                <?php unset($_SESSION['info']); ?>
+            <?php endif; ?>
+
+            // Untuk popup error
+            <?php if (isset($_SESSION['error'])): ?>
+                Toast.fire({
+                    icon: "error",
+                    title: "<?= $_SESSION['error'] ?>"
+                });
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        })
+    </script>
+    <script>
+        function updateQuantity(menuId, action) {
+            const quantityElement = document.getElementById(`quantity-${menuId}`);
+            let quantity = parseInt(quantityElement.textContent);
+            
+            if (action === 'increase') {
+                quantity++;
+            } else if (action === 'decrease' && quantity > 1) {
+                quantity--;
+            }
+            
+            quantityElement.textContent = quantity;
         }
-        setInterval(fetchMenu, 500);
-        fetchMenu();
+
+        function addToCartWithQuantity(menuId) {
+            const quantity = parseInt(document.getElementById(`quantity-${menuId}`).textContent);
+            
+            // Hantar permintaan ke add-cart.php menggunakan format URL yang betul
+            window.location.href = `function/add-cart.php?id_menu=${menuId}&quantity=${quantity}&page=menu`;
+        }
     </script>
 </body>
 
