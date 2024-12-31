@@ -65,8 +65,11 @@ if (isset($_POST['DaftarMenu'])) {
                 ";
     $laksana    =   mysqli_query($condb, $sql_simpan);
 
+
     # Pengujian proses menyimpan data 
     if ($laksana) {
+        copy($lokasi, "../menu-images/". $nama_fail_baru);
+
         $_SESSION['success'] = "Pendaftaran Berjaya";
         header("Location: list-menu.php");
         exit();

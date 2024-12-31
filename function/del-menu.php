@@ -28,20 +28,23 @@ if(!empty($_GET))
     if(mysqli_query($condb,$arahan))
     {
         # jika data berjaya dipadam
-        echo "<script>alert('Padam data Berjaya');
-        window.location.href='../admin/list-menu.php';</script>";
+        $_SESSION['success'] = "Berjaya padam data";
+        header("Location: ../admin/list-menu.php");
+        exit();
     }
     else
     {
-        # jika data gagal dipadam
-        echo "<script>alert('Padam data gagal');
-        window.location.href='../admin/list-menu.php';</script>";
+      #jika gagal papar punca error
+      $_SESSION['error'] = "Kemaskini Gagal: " . mysqli_error($condb);
+      header("Location: ../admin/list-menu.php");
+      exit();
     }
 }
 else
 {
-    # jika data GET tidak wujud (empty)
-    die("<script>alert('Ralat! akses secara terus');
-    window.location.href='../admin/list-menu.php';</script>");
+    #jika gagal papar punca error
+    $_SESSION['error'] = "Ralat! akses secara terus";
+    header("Location: ../admin/list-menu.php");
+    exit();
 }
 ?>
