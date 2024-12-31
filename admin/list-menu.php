@@ -656,48 +656,7 @@ if (isset($_POST['upload'])) {
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
 
-            
-        });
-
-        // Fungsi untuk SweetAlert2
-        function showAlert(title, icon = 'success') {
-            Swal.fire({
-                title: title,
-                icon: icon,
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                window.location.href = window.location.href;
-            });
-        }
-
-        // Fungsi untuk confirmation SweetAlert2
-        function confirmAction(title, text, callback) {
-            Swal.fire({
-                title: title,
-                text: text,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Tidak'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    callback();
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Untuk popup success/error dari PHP
-            <?php if(isset($_SESSION['success'])): ?>
-                showAlert('<?php echo $_SESSION['success']; ?>', 'success');
-            <?php endif; ?>
-
-            <?php if(isset($_SESSION['error'])): ?>
-                showAlert('<?php echo $_SESSION['error']; ?>', 'error');
-            <?php endif; ?>
+        
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
@@ -868,31 +827,6 @@ if (isset($_POST['upload'])) {
             setupDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas', 'previewContainer', 'closePreview', 'image/*');
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Untuk popup success
-            <?php if(isset($_SESSION['success'])): ?>
-                Swal.fire({
-                    icon: 'success',
-                    title: '<?php echo $_SESSION['success']; ?>',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    window.location.href = window.location.href;
-                });
-            <?php endif; ?>
-
-            // Untuk popup error
-            <?php if(isset($_SESSION['error'])): ?>
-                Swal.fire({
-                    icon: 'error',
-                    title: '<?php echo $_SESSION['error']; ?>',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    window.location.href = window.location.href;
-                });
-            <?php endif; ?>
-        });
     </script>
 
 </body>

@@ -15,22 +15,21 @@ if(!empty($_GET))
     # melaksanakan arahan SQL padam data dan menguji proses padam data
     if(mysqli_query($condb,$arahan))
     {
-        # jika data berjaya dipadam
-        echo "<script>alert('Padam data Berjaya');
-        window.location.href='../admin/list-user.php';</script>";
+        $_SESSION['success'] = "Padam Data Berjaya";
+        header( "Location: ../admin/list-user.php");
+        exit();
     }
     else
     {
-        # jika data gagal dipadam
- # die(mysqli_error($condb); echo $arahan;
-        echo "<script>alert('Padam data gagal');
-        window.location.href='../admin/list-user.php';</script>";
+        $_SESSION['success'] = "Kemaskini Berjaya";
+        header( "Location: ../admin/list-user.php");
+        exit();
     }
 }
 else
 {
-    # jika data GET tidak wujud (empty)
-    die("<script>alert('Ralat! akses secara terus');
-    window.location.href='../admin/list-user.php';</script>");
+    $_SESSION['error'] = "Ralat Berlaku";
+        header( "Location: ../admin/list-user.php");
+        exit();
 }
 ?>

@@ -16,7 +16,7 @@ if (isset($_GET['nama']) && !empty($_GET['nama'])) {
 
 // Logik untuk filter tahap
 if (isset($_GET['tapis_tahap']) && !empty($_GET['tapis_tahap'])) {
-    $tapis_tahap= $_GET['tapis_tahap'];
+    $tapis_tahap = $_GET['tapis_tahap'];
 
     // Jika carian nama sudah ditetapkan, tambahkan AND, jika tidak WHERE
     if (strpos($sql, 'WHERE') !== false) {
@@ -30,8 +30,7 @@ if (isset($_GET['tapis_tahap']) && !empty($_GET['tapis_tahap'])) {
 $laksana = mysqli_query($condb,  $sql);
 
 
-$popup_message = "";
-$popup_visible = false;
+
 
 if (isset($_POST['upload'])) {
     $namafailsementara = $_FILES["data_pengguna"]["tmp_name"];
@@ -49,8 +48,9 @@ if (isset($_POST['upload'])) {
 
             $pilih = mysqli_query($condb, "select* from pelanggan where notel = '" . $notel . "'");
             if (mysqli_num_rows($pilih) == 1) {
-                $popup_message = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
-                $popup_visible = true;
+                $_SESSION['error'] = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
+                header("Location: list-user.php");
+                exit();
             } else {
                 $arahan_sql_simpan = "insert into pelanggan (email, notel, nama, password, tahap) values ('$email','$notel','$nama','$katalaluan','ADMIN')";
                 mysqli_query($condb, $arahan_sql_simpan);
@@ -60,15 +60,18 @@ if (isset($_POST['upload'])) {
         fclose($fail_data_pengguna);
 
         if (mysqli_num_rows($pilih) == 1) {
-            $popup_message = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
-            $popup_visible = true;
+            $_SESSION['error'] = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
+            header("Location: list-user.php");
+            exit();
         } else {
-            $popup_message = "Import fail Data Selesai. Sebanyak $bil data telah disimpan";
-            $popup_visible = true;
+            $_SESSION['success'] = "Import fail Data Selesai. Sebanyak $bil data telah disimpan";
+            header("Location: list-user.php");
+            exit();
         }
     } else {
-        $popup_message = "Hanya fail berformat txt sahaja dibenarkan";
-        $popup_visible = true;
+        $_SESSION['error'] = "Hanya fail berformat txt sahaja dibenarkan";
+        header("Location: list-user.php");
+        exit();
     }
 }
 ?>
@@ -106,27 +109,6 @@ if (isset($_POST['upload'])) {
             /* Show by default */
         }
 
-        .notif {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .notif-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
-        }
 
         .pekerja {
             display: none;
@@ -163,6 +145,7 @@ if (isset($_POST['upload'])) {
             text-decoration: none;
             cursor: pointer;
         }
+
         .dropzone {
             border: 2px dashed #ccc;
             border-radius: 4px;
@@ -192,29 +175,25 @@ if (isset($_POST['upload'])) {
         .hidden {
             display: none;
         }
-        
+
         #fileDisplay {
             border: 1px solid #e2e8f0;
             margin-top: 8px;
         }
-        
+
         #removeFile {
             padding: 4px 8px;
             border-radius: 4px;
         }
     </style>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="font-roboto bg-gray-100">
-
-    <?php if ($popup_visible) : ?>
-        <div id="notif" class="notif" style="display:block;">
-            <div class="notif-content">
-                <span class="close">&times;</span>
-                <p><?php echo htmlspecialchars($popup_message); ?></p>
-            </div>
-        </div>
-    <?php endif; ?>
 
 
     <div class="flex h-screen flex-col">
@@ -333,7 +312,7 @@ if (isset($_POST['upload'])) {
                                                     <button onclick="updateUser('<?= $m['notel'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button onclick="if(confirm('Anda pasti anda ingin memadam pengguna <?= $m['nama'] ?>  ini?')) location.href='../function/del-user.php?notel=<?php echo urlencode($m['notel']); ?>'" class="bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
+                                                    <button data-id="<?php echo urlencode($m['notel']); ?>" class="delete-btn bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
                                                 </div>
@@ -369,7 +348,7 @@ if (isset($_POST['upload'])) {
             <h2 class="text-2xl font-bold mb-4">Upload Pekerja</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
-                <label for="file" class="block text-gray-700">Pilih fail txt:</label>
+                    <label for="file" class="block text-gray-700">Pilih fail txt:</label>
                     <div class="dropzone" id="uploadDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
@@ -421,7 +400,7 @@ if (isset($_POST['upload'])) {
 
     <script>
         function updateUser(notel) {
-            
+
             fetch(`../api/get-user.php?notel=${notel}`)
                 .then(response => response.json())
                 .then(data => {
@@ -491,7 +470,6 @@ if (isset($_POST['upload'])) {
         const pekerja = document.getElementById("uploadPekerja");
         const btn = document.getElementById("uploadButton");
         const span = document.getElementsByClassName("close")[0];
-        const notif = document.getElementById("notif");
 
         btn.onclick = function() {
             pekerja.style.display = "block";
@@ -499,7 +477,6 @@ if (isset($_POST['upload'])) {
 
         span.onclick = function() {
             window.location.href = window.location.href;
-            notif.style.display = "none";
             pekerja.style.display = "none";
         }
 
@@ -508,14 +485,109 @@ if (isset($_POST['upload'])) {
                 window.location.href = window.location.href;
                 pekerja.style.display = "none";
             }
-            if (event.target == notif) {
-                window.location.href = window.location.href;
-                notif.style.display = "none";
-            }
         }
 
-         // Fungsi untuk setup dropzone
-         function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Untuk popup success
+            <?php if (isset($_SESSION['success'])): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: '<?php echo $_SESSION['success']; ?>',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = window.location.href;
+                });
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+            // Untuk popup error
+            <?php if (isset($_SESSION['error'])): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: '<?php echo $_SESSION['error']; ?>',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = window.location.href;
+                });
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+
+
+
+            // Untuk delete button
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const id = this.dataset.id;
+
+                    Swal.fire({
+                        title: 'Anda pasti?',
+                        text: "Anda tidak boleh memulihkan data ini selepas dipadam!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, padam!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = `../function/del-user.php?notel=${id}`;
+                        }
+                    });
+                });
+            });
+
+            // Untuk validation errors
+            const showValidationError = (message) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ralat',
+                    text: message,
+                    showConfirmButton: true
+                });
+            };
+
+            // Form validation dengan SweetAlert
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    // Contoh validasi untuk fail
+                    const fileInput = this.querySelector('input[type="file"]');
+                    if (fileInput && fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        const acceptedTypes = fileInput.accept.split(',');
+
+                        if (fileInput.accept.includes('.txt')) {
+                            if (!file.name.endsWith('.txt')) {
+                                e.preventDefault();
+                                showValidationError('Sila pilih fail .txt sahaja');
+                                return;
+                            }
+                        } else if (fileInput.accept.includes('image')) {
+                            if (!file.type.startsWith('image/')) {
+                                e.preventDefault();
+                                showValidationError('Sila pilih fail gambar sahaja');
+                                return;
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        // Untuk error handling pada dropzone
+        function handleDropzoneError(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Ralat',
+                text: message,
+                showConfirmButton: true
+            });
+        }
+
+        // Update dropzone error handling
+        function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
             const dropzone = document.getElementById(dropzoneId);
             const input = document.getElementById(inputId);
             const previewContainer = previewContainerId ? document.getElementById(previewContainerId) : null;
@@ -551,11 +623,11 @@ if (isset($_POST['upload'])) {
             input.addEventListener('change', (e) => {
                 if (e.target.files && e.target.files[0]) {
                     const file = e.target.files[0];
-                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) || 
+                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
                         (acceptType === 'image/*' && file.type.startsWith('image/'))) {
                         showPreview(file);
                     } else {
-                        alert('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
+                        handleDropzoneError('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
                         input.value = '';
                     }
                 }
@@ -587,12 +659,12 @@ if (isset($_POST['upload'])) {
 
             dropzone.addEventListener('drop', (e) => {
                 const file = e.dataTransfer.files[0];
-                if ((acceptType === '.txt' && file.name.endsWith('.txt')) || 
+                if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
                     (acceptType === 'image/*' && file.type.startsWith('image/'))) {
                     input.files = e.dataTransfer.files;
                     showPreview(file);
                 } else {
-                    alert('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
+                    handleDropzoneError('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
                 }
             });
 
