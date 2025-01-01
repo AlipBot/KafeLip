@@ -9,16 +9,33 @@ if (isset($_SESSION['orders'])) {
     $bil = "";
 }
 
-# Mendapatkan semua data tempahan pengguna berdasarkan email dan tarikh
-$sql = "SELECT email, tarikh, 
-        SUM(kuantiti * makanan.harga) AS jum
-        FROM tempahan
-        JOIN makanan ON tempahan.kod_makanan = makanan.kod_makanan
-        WHERE email = '" . $_SESSION['email'] . "'
-        GROUP BY email, tarikh
-        ORDER BY tarikh DESC";
+if (isset($_GET['tarikh_semasa'])) {
+    $tarikhsemasa = $_GET['tarikh_semasa'];
+} else {
+    $tarikhsemasa = date("Y-m-d");
+}
 
+# Dapatkan Senarai tarikh
+$sqltarikh = "SELECT DATE(tarikh) AS tarikh, count(*) as bilangan 
+FROM tempahan 
+WHERE email = '" . $_SESSION['email'] . "'
+GROUP BY DATE(tarikh)
+ORDER BY DATE(tarikh) DESC";
+$laktarikh = mysqli_query($condb, $sqltarikh);
+
+# dapatkan semua senarai tempahan
+$sql = "SELECT t.email, 
+               t.tarikh,
+               SUM(t.kuantiti * m.harga) AS jumlah_harga
+        FROM tempahan t
+        JOIN makanan m ON t.kod_makanan = m.kod_makanan
+        WHERE t.tarikh LIKE '%$tarikhsemasa%' 
+        AND t.email = '" . $_SESSION['email'] . "'
+        GROUP BY t.email, t.tarikh
+        ORDER BY t.tarikh DESC";
 $laksql = mysqli_query($condb, $sql);
+
+
 
 ?>
 
@@ -187,8 +204,26 @@ $laksql = mysqli_query($condb, $sql);
         <div class="container mx-auto text-center py-8 px-4">
             <h2 class="text-2xl font-bold mb-6 relative inline-block text-center w-full text-black">
                 <i class="fas fa-history text-[#4A7C59] mr-1"></i> Sejarah Tempahan
-
             </h2>
+            <form action="sejarah-tempah.php" method="GET" class="py-5 flex items-center space-x-2 w-full justify-center">
+                <select name='tarikh_semasa' class="border rounded p-2 w-1/4">
+                    <option value='<?= $tarikhsemasa ?>'>
+                        <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?>
+                    </option>
+                    <option disabled>Pilih Tarikh Lain Di bawah</option>
+                    <?php while ($mm = mysqli_fetch_array($laktarikh)): ?>
+                        <option value='<?= $mm['tarikh'] ?>'>
+                            <?= date_format(date_create($mm['tarikh']), "d/m/Y") ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <button type="submit" class="bg-[#4A7C59] text-white p-2 rounded flex items-center hover:bg-[#68B0AB]">
+                    <i class="fas fa-search mr-1"></i> Cari
+                </button>
+                <a href="sejarah-tempah.php" class="bg-red-500 text-white p-2 rounded flex items-center hover:bg-red-600">
+                    <i class="fas fa-undo mr-1"></i> Reset
+                </a>
+            </form>
             <div class="overflow-x-auto">
                 <?php if (mysqli_num_rows($laksql) > 0): ?>
                     <table class="table-auto mx-auto border-collapse border-2 border-[#4A7C59] border-separate shadow-lg w-full sm:w-auto rounded-lg">
@@ -208,7 +243,7 @@ $laksql = mysqli_query($condb, $sql);
                                         <i class="fas fa-calendar-day"></i> Tarikh: <?php echo date_format($tarikh, "d/m/Y") ?> <br>
                                         <i class="fas fa-clock"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
                                     </td>
-                                    <td class="border-0 shadow-lg  px-4 py-2 text-center">RM <?= number_format($m['jum'], 2) ?> </td>
+                                    <td class="border-0 shadow-lg  px-4 py-2 text-center">RM <?= number_format($m['jumlah_harga'], 2) ?> </td>
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center 	">
                                         <?php $masa = date_format($tarikh, "Y-m-d H:i:s"); ?>
                                         <button onclick="location.href='resit.php?tarikh=<?= $masa ?>';" class="SemakResit bg-[#4A7C59]  hover:bg-[#68B0AB] text-white px-4 py-2 rounded-md"><i class="fas fa-search"></i> Semak</button>
@@ -220,8 +255,7 @@ $laksql = mysqli_query($condb, $sql);
                 <?php else: ?>
                     <div class="overflow-x-auto">
                         <p class="text-2xl text-white bg-[#A3B18A] p-4 rounded-lg shadow-lg inline-block">
-                            <i class="fas fa-exclamation-circle"></i> Tiada tempahan atau kosong
-                        </p>
+                            <i class="fas fa-exclamation-circle"></i> Tiada Tempahan Pada Tarikh <?= date_format(date_create($tarikhsemasa), "d/m/Y") ?>                        </p>
                     </div> <?php endif; ?>
             </div>
         </div>

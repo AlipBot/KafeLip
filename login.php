@@ -3,14 +3,43 @@ $lifetime = 60 * 60 * 24 * 30;  // 30 days
 session_set_cookie_params($lifetime);
 session_start();
 
+function SemakLogin($input) {
+    // Check if input is email
+    if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
+        return 'email';
+    }
+    // Check if input is phone number (digits and 10-15 characters)
+    elseif (preg_match('/^[0-9]{10,15}$/', $input)) {
+        return 'notel';
+    }
+    else {
+        return false; // Invalid input
+    }
+}
+
 // Periksa login terlebih dahulu
 if (isset($_POST['LogMasuk'])) {
     include("function/connection.php");
-    $email = $_POST['email'];
+    $emailORnotel = $_POST['emailOrNotel'];
+    $SemakinputLogin = SemakLogin($emailORnotel);
+    $loginSql = "";
+
+    if ($SemakinputLogin){
+        if ($SemakinputLogin == "email"){
+          $loginSql = "email = '".$emailORnotel."'";
+        }elseif ($SemakinputLogin == "notel"){
+            $loginSql = "notel = '".$emailORnotel."'";
+        }
+    }else{
+        $_SESSION['error'] = "Sila masukkan email atau no. tel sahaja";
+        header("Location: login.php");
+        exit();
+    }
+
     $password = $_POST['pass'];
 
     $cari = "select * from pelanggan
-             where email = '$email'
+             where ".$loginSql."
              and password = '$password' limit 1";
 
     $cek = mysqli_query($condb, $cari);
@@ -47,6 +76,8 @@ if (!empty($_SESSION['tahap'])) {
 // Tambah kod ini sebelum HTML output bermula
 if (isset($_GET['status']) && $_GET['status'] === 'logout') {
     $_SESSION['success'] = "Berjaya Log Keluar";
+    header("Location: login.php");
+    exit();
 }
 
 // HTML output bermula selepas semua logic PHP
@@ -82,9 +113,9 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
         <form action="" method='POST'>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="email">
-                        Email
+                        Email atau No. Telefon
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Enter your email" type="email" name='email' required/>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Masukkan email atau No. Telefon" type="text" name='emailOrNotel' required/>
                 </div>
                 <div class="mb-4 relative">
                     <label class="block text-gray-700" for="password">
@@ -99,12 +130,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
                     </div>
                 </div>
                 <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center">
-                        <input class="mr-2" id="remember" type="checkbox" />
-                        <label class="text-gray-700" for="remember">
-                            Remember me
-                        </label>
-                    </div>
+
                     <a class="text-blue-500 hover:underline" href="#">
                         Forgot password?
                     </a>

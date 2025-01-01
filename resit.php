@@ -193,21 +193,32 @@ $laksana = mysqli_query($condb, $sql_pilih);
     <div class="conten container mx-auto text-center py-8 px-4 print-area">
         <h2 class="text-2xl font-bold mb-4 text-black"><i class="fas fa-receipt text-[#4A7C59] mr-1"></i> Resit</h2>
         <div class="bg-white shadow-md rounded-lg p-6 max-w-[700px] mx-auto ">
-            <div class="text-left mb-4">
-                <p class="text-lg font-semibold">KafeLip</p>
-                <p class="text-sm">Tarikh:
-                    <?php
-                    $masa = date_create($tarikh);
-                    echo date_format($masa, "d/m/Y") ?>
-                </p>
-                <p class="text-sm">Masa:
-                    <?php
-                    $masa = date_create($tarikh);
-                    echo date_format($masa, "g:i:s A") ?>
-                </p>
-                <p class="text-sm">Email:
-                    <?= $email ?>
-                </p>
+            <div class="text-left mb-4 flex justify-between">
+                <div>
+                    <p class="text-lg font-semibold mb-2"><i class="fas fa-user-circle text-[#4A7C59] mr-1"></i> Maklumat Pelanggan</p>
+                    <p class="text-sm mb-1"><i class="fas fa-user text-[#4A7C59] mr-1"></i> Nama:
+                        <?= $_SESSION['nama'] ?>
+                    </p>
+                    <p class="text-sm mb-1"><i class="fas fa-phone text-[#4A7C59] mr-1"></i> No. Telefon:
+                        <?= $_SESSION['notel'] ?>
+                    </p>
+                    <p class="text-sm"><i class="fas fa-envelope text-[#4A7C59] mr-1"></i> Email:
+                        <?= $email ?>
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-lg font-semibold mb-2"><i class="fas fa-store text-[#4A7C59] mr-1"></i> KafeLip</p>
+                    <p class="text-sm mb-1"><i class="fas fa-calendar-alt text-[#4A7C59] mr-1"></i> Tarikh:
+                        <?php
+                        $masa = date_create($tarikh);
+                        echo date_format($masa, "d/m/Y") ?>
+                    </p>
+                    <p class="text-sm"><i class="fas fa-clock text-[#4A7C59] mr-1"></i> Masa:
+                        <?php
+                        $masa = date_create($tarikh);
+                        echo date_format($masa, "g:i:s A") ?>
+                    </p>
+                </div>
             </div>
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-white border-2 border-gray-300 rounded-lg">
