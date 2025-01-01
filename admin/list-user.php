@@ -376,7 +376,8 @@ if (isset($_POST['upload'])) {
                 <input type="hidden" name="notel_lama" id="notel_lama">
                 Nama:
                 <input type="text" name="nama" id="nama" class="w-full border p-2 mb-3" required>
-
+                Email:
+                <input type="text" name="email" id="email" class="w-full border p-2 mb-3" required>
                 No Telefon:
                 <input type="text" name="notel" id="notel" class="w-full border p-2 mb-3" required>
 
@@ -391,7 +392,7 @@ if (isset($_POST['upload'])) {
 
                 <div class="flex justify-end">
                     <button type="button" onclick="closeModal()" class="bg-gray-500 text-white p-2 mr-2">Batal</button>
-                    <button type="submit" class="bg-blue-500 text-white p-2">Kemaskini</button>
+                    <button type="submit" name ="KemaskiniDataPengguna" class="bg-blue-500 text-white p-2">Kemaskini</button>
                 </div>
             </form>
         </div>
@@ -405,6 +406,7 @@ if (isset($_POST['upload'])) {
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('nama').value = data.nama;
+                    document.getElementById('email').value = data.email;
                     document.getElementById('notel').value = data.notel;
                     document.getElementById('katalaluan').value = data.password;
                     document.getElementById('tahap').value = data.tahap;

@@ -16,6 +16,7 @@ $m          =   mysqli_fetch_array($laksana);
 
 echo json_encode([
     'nama' => $m['nama'],
+    'email' => $m['email'],
     'notel' => $m['notel'],
     'password' => $m['password'],
     'tahap' => $m['tahap']
