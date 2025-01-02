@@ -26,6 +26,7 @@ $laktarikh = mysqli_query($condb, $sqltarikh);
 # dapatkan semua senarai tempahan
 $sql = "SELECT t.email, 
                t.tarikh,
+               TIMESTAMPDIFF(SECOND, t.tarikh, NOW()) as seconds_passed,
                SUM(t.kuantiti * m.harga) AS jumlah_harga
         FROM tempahan t
         JOIN makanan m ON t.kod_makanan = m.kod_makanan
@@ -246,7 +247,23 @@ $laksql = mysqli_query($condb, $sql);
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center">RM <?= number_format($m['jumlah_harga'], 2) ?> </td>
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center 	">
                                         <?php $masa = date_format($tarikh, "Y-m-d H:i:s"); ?>
-                                        <button onclick="location.href='resit.php?tarikh=<?= $masa ?>';" class="SemakResit bg-[#4A7C59]  hover:bg-[#68B0AB] text-white px-4 py-2 rounded-md"><i class="fas fa-search"></i> Semak</button>
+                                        <div class="flex flex-col gap-2">
+                                            <button onclick="location.href='resit.php?tarikh=<?= $masa ?>';" 
+                                                    class="SemakResit bg-[#4A7C59] hover:bg-[#68B0AB] text-white px-4 py-2 rounded-md w-full">
+                                                <i class="fas fa-search"></i> Semak
+                                            </button>
+                                            <?php if ($m['seconds_passed'] <= 60): ?>
+                                                <div>
+                                                    <button onclick="if(confirm('Adakah anda pasti untuk membatalkan tempahan ini?')) location.href='batal-tempahan.php?tarikh=<?= $masa ?>';" 
+                                                            class="SemakResit bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-full">
+                                                        <i class="fas fa-trash"></i> Batal
+                                                    </button>
+                                                    <div class="text-sm text-red-500 mt-1">
+                                                        Masa tinggal: <span class="countdown" data-seconds-passed="<?= $m['seconds_passed'] ?>">60</span> saat
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -325,6 +342,28 @@ $laksql = mysqli_query($condb, $sql);
 
         // Panggil fungsi semasa resize window
         window.onresize = adjustFooter;
+
+        // Fungsi untuk mengira masa yang tinggal
+        document.addEventListener('DOMContentLoaded', function() {
+            const countdowns = document.querySelectorAll('.countdown');
+            
+            countdowns.forEach(countdown => {
+                const secondsPassed = parseInt(countdown.dataset.secondsPassed);
+                let timeLeft = 60 - secondsPassed;
+                
+                const timer = setInterval(() => {
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        // Sembunyikan button batal dan kiraan masa
+                        const parentDiv = countdown.closest('div').parentElement;
+                        parentDiv.style.display = 'none';
+                    } else {
+                        countdown.textContent = timeLeft;
+                        timeLeft--;
+                    }
+                }, 1000);
+            });
+        });
     </script>
 </body>
 

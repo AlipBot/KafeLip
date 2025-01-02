@@ -399,6 +399,56 @@ include('../function/connection.php');
             <?php endif; ?>
         })
     </script>
+
+    <script>
+        let lastOrderCount = 0;  // Simpan jumlah tempahan terakhir
+
+        function checkOrderChanges() {
+            fetch('../api/get-laporan.php')
+                .then(response => response.json())
+                .then(data => {
+                    const currentOrderCount = data.jumlahHarini;
+
+                    // Jika jumlah tempahan berkurang, bermakna ada pembatalan
+                    if (currentOrderCount < lastOrderCount) {
+                        playCancelSound();
+                        Toast.fire({
+                            icon: "warning",
+                            title: "Tempahan telah dibatalkan!"
+                        });
+                    }
+                    // Jika jumlah tempahan bertambah, bermakna ada tempahan baru
+                    else if (currentOrderCount > lastOrderCount) {
+                        playNotificationSound();
+                        Toast.fire({
+                            icon: "success",
+                            title: "Tempahan baru diterima!"
+                        });
+                    }
+
+                    lastOrderCount = currentOrderCount; // Kemaskini jumlah tempahan terakhir
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function playCancelSound() {
+            const audio = document.getElementById('cancelSound');
+            audio.play();
+        }
+
+        // Panggil fungsi setiap 1 saat
+        setInterval(checkOrderChanges, 1000);
+
+        // Dapatkan jumlah tempahan awal
+        fetch('../api/get-laporan.php')
+            .then(response => response.json())
+            .then(data => {
+                lastOrderCount = data.jumlahHarini;
+            });
+    </script>
+
+    <!-- Tambah audio untuk pembatalan -->
+    <audio id="cancelSound" src="../lib/audio/order-batal.mp3"></audio>
 </body>
 
 </html>
