@@ -34,7 +34,6 @@ if(!empty($_GET))
     }
     else
     {
-      #jika gagal papar punca error
       $_SESSION['error'] = "Kemaskini Gagal: " . mysqli_error($condb);
       header("Location: ../admin/list-menu.php");
       exit();

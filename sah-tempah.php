@@ -29,6 +29,12 @@ if (!isset($_SESSION['orders'])) {
         $laktempah  =   mysqli_query($condb, $sqltempah);
     }
 
+    if ($laktempah) {
+        $_SESSION['success'] = "Tempahan Selesai";
+    } else {
+      #jika gagal papar punca error
+      $_SESSION['error'] = "Tempahan Gagal: " . mysqli_error($condb);
+    }
     # Memadam nilai pembolehubah session
     unset($_SESSION['orders']);
     unset($_SESSION['jumlah_harga']);

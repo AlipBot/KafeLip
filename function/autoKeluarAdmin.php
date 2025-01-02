@@ -4,7 +4,7 @@ session_set_cookie_params($lifetime);
 session_start();
 
 if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
-    echo " <script> window.location.href = 'index.php'; </script>";
+    echo " <script> window.location.href = '../index.php'; </script>";
 } else {
 
     include("connection.php");

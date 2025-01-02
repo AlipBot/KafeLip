@@ -23,12 +23,25 @@ $sql_kirabulanini = "
 $kira_bulanini = mysqli_fetch_assoc(mysqli_query($condb, $sql_kirabulanini));
 
 
-// Jumlah Keuntungan Hari Ini
-$sql_untungharini = "SELECT SUM(jumlah_harga) AS total_harian FROM tempahan WHERE DATE(tarikh) = CURDATE()";
+// Jumlah Keuntungan Hari Ini (unik berdasarkan email, tarikh dan jumlah_harga)
+$sql_untungharini = "
+    SELECT SUM(jumlah_harga) as total_harian 
+    FROM (
+        SELECT DISTINCT email, DATE_FORMAT(tarikh, '%Y-%m-%d %H:%i:%s') as masa_tempah, jumlah_harga
+        FROM tempahan 
+        WHERE DATE(tarikh) = CURDATE()
+    ) as unik_tempahan";
 $untung_hari = mysqli_fetch_assoc(mysqli_query($condb, $sql_untungharini));
 
-// Jumlah Keuntungan Bulan Ini
-$sql_untungbulani = "SELECT SUM(jumlah_harga) AS total_bulanan FROM tempahan WHERE MONTH(tarikh) = MONTH(CURDATE()) AND YEAR(tarikh) = YEAR(CURDATE())";
+// Jumlah Keuntungan Bulan Ini (unik berdasarkan email, tarikh dan jumlah_harga)
+$sql_untungbulani = "
+    SELECT SUM(jumlah_harga) as total_bulanan 
+    FROM (
+        SELECT DISTINCT email, DATE_FORMAT(tarikh, '%Y-%m-%d %H:%i:%s') as masa_tempah, jumlah_harga
+        FROM tempahan 
+        WHERE MONTH(tarikh) = MONTH(CURDATE()) 
+        AND YEAR(tarikh) = YEAR(CURDATE())
+    ) as unik_tempahan";
 $untung_bulan = mysqli_fetch_assoc(mysqli_query($condb, $sql_untungbulani));
 
 // Jumlah Pelanggan

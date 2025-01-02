@@ -137,9 +137,9 @@ $laksql = mysqli_query($condb, $sql);
                                 <i class="fas fa-search mr-1"></i> Cari
                             </button>
                         </form>
-                        
+
                         <div class="flex space-x-2">
-                        <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">Laporan pada Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>                            
+                            <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">Laporan pada Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>
                         </div>
 
 
@@ -148,9 +148,10 @@ $laksql = mysqli_query($condb, $sql);
                                 <thead>
                                     <tr class="bg-blue-200 text-blue-800">
                                         <th width='30%' class="px-[47px] py-2">Pelanggan</th>
-                                        <th width='30%' class="px-[47px] py-2">Pesanan</th>
+                                        <th width='35%' class="px-[47px] py-2">Pesanan</th>
                                         <th width='20%' class="px-[47px] py-2">Jumlah Harga (RM)</th>
                                         <th width='20%' class="px-[47px] py-2">Masa</th>
+                                        <th width='10%' class="px-[47px] py-2">Resit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -177,12 +178,19 @@ $laksql = mysqli_query($condb, $sql);
                                                     $tarikh = date_create($m['tarikh']);
                                                     echo date_format($tarikh, "g:i:s A");
                                                     ?></td>
+                                                <td class='px-4 py-2 text-center'>
+                                                    <div class="flex flex-col items-center space-y-4">
+                                                        <button onclick="bukaResit('<?= $m['email'] ?>', '<?= $m['tarikh'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
+                                                        <i class="fas fa-search"></i> Semak
+                                                        </button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         <?php } ?>
                                     <?php } else { ?>
                                         <tr>
                                             <td colspan="4" class="text-center py-6 text-gray-500">
-                                           <i class="fas fa-exclamation-circle text-4xl mb-2"></i>
+                                                <i class="fas fa-exclamation-circle text-4xl mb-2"></i>
                                                 <p class="text-lg font-semibold">Tiada dalam senarai</p>
                                                 <p class="text-sm">Sila cuba pilih tarikh lain.</p>
                                             </td>
@@ -233,6 +241,12 @@ $laksql = mysqli_query($condb, $sql);
         // Update date and time every second
         setInterval(updateDateTime, 1000);
         updateDateTime(); // Initial call to set the date and time immediately
+
+        function bukaResit(email, tarikh) {
+            // Buka window baru dengan saiz yang ditetapkan
+            let popupWindow = window.open(`semak-resit.php?email=${email}&tarikh=${tarikh}`, 'Resit', 
+                'width=800,height=600,resizable=yes,scrollbars=yes');
+        }
     </script>
 
 </body>
