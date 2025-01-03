@@ -18,7 +18,7 @@ if (isset($_POST['DaftarMasuk'])) {
     $password = $_POST["pass"];
     $password2 = $_POST["pass2"];
 
-    if ( $password != $password) {
+    if ($password != $password) {
         $_SESSION['error'] = "KATA LAUAN TIDAK SAMA";
         header("Location: signup.php");
         exit();
@@ -83,8 +83,8 @@ if (isset($_POST['DaftarMasuk'])) {
     </title>
     <script src="https://cdn.tailwindcss.com">
     </script>
-     <!-- SweetAlert2 CSS -->
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
@@ -105,7 +105,7 @@ if (isset($_POST['DaftarMasuk'])) {
                     <label class="block text-gray-700" for="name">
                         Name
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" placeholder="Enter your name" type="text" name='nama' required/>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" placeholder="Enter your name" type="text" name='nama' required />
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="phone">
@@ -117,7 +117,7 @@ if (isset($_POST['DaftarMasuk'])) {
                     <label class="block text-gray-700" for="email">
                         Email
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Enter your email" type="email" name='email' required/>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Enter your email" type="email" name='email' required />
                     <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
                         Please enter a valid email address.
                     </p>
@@ -127,7 +127,7 @@ if (isset($_POST['DaftarMasuk'])) {
                         Password
                     </label>
                     <div class="relative">
-                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="password" placeholder="Enter your password" type="password" name='pass' required/>
+                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="password" placeholder="Enter your password" type="password" name='pass' required />
                         <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" id="togglePassword" type="button">
                             <i class="fas fa-eye-slash">
                             </i>
@@ -142,7 +142,7 @@ if (isset($_POST['DaftarMasuk'])) {
                         Confirm Password
                     </label>
                     <div class="relative">
-                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="confirm-password" placeholder="Confirm your password" type="password" name="pass2"  required/>
+                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="confirm-password" placeholder="Confirm your password" type="password" name="pass2" required />
                         <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" id="toggleConfirmPassword" type="button">
                             <i class="fas fa-eye-slash">
                             </i>
@@ -228,6 +228,12 @@ if (isset($_POST['DaftarMasuk'])) {
         });
     </script>
     <script>
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
+        const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
+        const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+
+
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -246,6 +252,7 @@ if (isset($_POST['DaftarMasuk'])) {
                     icon: "success",
                     title: "<?= $_SESSION['success'] ?>"
                 });
+                notifsuccess.play(); // Main bunyi bila toast muncul
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
@@ -254,7 +261,17 @@ if (isset($_POST['DaftarMasuk'])) {
                     icon: "info",
                     title: "<?= $_SESSION['info'] ?>"
                 });
+                notifinfo.play();
                 <?php unset($_SESSION['info']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['warning'])): ?>
+                Toast.fire({
+                    icon: "warning",
+                    title: "<?= $_SESSION['warning'] ?>"
+                });
+                notifwarning.play();
+                <?php unset($_SESSION['warning']); ?>
             <?php endif; ?>
 
             // Untuk popup error
@@ -263,6 +280,7 @@ if (isset($_POST['DaftarMasuk'])) {
                     icon: "error",
                     title: "<?= $_SESSION['error'] ?>"
                 });
+                notiferror.play();
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         })

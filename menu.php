@@ -641,9 +641,10 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         
-        const notifsuccess = new Audio('lib/audio/tutru.mp3'); // Tukar path ke fail audio anda
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
         const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
         const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
 
 
         const Toast = Swal.mixin({
@@ -675,6 +676,15 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                 });
                 notifinfo.play();
                 <?php unset($_SESSION['info']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['warning'])): ?>
+                Toast.fire({
+                    icon: "warning",
+                    title: "<?= $_SESSION['warning'] ?>"
+                });
+                notifwarning.play();
+                <?php unset($_SESSION['warning']); ?>
             <?php endif; ?>
 
             // Untuk popup error

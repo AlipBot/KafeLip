@@ -38,7 +38,12 @@ $laksql = mysqli_query($condb, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sejarah Laporan KafeLip</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/duotone.css" />
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/brands.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         .drawer-open {
@@ -96,6 +101,11 @@ $laksql = mysqli_query($condb, $sql);
                         <li class="mb-4">
                             <a href="laporan.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
                                 <i class="fas fa-file-alt mr-2"></i> Sejarah Laporan
+                            </a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="statistik.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
                         <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">

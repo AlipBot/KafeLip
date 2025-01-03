@@ -10,7 +10,12 @@ include('../function/connection.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel KafeLip</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/duotone.css" />
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/brands.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -95,6 +100,11 @@ include('../function/connection.php');
                 <nav class="flex-1 p-4 overflow-y-auto">
                     <ul>
                         <li class="mb-4">
+                            <a href="panel.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
+                            </a>
+                        </li>
+                        <li class="mb-4">
                             <a href="list-user.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
                                 <i class="fas fa-users mr-2"></i> Senarai Pengguna
                             </a>
@@ -107,6 +117,11 @@ include('../function/connection.php');
                         <li class="mb-4">
                             <a href="laporan.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
                                 <i class="fas fa-file-alt mr-2"></i> Sejarah Laporan
+                            </a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="statistik.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
                         <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
@@ -343,8 +358,14 @@ include('../function/connection.php');
             audio.play();
         }
 
-       
-        
+
+
+        const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Tukar path ke fail audio anda
+        const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
+        const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
+        const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+
+
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -363,9 +384,27 @@ include('../function/connection.php');
                     icon: "success",
                     title: "<?= $_SESSION['success'] ?>"
                 });
+                notifsuccess.play(); // Main bunyi bila toast muncul
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
+            <?php if (isset($_SESSION['info'])): ?>
+                Toast.fire({
+                    icon: "info",
+                    title: "<?= $_SESSION['info'] ?>"
+                });
+                notifinfo.play();
+                <?php unset($_SESSION['info']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['warning'])): ?>
+                Toast.fire({
+                    icon: "warning",
+                    title: "<?= $_SESSION['warning'] ?>"
+                });
+                notifwarning.play();
+                <?php unset($_SESSION['warning']); ?>
+            <?php endif; ?>
 
             // Untuk popup error
             <?php if (isset($_SESSION['error'])): ?>
@@ -373,6 +412,7 @@ include('../function/connection.php');
                     icon: "error",
                     title: "<?= $_SESSION['error'] ?>"
                 });
+                notiferror.play();
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         })
@@ -428,7 +468,7 @@ include('../function/connection.php');
         // Dapatkan nilai awal
         checkOrderChanges();
     </script>
-    <audio id="notifSound" src="../lib/audio/order-masuk.mp3"></audio>
+    <audio id="notifSound" src="../lib/audio/tutru.mp3"></audio>
     <!-- Tambah audio untuk pembatalan -->
     <audio id="cancelSound" src="../lib/audio/order-batal.mp3"></audio>
 </body>

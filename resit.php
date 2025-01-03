@@ -322,6 +322,12 @@ $laksana = mysqli_query($condb, $sql_pilih);
         window.onresize = adjustScale;
 
 
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
+        const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
+        const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+
+
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -335,32 +341,43 @@ $laksana = mysqli_query($condb, $sql_pilih);
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-                <?php if (isset($_SESSION['success'])): ?>
-                    Toast.fire({
-                        icon: "success",
-                        title: "<?= $_SESSION['success'] ?>"
-                    });
-                    <?php unset($_SESSION['success']); ?>
-                <?php endif; ?>
+            <?php if (isset($_SESSION['success'])): ?>
+                Toast.fire({
+                    icon: "success",
+                    title: "<?= $_SESSION['success'] ?>"
+                });
+                notifsuccess.play(); // Main bunyi bila toast muncul
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
 
-                <?php if (isset($_SESSION['info'])): ?>
-                    Toast.fire({
-                        icon: "info",
-                        title: "<?= $_SESSION['info'] ?>"
-                    });
-                    <?php unset($_SESSION['info']); ?>
-                <?php endif; ?>
+            <?php if (isset($_SESSION['info'])): ?>
+                Toast.fire({
+                    icon: "info",
+                    title: "<?= $_SESSION['info'] ?>"
+                });
+                notifinfo.play();
+                <?php unset($_SESSION['info']); ?>
+            <?php endif; ?>
 
-                // Untuk popup error
-                <?php if (isset($_SESSION['error'])): ?>
-                    Toast.fire({
-                        icon: "error",
-                        title: "<?= $_SESSION['error'] ?>"
-                    });
-                    <?php unset($_SESSION['error']); ?>
-                <?php endif; ?>
-          
-            })
+            <?php if (isset($_SESSION['warning'])): ?>
+                Toast.fire({
+                    icon: "warning",
+                    title: "<?= $_SESSION['warning'] ?>"
+                });
+                notifwarning.play();
+                <?php unset($_SESSION['warning']); ?>
+            <?php endif; ?>
+
+            // Untuk popup error
+            <?php if (isset($_SESSION['error'])): ?>
+                Toast.fire({
+                    icon: "error",
+                    title: "<?= $_SESSION['error'] ?>"
+                });
+                notiferror.play();
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        })
         
     </script>
 

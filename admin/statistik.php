@@ -16,7 +16,12 @@ include('../function/connection.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel KafeLip</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/duotone.css" />
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/brands.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -143,7 +148,7 @@ include('../function/connection.php');
             border-radius: 4px;
         }
     </style>
-
+   
 </head>
 
 <body class="font-roboto bg-gray-100">
@@ -189,7 +194,7 @@ include('../function/connection.php');
                         </li>
                         <li class="mb-4">
                             <a href="statistik.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
-                                <i class="fas fa-file-alt mr-2"></i> Statistik
+                                <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
                         <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
@@ -210,7 +215,7 @@ include('../function/connection.php');
                     <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
                         <span>Statistik</span>
                     </div>
-                    
+
                     <!-- Tambah form pemilihan bulan -->
                     <div class="mb-6">
                         <form id="filterForm" class="flex gap-4 items-end">
@@ -260,7 +265,7 @@ include('../function/connection.php');
                             </button>
                         </form>
                     </div>
-                    
+
                     <!-- Container untuk graf -->
                     <div class="w-full h-[400px]">
                         <canvas id="salesChart"></canvas>
@@ -329,8 +334,7 @@ include('../function/connection.php');
                                 type: 'line',
                                 data: {
                                     labels: labels,
-                                    datasets: [
-                                        {
+                                    datasets: [{
                                             label: 'Jumlah Tempahan',
                                             data: dataTempahan,
                                             borderColor: 'rgb(75, 192, 192)',
@@ -517,7 +521,7 @@ include('../function/connection.php');
                 e.preventDefault();
                 const bulan = document.getElementById('bulan').value;
                 const tahun = document.getElementById('tahun').value;
-                
+
                 loadChart(bulan, tahun, false);
                 loadMenuChart(bulan, tahun, false);
                 startRealtimeUpdates(bulan, tahun);
@@ -537,32 +541,61 @@ include('../function/connection.php');
                 }
             });
 
-            // Untuk popup success
+            const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Tukar path ke fail audio anda
+            const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
+            const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
+            const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
             <?php if (isset($_SESSION['success'])): ?>
-                Swal.fire({
-                    icon: 'success',
-                    title: '<?php echo $_SESSION['success']; ?>',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    window.location.href = window.location.href;
+                Toast.fire({
+                    icon: "success",
+                    title: "<?= $_SESSION['success'] ?>"
                 });
+                notifsuccess.play(); // Main bunyi bila toast muncul
                 <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['info'])): ?>
+                Toast.fire({
+                    icon: "info",
+                    title: "<?= $_SESSION['info'] ?>"
+                });
+                notifinfo.play();
+                <?php unset($_SESSION['info']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['warning'])): ?>
+                Toast.fire({
+                    icon: "warning",
+                    title: "<?= $_SESSION['warning'] ?>"
+                });
+                notifwarning.play();
+                <?php unset($_SESSION['warning']); ?>
             <?php endif; ?>
 
             // Untuk popup error
             <?php if (isset($_SESSION['error'])): ?>
-                Swal.fire({
-                    icon: 'error',
-                    title: '<?php echo $_SESSION['error']; ?>',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    window.location.href = window.location.href;
+                Toast.fire({
+                    icon: "error",
+                    title: "<?= $_SESSION['error'] ?>"
                 });
+                notiferror.play();
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
-        });
+        })
     </script>
 
 </body>

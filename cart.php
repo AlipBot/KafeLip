@@ -355,6 +355,12 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             }
 
 
+            const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
+            const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
+            const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
+            const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+
+
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -373,6 +379,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         icon: "success",
                         title: "<?= $_SESSION['success'] ?>"
                     });
+                    notifsuccess.play(); // Main bunyi bila toast muncul
                     <?php unset($_SESSION['success']); ?>
                 <?php endif; ?>
 
@@ -381,7 +388,17 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         icon: "info",
                         title: "<?= $_SESSION['info'] ?>"
                     });
+                    notifinfo.play();
                     <?php unset($_SESSION['info']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['warning'])): ?>
+                    Toast.fire({
+                        icon: "warning",
+                        title: "<?= $_SESSION['warning'] ?>"
+                    });
+                    notifwarning.play();
+                    <?php unset($_SESSION['warning']); ?>
                 <?php endif; ?>
 
                 // Untuk popup error
@@ -390,52 +407,52 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         icon: "error",
                         title: "<?= $_SESSION['error'] ?>"
                     });
+                    notiferror.play();
                     <?php unset($_SESSION['error']); ?>
                 <?php endif; ?>
-
-                document.querySelectorAll('.Sahkan-btn').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-
-                        Swal.fire({
-                            title: 'Anda pasti?',
-                            text: "Sahkan tempah",
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Ya',
-                            cancelButtonText: 'Batal'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = `sah-tempah.php`;
-                            }
-                        });
-                    });
-                });
-
-                document.querySelectorAll('.buang-btn').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-
-                        Swal.fire({
-                            title: 'Anda pasti?',
-                            text: "Mahu Kosongkan Semua Senarai Tempahan",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d33',
-                            cancelButtonColor: '#3085d6',
-                            confirmButtonText: 'Ya',
-                            cancelButtonText: 'Batal'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = 'function/kosongkan-cart.php';
-                            }
-                        });
-                    });
-                });
-
             })
+
+            document.querySelectorAll('.Sahkan-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Anda pasti?',
+                        text: "Sahkan tempah",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = `sah-tempah.php`;
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.buang-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Anda pasti?',
+                        text: "Mahu Kosongkan Semua Senarai Tempahan",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'function/kosongkan-cart.php';
+                        }
+                    });
+                });
+            });
         </script>
     </body>
 

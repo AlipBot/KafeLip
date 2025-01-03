@@ -84,8 +84,14 @@ if (isset($_POST['upload'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senarai Pengguna KafeLip</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/duotone.css" />
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/brands.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         .drawer-open {
@@ -232,6 +238,11 @@ if (isset($_POST['upload'])) {
                         <li class="mb-4">
                             <a href="laporan.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
                                 <i class="fas fa-file-alt mr-2"></i> Sejarah Laporan
+                            </a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="statistik.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                                <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
                         <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
@@ -392,7 +403,7 @@ if (isset($_POST['upload'])) {
 
                 <div class="flex justify-end">
                     <button type="button" onclick="closeModal()" class="bg-gray-500 text-white p-2 mr-2">Batal</button>
-                    <button type="submit" name ="KemaskiniDataPengguna" class="bg-blue-500 text-white p-2">Kemaskini</button>
+                    <button type="submit" name="KemaskiniDataPengguna" class="bg-blue-500 text-white p-2">Kemaskini</button>
                 </div>
             </form>
         </div>
@@ -488,6 +499,11 @@ if (isset($_POST['upload'])) {
                 pekerja.style.display = "none";
             }
         }
+        const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Tukar path ke fail audio anda
+        const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
+        const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
+        const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+
 
         document.addEventListener('DOMContentLoaded', function() {
             // Untuk popup success
@@ -498,6 +514,7 @@ if (isset($_POST['upload'])) {
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
+                    notifsuccess.play();
                     window.location.href = window.location.href;
                 });
                 <?php unset($_SESSION['success']); ?>
@@ -511,6 +528,7 @@ if (isset($_POST['upload'])) {
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
+                    notiferror.play();
                     window.location.href = window.location.href;
                 });
                 <?php unset($_SESSION['error']); ?>
@@ -523,6 +541,7 @@ if (isset($_POST['upload'])) {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const id = this.dataset.id;
+                    notifwarning.play();
 
                     Swal.fire({
                         title: 'Anda pasti?',
@@ -543,6 +562,7 @@ if (isset($_POST['upload'])) {
 
             // Untuk validation errors
             const showValidationError = (message) => {
+                notiferror.play();
                 Swal.fire({
                     icon: 'error',
                     title: 'Ralat',
@@ -580,6 +600,7 @@ if (isset($_POST['upload'])) {
 
         // Untuk error handling pada dropzone
         function handleDropzoneError(message) {
+            notiferror.play();
             Swal.fire({
                 icon: 'error',
                 title: 'Ralat',
