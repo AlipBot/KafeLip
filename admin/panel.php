@@ -377,7 +377,8 @@ include('../function/connection.php');
             <?php endif; ?>
         })
 
-        let lastOrderCount = 0;  // Simpan jumlah tempahan terakhir
+        let lastOrderCount = null;
+        let isFirstLoad = true;
 
         function checkOrderChanges() {
             fetch('../api/get-laporan.php')
@@ -385,24 +386,33 @@ include('../function/connection.php');
                 .then(data => {
                     const currentOrderCount = data.jumlahHarini;
 
-                    // Jika jumlah tempahan berkurang, bermakna ada pembatalan
-                    if (currentOrderCount < lastOrderCount) {
-                        playCancelSound();
-                        Toast.fire({
-                            icon: "warning",
-                            title: "Tempahan telah dibatalkan!"
-                        });
-                    }
-                    // Jika jumlah tempahan bertambah, bermakna ada tempahan baru
-                    else if (currentOrderCount > lastOrderCount) {
-                        playNotificationSound();
-                        Toast.fire({
-                            icon: "success",
-                            title: "Tempahan baru diterima!"
-                        });
+                    // Skip notification on first load
+                    if (isFirstLoad) {
+                        lastOrderCount = currentOrderCount;
+                        isFirstLoad = false;
+                        return;
                     }
 
-                    lastOrderCount = currentOrderCount; // Kemaskini jumlah tempahan terakhir
+                    // Only check if we have a previous value
+                    if (lastOrderCount !== null) {
+                        if (currentOrderCount < lastOrderCount) {
+                            // Pembatalan pesanan
+                            playCancelSound();
+                            Toast.fire({
+                                icon: "warning",
+                                title: "Tempahan telah dibatalkan!"
+                            });
+                        } else if (currentOrderCount > lastOrderCount) {
+                            // Pesanan baru
+                            playNotificationSound();
+                            Toast.fire({
+                                icon: "success",
+                                title: "Tempahan baru diterima!"
+                            });
+                        }
+                    }
+
+                    lastOrderCount = currentOrderCount;
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -412,15 +422,11 @@ include('../function/connection.php');
             audio.play();
         }
 
-        // Panggil fungsi setiap 1 saat
-        setInterval(checkOrderChanges, 1000);
+        // Panggil fungsi setiap 3 saat (lebih selamat daripada 1 saat)
+        setInterval(checkOrderChanges, 3000);
 
-        // Dapatkan jumlah tempahan awal
-        fetch('../api/get-laporan.php')
-            .then(response => response.json())
-            .then(data => {
-                lastOrderCount = data.jumlahHarini;
-            });
+        // Dapatkan nilai awal
+        checkOrderChanges();
     </script>
     <audio id="notifSound" src="../lib/audio/order-masuk.mp3"></audio>
     <!-- Tambah audio untuk pembatalan -->

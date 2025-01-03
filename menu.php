@@ -640,6 +640,12 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
+        
+        const notifsuccess = new Audio('lib/audio/tutru.mp3'); // Tukar path ke fail audio anda
+        const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
+        const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
+
+
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -658,6 +664,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     icon: "success",
                     title: "<?= $_SESSION['success'] ?>"
                 });
+                notifsuccess.play(); // Main bunyi bila toast muncul
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
@@ -666,6 +673,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     icon: "info",
                     title: "<?= $_SESSION['info'] ?>"
                 });
+                notifinfo.play();
                 <?php unset($_SESSION['info']); ?>
             <?php endif; ?>
 
@@ -675,6 +683,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     icon: "error",
                     title: "<?= $_SESSION['error'] ?>"
                 });
+                notiferror.play();
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         })
