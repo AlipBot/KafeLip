@@ -89,6 +89,7 @@ while ($row = mysqli_fetch_assoc($laptoday)) {
 }
 
 // Return JSON
+header('Content-Type: application/json');
 echo json_encode([
     'jumlahHarini' => $kira_harini['jumlah_pelanggan_harini'],
     'jumlahSebulan' => $kira_bulanini['jumlahSebulan'],

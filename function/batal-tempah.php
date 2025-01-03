@@ -1,6 +1,7 @@
 <?php
-include('function/connection.php');
-session_start();
+include('connection.php');
+include('autoKeluar.php');
+
 
 if (isset($_GET['tarikh'])) {
     $tarikh = $_GET['tarikh'];
@@ -20,17 +21,15 @@ if (isset($_GET['tarikh'])) {
                        AND tarikh = '$tarikh'";
         mysqli_query($condb, $sql_delete);
         
-        echo "<script>
-                alert('Tempahan berjaya dibatalkan');
-                window.location.href='sejarah-tempah.php';
-              </script>";
+        $_SESSION['success'] = "Tempahan Berjaya Dibatalkan";
+        header("Location: ../sejarah-tempah.php");
+        exit();
     } else {
-        echo "<script>
-                alert('Tempahan tidak boleh dibatalkan selepas 60 saat');
-                window.location.href='sejarah-tempah.php';
-              </script>";
+        $_SESSION['error'] = "Tempahan Tidak Boleh Dibatalkan Selepas 60 saat";
+        header("Location: ../sejarah-tempah.php");
+        exit();
     }
 } else {
-    header("Location: sejarah-tempah.php");
+    header("Location: ../sejarah-tempah.php");
 }
 ?> 

@@ -13,6 +13,7 @@ $sql_menu       =   "select* from makanan where kod_makanan = '" . $_GET['kod_me
 $lak_menu       =   mysqli_query($condb, $sql_menu);
 $m              =   mysqli_fetch_array($lak_menu);
 
+header('Content-Type: application/json');
 echo json_encode([
     'nama_makanan' => $m['nama_makanan'],
     'harga' => $m['harga']

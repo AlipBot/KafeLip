@@ -48,6 +48,10 @@ $laksql = mysqli_query($condb, $sql);
     <title>Sistem Tempahan Makanan Roti</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .custom-font {
             font-family: 'Roboto', sans-serif;
@@ -248,14 +252,14 @@ $laksql = mysqli_query($condb, $sql);
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center 	">
                                         <?php $masa = date_format($tarikh, "Y-m-d H:i:s"); ?>
                                         <div class="flex flex-col gap-2">
-                                            <button onclick="location.href='resit.php?tarikh=<?= $masa ?>';" 
-                                                    class="SemakResit bg-[#4A7C59] hover:bg-[#68B0AB] text-white px-4 py-2 rounded-md w-full">
+                                            <button onclick="location.href='resit.php?tarikh=<?= $masa ?>';"
+                                                class="SemakResit bg-[#4A7C59] hover:bg-[#68B0AB] text-white px-4 py-2 rounded-md w-full">
                                                 <i class="fas fa-search"></i> Semak
                                             </button>
                                             <?php if ($m['seconds_passed'] <= 60): ?>
                                                 <div>
-                                                    <button onclick="if(confirm('Adakah anda pasti untuk membatalkan tempahan ini?')) location.href='batal-tempahan.php?tarikh=<?= $masa ?>';" 
-                                                            class="SemakResit bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-full">
+                                                    <button onclick="if(confirm('Adakah anda pasti untuk membatalkan tempahan ini?')) location.href='function/batal-tempah.php?tarikh=<?= $masa ?>';"
+                                                        class="SemakResit bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-full">
                                                         <i class="fas fa-trash"></i> Batal
                                                     </button>
                                                     <div class="text-sm text-red-500 mt-1">
@@ -272,7 +276,8 @@ $laksql = mysqli_query($condb, $sql);
                 <?php else: ?>
                     <div class="overflow-x-auto">
                         <p class="text-2xl text-white bg-[#A3B18A] p-4 rounded-lg shadow-lg inline-block">
-                            <i class="fas fa-exclamation-circle"></i> Tiada Tempahan Pada Tarikh <?= date_format(date_create($tarikhsemasa), "d/m/Y") ?>                        </p>
+                            <i class="fas fa-exclamation-circle"></i> Tiada Tempahan Pada Tarikh <?= date_format(date_create($tarikhsemasa), "d/m/Y") ?>
+                        </p>
                     </div> <?php endif; ?>
             </div>
         </div>
@@ -305,6 +310,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Show or hide the scroll to top button
+
         window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -346,11 +352,11 @@ $laksql = mysqli_query($condb, $sql);
         // Fungsi untuk mengira masa yang tinggal
         document.addEventListener('DOMContentLoaded', function() {
             const countdowns = document.querySelectorAll('.countdown');
-            
+
             countdowns.forEach(countdown => {
                 const secondsPassed = parseInt(countdown.dataset.secondsPassed);
                 let timeLeft = 60 - secondsPassed;
-                
+
                 const timer = setInterval(() => {
                     if (timeLeft <= 0) {
                         clearInterval(timer);
@@ -364,6 +370,47 @@ $laksql = mysqli_query($condb, $sql);
                 }, 1000);
             });
         });
+        
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+                <?php if (isset($_SESSION['success'])): ?>
+                    Toast.fire({
+                        icon: "success",
+                        title: "<?= $_SESSION['success'] ?>"
+                    });
+                    <?php unset($_SESSION['success']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['info'])): ?>
+                    Toast.fire({
+                        icon: "info",
+                        title: "<?= $_SESSION['info'] ?>"
+                    });
+                    <?php unset($_SESSION['info']); ?>
+                <?php endif; ?>
+
+                // Untuk popup error
+                <?php if (isset($_SESSION['error'])): ?>
+                    Toast.fire({
+                        icon: "error",
+                        title: "<?= $_SESSION['error'] ?>"
+                    });
+                    <?php unset($_SESSION['error']); ?>
+                <?php endif; ?>
+          
+            })
+        
     </script>
 </body>
 

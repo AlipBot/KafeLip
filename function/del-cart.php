@@ -1,7 +1,6 @@
 <?php
-$lifetime = 60 * 60 * 24 * 30;  // 30 days
-session_set_cookie_params($lifetime);
-session_start();
+include('autoKeluar.php');
+
 
 # Mencari id menu pada tatasusunan SESSION['order']
 $key = array_search($_GET['id_menu'], $_SESSION['orders']);

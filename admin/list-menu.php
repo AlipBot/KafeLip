@@ -1,6 +1,3 @@
-<html lang="en">
-
-</html>
 <?php
 include('../function/autoKeluarAdmin.php');
 include('../function/connection.php');
@@ -150,8 +147,9 @@ if (isset($_POST['upload'])) {
 
 ?>
 
+<html lang="en">
 
-
+</html>
 
 <head>
     <meta charset="UTF-8">

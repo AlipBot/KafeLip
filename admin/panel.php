@@ -335,37 +335,15 @@ include('../function/connection.php');
         // Panggil setiap 1 saat
         setInterval(updateRealtimeData, 1000);
         updateRealtimeData(); // Panggil sekali bila page load
-    </script>
 
-    <audio id="notifSound" src="../lib/audio/order-masuk.mp3"></audio>
 
-    <script>
-        let previousOrderCount = 0;
-        fetch('../api/get-laporan.php')
-            .then(response => response.json())
-            .then(data => {
-                previousOrderCount = data.jumlahHarini; // Set nilai awal
-            });
 
         function playNotificationSound() {
             const audio = document.getElementById('notifSound');
             audio.play();
         }
 
-        function checkNewOrder() {
-            fetch('../api/get-laporan.php')
-                .then(response => response.json())
-                .then(data => {
-                    const currentOrderCount = data.jumlahHarini; // Ambil jumlah pesanan semasa
-                    if (currentOrderCount > previousOrderCount) {
-                        playNotificationSound();
-                        previousOrderCount = currentOrderCount; // Kemaskini bilangan pesanan
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        setInterval(checkNewOrder, 1000); // 5000 ms = 5 saat
+       
         
         const Toast = Swal.mixin({
             toast: true,
@@ -398,9 +376,7 @@ include('../function/connection.php');
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         })
-    </script>
 
-    <script>
         let lastOrderCount = 0;  // Simpan jumlah tempahan terakhir
 
         function checkOrderChanges() {
@@ -446,7 +422,7 @@ include('../function/connection.php');
                 lastOrderCount = data.jumlahHarini;
             });
     </script>
-
+    <audio id="notifSound" src="../lib/audio/order-masuk.mp3"></audio>
     <!-- Tambah audio untuk pembatalan -->
     <audio id="cancelSound" src="../lib/audio/order-batal.mp3"></audio>
 </body>
