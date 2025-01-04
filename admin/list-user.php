@@ -115,7 +115,7 @@ if (isset($_POST['upload'])) {
             /* Show by default */
         }
 
-
+        .KemaskiniPengguna,
         .pekerja {
             display: none;
             position: fixed;
@@ -128,6 +128,7 @@ if (isset($_POST['upload'])) {
             background-color: rgba(0, 0, 0, 0.4);
         }
 
+        .kemaskiniPengguna-content,
         .pekerja-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -380,8 +381,9 @@ if (isset($_POST['upload'])) {
     </div>
 
     <!-- Popup Modal -->
-    <div id="editModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-        <div class="bg-white p-5 rounded-lg w-1/3">
+    <div id="editModal" class="KemaskiniPengguna">
+        <div class="kemaskiniPengguna-content">
+            <span onclick="kemaskiniPengguna.style.display = 'none' " class="close">&times;</span>
             <h3 class="text-lg font-bold">Kemaskini Pengguna</h3>
             <form id="updateForm" action="../function/update-user.php" method="POST">
                 <input type="hidden" name="notel_lama" id="notel_lama">
@@ -402,15 +404,15 @@ if (isset($_POST['upload'])) {
                 </select>
 
                 <div class="flex justify-end">
-                    <button type="button" onclick="closeModal()" class="bg-gray-500 text-white p-2 mr-2">Batal</button>
                     <button type="submit" name="KemaskiniDataPengguna" class="bg-blue-500 text-white p-2">Kemaskini</button>
                 </div>
             </form>
         </div>
     </div>
 
-
     <script>
+        const kemaskiniPengguna = document.getElementById("editModal");
+
         function updateUser(notel) {
 
             fetch(`../api/get-user.php?notel=${notel}`)
@@ -422,13 +424,11 @@ if (isset($_POST['upload'])) {
                     document.getElementById('katalaluan').value = data.password;
                     document.getElementById('tahap').value = data.tahap;
                     document.getElementById('notel_lama').value = notel;
-                    document.getElementById('editModal').classList.remove('hidden');
+                    kemaskiniPengguna.style.display = "block";
                 });
         }
 
-        function closeModal() {
-            document.getElementById('editModal').classList.add('hidden');
-        }
+
 
         function togglePasswordVisibility(notel) {
             const passwordField = document.getElementById(`password-${notel}`);
@@ -499,6 +499,7 @@ if (isset($_POST['upload'])) {
                 pekerja.style.display = "none";
             }
         }
+
         const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Tukar path ke fail audio anda
         const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
         const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
@@ -508,28 +509,26 @@ if (isset($_POST['upload'])) {
         document.addEventListener('DOMContentLoaded', function() {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
+                notifsuccess.play();
                 Swal.fire({
                     icon: 'success',
                     title: '<?php echo $_SESSION['success']; ?>',
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    notifsuccess.play();
-                    window.location.href = window.location.href;
                 });
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
             // Untuk popup error
             <?php if (isset($_SESSION['error'])): ?>
+                notiferror.play();
                 Swal.fire({
                     icon: 'error',
                     title: '<?php echo $_SESSION['error']; ?>',
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    notiferror.play();
-                    window.location.href = window.location.href;
                 });
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>

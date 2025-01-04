@@ -500,7 +500,7 @@ if (isset($_POST['upload'])) {
     <!-- Kemaskini Menu -->
     <div id="KemaskiniMenu" class="KemaskiniMenu">
         <div class="KemaskiniMenu-content">
-            <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
+            <span onclick="Kemaskinimenu.style.display = 'none';" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Kemaskini Menu Baru</h2>
             <form action="../function/update-menu.php" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
@@ -594,7 +594,6 @@ if (isset($_POST['upload'])) {
         const Daftarmenu = document.getElementById("DaftarMenu");
         const Kemaskinimenu = document.getElementById("KemaskiniMenu");
         const btnDaftarmenu = document.getElementById("DaftarMenuButton");
-        const btnUpdateButton = document.getElementById("KemaskiniMenuButton");
         const btn = document.getElementById("uploadButton");
 
         function updateMenu(kod_menu) {
@@ -644,13 +643,13 @@ if (isset($_POST['upload'])) {
         document.addEventListener('DOMContentLoaded', function() {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
+                notifsuccess.play();
                 Swal.fire({
                     icon: 'success',
                     title: '<?php echo $_SESSION['success']; ?>',
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    notifsuccess.play();
                     window.location.href = window.location.href;
                 });
                 <?php unset($_SESSION['success']); ?>
@@ -658,13 +657,13 @@ if (isset($_POST['upload'])) {
 
             // Untuk popup error
             <?php if (isset($_SESSION['error'])): ?>
+                notiferror.play();
                 Swal.fire({
                     icon: 'error',
                     title: '<?php echo $_SESSION['error']; ?>',
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    notiferror.play();
                     window.location.href = window.location.href;
                 });
                 <?php unset($_SESSION['error']); ?>

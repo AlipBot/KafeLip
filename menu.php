@@ -354,6 +354,36 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             min-width: 30px;
             text-align: center;
         }
+
+        /* Dropdown animation */
+        #dropdownMenu {
+            transition: all 0.2s ease-in-out;
+            transform-origin: top right;
+        }
+
+        #dropdownMenu:not(.hidden) {
+            animation: slideDown 0.2s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Hover effect untuk menu items */
+        #dropdownMenu a:hover {
+            background-color: #f8f9fa;
+        }
+
+        #dropdownMenu a:active {
+            background-color: #e9ecef;
+        }
     </style>
 
 </head>
@@ -371,7 +401,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     lip
                 </span>
             </div>
-            <div class="nav flex gap-6 mx-auto">
+            <div class="nav flex gap-6 -ml-10 mr-20">
                 <a class="text-black font-medium active:text-[#4A7C59]" href="index.php">
                     <i class="fas fa-home text-[#4A7C59] mr-1"></i>
                     <span>LAMAN UTAMA</span>
@@ -385,20 +415,28 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     <span>Sejarah Tempahan</span>
                 </a>
             </div>
-            <div class="goMenu flex gap-6 ">
-                <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
-                    <a class="text-black font-medium active:text-[#4A7C59]" href="admin/panel.php">
-                        <i class="fa fa-list-alt mr-1 text-[#4A7C59]"></i>
-                        <span> PANEL ADMIN</span>
+            <div class="relative">
+                <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
+                    <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
+                </button>
+                
+                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                    <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
+                        <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
+                        </a>
+                    <?php endif; ?>
+                    <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-user mr-2 text-[#4A7C59]"></i>Profil
                     </a>
-                <?php endif; ?>
-                <a class="text-black font-medium active:text-[#4A7C59]" href="logout.php">
-                    <i class="fas fa-sign-out-alt mr-1 text-[#4A7C59]"></i>
-                    </i>
-                    <span>
-                        LOG KELUAR
-                    </span>
-                </a>
+                    <a href="account.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-cog mr-2 text-[#4A7C59]"></i>Akaun
+                    </a>
+                    <hr class="my-1">
+                    <a href="logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-sign-out-alt mr-2 text-[#4A7C59]"></i>Log Keluar
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -718,6 +756,21 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             // Hantar permintaan ke add-cart.php menggunakan format URL yang betul
             window.location.href = `function/add-cart.php?id_menu=${menuId}&quantity=${quantity}&page=menu`;
         }
+    </script>
+    <script>
+        const menuButton = document.getElementById('menuButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuButton.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Tutup dropdown bila klik di luar
+        document.addEventListener('click', (event) => {
+            if (!menuButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 
