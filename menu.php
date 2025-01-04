@@ -426,7 +426,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                             <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
                         </a>
                     <?php endif; ?>
-                    <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <a href="profil.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         <i class="fas fa-user mr-2 text-[#4A7C59]"></i>Profil
                     </a>
                     <a href="account.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

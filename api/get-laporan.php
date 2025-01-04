@@ -52,8 +52,6 @@ $total_pelanggan = mysqli_fetch_assoc(mysqli_query($condb, $sql_pelanggan));
 $sql_pekerja = "SELECT COUNT(*) AS total_pekerja FROM pelanggan  WHERE tahap = 'ADMIN'";
 $total_pekerja = mysqli_fetch_assoc(mysqli_query($condb, $sql_pekerja));
 
-
-// Laporan Tempahan Pelanggan Hari Ini
 // Laporan Tempahan Pelanggan Hari Ini
 $sql_tempahan = "
     SELECT 
