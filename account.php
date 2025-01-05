@@ -118,13 +118,13 @@ if (isset($_POST['KemaskiniPassword'])) {
 
   if (strlen($pass) < 7) {
     $_SESSION['error'] = "KATA LAUAN MESTI 8 AKSARA KE ATAS";
-    header("Location: signup.php");
+    header("Location: account.php");
     exit();
   }
 
   if (strlen($pass) > 13) {
     $_SESSION['error'] = "KATA LAUAN MESTI TIDAK BOLEH LEBIH 12 AKSARA";
-    header("Location: signup.php");
+    header("Location: account.php");
     exit();
   }
 
