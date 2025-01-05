@@ -78,19 +78,19 @@ if (isset($_POST['KemaskiniNotel'])) {
   $check = mysqli_query($condb, $sql_semaknotel);
   if (mysqli_num_rows($check) == 1) {
     $_SESSION['error'] = "NOMBOR TELEFON SUDAH DIGUNAKAN SILA GUNA NOMBOR TELEFON LAIN";
-    header("Location: signup.php");
+    header("Location: account.php");
     exit();
   }
 
   if (strlen($notel) < 10) {
     $_SESSION['error'] = "NOMBOR TELEFON MESTI 10 KE ATAS";
-    header("Location: signup.php");
+    header("Location: account.php");
     exit();
   }
 
   if (strlen($notel) > 15) {
     $_SESSION['error'] = "NOMBOR TELEFON MESTI TIDAK BOLEH LEBIH 14";
-    header("Location: signup.php");
+    header("Location: account.php");
     exit();
   }
 
@@ -136,11 +136,35 @@ if (isset($_POST['KemaskiniPassword'])) {
 }
 
 if (isset($_POST['HapusAkaun'])) {
-  $sqlHapusAkaun = "DELETE FROM pelanggan WHERE notel = '" . $_SESSION['notel'] . "' AND email = '" . $_POST['email'] . "'";
-  mysqli_query($condb, $sqlHapusAkaun);
-  $_SESSION['success'] = "Kemaskini Berjaya";
-  header("Location: account.php");
-  exit();
+  $email = $_POST['email'];
+  $notel = $_SESSION['notel'];
+
+  // Semak email dahulu
+  $sql_semakemail = "SELECT email FROM pelanggan WHERE email = ? AND notel = ?";
+  $stmt = mysqli_prepare($condb, $sql_semakemail);
+  mysqli_stmt_bind_param($stmt, "ss", $email, $notel);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+
+  if (mysqli_num_rows($result) == 0) {
+    $_SESSION['error'] = "EMAIL TIDAK SEPADAN";
+    header("Location: account.php");
+    exit();
+  }
+
+  // Laksanakan penghapusan
+  $sqlHapusAkaun = "DELETE FROM pelanggan WHERE notel = ? AND email = ?";
+  $stmt = mysqli_prepare($condb, $sqlHapusAkaun);
+  mysqli_stmt_bind_param($stmt, "ss", $notel, $email);
+  
+  if (mysqli_stmt_execute($stmt)) {
+    header("Location: account.php");
+    exit();
+  } else {
+    $_SESSION['error'] = "Gagal memadam akaun";
+    header("Location: account.php");
+    exit();
+  }
 }
 
 $sql        =   "select* from pelanggan where notel = '" . $_SESSION['notel'] . "' AND email = '" . $_SESSION['email'] . "' LIMIT 1";
@@ -305,7 +329,7 @@ $m          =   mysqli_fetch_array($laksana);
     <div class="flex flex-col md:flex-row justify-center">
       <section class="w-full md:w-3/4 space-y-8">
 
-        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
+        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg		">
           <h2 class="text-xl font-bold mb-4">
             Nama
           </h2>
@@ -314,13 +338,15 @@ $m          =   mysqli_fetch_array($laksana);
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" required type="text" name="nama" value="<?= $m['nama'] ?>" />
-            <button class="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniNama" type="submit">
+          </div>
+          <div class="flex justify-end">
+            <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniNama" type="submit">
               Save
             </button>
           </div>
         </form>
 
-        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
+        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg		">
           <h2 class="text-xl font-bold mb-4">
             Email
           </h2>
@@ -329,16 +355,19 @@ $m          =   mysqli_fetch_array($laksana);
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="email" required type="email" name="email" value="<?= $m['email'] ?>" />
-            <button class="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniEmail" type="submit">
-              Save
-            </button>
+
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
             Please enter a valid email address.
           </p>
+          <div class="flex justify-end">
+            <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniEmail" type="submit">
+              Save
+            </button>
+          </div>
         </form>
 
-        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
+        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg		">
           <h2 class="text-xl font-bold mb-4">
             Nombor Telefon
           </h2>
@@ -347,16 +376,18 @@ $m          =   mysqli_fetch_array($laksana);
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="notel" required type="tel" name="notel" value="<?= $m['notel'] ?>" />
-            <button class="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniNotel" type="submit">
-              Save
-            </button>
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="notelError">
             Nombor telefon mesti 10-14 digit dan berbeza dari nombor sekarang.
           </p>
+          <div class="flex justify-end">
+          <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniNotel" type="submit">
+              Save
+            </button>
+          </div>
         </form>
 
-        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
+        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg		">
           <h2 class="text-xl font-bold mb-4">
             Change a Password
           </h2>
@@ -388,7 +419,8 @@ $m          =   mysqli_fetch_array($laksana);
           </div>
         </form>
 
-        <form action='' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
+        <form id="delete-email-form" action="" method="POST" class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
+          <input type="hidden" name="HapusAkaun" value="1">
           <h2 class="text-xl font-bold mb-4">
             Delete Account
           </h2>
@@ -397,13 +429,15 @@ $m          =   mysqli_fetch_array($laksana);
           </p>
           <div class="flex items-center">
             <input id="deleteEmail" class="border border-gray-300 rounded-lg p-2 flex-grow" placeholder="Sila ketik <?= $m['email'] ?>" required type="email" name="email" />
-            <button class="ml-4 bg-red-500 text-white px-4 py-2 rounded-lg" name="HapusAkaun" type="submit">
-              Delete
-            </button>
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="deleteEmailError">
             Please enter a valid email address.
           </p>
+          <div class="flex justify-end">
+          <button type="button" class="delete-email ml-4 my-5 bg-red-500 text-white px-4 py-2 rounded-lg" onclick="confirmDelete()">
+              Delete
+            </button>
+        </div>
         </form>
 
       </section>
@@ -528,6 +562,107 @@ $m          =   mysqli_fetch_array($laksana);
         notelError.classList.add('hidden');
       }
     });
+
+    function validateEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const currentEmail = "<?= $m['email'] ?>";
+        return emailPattern.test(email) && email !== currentEmail;
+    }
+
+    function validatePassword(password) {
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,12}$/;
+        return passwordPattern.test(password);
+    }
+
+    function validateNotel(notel) {
+        const currentNotel = "<?= $m['notel'] ?>";
+        const notelValue = notel.trim();
+        return notelValue !== currentNotel && 
+               notelValue.length >= 10 && 
+               notelValue.length <= 14 && 
+               /^\d+$/.test(notelValue);
+    }
+
+    function validateNama(nama) {
+        const currentNama = "<?= $m['nama'] ?>";
+        return nama.length >= 3 && 
+               nama.length <= 50 && 
+               nama !== currentNama;
+    }
+
+    // Tambah event listeners untuk setiap form
+    document.addEventListener('DOMContentLoaded', function() {
+        // Validasi nama
+        const namaInput = document.querySelector('input[name="nama"]');
+        const namaSaveBtn = document.querySelector('button[name="KemaskiniNama"]');
+        namaSaveBtn.disabled = true;
+        namaSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        namaInput.addEventListener('input', function() {
+            if (validateNama(this.value)) {
+                namaSaveBtn.disabled = false;
+                namaSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                namaSaveBtn.disabled = true;
+                namaSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        });
+
+        // Validasi email
+        const emailInput = document.querySelector('input[name="email"]');
+        const emailSaveBtn = document.querySelector('button[name="KemaskiniEmail"]');
+        emailSaveBtn.disabled = true;
+        emailSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        emailInput.addEventListener('input', function() {
+            if (validateEmail(this.value)) {
+                emailSaveBtn.disabled = false;
+                emailSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                emailSaveBtn.disabled = true;
+                emailSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        });
+
+        // Validasi notel
+        const notelInput = document.querySelector('input[name="notel"]');
+        const notelSaveBtn = document.querySelector('button[name="KemaskiniNotel"]');
+        notelSaveBtn.disabled = true;
+        notelSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        notelInput.addEventListener('input', function() {
+            if (validateNotel(this.value)) {
+                notelSaveBtn.disabled = false;
+                notelSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                notelSaveBtn.disabled = true;
+                notelSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        });
+
+        // Validasi password
+        const passwordInput = document.querySelector('input[name="password"]');
+        const password2Input = document.querySelector('input[name="password2"]');
+        const passwordSaveBtn = document.querySelector('button[name="KemaskiniPassword"]');
+        passwordSaveBtn.disabled = true;
+        passwordSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        function checkPasswords() {
+            const isValid = validatePassword(passwordInput.value) && 
+                           passwordInput.value === password2Input.value;
+            
+            if (isValid) {
+                passwordSaveBtn.disabled = false;
+                passwordSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                passwordSaveBtn.disabled = true;
+                passwordSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        passwordInput.addEventListener('input', checkPasswords);
+        password2Input.addEventListener('input', checkPasswords);
+    });
   </script>
   <script>
     const menuButton = document.getElementById('menuButton');
@@ -549,6 +684,7 @@ $m          =   mysqli_fetch_array($laksana);
     const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
     const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
     const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+
 
 
     const Toast = Swal.mixin({
@@ -600,7 +736,40 @@ $m          =   mysqli_fetch_array($laksana);
         notiferror.play();
         <?php unset($_SESSION['error']); ?>
       <?php endif; ?>
+
+
     })
+  </script>
+  <script>
+    function confirmDelete() {
+        const emailInput = document.getElementById('deleteEmail');
+        const expectedEmail = "<?= $m['email'] ?>";
+        
+        if (emailInput.value !== expectedEmail) {
+            notiferror.play();
+            Toast.fire({
+                icon: "error",
+                title: "Email tidak sepadan"
+            });
+            return;
+        }
+
+        notifwarning.play();
+        Swal.fire({
+            title: 'Anda pasti mahu padam akaun?',
+            text: "Tindakan ini tidak boleh dibatalkan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, padam akaun!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-email-form').submit();
+            }
+        });
+    }
   </script>
 </body>
 
