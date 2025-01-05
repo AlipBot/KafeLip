@@ -1,7 +1,12 @@
 <?php
 include('connection.php');
-include('autoKeluar.php');
+$lifetime = 60 * 60 * 24 * 30;  // 30 days
+session_set_cookie_params($lifetime);
+session_start();
 
+if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
+    echo " <script> window.location.href = '../index.php'; </script>";
+}
 
 if (isset($_GET['tarikh'])) {
     $tarikh = $_GET['tarikh'];

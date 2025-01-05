@@ -48,10 +48,18 @@ if (isset($_POST['DaftarMasuk'])) {
         exit();
     }
 
-    $sql_semak = "select email from pelanggan where email = '$email' ";
-    $check = mysqli_query($condb, $sql_semak);
+    $sql_semakemail = "select email from pelanggan where email = '$email' ";
+    $check = mysqli_query($condb, $sql_semakemail);
     if (mysqli_num_rows($check) == 1) {
         $_SESSION['error'] = "EMAIL SUDAH DIGUNAKAN SILA GUNA EMAIL LAIN";
+        header("Location: signup.php");
+        exit();
+    }
+
+    $sql_semaknotel = "select notel from pelanggan where notel = '$notel' ";
+    $check = mysqli_query($condb, $sql_semaknotel);
+    if (mysqli_num_rows($check) == 1) {
+        $_SESSION['error'] = "NOMBOR TELEFON SUDAH DIGUNAKAN SILA GUNA NOMBOR TELEFON LAIN";
         header("Location: signup.php");
         exit();
     }
