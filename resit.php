@@ -44,28 +44,6 @@ $laksana = mysqli_query($condb, $sql_pilih);
             .goMenu a span {
                 display: none;
             }
-
-            .comment {
-                padding: 2px;
-                gap: 2px;
-            }
-
-            .comment img {
-                width: 20px;
-                height: 20px;
-            }
-
-            .comment .text .name {
-                font-size: 12px;
-            }
-
-            .comment .text .time {
-                font-size: 10px;
-            }
-
-            .comment .text .message {
-                font-size: 10px;
-            }
         }
 
         /* Custom scrollbar styles */
@@ -152,40 +130,56 @@ $laksana = mysqli_query($condb, $sql_pilih);
 </head>
 
 <body class="bg-[#FAF3DD] text-gray-800">
+    <!-- Header -->
     <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
             <div class="logo text-2xl font-bold flex items-center mr-4">
-                <i class="fas fa-coffee text-[#4A7C59] mr-2"></i>
-                <span class="text-black">Kafe</span>
-                <span class="text-black">lip</span>
+                <i class="fas fa-coffee text-[#4A7C59] mr-2">
+                </i>
+                <span class="text-black">
+                    Kafe
+                </span>
+                <span class="text-black">
+                    lip
+                </span>
             </div>
-            <div class="nav flex gap-6 mx-auto">
-                <a class="text-black font-medium active:text-[#4A7C59]" href="menu.php">
-                    <i class="fas fa-home text-[#4A7C59] mr-1"></i>
+            <div class="nav flex gap-6 -ml-10 mr-20">
+                <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
+                    <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
                     <span>MENU</span>
                 </a>
-                <a class="text-black font-medium active:text-[#4A7C59]" href="cart.php">
+                <a class="text-black font-bold active:text-[#4A7C59]" href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
-                    <span>CART
-                        <?= $bil ?>
-                    </span>
+                    <span>CART <?= $bil ?></span>
                 </a>
-                <a class="text-black font-medium active:text-[#4A7C59]" href="sejarah-tempah.php">
+                <a class="text-black font-bold active:text-[#4A7C59]" href="sejarah-tempah.php">
                     <i class="fas fa-history text-[#4A7C59] mr-1"></i>
-                    <span>Sejarah Tempahan</span>
+                    <span>SEJARAH TEMPAHAN</span>
                 </a>
             </div>
-            <div class="goMenu flex gap-6">
-                <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
-                    <a class="text-black font-medium active:text-[#4A7C59]" href="admin/panel.php">
-                        <i class="fa fa-list-alt mr-1 text-[#4A7C59]"></i>
-                        <span> PANEL ADMIN</span>
+
+            <div class="relative">
+                <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
+                    <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
+                </button>
+
+                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                    <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
+                        <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
+                        </a>
+                    <?php endif; ?>
+                    <a href="profil.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-user mr-2 text-[#4A7C59]"></i>Profil
                     </a>
-                <?php endif; ?>
-                <a class="text-black font-medium active:text-[#4A7C59]" href="logout.php">
-                    <i class="fas fa-sign-out-alt mr-1 text-[#4A7C59]"></i>
-                    <span>LOG KELUAR</span>
-                </a>
+                    <a href="account.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-cog mr-2 text-[#4A7C59]"></i>Akaun
+                    </a>
+                    <hr class="my-1">
+                    <a href="logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-sign-out-alt mr-2 text-[#4A7C59]"></i>Log Keluar
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -378,7 +372,21 @@ $laksana = mysqli_query($condb, $sql_pilih);
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         })
-        
+
+
+        const menuButton = document.getElementById('menuButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuButton.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Tutup dropdown bila klik di luar
+        document.addEventListener('click', (event) => {
+            if (!menuButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
     </script>
 
 </body>

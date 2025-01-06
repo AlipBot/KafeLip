@@ -288,7 +288,7 @@ if (isset($_POST['upload'])) {
                             </form>
                             <div class="flex space-x-2">
                                 <button id="uploadButton" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
-                                    <i class="fas fa-plus mr-1"></i> Upload Pekerja
+                                    <i class="fas fa-plus mr-1"></i> Muat Naik Pekerja
                                 </button>
                             </div>
                         </div>
@@ -321,10 +321,13 @@ if (isset($_POST['upload'])) {
 
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
-                                                    <button onclick="updateUser('<?= $m['notel'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
+                                                    <button onclick="SemakProfil('<?= $m['email'] ?>')" class="bg-blue-800 text-white py-2 px-6 w-32 rounded flex items-center justify-center">
+                                                        <i class="fas fa-user mr-1"></i> Profil
+                                                    </button>
+                                                    <button onclick="updateUser('<?= $m['notel'] ?>')" class="bg-blue-800 text-white py-2 px-6 w-32 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button data-id="<?php echo urlencode($m['notel']); ?>" class="delete-btn bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
+                                                    <button data-id="<?php echo urlencode($m['notel']); ?>" class="delete-btn bg-red-800 text-white py-2 px-6 w-32 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
                                                 </div>
@@ -357,7 +360,7 @@ if (isset($_POST['upload'])) {
     <div id="uploadPekerja" class="pekerja">
         <div class="pekerja-content">
             <span class="close">&times;</span>
-            <h2 class="text-2xl font-bold mb-4">Upload Pekerja</h2>
+            <h2 class="text-2xl font-bold mb-4">Muat Naik Pekerja</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="file" class="block text-gray-700">Pilih fail txt:</label>
@@ -704,6 +707,11 @@ if (isset($_POST['upload'])) {
         document.addEventListener('DOMContentLoaded', () => {
             setupDropzone('uploadDropzone', 'file', null, 'fileDisplay', 'removeFile', '.txt');
         });
+
+        function SemakProfil(email) {
+            let popupWindow = window.open(`semak-profil.php?email=${email}`, 'Profil', 
+                'width=800,height=600,resizable=yes,scrollbars=yes');
+        }
     </script>
 
 </body>

@@ -46,17 +46,20 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
 ?>
 
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    </link>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
         }
+
         .stat-box {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -64,6 +67,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             padding: 1rem;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
+
         .menu-box {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -74,7 +78,17 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             margin: 0.5rem;
             width: 200px;
         }
-           /* Custom scrollbar styles */
+
+        @media (max-width: 768px) {
+
+            .nav a span,
+            .goMenu a span {
+                display: none;
+            }
+
+        }
+
+        /* Custom scrollbar styles */
         ::-webkit-scrollbar {
             width: 12px;
         }
@@ -109,7 +123,6 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
-
         /* Hover effect for header navigation links */
         .nav a::after,
         .goMenu a::after {
@@ -126,14 +139,15 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             width: 100%;
         }
 
+
         #scrollToTopBtn:hover {
             background-color: #68B0AB;
             color: #fff;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
     </style>
 </head>
+
 <body class="bg-[#FAF3DD] min-h-screen flex flex-col">
     <!-- Header -->
     <div class="w-full bg-[#FAF3DD]">
@@ -149,17 +163,17 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                 </span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
-                <a class="text-black font-medium active:text-[#4A7C59]" href="index.php">
-                    <i class="fas fa-home text-[#4A7C59] mr-1"></i>
-                    <span>LAMAN UTAMA</span>
+                <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
+                    <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
+                    <span>MENU</span>
                 </a>
-                <a class="text-black font-medium active:text-[#4A7C59]" href="cart.php">
+                <a class="text-black font-bold active:text-[#4A7C59]" href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART <?= $bil ?></span>
                 </a>
-                <a class="text-black font-medium active:text-[#4A7C59]" href="sejarah-tempah.php">
+                <a class="text-black font-bold active:text-[#4A7C59]" href="sejarah-tempah.php">
                     <i class="fas fa-history text-[#4A7C59] mr-1"></i>
-                    <span>Sejarah Tempahan</span>
+                    <span>SEJARAH TEMPAHAN</span>
                 </a>
             </div>
 
@@ -167,7 +181,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
-                
+
                 <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                         <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -232,9 +246,9 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                             <?php foreach ($top_menus as $index => $menu): ?>
                                 <div class="menu-box">
                                     <h4 class="text-lg font-semibold mb-2">Top <?= $index + 1 ?></h4>
-                                    <img alt="Image of <?= htmlspecialchars($menu['nama_makanan']) ?>" 
-                                         class="w-24 h-24 rounded-full mx-auto mb-2" 
-                                         src="menu-images/<?= htmlspecialchars($menu['gambar']) ?>">
+                                    <img alt="Image of <?= htmlspecialchars($menu['nama_makanan']) ?>"
+                                        class="w-24 h-24 rounded-full mx-auto mb-2"
+                                        src="menu-images/<?= htmlspecialchars($menu['gambar']) ?>">
                                     <p class="text-2xl font-bold"><?= htmlspecialchars($menu['nama_makanan']) ?></p>
                                     <p class="text-lg">Jumlah: <?= $menu['jumlah'] ?></p>
                                 </div>
@@ -305,6 +319,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                 dropdownMenu.classList.add('hidden');
             }
         });
-    </script>             
+    </script>
 </body>
+
 </html>

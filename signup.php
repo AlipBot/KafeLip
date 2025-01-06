@@ -87,13 +87,11 @@ if (isset($_POST['DaftarMasuk'])) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>
-        Signup Page
+        Daftar Akaun
     </title>
     <script src="https://cdn.tailwindcss.com">
     </script>
-    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet" />
@@ -103,71 +101,71 @@ if (isset($_POST['DaftarMasuk'])) {
     <div class="min-h-screen flex items-center justify-center px-4">
         <div class="bg-[#A1CCA5] p-8 rounded-lg shadow-lg my-10 w-full max-w-md">
             <div class="flex justify-center mb-4">
-                <img alt="Company logo with a detailed description of the logo design" class="w-24 h-24" height="100" src="https://storage.googleapis.com/a1aa/image/LQPFEfzjLQ3FSiVaoQjIIsMkqbnxqfbQMfo1vKLZeMkeuhEgC.jpg" width="100" />
+                <img class="w-24 h-24" height="100" src="https://storage.googleapis.com/a1aa/image/LQPFEfzjLQ3FSiVaoQjIIsMkqbnxqfbQMfo1vKLZeMkeuhEgC.jpg" width="100" />
             </div>
             <h2 class="text-2xl font-bold text-center mb-6">
-                Create Your Account
+                Daftar Akaun Baharu
             </h2>
             <form id="signupForm" action='' method='POST'>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="name">
-                        Name
+                        Nama
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" placeholder="Enter your name" type="text" name='nama' required />
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" placeholder="Masukkan Nama Anda" type="text" name='nama' required />
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="phone">
-                        Phone Number
+                        Nombor Telefon
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="phone" placeholder="Enter your phone number" type="tel" name='notel' required />
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="phone" placeholder="Masukkan Nombor Telefon Anda" type="tel" name='notel' required />
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="email">
                         Email
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Enter your email" type="email" name='email' required />
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Masukkan Email Anda" type="email" name='email' required />
                     <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
                         Please enter a valid email address.
                     </p>
                 </div>
                 <div class="mb-4 relative">
                     <label class="block text-gray-700" for="password">
-                        Password
+                        Kata Laluan
                     </label>
                     <div class="relative">
-                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="password" placeholder="Enter your password" type="password" name='pass' required />
+                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="password" placeholder="Masukkan Kata Laluan Anda" type="password" name='pass' required />
                         <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" id="togglePassword" type="button">
                             <i class="fas fa-eye-slash">
                             </i>
                         </button>
                     </div>
                     <p class="text-red-500 text-sm mt-1 hidden" id="passwordError">
-                        Password must be 8-12 characters long, contain at least one uppercase letter, one lowercase letter, and one number.
+                        Kata laluan mestilah 8-12 aksara panjang, mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil dan satu nombor.
                     </p>
                 </div>
                 <div class="mb-4 relative">
                     <label class="block text-gray-700" for="confirm-password">
-                        Confirm Password
+                        Sahkan Kata Laluan
                     </label>
                     <div class="relative">
-                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="confirm-password" placeholder="Confirm your password" type="password" name="pass2" required />
+                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="confirm-password" placeholder="Sahkan Kata Laluan Anda" type="password" name="pass2" required />
                         <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" id="toggleConfirmPassword" type="button">
                             <i class="fas fa-eye-slash">
                             </i>
                         </button>
                     </div>
                     <p class="text-red-500 text-sm mt-1 hidden" id="confirmPasswordError">
-                        Passwords do not match.
+                        Kata laluan tidak sepadan.
                     </p>
                 </div>
                 <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200" type="submit" name="DaftarMasuk" value="Singup">
-                    Sign Up
+                    Daftar
                 </button>
             </form>
             <p class="text-center text-gray-700 mt-4">
-                Already have an account?
+                Sudah mempunyai akaun?
                 <a class="text-blue-500 hover:underline" href="login.php">
-                    Login
+                    Log Masuk
                 </a>
             </p>
         </div>

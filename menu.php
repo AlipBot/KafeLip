@@ -242,27 +242,6 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                 display: none;
             }
 
-            .comment {
-                padding: 2px;
-                gap: 2px;
-            }
-
-            .comment img {
-                width: 20px;
-                height: 20px;
-            }
-
-            .comment .text .name {
-                font-size: 12px;
-            }
-
-            .comment .text .time {
-                font-size: 10px;
-            }
-
-            .comment .text .message {
-                font-size: 10px;
-            }
         }
 
         /* Custom scrollbar styles */
@@ -370,6 +349,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                 opacity: 0;
                 transform: scale(0.95) translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1) translateY(0);
@@ -389,6 +369,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
 </head>
 
 <body class="bg-[#FAF3DD] font-poppins">
+    <!-- Header -->
     <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
             <div class="logo text-2xl font-bold flex items-center mr-4">
@@ -402,24 +383,25 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                 </span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
-                <a class="text-black font-medium active:text-[#4A7C59]" href="index.php">
-                    <i class="fas fa-home text-[#4A7C59] mr-1"></i>
-                    <span>LAMAN UTAMA</span>
+                <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
+                    <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
+                    <span>MENU</span>
                 </a>
-                <a class="text-black font-medium active:text-[#4A7C59]" href="cart.php">
+                <a class="text-black font-bold active:text-[#4A7C59]" href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART <?= $bil ?></span>
                 </a>
-                <a class="text-black font-medium active:text-[#4A7C59]" href="sejarah-tempah.php">
+                <a class="text-black font-bold active:text-[#4A7C59]" href="sejarah-tempah.php">
                     <i class="fas fa-history text-[#4A7C59] mr-1"></i>
-                    <span>Sejarah Tempahan</span>
+                    <span>SEJARAH TEMPAHAN</span>
                 </a>
             </div>
+
             <div class="relative">
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
-                
+
                 <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                         <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -504,7 +486,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                             Tambah ke Troli
                         </button>
                     </div>
-                <?php endwhile;
+            <?php endwhile;
             } else {
                 echo "<p style='color: red;'>TIADA MAKANAN TERSEDIA SEKARANG</p>";
             }
@@ -678,7 +660,6 @@ include("function/connection.php"); // Pastikan path file koneksi benar
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        
         const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
         const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
         const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
@@ -740,19 +721,19 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         function updateQuantity(menuId, action) {
             const quantityElement = document.getElementById(`quantity-${menuId}`);
             let quantity = parseInt(quantityElement.textContent);
-            
+
             if (action === 'increase') {
                 quantity++;
             } else if (action === 'decrease' && quantity > 1) {
                 quantity--;
             }
-            
+
             quantityElement.textContent = quantity;
         }
 
         function addToCartWithQuantity(menuId) {
             const quantity = parseInt(document.getElementById(`quantity-${menuId}`).textContent);
-            
+
             // Hantar permintaan ke add-cart.php menggunakan format URL yang betul
             window.location.href = `function/add-cart.php?id_menu=${menuId}&quantity=${quantity}&page=menu`;
         }

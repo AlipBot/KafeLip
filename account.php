@@ -82,6 +82,12 @@ if (isset($_POST['KemaskiniNotel'])) {
     exit();
   }
 
+  if ($notel == $_SESSION['notel']) {
+    $_SESSION['error'] = "NOMBOR TELEFON SAMA DENGAN NOMBOR TELEFON SEMASA";
+    header("Location: account.php");
+    exit();
+  }
+
   if (strlen($notel) < 10) {
     $_SESSION['error'] = "NOMBOR TELEFON MESTI 10 KE ATAS";
     header("Location: account.php");
@@ -97,11 +103,11 @@ if (isset($_POST['KemaskiniNotel'])) {
   $sqlKemaskiniNotel = "UPDATE pelanggan SET notel = '" . $_POST['notel'] . "' WHERE notel = '" . $_SESSION['notel'] . "'";
   if (mysqli_query($condb, $sqlKemaskiniNotel)) {
     $_SESSION['notel'] = $notel;
-    $_SESSION['success'] = "Nombor Telefon Berjaya Di Kemaskini";
+    $_SESSION['success'] = "Nombor Telefon Berjaya DiKemaskini";
     header("Location: account.php");
     exit();
   } else {
-    $_SESSION['error'] = "Kemaskini Gagal";
+    $_SESSION['error'] = "Nombor Telefon Gagal DiKemaskini";
     header("Location: account.php");
     exit();
   }
@@ -111,7 +117,7 @@ if (isset($_POST['KemaskiniPassword'])) {
   $pass = $_POST['password'];
   $pass2 = $_POST['password2'];
   if ($pass != $pass2) {
-    $_SESSION['error'] = "Kata Laluan Tidak Sama";
+    $_SESSION['error'] = "Kata Laluan Tidak Sepadan";
     header("Location: account.php");
     exit();
   }
@@ -130,7 +136,7 @@ if (isset($_POST['KemaskiniPassword'])) {
 
   $sqlKemaskiniPassword = "UPDATE pelanggan SET password = '" . $_POST['password'] . "' WHERE notel = '" . $_SESSION['notel'] . "'";
   mysqli_query($condb, $sqlKemaskiniPassword);
-  $_SESSION['success'] = "Kemaskini Berjaya";
+  $_SESSION['success'] = "Kata Laluan Baharu Berjaya Dikemaskini";
   header("Location: account.php");
   exit();
 }
@@ -147,7 +153,7 @@ if (isset($_POST['HapusAkaun'])) {
   $result = mysqli_stmt_get_result($stmt);
 
   if (mysqli_num_rows($result) == 0) {
-    $_SESSION['error'] = "EMAIL TIDAK SEPADAN";
+    $_SESSION['error'] = "EMAIL TIDAK WUJUD";
     header("Location: account.php");
     exit();
   }
@@ -161,7 +167,7 @@ if (isset($_POST['HapusAkaun'])) {
     header("Location: account.php");
     exit();
   } else {
-    $_SESSION['error'] = "Gagal memadam akaun";
+    $_SESSION['error'] = "Gagal Memadam Akaun";
     header("Location: account.php");
     exit();
   }
@@ -179,7 +185,7 @@ $m          =   mysqli_fetch_array($laksana);
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>
-    Account Settings
+    Urus Akaun 
   </title>
   <script src="https://cdn.tailwindcss.com">
   </script>
@@ -204,6 +210,15 @@ $m          =   mysqli_fetch_array($laksana);
     }
   </script>
   <style>
+    @media (max-width: 768px) {
+
+      .nav a span,
+      .goMenu a span {
+        display: none;
+      }
+
+    }
+
     /* Custom scrollbar styles */
     ::-webkit-scrollbar {
       width: 12px;
@@ -265,7 +280,7 @@ $m          =   mysqli_fetch_array($laksana);
 </head>
 
 <body class="bg-[#FAF3DD]">
-
+  <!-- Header -->
   <div class="w-full bg-[#FAF3DD]">
     <div class="container mx-auto flex justify-between items-center py-6 px-4">
       <div class="logo text-2xl font-bold flex items-center mr-4">
@@ -279,19 +294,20 @@ $m          =   mysqli_fetch_array($laksana);
         </span>
       </div>
       <div class="nav flex gap-6 -ml-10 mr-20">
-        <a class="text-black font-medium active:text-[#4A7C59]" href="index.php">
-          <i class="fas fa-home text-[#4A7C59] mr-1"></i>
-          <span>LAMAN UTAMA</span>
+        <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
+          <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
+          <span>MENU</span>
         </a>
-        <a class="text-black font-medium active:text-[#4A7C59]" href="cart.php">
+        <a class="text-black font-bold active:text-[#4A7C59]" href="cart.php">
           <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
           <span>CART <?= $bil ?></span>
         </a>
-        <a class="text-black font-medium active:text-[#4A7C59]" href="sejarah-tempah.php">
+        <a class="text-black font-bold active:text-[#4A7C59]" href="sejarah-tempah.php">
           <i class="fas fa-history text-[#4A7C59] mr-1"></i>
-          <span>Sejarah Tempahan</span>
+          <span>SEJARAH TEMPAHAN</span>
         </a>
       </div>
+
       <div class="relative">
         <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
           <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
@@ -319,23 +335,24 @@ $m          =   mysqli_fetch_array($laksana);
   </div>
 
 
+
   <main class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold text-center mb-4">
-      Account
+      Akaun
     </h1>
     <p class="text-center mb-8">
-      Update your profile and set your account preferences.
+      Kemaskini profil anda dan tetapkan pilihan akaun anda.
     </p>
     <div class="flex flex-col md:flex-row justify-center">
       <section class="w-full md:w-3/4 space-y-8">
 
         <form id='KemaskiniNama' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
-        <input type="hidden" name="KemaskiniNama" value="1">
+          <input type="hidden" name="KemaskiniNama" value="1">
           <h2 class="text-xl font-bold mb-4">
             Nama
           </h2>
           <p class="text-gray-600 mb-4">
-            If you change your username all the existing links to your profile on other websites will become 404.
+            Kemaskini Nama Baharu
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" required type="text" name="nama" value="<?= $m['nama'] ?>" />
@@ -348,19 +365,19 @@ $m          =   mysqli_fetch_array($laksana);
         </form>
 
         <form id='KemaskiniEmail' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
-        <input type="hidden" name="KemaskiniEmail" value="1">
+          <input type="hidden" name="KemaskiniEmail" value="1">
           <h2 class="text-xl font-bold mb-4">
             Email
           </h2>
           <p class="text-gray-600 mb-4">
-            Email address
+            Kemaskini Email Baharu
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="email" required type="email" name="email" value="<?= $m['email'] ?>" />
 
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
-            Please enter a valid email address.
+            Sila masukkan alamat e-mel yang sah.
           </p>
           <div class="flex justify-end">
             <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniEmail" type="button" onclick="Kemaskini('KemaskiniEmail')">
@@ -370,12 +387,12 @@ $m          =   mysqli_fetch_array($laksana);
         </form>
 
         <form id='KemaskiniNotel' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
-        <input type="hidden" name="KemaskiniNotel" value="1">
+          <input type="hidden" name="KemaskiniNotel" value="1">
           <h2 class="text-xl font-bold mb-4">
             Nombor Telefon
           </h2>
           <p class="text-gray-600 mb-4">
-            Phone number
+            Kemaskini Nombor Telefon Baharu
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="notel" required type="tel" name="notel" value="<?= $m['notel'] ?>" />
@@ -391,12 +408,12 @@ $m          =   mysqli_fetch_array($laksana);
         </form>
 
         <form id='KemaskiniPassword' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg		">
-        <input type="hidden" name="KemaskiniPassword" value="1">
+          <input type="hidden" name="KemaskiniPassword" value="1">
           <h2 class="text-xl font-bold mb-4">
-            Change a Password
+            Tukar Kata Laluan Baharu
           </h2>
           <p class="text-gray-600 mb-4">
-            Create a password to access with your email when Google and Apple are not available.
+            Sila Cipta Kata Laluan Yang Kuat
           </p>
           <div class="space-y-4">
             <div class="flex items-center relative">
@@ -405,15 +422,14 @@ $m          =   mysqli_fetch_array($laksana);
               </i>
             </div>
             <p class="text-red-500 text-sm mt-1 hidden" id="passwordError">
-              Password must be 8-12 characters long, contain at least one uppercase letter, one lowercase letter, and one number.
-            </p>
+              Kata laluan mestilah 8-12 aksara panjang, mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil dan satu nombor. </p>
             <div class="flex items-center relative">
               <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="repeat-password" placeholder="Repeat password" required type="password" name="password2" />
               <i class="fas fa-eye ml-4 text-gray-500 absolute right-3 cursor-pointer" id="repeat-password-icon" onclick="togglePasswordVisibility('repeat-password')">
               </i>
             </div>
             <p class="text-red-500 text-sm mt-1 hidden" id="confirmPasswordError">
-              Passwords do not match.
+              Kata laluan tidak sepadan.
             </p>
           </div>
           <div class="flex justify-end">
@@ -426,20 +442,20 @@ $m          =   mysqli_fetch_array($laksana);
         <form id="delete-email-form" action="" method="POST" class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
           <input type="hidden" name="HapusAkaun" value="1">
           <h2 class="text-xl font-bold mb-4">
-            Delete Account
+            Padam Akaun Ini
           </h2>
           <p class="text-gray-600 mb-4">
-            Enter your email to delete your account
+            Masukkan email anda untuk memadam akaun anda
           </p>
           <div class="flex items-center">
             <input id="deleteEmail" class="border border-gray-300 rounded-lg p-2 flex-grow" placeholder="Sila ketik <?= $m['email'] ?>" required type="email" name="email" />
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="deleteEmailError">
-            Please enter a valid email address.
+            Sila masukkan alamat e-mel yang sah.
           </p>
           <div class="flex justify-end">
             <button type="button" class="delete-email ml-4 my-5 bg-red-500 text-white px-4 py-2 rounded-lg" onclick="confirmDelete()">
-              Delete
+              Padam
             </button>
           </div>
         </form>

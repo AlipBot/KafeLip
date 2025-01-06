@@ -374,7 +374,7 @@ if (isset($_POST['upload'])) {
                                     <i class="fas fa-plus mr-1"></i> Daftar Menu
                                 </button>
                                 <button id="uploadButton" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
-                                    <i class="fas fa-plus mr-1"></i> Upload Menu
+                                    <i class="fas fa-plus mr-1"></i> Muat Naik Menu
                                 </button>
                             </div>
                         </div>
@@ -440,7 +440,7 @@ if (isset($_POST['upload'])) {
     <div id="uploadmenu" class="menu">
         <div class="menu-content">
             <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
-            <h2 class="text-2xl font-bold mb-4">Upload Menu</h2>
+            <h2 class="text-2xl font-bold mb-4">Muat Naik Menu</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="file" class="block text-gray-700">Pilih fail txt:</label>

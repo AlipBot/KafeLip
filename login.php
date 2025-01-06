@@ -89,14 +89,12 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>
-        Login Page
+        Log Masuk
     </title>
     <script src="https://cdn.tailwindcss.com">
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet" />
 </head>
@@ -108,21 +106,21 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
                 <img alt="Company logo with a detailed description of the logo design" class="w-24 h-24" height="100" src="https://storage.googleapis.com/a1aa/image/LQPFEfzjLQ3FSiVaoQjIIsMkqbnxqfbQMfo1vKLZeMkeuhEgC.jpg" width="100" />
             </div>
             <h2 class="text-2xl font-bold text-center mb-6">
-                Login to Your Account
+                Log Masuk
             </h2>
         <form action="" method='POST'>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="email">
-                        Email atau No. Telefon
+                        Email Atau Nombor Telefon
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Masukkan email atau No. Telefon" type="text" name='emailOrNotel' required/>
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Masukkan email atau Nombor Telefon Anda" type="text" name='emailOrNotel' required/>
                 </div>
                 <div class="mb-4 relative">
                     <label class="block text-gray-700" for="password">
-                        Password
+                        Kata Laluan
                     </label>
                     <div class="relative">
-                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="password" placeholder="Enter your password" type="password"  name='pass' required />
+                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="password" placeholder="Masukkan Kata Laluan Anda" type="password"  name='pass' required />
                         <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" id="togglePassword" type="button">
                             <i class="fas fa-eye-slash">
                             </i>
@@ -132,17 +130,17 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
                 <div class="flex items-center justify-between mb-4">
 
                     <a class="text-blue-500 hover:underline" href="#">
-                        Forgot password?
+                        Lupa Kata Laluan?
                     </a>
                 </div>
                 <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200" type="submit" id="submit" name="LogMasuk" value="Login">
-                    Login
+                    Log Masuk
                 </button>
             </form>
             <p class="text-center text-gray-700 mt-4">
-                Don't have an account?
+                Tidak mempunyai akun?
                 <a class="text-blue-500 hover:underline" href="signup.php">
-                    Sign up
+                    Daftar akaun baharu
                 </a>
             </p>
         </div>

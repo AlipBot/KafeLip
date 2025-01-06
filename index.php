@@ -1,3 +1,7 @@
+<?php $lifetime = 60 * 60 * 24 * 30;  // 30 days
+session_set_cookie_params($lifetime);
+session_start();
+?>
 <html lang="en">
 
 <head>
@@ -19,35 +23,6 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-
-            .nav a span,
-            .goMenu a span {
-                display: none;
-            }
-
-            .comment {
-                padding: 2px;
-                gap: 2px;
-            }
-
-            .comment img {
-                width: 20px;
-                height: 20px;
-            }
-
-            .comment .text .name {
-                font-size: 12px;
-            }
-
-            .comment .text .time {
-                font-size: 10px;
-            }
-
-            .comment .text .message {
-                font-size: 10px;
-            }
-        }
 
         /* Custom scrollbar styles */
         ::-webkit-scrollbar {
@@ -85,7 +60,7 @@
         }
 
         /* Hover effect for header navigation links */
-        .nav a::after,
+
         .goMenu a::after {
             content: '';
             display: block;
@@ -95,7 +70,7 @@
             transition: width 0.3s;
         }
 
-        .nav a:hover::after,
+
         .goMenu a:hover::after {
             width: 100%;
         }
@@ -115,38 +90,31 @@
                     lip
                 </span>
             </div>
-            <div class="nav flex gap-6 mx-auto">
-                <a class="text-black font-medium active:text-[#4A7C59]" href="#">
-                    <i class="fas fa-home text-[#4A7C59] mr-1">
-                    </i>
-                    <span>
-                        LAMAN UTAMA
-                    </span>
-                </a>
-                <a class="text-black font-medium" href="#">
-                    <i class="fas fa-info-circle text-[#4A7C59] mr-1">
-                    </i>
-                    <span>
-                        INFO
-                    </span>
-                </a>
-            </div>
-            <div class="goMenu flex gap-6">
-                <a class="text-black font-medium" href="login.php">
-                    <i class="fas fa-sign-in-alt text-[#4A7C59] mr-1">
-                    </i>
-                    <span>
-                        LOG MASUK
-                    </span>
-                </a>
-                <a class="text-black font-medium" href="signup.php">
-                    <i class="fas fa-user-plus text-[#4A7C59] mr-1">
-                    </i>
-                    <span>
-                        DAFTAR MASUK
-                    </span>
-                </a>
-            </div>
+            <?php if (!empty($_SESSION['tahap'])) { ?>
+                <div class="goMenu flex gap-6">
+                    <a class="text-black font-medium" href="login.php">
+                        <i class="fas fa-sign-in-alt text-[#4A7C59] mr-1"></i>
+                        <span>
+                            LOG MASUK
+                        </span>
+                    </a>
+                </div>
+            <?php } else { ?>
+                <div class="goMenu flex gap-6">
+                    <a class="text-black font-medium" href="login.php">
+                        <i class="fas fa-sign-in-alt text-[#4A7C59] mr-1"></i>
+                        <span>
+                            LOG MASUK
+                        </span>
+                    </a>
+                    <a class="text-black font-medium" href="signup.php">
+                        <i class="fas fa-user-plus text-[#4A7C59] mr-1"> </i>
+                        <span>
+                            DAFTAR MASUK
+                        </span>
+                    </a>
+                </div>
+            <?php } ?>
         </div>
     </div>
     <div class="w-full bg-[#FAF3DD]">
@@ -159,12 +127,19 @@
                     Are you hungry? Let's go makan roti canai
                 </p>
                 <div class="buttons flex gap-6">
-                    <a class="get-started bg-[#4A7C59] text-white py-3 px-6 rounded-lg font-bold" href="signup.php">
-                        DAFTAR MASUK
-                    </a>
-                    <a class="explore-menu border-2 border-[#4A7C59] text-[#4A7C59] py-3 px-6 rounded-lg font-bold" href="login.php">
-                        LOG MASUK
-                    </a>
+
+                    <?php if (!empty($_SESSION['tahap'])) { ?>
+                        <a class="get-started bg-[#4A7C59] text-white py-3 px-6 rounded-lg font-bold" href="login.php">
+                            LOG MASUK
+                        </a>
+                    <?php } else { ?>
+                        <a class="get-started bg-[#4A7C59] text-white py-3 px-6 rounded-lg font-bold" href="signup.php">
+                            DAFTAR MASUK
+                        </a>
+                        <a class="explore-menu border-2 border-[#4A7C59] text-[#4A7C59] py-3 px-6 rounded-lg font-bold" href="login.php">
+                            LOG MASUK
+                        </a>
+                    <?php } ?>
                 </div>
             </div>
             <div class="image-content relative mt-10 lg:mt-0">
@@ -185,7 +160,7 @@
                     </i>
                 </div>
                 <div class="comment comment-1 absolute bottom-0 left-[-50] bg-white p-[8px] rounded-lg shadow-lg flex items-center gap-2">
-                    <img alt="User profile picture" class="rounded-full w-10 h-10 object-cover" height="40" src="https://storage.googleapis.com/a1aa/image/lfCa044dRv1EZCbFTQKfe9z1jyrlmQGoQW7QDMs88Oh27O9nA.jpg" width="40" />
+                    <img class="rounded-full w-10 h-10 object-cover" height="40" src="https://storage.googleapis.com/a1aa/image/lfCa044dRv1EZCbFTQKfe9z1jyrlmQGoQW7QDMs88Oh27O9nA.jpg" width="40" />
                     <div class="text">
                         <div class="name font-bold">
                             Izz
@@ -199,7 +174,7 @@
                     </div>
                 </div>
                 <div class="comment comment-2 absolute bottom-12 -right-4 bg-white p-[8px] rounded-lg shadow-lg flex items-center gap-2">
-                    <img alt="User profile picture" class="rounded-full w-10 h-10 object-cover" height="40" src="https://storage.googleapis.com/a1aa/image/lfCa044dRv1EZCbFTQKfe9z1jyrlmQGoQW7QDMs88Oh27O9nA.jpg" width="40" />
+                    <img class="rounded-full w-10 h-10 object-cover" height="40" src="https://storage.googleapis.com/a1aa/image/lfCa044dRv1EZCbFTQKfe9z1jyrlmQGoQW7QDMs88Oh27O9nA.jpg" width="40" />
                     <div class="text">
                         <div class="name font-bold">
                             Rafiq
@@ -224,87 +199,82 @@
             </h2>
             <div class="flex flex-col gap-6">
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row-reverse items-center">
-                    <img alt="Roti Canai with curry" class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/zIcpfS6kHl1SPyZKaD6AqIs0k7RgajU4iLLohwWTHwV8uTfTA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/zIcpfS6kHl1SPyZKaD6AqIs0k7RgajU4iLLohwWTHwV8uTfTA.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:mr-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
-                            Roti Canai with Curry
+                            Roti Canai 🥞
                         </h3>
                         <p class="text-[#151A00]">
-                            RM 5.00
+                            RM 1.20
                         </p>
                         <p class="text-[#151A00] mt-2">
-                            Roti Canai is a type of flatbread that originated from India and is popular in Malaysia. It is usually served with curry or dhal.
-                        </p>
+                            Roti canai biasa yang lembut dan rangup, sesuai dimakan dengan kuah dhal atau kari </p>
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row items-center">
-                    <img alt="Roti Telur with curry" class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/DQyqABOkba6OAZS8e1h9kfdovEEM0Bt2eogDJwXdXtSt7O9nA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/DQyqABOkba6OAZS8e1h9kfdovEEM0Bt2eogDJwXdXtSt7O9nA.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:ml-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
-                            Roti Telur with Curry
+                            Roti Canai Telur 🍳
                         </h3>
                         <p class="text-[#151A00]">
-                            RM 6.00
+                            RM 2.50
                         </p>
                         <p class="text-[#151A00] mt-2">
-                            Roti Telur is a variation of Roti Canai that includes an egg. It is also served with curry or dhal.
-                        </p>
+                            Roti canai yang diisi dengan telur, memberikan rasa yang lebih enak dan berkhasiat. </p>
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row-reverse items-center">
-                    <img alt="Roti Tisu with condensed milk" class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/Hq3vfKd3wFTvSiXj6buCnRfPYuHgWUh1nVvTsfVv4Mvp7O9nA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/Hq3vfKd3wFTvSiXj6buCnRfPYuHgWUh1nVvTsfVv4Mvp7O9nA.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:mr-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
-                            Roti Tisu with Condensed Milk
+                            Roti Bom 💣
                         </h3>
                         <p class="text-[#151A00]">
-                            RM 4.50
+                            RM 2.00
                         </p>
                         <p class="text-[#151A00] mt-2">
-                            Roti Tisu is a thinner and crispier version of Roti Canai, often served with condensed milk.
+                            Roti bersaiz kecil tetapi tebal dengan tekstur lembut dan sedikit manis.
                         </p>
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row items-center">
-                    <img alt="Roti Bom with sugar" class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/fpfddUvlJYm3M0fXcDyrAbve4U9i8AJ17i9uFee4eBdm5uTfTA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/fpfddUvlJYm3M0fXcDyrAbve4U9i8AJ17i9uFee4eBdm5uTfTA.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:ml-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
-                            Roti Bom with Sugar
+                            Roti Canai Banjir 🌊
                         </h3>
                         <p class="text-[#151A00]">
-                            RM 5.50
+                            RM 1.50
                         </p>
                         <p class="text-[#151A00] mt-2">
-                            Roti Bom is a thicker version of Roti Canai, sprinkled with sugar for a sweet taste.
-                        </p>
+                            Roti canai yang disiram dengan kuah dhal atau kari, memberikan rasa lebih pekat dan menyelerakan. </p>
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row-reverse items-center">
-                    <img alt="Roti Sardin with curry" class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/9aSbm2H9UmZiC943VsPBFJflGnxhLdILsJ3VlbyHvDp8uTfTA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/9aSbm2H9UmZiC943VsPBFJflGnxhLdILsJ3VlbyHvDp8uTfTA.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:mr-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
-                            Roti Sardin with Curry
+                            Roti Planta 🧈
                         </h3>
                         <p class="text-[#151A00]">
-                            RM 7.00
+                            RM 2.00
                         </p>
                         <p class="text-[#151A00] mt-2">
-                            Roti Sardin is a variation of Roti Canai filled with sardines, served with curry.
+                            Roti canai yang disapu dengan planta untuk rasa lebih lemak dan wangi.
                         </p>
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row items-center">
-                    <img alt="Roti Planta with sugar" class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/AoNXHGfDeChI9EtbBBIG4B9OpPPMtGKBV6HQN3nV29yf7O9nA.jpg" width="400" />
+                    <img  class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/AoNXHGfDeChI9EtbBBIG4B9OpPPMtGKBV6HQN3nV29yf7O9nA.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:ml-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
-                            Roti Planta with Sugar
-                        </h3>
+                            Roti Tissue 🍯 </h3>
                         <p class="text-[#151A00]">
-                            RM 5.00
+                            RM 2.00
                         </p>
                         <p class="text-[#151A00] mt-2">
-                            Roti Planta is a variation of Roti Canai made with margarine and sprinkled with sugar.
-                        </p>
+                            Roti nipis dan rangup, berbentuk kon tinggi dengan lapisan mentega dan susu pekat. </p>
                     </div>
                 </div>
             </div>
