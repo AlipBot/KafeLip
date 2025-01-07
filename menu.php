@@ -434,9 +434,34 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                 </div>
 
                 <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
+
+                <h2 id="tarikhSlide"></h2>
+                    <p id="masaSlide"></p>
+
+                    <script>
+                        function kemaskiniMasaTarikh() {
+                            const masa = new Date();
+                            const hari = String(masa.getDate()).padStart(2, '0');
+                            const bulan = String(masa.getMonth() + 1).padStart(2, '0');
+                            const tahun = masa.getFullYear();
+                            
+                            document.getElementById('tarikhSlide').textContent = `${hari}/${bulan}/${tahun}`;
+                            document.getElementById('masaSlide').textContent = masa.toLocaleTimeString('ms-MY', {
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true
+                            });
+                        }
+
+                        setInterval(kemaskiniMasaTarikh, 1000);
+                        kemaskiniMasaTarikh();
+                    </script>
                 </div>
 
                 <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
+                    <h2>BUKA KEDAI</h2>
+                    <p>Pukul 8:00 AM - 10:00 PM</p>
                 </div>
             </div>
 

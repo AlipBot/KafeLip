@@ -363,7 +363,7 @@ if (isset($_POST['upload'])) {
             <h2 class="text-2xl font-bold mb-4">Muat Naik Pekerja</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label for="file" class="block text-gray-700">Pilih fail txt:</label>
+                    <label for="file" class="block text-gray-700">Pilih fail txt :</label>
                     <div class="dropzone" id="uploadDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
@@ -390,17 +390,17 @@ if (isset($_POST['upload'])) {
             <h3 class="text-lg font-bold">Kemaskini Pengguna</h3>
             <form id="updateForm" action="../function/update-user.php" method="POST">
                 <input type="hidden" name="notel_lama" id="notel_lama">
-                Nama:
+                Nama :
                 <input type="text" name="nama" id="nama" class="w-full border p-2 mb-3" required>
-                Email:
+                Email :
                 <input type="text" name="email" id="email" class="w-full border p-2 mb-3" required>
-                No Telefon:
+                Nombor Telefon :
                 <input type="text" name="notel" id="notel" class="w-full border p-2 mb-3" required>
 
-                Kata Laluan:
+                Kata Laluan :
                 <input type="text" name="katalaluan" id="katalaluan" class="w-full border p-2 mb-3" required>
 
-                Tahap:
+                Tahap :
                 <select name="tahap" id="tahap" class="w-full border p-2 mb-3">
                     <option value="ADMIN">ADMIN</option>
                     <option value="PELANGGAN">PELANGGAN</option>

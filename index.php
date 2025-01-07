@@ -23,6 +23,14 @@ session_start();
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
+        @media (max-width: 768px) {
+
+            .nav a span,
+            .goMenu a span {
+                display: none;
+            }
+
+        }
 
         /* Custom scrollbar styles */
         ::-webkit-scrollbar {
@@ -159,8 +167,8 @@ session_start();
                     <i class="fas fa-star text-orange-500">
                     </i>
                 </div>
-                <div class="comment comment-1 absolute bottom-0 left-[-50] bg-white p-[8px] rounded-lg shadow-lg flex items-center gap-2">
-                    <img class="rounded-full w-10 h-10 object-cover" height="40" src="https://storage.googleapis.com/a1aa/image/lfCa044dRv1EZCbFTQKfe9z1jyrlmQGoQW7QDMs88Oh27O9nA.jpg" width="40" />
+                <div class="comment comment-1 absolute bottom-[-20px] left-[-10] bg-white p-[8px] rounded-lg shadow-lg flex items-center gap-2">
+                    <img class="rounded-full w-10 h-10 object-cover" height="40" src="lib/image/izz.jpg" width="40" />
                     <div class="text">
                         <div class="name font-bold">
                             Izz
@@ -174,7 +182,7 @@ session_start();
                     </div>
                 </div>
                 <div class="comment comment-2 absolute bottom-12 -right-4 bg-white p-[8px] rounded-lg shadow-lg flex items-center gap-2">
-                    <img class="rounded-full w-10 h-10 object-cover" height="40" src="https://storage.googleapis.com/a1aa/image/lfCa044dRv1EZCbFTQKfe9z1jyrlmQGoQW7QDMs88Oh27O9nA.jpg" width="40" />
+                    <img class="rounded-full w-10 h-10 object-cover" height="40" src="lib/image/rafiq.jpg" width="40" />
                     <div class="text">
                         <div class="name font-bold">
                             Rafiq
@@ -199,7 +207,7 @@ session_start();
             </h2>
             <div class="flex flex-col gap-6">
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row-reverse items-center">
-                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/zIcpfS6kHl1SPyZKaD6AqIs0k7RgajU4iLLohwWTHwV8uTfTA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="lib/image/RotiCanai.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:mr-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
                             Roti Canai 🥞
@@ -212,7 +220,7 @@ session_start();
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row items-center">
-                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/DQyqABOkba6OAZS8e1h9kfdovEEM0Bt2eogDJwXdXtSt7O9nA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="lib/image/rotitelur.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:ml-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
                             Roti Canai Telur 🍳
@@ -225,7 +233,7 @@ session_start();
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row-reverse items-center">
-                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/Hq3vfKd3wFTvSiXj6buCnRfPYuHgWUh1nVvTsfVv4Mvp7O9nA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="lib/image/bom.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:mr-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
                             Roti Bom 💣
@@ -239,7 +247,7 @@ session_start();
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row items-center">
-                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/fpfddUvlJYm3M0fXcDyrAbve4U9i8AJ17i9uFee4eBdm5uTfTA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="lib/image/roti-canai-banjir.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:ml-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
                             Roti Canai Banjir 🌊
@@ -252,7 +260,7 @@ session_start();
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row-reverse items-center">
-                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/9aSbm2H9UmZiC943VsPBFJflGnxhLdILsJ3VlbyHvDp8uTfTA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="lib/image/rotiplanta.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:mr-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
                             Roti Planta 🧈
@@ -266,7 +274,7 @@ session_start();
                     </div>
                 </div>
                 <div class="bg-[#A1CCA5] p-6 rounded-lg shadow-lg flex flex-col lg:flex-row items-center">
-                    <img  class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="https://storage.googleapis.com/a1aa/image/AoNXHGfDeChI9EtbBBIG4B9OpPPMtGKBV6HQN3nV29yf7O9nA.jpg" width="400" />
+                    <img class="w-full lg:w-1/2 h-48 object-cover rounded-lg" height="300" src="lib/image/rotitisu.jpg" width="400" />
                     <div class="mt-4 lg:mt-0 lg:ml-6">
                         <h3 class="text-2xl font-bold text-[#151A00]">
                             Roti Tissue 🍯 </h3>

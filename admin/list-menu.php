@@ -396,7 +396,7 @@ if (isset($_POST['upload'])) {
                                         <tr class='bg-white border-b hover:bg-blue-50'>
                                             <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['kod_makanan']); ?></td>
                                             <td class='px-8 py-4 flex justify-center items-center'>
-                                                <img src='../menu-images/<?php echo htmlspecialchars($m['gambar']); ?>' alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>' width='60%' class="rounded-md" >
+                                                <img src='../menu-images/<?php echo htmlspecialchars($m['gambar']); ?>' alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>' width='60%' class="rounded-md">
                                             </td>
                                             <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['nama_makanan']); ?></td>
                                             <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?> </td>
@@ -443,7 +443,7 @@ if (isset($_POST['upload'])) {
             <h2 class="text-2xl font-bold mb-4">Muat Naik Menu</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label for="file" class="block text-gray-700">Pilih fail txt:</label>
+                    <label for="file" class="block text-gray-700">Pilih fail txt :</label>
                     <div class="dropzone" id="uploadDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
@@ -472,9 +472,10 @@ if (isset($_POST['upload'])) {
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
-                    ID Menu:<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
-                    Nama Menu: <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3" required>
-                    Harga <input type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    ID Menu :<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
+                    Nama Menu : <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3" required>
+                    Harga : <input type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    <label class="block text-black">Sila Pilih Gambar Menu : </label>
 
                     <!-- Container untuk preview gambar -->
                     <div class="flex justify-center mb-4 relative" id="daftarPreviewContainer" style="display: none;">
@@ -506,8 +507,9 @@ if (isset($_POST['upload'])) {
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     <input type="hidden" name="id_menu" id="id_menu">
-                    Nama Menu: <input id="nama_makanan" type="text" name='nama_menu' class="w-full border p-2 mb-3" required>
-                    Harga <input id="harga_makanan" type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    Nama Menu : <input id="nama_makanan" type="text" name='nama_menu' class="w-full border p-2 mb-3" required>
+                    Harga : <input id="harga_makanan" type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    <label class="block text-gray-700">Sila Pilih Gambar Menu (jika ingin diubah) : </label>
                     <div class="flex justify-center mb-4 relative" id="previewContainer" style="display: none;">
                         <img id="preview_kemas" style="max-width: 300px;">
                         <button type="button" id="closePreview" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
@@ -635,9 +637,9 @@ if (isset($_POST['upload'])) {
         }
 
         const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-            const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
-            const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
-            const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+        const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
+        const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
+        const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
 
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -676,7 +678,7 @@ if (isset($_POST['upload'])) {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const id = this.dataset.id;
-                   notifwarning.play();
+                    notifwarning.play();
                     Swal.fire({
                         title: 'Anda pasti?',
                         text: "Anda tidak boleh memulihkan data ini selepas dipadam!",

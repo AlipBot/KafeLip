@@ -199,7 +199,7 @@ $laksql = mysqli_query($condb, $sql);
                                         <?php } ?>
                                     <?php } else { ?>
                                         <tr>
-                                            <td colspan="4" class="text-center py-6 text-gray-500">
+                                            <td colspan="5" class="text-center py-6 text-gray-500">
                                                 <i class="fas fa-exclamation-circle text-4xl mb-2"></i>
                                                 <p class="text-lg font-semibold">Tiada dalam senarai</p>
                                                 <p class="text-sm">Sila cuba pilih tarikh lain.</p>
