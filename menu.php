@@ -402,7 +402,8 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
 
-                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                <div id="dropdownMenu"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                         <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
@@ -433,30 +434,12 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                     <p>Sudah lapar ke?</p>
                 </div>
 
-                <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
+                <div style="background-image: url('lib/image/banner2.jpg');" class="slide iklan">
 
-                <h2 id="tarikhSlide"></h2>
+                    <h2 id="tarikhSlide"></h2>
                     <p id="masaSlide"></p>
 
-                    <script>
-                        function kemaskiniMasaTarikh() {
-                            const masa = new Date();
-                            const hari = String(masa.getDate()).padStart(2, '0');
-                            const bulan = String(masa.getMonth() + 1).padStart(2, '0');
-                            const tahun = masa.getFullYear();
-                            
-                            document.getElementById('tarikhSlide').textContent = `${hari}/${bulan}/${tahun}`;
-                            document.getElementById('masaSlide').textContent = masa.toLocaleTimeString('ms-MY', {
-                                hour: 'numeric',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                hour12: true
-                            });
-                        }
 
-                        setInterval(kemaskiniMasaTarikh, 1000);
-                        kemaskiniMasaTarikh();
-                    </script>
                 </div>
 
                 <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
@@ -503,15 +486,18 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                             <p class="price">RM <?= $m['harga'] ?></p>
                         </div>
                         <div class="quantity-controls">
-                            <button class="quantity-btn minus" onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'decrease')">-</button>
+                            <button class="quantity-btn minus"
+                                onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'decrease')">-</button>
                             <span id="quantity-<?= $m['kod_makanan'] ?>" class="quantity-value">1</span>
-                            <button class="quantity-btn plus" onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'increase')">+</button>
+                            <button class="quantity-btn plus"
+                                onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'increase')">+</button>
                         </div>
-                        <button class="add-to-cart" onclick="addToCartWithQuantity('<?= htmlspecialchars($m['kod_makanan']) ?>')">
+                        <button class="add-to-cart"
+                            onclick="addToCartWithQuantity('<?= htmlspecialchars($m['kod_makanan']) ?>')">
                             Tambah ke Troli
                         </button>
                     </div>
-            <?php endwhile;
+                <?php endwhile;
             } else {
                 echo "<p style='color: red;'>TIADA MAKANAN TERSEDIA SEKARANG</p>";
             }
@@ -547,7 +533,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -703,7 +689,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -777,6 +763,25 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                 dropdownMenu.classList.add('hidden');
             }
         });
+    </script>
+    <script>
+        function kemaskiniMasaTarikh() {
+            const masa = new Date();
+            const hari = String(masa.getDate()).padStart(2, '0');
+            const bulan = String(masa.getMonth() + 1).padStart(2, '0');
+            const tahun = masa.getFullYear();
+
+            document.getElementById('tarikhSlide').textContent = `${hari}/${bulan}/${tahun}`;
+            document.getElementById('masaSlide').textContent = masa.toLocaleTimeString('ms-MY', {
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+        }
+
+        setInterval(kemaskiniMasaTarikh, 1000);
+        kemaskiniMasaTarikh();
     </script>
 </body>
 

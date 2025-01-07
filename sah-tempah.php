@@ -30,7 +30,7 @@ if (!isset($_SESSION['orders'])) {
     }
 
     if ($laktempah) {
-        $_SESSION['success'] = "Tempahan Selesai";
+        $_SESSION['success'] = "Tempahan Berjaya, Sila Cetak Resit Anda";
     } else {
       #jika gagal papar punca error
       $_SESSION['error'] = "Tempahan Gagal: " . mysqli_error($condb);
@@ -38,7 +38,6 @@ if (!isset($_SESSION['orders'])) {
     # Memadam nilai pembolehubah session
     unset($_SESSION['orders']);
     unset($_SESSION['jumlah_harga']);
-    $_SESSION['success'] = "Tempahan Selesai";
     header("Location: resit.php?tarikh=$tarikh");
     exit();
 

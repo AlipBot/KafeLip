@@ -285,6 +285,47 @@ if (isset($_POST['upload'])) {
             padding: 4px 8px;
             border-radius: 4px;
         }
+
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF3DD;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #000;
+            border-radius: 6px;
+            border: 3px solid #FAF3DD;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #333;
+        }
+
+        /* Scroll to top button */
+        #scrollToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            right: 20px;
+            z-index: 100;
+            background-color: #4A7C59;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 10px 15px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        #scrollToTopBtn:hover {
+            background-color: #68B0AB;
+            color: #fff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
     </style>
 
 </head>
@@ -294,8 +335,8 @@ if (isset($_POST['upload'])) {
 
     <div class="flex h-screen flex-col">
         <!-- Header -->
-        <header class="bg-blue-800 text-white p-4 flex justify-between items-center fixed w-full z-10">
-            <button id="drawerToggle" class="bg-blue-700 text-white p-2 rounded">
+        <header class="bg-[#588157] text-white p-4 flex justify-between items-center fixed w-full z-10">
+            <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
             <div class="text-[150%] font-bold mx-auto">Senarai Makanan KafeLip</div>
@@ -304,42 +345,43 @@ if (isset($_POST['upload'])) {
 
         <div class="flex flex-1 pt-16">
             <!-- Sidebar -->
-            <div id="drawer" class="w-64 bg-blue-800 text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
-                <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
-                    Admin
-                </div>
+            <div id="drawer"
+                class="w-64 bg-[#588157] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto">
                     <ul>
                         <li class="mb-4">
-                            <a href="panel.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
+                                Admin
+                            </div>
+                            <a href="panel.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a href="list-user.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="list-user.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-users mr-2"></i> Senarai Pengguna
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a href="list-menu.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="list-menu.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-utensils mr-2"></i> Senarai Makanan
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a href="laporan.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="laporan.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-file-alt mr-2"></i> Sejarah Laporan
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a href="statistik.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="statistik.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
-                        <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
                             Pelanggan
                         </div>
                         <li class="mb-4">
-                            <a href="../menu.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="../menu.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-arrow-left mr-2"></i> Kembali Ke Menu
                             </a>
                         </li>
@@ -362,7 +404,7 @@ if (isset($_POST['upload'])) {
                         <div class="flex items-center justify-between space-x-5">
                             <form action="list-menu.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama_menu" placeholder="Carian Menu" value="<?php echo htmlspecialchars($_GET['nama_menu'] ?? ''); ?>" class="border rounded p-2 w-2/5">
-                                <button type="submit" class="bg-blue-800 text-white p-2 rounded flex items-center">
+                                <button type="submit" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
                                 <button type="button" onclick="window.location.href='list-menu.php';" class="bg-red-800 text-white p-2 rounded flex items-center">
@@ -370,10 +412,10 @@ if (isset($_POST['upload'])) {
                                 </button>
                             </form>
                             <div class="flex space-x-2">
-                                <button id="DaftarMenuButton" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
+                                <button id="DaftarMenuButton" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Daftar Menu
                                 </button>
-                                <button id="uploadButton" class="bg-blue-800 text-white p-2 rounded flex items-center whitespace-nowrap">
+                                <button id="uploadButton" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Muat Naik Menu
                                 </button>
                             </div>
@@ -382,7 +424,7 @@ if (isset($_POST['upload'])) {
                     <div class="table-container">
                         <table class="w-full table-auto rounded-lg overflow-hidden">
                             <thead>
-                                <tr class="bg-blue-200 text-blue-800">
+                                <tr class="bg-[#a3b18a] font-bold text-black">
                                     <th width='20%' class="px-[47px] py-2">Kod Menu</th>
                                     <th width='30%' class="px-[47px] py-2">Gambar</th>
                                     <th width='30%' class="px-[47px] py-2">Nama Menu</th>
@@ -402,7 +444,7 @@ if (isset($_POST['upload'])) {
                                             <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?> </td>
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
-                                                    <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')" class="bg-blue-800 text-white py-2 px-4 rounded flex items-center justify-center">
+                                                    <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')" class="bg-[#588157] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
                                                     <button
@@ -431,7 +473,7 @@ if (isset($_POST['upload'])) {
         </div>
 
         <!-- Footer -->
-        <footer class="bg-blue-800 text-white p-4 text-center w-full">
+        <footer class="bg-[#588157] text-white p-4 text-center w-full">
             &copy; 2024 Kedai KafeLip. All rights reserved.
         </footer>
     </div>
@@ -458,7 +500,7 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='upload' class="bg-blue-800 text-white p-2 rounded">Submit</button>
+                    <button type="submit" name='upload' class="bg-[#588157] text-white p-2 rounded">Submit</button>
                 </div>
             </form>
         </div>
@@ -492,7 +534,7 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
+                    <button type="submit" name='DaftarMenu' class="bg-[#588157] text-white p-2 rounded">Submit</button>
                 </div>
             </form>
         </div>
@@ -524,12 +566,32 @@ if (isset($_POST['upload'])) {
 
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu' class="bg-blue-800 text-white p-2 rounded">Submit</button>
+                    <button type="submit" name='DaftarMenu' class="bg-[#588157] text-white p-2 rounded">Submit</button>
                 </div>
             </form>
         </div>
     </div>
+    <button id="scrollToTopBtn" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up">
+        </i>
+    </button>
+    <script>
+        // Show or hide the scroll to top button
+        window.onscroll = function() {
+            var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
 
+        // Scroll to top function
+        function scrollToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
     <script>
         const drawerToggle = document.getElementById('drawerToggle');
         const drawer = document.getElementById('drawer');

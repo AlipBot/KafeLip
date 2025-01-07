@@ -46,109 +46,48 @@ include('../function/connection.php');
             margin-left: 16rem;
         }
 
-        .notif {
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF3DD;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #000;
+            border-radius: 6px;
+            border: 3px solid #FAF3DD;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #333;
+        }
+
+        /* Scroll to top button */
+        #scrollToTopBtn {
             display: none;
             position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .notif-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
-        }
-
-        .DaftarMenu,
-        .KemaskiniMenu,
-        .menu {
-            display: none;
-            position: fixed;
-            z-index: 50;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .DaftarMenu-content,
-        .KemaskiniMenu-content,
-        .menu-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
+            bottom: 60px;
+            right: 20px;
+            z-index: 100;
+            background-color: #4A7C59;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 10px 15px;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
-        .dropzone {
-            border: 2px dashed #ccc;
-            border-radius: 4px;
-            padding: 20px;
-            text-align: center;
-            background: #f9f9f9;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .dropzone.dragover {
-            background: #e1f5fe;
-            border-color: #2196f3;
-        }
-
-        .dropzone p {
-            margin: 0;
-            color: #666;
-        }
-
-        .dropzone i {
-            font-size: 2em;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        #fileDisplay {
-            border: 1px solid #e2e8f0;
-            margin-top: 8px;
-        }
-
-        #removeFile {
-            padding: 4px 8px;
-            border-radius: 4px;
+        #scrollToTopBtn:hover {
+            background-color: #68B0AB;
+            color: #fff;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
     </style>
-   
+
 </head>
 
 <body class="font-roboto bg-gray-100">
@@ -156,8 +95,8 @@ include('../function/connection.php');
 
     <div class="flex h-screen flex-col">
         <!-- Header -->
-        <header class="bg-blue-800 text-white p-4 flex justify-between items-center fixed w-full z-10">
-            <button id="drawerToggle" class="bg-blue-700 text-white p-2 rounded">
+        <header class="bg-[#588157] text-white p-4 flex justify-between items-center fixed w-full z-10">
+            <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
             <div class="text-[150%] font-bold mx-auto">Statistik KafeLip</div>
@@ -166,42 +105,43 @@ include('../function/connection.php');
 
         <div class="flex flex-1 pt-16">
             <!-- Sidebar -->
-            <div id="drawer" class="w-64 bg-blue-800 text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
-                <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
-                    Admin
-                </div>
+            <div id="drawer"
+                class="w-64 bg-[#588157] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto">
                     <ul>
                         <li class="mb-4">
-                            <a href="panel.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
+                                Admin
+                            </div>
+                            <a href="panel.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a href="list-user.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="list-user.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-users mr-2"></i> Senarai Pengguna
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a href="list-menu.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="list-menu.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-utensils mr-2"></i> Senarai Makanan
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a href="laporan.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="laporan.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-file-alt mr-2"></i> Sejarah Laporan
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a href="statistik.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="statistik.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
-                        <div class="p-4 text-center text-2xl font-bold border-b border-blue-700">
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
                             Pelanggan
                         </div>
                         <li class="mb-4">
-                            <a href="../menu.php" class="flex items-center p-2 hover:bg-blue-700 rounded">
+                            <a href="../menu.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-arrow-left mr-2"></i> Kembali Ke Menu
                             </a>
                         </li>
@@ -260,7 +200,7 @@ include('../function/connection.php');
                                     ?>
                                 </select>
                             </div>
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit" class="bg-[#588157] hover:bg-[#68B0AB] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Tunjuk Statistik
                             </button>
                         </form>
@@ -283,12 +223,33 @@ include('../function/connection.php');
         </div>
 
         <!-- Footer -->
-        <footer class="bg-blue-800 text-white p-4 text-center w-full">
+        <footer class="bg-[#588157] text-white p-4 text-center w-full">
             &copy; 2024 Kedai KafeLip. All rights reserved.
         </footer>
     </div>
 
+    </div>
+    <button id="scrollToTopBtn" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up">
+        </i>
+    </button>
+    <script>
+        // Show or hide the scroll to top button
+        window.onscroll = function() {
+            var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
 
+        // Scroll to top function
+        function scrollToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
     <script>
         const drawerToggle = document.getElementById('drawerToggle');
         const drawer = document.getElementById('drawer');

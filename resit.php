@@ -190,13 +190,13 @@ $laksana = mysqli_query($condb, $sql_pilih);
             <div class="text-left mb-4 flex justify-between">
                 <div>
                     <p class="text-lg font-semibold mb-2"><i class="fas fa-user-circle text-[#4A7C59] mr-1"></i> Maklumat Pelanggan</p>
-                    <p class="text-sm mb-1"><i class="fas fa-user text-[#4A7C59] mr-1"></i> Nama:
+                    <p class="text-sm mb-1"><i class="fas fa-user text-[#4A7C59] mr-1"></i> Nama :
                         <?= $_SESSION['nama'] ?>
                     </p>
-                    <p class="text-sm mb-1"><i class="fas fa-phone text-[#4A7C59] mr-1"></i> No. Telefon:
+                    <p class="text-sm mb-1"><i class="fas fa-phone text-[#4A7C59] mr-1"></i> No. Telefon :
                         <?= $_SESSION['notel'] ?>
                     </p>
-                    <p class="text-sm"><i class="fas fa-envelope text-[#4A7C59] mr-1"></i> Email:
+                    <p class="text-sm"><i class="fas fa-envelope text-[#4A7C59] mr-1"></i> Email :
                         <?= $email ?>
                     </p>
                 </div>

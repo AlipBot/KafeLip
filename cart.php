@@ -98,28 +98,6 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 .goMenu a span {
                     display: none;
                 }
-
-                .comment {
-                    padding: 2px;
-                    gap: 2px;
-                }
-
-                .comment img {
-                    width: 20px;
-                    height: 20px;
-                }
-
-                .comment .text .name {
-                    font-size: 12px;
-                }
-
-                .comment .text .time {
-                    font-size: 10px;
-                }
-
-                .comment .text .message {
-                    font-size: 10px;
-                }
             }
 
             /* Custom scrollbar styles */
@@ -423,10 +401,11 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             document.querySelectorAll('.Sahkan-btn').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
+                    notifinfo.play();
 
                     Swal.fire({
                         title: 'Anda pasti?',
-                        text: "Sahkan tempah",
+                        text: "Selepas tempah Berjaya, anda dapat batalkan tempahan anda selama 60 saat sahaja di sejarah tempahan",
                         icon: 'question',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -444,10 +423,11 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             document.querySelectorAll('.buang-btn').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
+                    notifinfo.play();
 
                     Swal.fire({
                         title: 'Anda pasti?',
-                        text: "Mahu Kosongkan Semua Senarai Tempahan",
+                        text: "Mahu Kosongkan Cart Anda",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#d33',
