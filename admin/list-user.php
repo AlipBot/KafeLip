@@ -441,7 +441,7 @@ if (isset($_POST['upload'])) {
     <div id="editModal" class="KemaskiniPengguna">
         <div class="kemaskiniPengguna-content">
             <span onclick="kemaskiniPengguna.style.display = 'none' " class="close">&times;</span>
-            <h3 class="text-lg font-bold">Kemaskini Pengguna</h3>
+            <h2 class="text-2xl font-bold mb-4">Kemaskini Pengguna</h2>
             <form id="updateForm" action="../function/update-user.php" method="POST">
                 <input type="hidden" name="notel_lama" id="notel_lama">
                 Nama :
@@ -460,9 +460,9 @@ if (isset($_POST['upload'])) {
                     <option value="PELANGGAN">PELANGGAN</option>
                 </select>
 
-                <div class="flex justify-end">
+                <div class="flex mt-[20px] justify-center">
                     <button type="submit" name="KemaskiniDataPengguna"
-                        class="bg-blue-500 text-white p-2">Kemaskini</button>
+                    class="bg-[#588157] text-white p-2 rounded">Kemaskini</button>
                 </div>
             </form>
         </div>
@@ -623,8 +623,8 @@ if (isset($_POST['upload'])) {
                         text: "Anda tidak boleh memulihkan data ini selepas dipadam!",
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
                         confirmButtonText: 'Ya, padam!',
                         cancelButtonText: 'Batal'
                     }).then((result) => {

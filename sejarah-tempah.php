@@ -248,8 +248,7 @@ $laksql = mysqli_query($condb, $sql);
                                             </button>
                                             <?php if ($m['seconds_passed'] <= 60): ?>
                                                 <div>
-                                                    <button onclick="if(confirm('Adakah anda pasti untuk membatalkan tempahan ini?')) location.href='function/batal-tempah.php?tarikh=<?= $masa ?>';"
-                                                        class="SemakResit bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-full">
+                                                    <button data-id="<?= $masa ?>"  class="batal-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-full">
                                                         <i class="fas fa-trash"></i> Batal
                                                     </button>
                                                     <div class="text-sm text-red-500 mt-1">
@@ -417,6 +416,30 @@ $laksql = mysqli_query($condb, $sql);
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         })
+
+
+        document.querySelectorAll('.batal-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const tarikh = this.dataset.id;
+                    e.preventDefault();
+                    notifwarning.play();
+
+                    Swal.fire({
+                        title: 'Anda pasti?',
+                        text: "Batalkan pesanan anda",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = `function/batal-tempah.php?tarikh=${tarikh}`;
+                        }
+                    });
+                });
+            });
 
         const menuButton = document.getElementById('menuButton');
         const dropdownMenu = document.getElementById('dropdownMenu');

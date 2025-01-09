@@ -24,8 +24,6 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 
-// Tambah pembolehubah untuk jenis notifikasi
-$notification_type = "";  // 'success', 'error', atau 'warning'
 
 if (isset($_POST['DaftarMenu'])) {
 
@@ -449,7 +447,7 @@ if (isset($_POST['upload'])) {
                                                     </button>
                                                     <button
                                                         data-id="<?php echo urlencode($m['kod_makanan']); ?>"
-                                                        class="delete-btn bg-red-800 text-white py-2 px-9 rounded flex items-center justify-center">
+                                                        class="delete-btn bg-red-800 text-white py-2 px-7 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
                                                 </div>
@@ -534,7 +532,7 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu' class="bg-[#588157] text-white p-2 rounded">Submit</button>
+                    <button type="submit" name='DaftarMenu' class="bg-[#588157] text-white p-2 rounded">Daftar</button>
                 </div>
             </form>
         </div>
@@ -566,7 +564,7 @@ if (isset($_POST['upload'])) {
 
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu' class="bg-[#588157] text-white p-2 rounded">Submit</button>
+                    <button type="submit" name='DaftarMenu' class="bg-[#588157] text-white p-2 rounded">Kemaskini</button>
                 </div>
             </form>
         </div>

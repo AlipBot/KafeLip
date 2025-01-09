@@ -240,7 +240,7 @@ $laksql = mysqli_query($condb, $sql);
                                                     <div class="flex flex-col items-center space-y-4">
                                                         <button onclick="bukaResit('<?= $m['email'] ?>', '<?= $m['tarikh'] ?>')"
                                                             class="bg-[#588157] text-white hover:bg-[#68B0AB] py-2 px-4 rounded flex items-center justify-center">
-                                                            <i class="fas fa-search"> </i> Semak
+                                                            <i class="fas fa-search mr-1"></i> Semak
                                                         </button>
                                                     </div>
                                                 </td>

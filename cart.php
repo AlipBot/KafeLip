@@ -423,7 +423,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             document.querySelectorAll('.buang-btn').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    notifinfo.play();
+                    notifwarning.play();
 
                     Swal.fire({
                         title: 'Anda pasti?',
