@@ -437,6 +437,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                 <div style="background-image: url('lib/image/banner2.jpg');" class="slide iklan">
 
                     <h2 id="tarikhSlide"></h2>
+                    <p id="hariSlide"></p>
                     <p id="masaSlide"></p>
 
 
@@ -770,6 +771,10 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             const hari = String(masa.getDate()).padStart(2, '0');
             const bulan = String(masa.getMonth() + 1).padStart(2, '0');
             const tahun = masa.getFullYear();
+            
+            // Array untuk nama-nama hari dalam Bahasa Melayu
+            const namaHari = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'];
+            const hariSemasa = namaHari[masa.getDay()];
 
             document.getElementById('tarikhSlide').textContent = `${hari}/${bulan}/${tahun}`;
             document.getElementById('masaSlide').textContent = masa.toLocaleTimeString('ms-MY', {
@@ -778,6 +783,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                 second: '2-digit',
                 hour12: true
             });
+            document.getElementById('hariSlide').textContent = hariSemasa;
         }
 
         setInterval(kemaskiniMasaTarikh, 1000);

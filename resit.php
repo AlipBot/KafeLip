@@ -116,14 +116,39 @@ $laksana = mysqli_query($condb, $sql_pilih);
             .print-area {
                 position: absolute;
                 left: 50%;
-                top: 30%;
-                transform: translate(-50%, -50%);
+                top: 70px;
+                transform: translate(-50%, 0) scale(1.1);
                 width: 100%;
-                max-width: 800px;
+                max-width: 850px;
+                padding: 0;
+                margin: 0;
             }
 
-            .scale-content {
-                transform-origin: top center;
+            table {
+                font-size: 15px;
+                width: 100%;
+                margin-bottom: 12px;
+            }
+
+            h2 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+            .text-sm {
+                font-size: 13px;
+            }
+
+            .text-lg {
+                font-size: 17px;
+            }
+
+            .p-6 {
+                padding: 1.3rem;
+            }
+
+            .mb-4 {
+                margin-bottom: 1.2rem;
             }
         }
     </style>
@@ -300,20 +325,6 @@ $laksana = mysqli_query($condb, $sql_pilih);
             document.documentElement.scrollTop = 0;
         }
 
-        function adjustScale() {
-            const printArea = document.querySelector('.print-area');
-            const contentHeight = printArea.scrollHeight;
-            const pageHeight = window.innerHeight;
-
-            if (contentHeight > pageHeight) {
-                const scale = pageHeight / contentHeight;
-                printArea.classList.add('scale-content');
-                printArea.style.transform = `translate(-50%, -50%) scale(${scale})`;
-            }
-        }
-
-        window.onload = adjustScale;
-        window.onresize = adjustScale;
 
 
         const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
