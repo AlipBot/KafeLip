@@ -27,7 +27,7 @@ $laktarikh = mysqli_query($condb, $sqltarikh);
 $sql = "SELECT t.email, 
                t.tarikh,
                TIMESTAMPDIFF(SECOND, t.tarikh, NOW()) as seconds_passed,
-               SUM(t.kuantiti * m.harga) AS jumlah_harga
+               SUM(t.jumlah_harga) AS jumlah_harga_semua
         FROM tempahan t
         JOIN makanan m ON t.kod_makanan = m.kod_makanan
         WHERE t.tarikh LIKE '%$tarikhsemasa%' 
@@ -238,7 +238,7 @@ $laksql = mysqli_query($condb, $sql);
                                         <i class="fas fa-calendar-day"></i> Tarikh: <?php echo date_format($tarikh, "d/m/Y") ?> <br>
                                         <i class="fas fa-clock"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
                                     </td>
-                                    <td class="border-0 shadow-lg  px-4 py-2 text-center">RM <?= number_format($m['jumlah_harga'], 2) ?> </td>
+                                    <td class="border-0 shadow-lg  px-4 py-2 text-center">RM <?= number_format($m['jumlah_harga_semua'], 2) ?> </td>
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center 	">
                                         <?php $masa = date_format($tarikh, "Y-m-d H:i:s"); ?>
                                         <div class="flex flex-col gap-2">

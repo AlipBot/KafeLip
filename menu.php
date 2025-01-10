@@ -42,10 +42,10 @@ include("function/connection.php"); // Pastikan path file koneksi benar
 
 
         .menu-container {
-            padding: 2%;
+            padding: 9%;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 5%;
+            gap: 1%;
             justify-items: center;
         }
 
@@ -61,7 +61,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             padding: 1rem;
             text-align: center;
             width: 100%;
-            max-width: 90%;
+            max-width: 100%;
         }
 
         .menu-item .w-32 {
@@ -471,7 +471,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             </span>
         </h2>
     </div>
-    <div class="bg-[#A1CCA5] overflow-auto	m-8 rounded-2xl p-6 shadow-lg items-center">
+    <div class="bg-[#A1CCA5] overflow-auto	my-5 mx-[90px]  rounded-2xl p-6 shadow-lg items-center">
         <div class="menu-container">
             <?php
             // Query untuk mendapatkan semua data dari tabel 'makanan'

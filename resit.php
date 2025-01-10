@@ -263,7 +263,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
                                 </td>
                                 <td class="p-2 text-center border border-gray-300">
                                     <?php
-                                    $harga = $m['kuantiti'] * $m['harga'];
+                                    $harga = $m['jumlah_harga'];
                                     $jumlah_harga += $harga;
                                     echo number_format($harga, 2);
                                     ?>
