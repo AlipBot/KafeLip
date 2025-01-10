@@ -58,20 +58,26 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 7%;
+            padding: 1rem;
             text-align: center;
             width: 100%;
             max-width: 90%;
-            height: 100%;
+        }
+
+        .menu-item .w-32 {
+            width: 8rem;
+            /* 128px */
+        }
+
+        .menu-item .h-32 {
+            height: 8rem;
+            /* 128px */
         }
 
         .menu-item img {
-            box-shadow: 2px 9px 41px 3px rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.19);
-            border-radius: 8px;
-            width: auto;
-            height: auto;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            margin-bottom: 10%;
         }
 
         .menu-item h2 {
@@ -481,28 +487,31 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             if (mysqli_num_rows($result) > 0) {
                 while ($m = mysqli_fetch_assoc($result)): ?>
                     <div class="menu-item">
-                        <img src="menu-images/<?= htmlspecialchars($m['gambar']) ?>" />
-                        <div>
-                            <h2><?= htmlspecialchars($m['nama_makanan']) ?></h2>
-                            <p class="price">RM <?= $m['harga'] ?></p>
+                        <div class="w-32 h-32 overflow-hidden rounded-lg mb-4">
+                            <img src='menu-images/<?php echo htmlspecialchars($m['gambar']); ?>'
+                                alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>'
+                                class="w-full h-full object-cover">
                         </div>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn minus"
-                                onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'decrease')">-</button>
-                            <span id="quantity-<?= $m['kod_makanan'] ?>" class="quantity-value">1</span>
-                            <button class="quantity-btn plus"
-                                onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'increase')">+</button>
+                        <div class="flex flex-col items-center">
+                            <h2 class="text-lg font-semibold mb-2"><?= htmlspecialchars($m['nama_makanan']) ?></h2>
+                            <p class="price mb-3">RM <?= $m['harga'] ?></p>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn minus"
+                                    onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'decrease')">-</button>
+                                <span id="quantity-<?= $m['kod_makanan'] ?>" class="quantity-value">1</span>
+                                <button class="quantity-btn plus"
+                                    onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'increase')">+</button>
+                            </div>
+                            <button class="add-to-cart"
+                                onclick="addToCartWithQuantity('<?= htmlspecialchars($m['kod_makanan']) ?>')">
+                                Tambah ke Troli
+                            </button>
                         </div>
-                        <button class="add-to-cart"
-                            onclick="addToCartWithQuantity('<?= htmlspecialchars($m['kod_makanan']) ?>')">
-                            Tambah ke Troli
-                        </button>
                     </div>
                 <?php endwhile;
             } else {
                 echo "<p style='color: red;'>TIADA MAKANAN TERSEDIA SEKARANG</p>";
-            }
-            ?>
+            } ?>
         </div>
     </div>
 
@@ -771,7 +780,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             const hari = String(masa.getDate()).padStart(2, '0');
             const bulan = String(masa.getMonth() + 1).padStart(2, '0');
             const tahun = masa.getFullYear();
-            
+
             // Array untuk nama-nama hari dalam Bahasa Melayu
             const namaHari = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'];
             const hariSemasa = namaHari[masa.getDay()];

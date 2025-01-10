@@ -62,7 +62,7 @@ $sql_tempahan = "
             CONCAT(m.nama_makanan, ' ( RM ', FORMAT(m.harga, 2), ' ) X ', t.kuantiti)
             SEPARATOR '<br>'
         ) AS senarai_makanan,
-        SUM(t.kuantiti * m.harga) AS jumlah_harga
+        SUM(t.jumlah_harga) AS jumlah_harga_semua
     FROM tempahan t
     JOIN makanan m ON t.kod_makanan = m.kod_makanan
     JOIN pelanggan p ON t.email = p.email
@@ -82,7 +82,7 @@ while ($row = mysqli_fetch_assoc($laptoday)) {
         'masa' => date_format($tarikh, "g:i:s A"),
         'timestap' => date_format($tarikh, "Y-m-d\TH:i:s"),  // Format ISO 8601
         'senarai_makanan' => $row['senarai_makanan'],
-        'jumlah_harga' => $row['jumlah_harga']
+        'jumlah_harga_semua' => $row['jumlah_harga_semua']
     ];
 }
 

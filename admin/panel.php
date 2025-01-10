@@ -385,7 +385,7 @@
                                 let row = `<tr class="bg-white border-b hover:bg-blue-50">
                                 <td class="px-4 py-2 ">${tempahan.nama}</td>
                                 <td class="px-4 py-2">${tempahan.senarai_makanan}</td>
-                                <td class="px-4 py-2 text-center">RM ${parseFloat(tempahan.jumlah_harga).toFixed(2)}</td>
+                                <td class="px-4 py-2 text-center">RM ${parseFloat(tempahan.jumlah_harga_semua).toFixed(2)}</td>
                                 <td class="px-4 py-2 text-center">${tempahan.masa} <br> ${masaLalu}</td>
                             </tr>`;
                                 laporanTable.innerHTML += row;

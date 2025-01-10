@@ -39,3 +39,7 @@ $_SESSION['orders'] = array_values($_SESSION['orders']);
 $_SESSION['success'] = "1 item telah dikeluarkan ke troli";
 header("Location: ../cart.php");
 exit;
+
+if (isset($_GET['ajax']) && $_GET['ajax'] === 'true') {
+    exit; // Hentikan eksekusi tanpa redirect jika ini adalah permintaan AJAX
+}

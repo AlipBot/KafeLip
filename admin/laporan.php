@@ -18,7 +18,7 @@ $laktarikh = mysqli_query($condb, $sqltarikh);
 # dapatkan semua senarai tempahan
 $sql = "SELECT t.email, 
                t.tarikh,
-               SUM(t.kuantiti * m.harga) AS jumlah_harga
+               SUM(t.jumlah_harga) AS jumlah_harga_semua
         FROM tempahan t
         JOIN makanan m ON t.kod_makanan = m.kod_makanan
         WHERE t.tarikh LIKE '%$tarikhsemasa%'
@@ -229,7 +229,7 @@ $laksql = mysqli_query($condb, $sql);
                                                                         }
                                                                         ?></td>
                                                 <td class='px-4 py-2 text-center'>RM
-                                                    <?php echo htmlspecialchars($m['jumlah_harga']); ?></td>
+                                                    <?php echo htmlspecialchars($m['jumlah_harga_semua']); ?></td>
                                                 <td class='px-4 py-2 text-center'>
                                                     <?php
                                                     $tarikh = date_create($m['tarikh']);

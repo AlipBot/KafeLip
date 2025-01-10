@@ -157,6 +157,38 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 color: #fff;
                 transition: background-color 0.3s ease, color 0.3s ease;
             }
+
+            .quantity-controls {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .quantity-btn {
+                background-color: #4A7C59;
+                color: white;
+                border: none;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                cursor: pointer;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background-color 0.3s ease;
+            }
+
+            .quantity-btn:hover {
+                background-color: #68B0AB;
+            }
+
+            .quantity-value {
+                font-size: 18px;
+                font-weight: bold;
+                min-width: 30px;
+                text-align: center;
+            }
         </style>
     </head>
 
@@ -242,24 +274,30 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 <tr class="bg-[#FAF3DD] hover:bg-white">
                                     <td class="shadow-lg px-4 py-2 font-semibold custom-font"><?= $m['nama_makanan'] ?></td>
                                     <td class="shadow-lg px-4 py-2 flex justify-center font-semibold items-center space-x-2">
-                                        <button onclick="location.href='function/add-cart.php?page=cart&id_menu=<?= $m['kod_makanan'] ?>&quantity=1';" class="bg-[#48bd4e] text-white px-2.5 py-1 rounded ">+</button>
-                                        <span><?= $bil ?></span>
-                                        <button onclick="location.href='function/del-cart.php?id_menu=<?= $m['kod_makanan'] ?>';" class="bg-[#CA0000D9] text-white px-3 py-1 rounded ">-</button>
+                                        <div class="quantity-controls">
+                                            <button class="quantity-btn minus bg-[#CA0000D9] hover:bg-[#d33]" onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'decrease', <?= $m['harga'] ?>)">-</button>
+                                            <span id="quantity-<?= $m['kod_makanan'] ?>" class="quantity-value"><?= $bil ?></span>
+                                            <button class="quantity-btn plus" onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'increase', <?= $m['harga'] ?>)">+</button>
+                                        </div>
                                     </td>
-                                    <td class="shadow-lg text-center  px-4 py-2 font-semibold custom-font"><?= $m['harga'] ?></td>
-                                    <td class="shadow-lg text-center  px-4 py-2 font-semibold custom-font">
-                                        <?php
-                                        $harga = $bil * $m['harga'];
-                                        $jumlah_harga = $jumlah_harga + $harga;
-                                        echo number_format($harga, 2);
-                                        $_SESSION['jumlah_harga'] = $jumlah_harga;
-                                        ?>
+                                    <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font"><?= $m['harga'] ?></td>
+                                    <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font">
+                                        <span id="total-<?= $m['kod_makanan'] ?>">
+                                            <?php
+                                            $harga = $bil * $m['harga'];
+                                            $jumlah_harga = $jumlah_harga + $harga;
+                                            echo number_format($harga, 2);
+                                            $_SESSION['jumlah_harga'] = $jumlah_harga;
+                                            ?>
+                                        </span>
                                     </td>
                                 </tr>
                             <?php } ?>
                             <tr class="bg-[#FAF3DD] hover:bg-white">
                                 <td class="shadow-lg px-4 py-2 text-right font-semibold custom-font" colspan="3">Jumlah Bayaran (RM)</td>
-                                <td class="shadow-lg text-center  px-4 py-2 font-semibold custom-font"> <?php echo number_format($jumlah_harga, 2) ?></td>
+                                <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font">
+                                    <span id="grand-total"><?php echo number_format($jumlah_harga, 2) ?></span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -455,6 +493,54 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                     dropdownMenu.classList.add('hidden');
                 }
             });
+
+            function updateCartQuantity(menuId, action, hargaSeunit) {
+                const quantityElement = document.getElementById(`quantity-${menuId}`);
+                const totalElement = document.getElementById(`total-${menuId}`);
+                let quantity = parseInt(quantityElement.textContent);
+
+                if (action === 'increase') {
+                    quantity++;
+                    fetch(`function/add-cart.php?id_menu=${menuId}&quantity=1&page=cart&ajax=true`)
+                        .then(response => response.text())
+                        .then(() => {
+                            quantityElement.textContent = quantity;
+                            updateItemTotal(menuId, quantity, hargaSeunit);
+                            updateGrandTotal();
+                        });
+                } else if (action === 'decrease' && quantity > 1) {
+                    quantity--;
+                    fetch(`function/del-cart.php?id_menu=${menuId}&ajax=true`)
+                        .then(response => response.text())
+                        .then(() => {
+                            quantityElement.textContent = quantity;
+                            updateItemTotal(menuId, quantity, hargaSeunit);
+                            updateGrandTotal();
+                        });
+                }
+            }
+
+            function updateItemTotal(menuId, quantity, hargaSeunit) {
+                const totalElement = document.getElementById(`total-${menuId}`);
+                const total = quantity * hargaSeunit;
+                totalElement.textContent = total.toFixed(2);
+            }
+
+            function updateGrandTotal() {
+                let grandTotal = 0;
+                // Dapatkan semua elemen total harga
+                document.querySelectorAll('[id^="total-"]').forEach(element => {
+                    grandTotal += parseFloat(element.textContent);
+                });
+
+                // Kemas kini jumlah keseluruhan
+                document.getElementById('grand-total').textContent = grandTotal.toFixed(2);
+
+                // Kemas kini session jumlah_harga melalui AJAX
+                fetch('function/update-total.php?total=' + grandTotal)
+                    .then(response => response.text())
+                    .then(data => console.log('Total updated in session'));
+            }
         </script>
     </body>
 

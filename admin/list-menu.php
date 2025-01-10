@@ -28,15 +28,15 @@ $result = mysqli_stmt_get_result($stmt);
 if (isset($_POST['DaftarMenu'])) {
 
     # Mengambil data daripada borang (form)
-    $kod_makanan      =   $_POST['kod_makanan'];
-    $nama_makanan     =   $_POST['nama_makanan'];
-    $harga          =   $_POST['harga'];
+    $kod_makanan = $_POST['kod_makanan'];
+    $nama_makanan = $_POST['nama_makanan'];
+    $harga = $_POST['harga'];
 
     # Mengambil data gambar
-    $file_extension    =   pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
+    $file_extension = pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
     # Buang jarak dan tukar kepada huruf kecil
-    $nama_fail_baru    =   strtolower(str_replace(' ', '', $nama_makanan)) . '.' . $file_extension;
-    $lokasi           =   $_FILES['gambar']['tmp_name'];
+    $nama_fail_baru = strtolower(str_replace(' ', '', $nama_makanan)) . '.' . $file_extension;
+    $lokasi = $_FILES['gambar']['tmp_name'];
 
     # Data validation : had atas
     if (!is_numeric($harga) and $harga > 0) {
@@ -45,8 +45,8 @@ if (isset($_POST['DaftarMenu'])) {
         exit();
     }
     # Semak id_menu dah wujud atau belum
-    $sql_semak  =   "select kod_makanan from makanan where kod_makanan = '$kod_makanan' ";
-    $laksana_semak  =   mysqli_query($condb, $sql_semak);
+    $sql_semak = "select kod_makanan from makanan where kod_makanan = '$kod_makanan' ";
+    $laksana_semak = mysqli_query($condb, $sql_semak);
     if (mysqli_num_rows($laksana_semak) == 1) {
         $_SESSION['error'] = "ID Menu telah digunakan. Sila guna kod makanan yang lain";
         header("Location: list-menu.php");
@@ -54,13 +54,13 @@ if (isset($_POST['DaftarMenu'])) {
     }
 
     # proses menyimpan data
-    $sql_simpan =   "insert into makanan set
+    $sql_simpan = "insert into makanan set
                     kod_makanan     = '$kod_makanan',
                     nama_makanan   = '$nama_makanan',
                     harga       = '$harga',
                     gambar      = '$nama_fail_baru'
                 ";
-    $laksana    =   mysqli_query($condb, $sql_simpan);
+    $laksana = mysqli_query($condb, $sql_simpan);
 
 
     # Pengujian proses menyimpan data 
@@ -82,9 +82,9 @@ if (isset($_POST['DaftarMenu'])) {
 if (isset($_POST['upload'])) {
 
     # mengambil nama sementara fail
-    $namafailsementara  =   $_FILES['data']['tmp_name'];
-    $namafail           =   $_FILES['data']['name'];
-    $jenisfail          =   $_FILES['data']['type'];
+    $namafailsementara = $_FILES['data']['tmp_name'];
+    $namafail = $_FILES['data']['name'];
+    $jenisfail = $_FILES['data']['type'];
 
     # menguji jenis fail dan sail fail 
     if ($_FILES["data"]["size"] > 0 and $jenisfail == "text/plain") {
@@ -102,9 +102,9 @@ if (isset($_POST['upload'])) {
             $data = explode("|", $ambilbarisdata);
 
             # Umpukkan data yang dipecahkan
-            $id_menu        = trim($data[0]);
-            $nama_menu      = trim($data[1]);
-            $harga          = trim($data[2]);
+            $id_menu = trim($data[0]);
+            $nama_menu = trim($data[1]);
+            $harga = trim($data[2]);
             # semak jika id menu telah ada dalam  pangkalan data
             $pilih = mysqli_query($condb, "select* from makanan where kod_makanan='" . $id_menu . "'");
             if (mysqli_num_rows($pilih) == 1) {
@@ -113,7 +113,7 @@ if (isset($_POST['upload'])) {
                 exit();
             } else {
                 # arahan SQL untuk menyimpan data
-                $sql_simpan =   "insert into makanan set
+                $sql_simpan = "insert into makanan set
                                  kod_makanan    = '$id_menu',
                                  nama_makanan   = '$nama_menu',
                                  harga          = '$harga' 
@@ -401,19 +401,25 @@ if (isset($_POST['upload'])) {
                         <span id="currentTime" class="font-bold text-lg"></span>
                         <div class="flex items-center justify-between space-x-5">
                             <form action="list-menu.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
-                                <input type="text" name="nama_menu" placeholder="Carian Menu" value="<?php echo htmlspecialchars($_GET['nama_menu'] ?? ''); ?>" class="border rounded p-2 w-2/5">
-                                <button type="submit" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                                <input type="text" name="nama_menu" placeholder="Carian Menu"
+                                    value="<?php echo htmlspecialchars($_GET['nama_menu'] ?? ''); ?>"
+                                    class="border rounded p-2 w-2/5">
+                                <button type="submit"
+                                    class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
-                                <button type="button" onclick="window.location.href='list-menu.php';" class="bg-red-800 text-white p-2 rounded flex items-center">
+                                <button type="button" onclick="window.location.href='list-menu.php';"
+                                    class="bg-red-800 text-white p-2 rounded flex items-center">
                                     <i class="fas fa-times mr-1"></i> Padam
                                 </button>
                             </form>
                             <div class="flex space-x-2">
-                                <button id="DaftarMenuButton" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
+                                <button id="DaftarMenuButton"
+                                    class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Daftar Menu
                                 </button>
-                                <button id="uploadButton" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
+                                <button id="uploadButton"
+                                    class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Muat Naik Menu
                                 </button>
                             </div>
@@ -434,19 +440,34 @@ if (isset($_POST['upload'])) {
                                 <?php if (mysqli_num_rows($result) > 0) { ?>
                                     <?php while ($m = mysqli_fetch_assoc($result)) { ?>
                                         <tr class='bg-white border-b hover:bg-blue-50'>
-                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['kod_makanan']); ?></td>
-                                            <td class='px-8 py-4 flex justify-center items-center'>
-                                                <img src='../menu-images/<?php echo htmlspecialchars($m['gambar']); ?>' alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>' width='60%' class="rounded-md">
+                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['kod_makanan']); ?>
                                             </td>
-                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['nama_makanan']); ?></td>
-                                            <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?> </td>
+                                            <td class='px-8 py-4 flex justify-center items-center'>
+                                                <div class="relative group">
+                                                    <div class="w-32 h-32 overflow-hidden">
+                                                        <img src='../menu-images/<?php echo htmlspecialchars($m['gambar']); ?>'
+                                                            alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>'
+                                                            class="w-full h-full object-cover rounded-md cursor-pointer transition-opacity group-hover:opacity-50">
+                                                    </div>
+                                                    <div
+                                                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <i onclick="showImagePopup('../menu-images/<?php echo htmlspecialchars($m['gambar']); ?>', '<?php echo htmlspecialchars($m['nama_makanan']); ?>')"
+                                                            class="fas fa-eye text-3xl text-white bg-black bg-opacity-50 p-3 rounded-full"></i>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class='px-4 py-2 text-center'>
+                                                <?php echo htmlspecialchars($m['nama_makanan']); ?>
+                                            </td>
+                                            <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?>
+                                            </td>
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
-                                                    <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')" class="bg-[#588157] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
+                                                    <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')"
+                                                        class="bg-[#588157] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button
-                                                        data-id="<?php echo urlencode($m['kod_makanan']); ?>"
+                                                    <button data-id="<?php echo urlencode($m['kod_makanan']); ?>"
                                                         class="delete-btn bg-red-800 text-white py-2 px-7 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
@@ -513,14 +534,16 @@ if (isset($_POST['upload'])) {
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     ID Menu :<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
-                    Nama Menu : <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3" required>
+                    Nama Menu : <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3"
+                        required>
                     Harga : <input type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
                     <label class="block text-black">Sila Pilih Gambar Menu : </label>
 
                     <!-- Container untuk preview gambar -->
                     <div class="flex justify-center mb-4 relative" id="daftarPreviewContainer" style="display: none;">
                         <img id="preview" style="max-width: 300px;">
-                        <button type="button" id="closeDaftarPreview" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                        <button type="button" id="closeDaftarPreview"
+                            class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -547,12 +570,15 @@ if (isset($_POST['upload'])) {
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     <input type="hidden" name="id_menu" id="id_menu">
-                    Nama Menu : <input id="nama_makanan" type="text" name='nama_menu' class="w-full border p-2 mb-3" required>
-                    Harga : <input id="harga_makanan" type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    Nama Menu : <input id="nama_makanan" type="text" name='nama_menu' class="w-full border p-2 mb-3"
+                        required>
+                    Harga : <input id="harga_makanan" type='number' name='harga' step='0.01'
+                        class="w-full border p-2 mb-3" required>
                     <label class="block text-gray-700">Sila Pilih Gambar Menu (jika ingin diubah) : </label>
                     <div class="flex justify-center mb-4 relative" id="previewContainer" style="display: none;">
                         <img id="preview_kemas" style="max-width: 300px;">
-                        <button type="button" id="closePreview" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                        <button type="button" id="closePreview"
+                            class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -564,18 +590,35 @@ if (isset($_POST['upload'])) {
 
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu' class="bg-[#588157] text-white p-2 rounded">Kemaskini</button>
+                    <button type="submit" name='DaftarMenu'
+                        class="bg-[#588157] text-white p-2 rounded">Kemaskini</button>
                 </div>
             </form>
         </div>
     </div>
+
+
+    <!-- Image Popup Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="relative max-w-2xl mx-auto p-4">
+            <button onclick="closeImagePopup()"
+                class="absolute top-0 right-0 -mt-[14.5px] -mr-[14px] text-white text-3xl font-bold hover:text-gray-300">&times;</button>
+            <div class="max-h-[70vh] max-w-[600px]">
+                <img id="popupImage" src="" alt="" class="w-full h-[70%] rounded-md object-contain">
+            </div>
+            <p id="imageCaption" class="text-white text-center mt-4 text-lg"></p>
+        </div>
+    </div>
+
+
+
     <button id="scrollToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up">
         </i>
     </button>
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -608,7 +651,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function() {
+            reader.onload = function () {
                 var imgElement = document.getElementById('preview');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -621,7 +664,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function() {
+            reader.onload = function () {
                 var imgElement = document.getElementById('preview_kemas');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -670,17 +713,17 @@ if (isset($_POST['upload'])) {
 
         }
 
-        btn.onclick = function() {
+        btn.onclick = function () {
             menu.style.display = "block";
 
         }
 
-        btnDaftarmenu.onclick = function() {
+        btnDaftarmenu.onclick = function () {
             Daftarmenu.style.display = "block";
         }
 
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == Kemaskinimenu) {
                 window.location.href = window.location.href;
                 Kemaskinimenu.style.display = "none";
@@ -702,7 +745,7 @@ if (isset($_POST['upload'])) {
         const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
 
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
                 notifsuccess.play();
@@ -735,7 +778,7 @@ if (isset($_POST['upload'])) {
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const id = this.dataset.id;
                     notifwarning.play();
@@ -769,7 +812,7 @@ if (isset($_POST['upload'])) {
 
             // Form validation dengan SweetAlert
             document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function (e) {
                     // Contoh validasi untuk fail
                     const fileInput = this.querySelector('input[type="file"]');
                     if (fileInput && fileInput.files.length > 0) {
@@ -816,7 +859,7 @@ if (isset($_POST['upload'])) {
                 if (acceptType === 'image/*' && file.type.startsWith('image/')) {
                     // Logik untuk preview gambar
                     const reader = new FileReader();
-                    reader.onload = function() {
+                    reader.onload = function () {
                         const preview = document.getElementById(previewId);
                         if (previewContainer) {
                             previewContainer.style.display = 'flex';
@@ -902,6 +945,39 @@ if (isset($_POST['upload'])) {
             setupDropzone('uploadDropzone', 'file', null, 'fileDisplay', 'removeFile', '.txt');
             setupDropzone('daftarDropzone', 'gambarDaftar', 'preview', 'daftarPreviewContainer', 'closeDaftarPreview', 'image/*');
             setupDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas', 'previewContainer', 'closePreview', 'image/*');
+        });
+    </script>
+
+    <script>
+        function showImagePopup(imageSrc, caption) {
+            const modal = document.getElementById('imageModal');
+            const popupImage = document.getElementById('popupImage');
+            const imageCaption = document.getElementById('imageCaption');
+
+            popupImage.src = imageSrc;
+            imageCaption.textContent = caption;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Tutup modal bila klik di luar gambar
+            modal.onclick = function (e) {
+                if (e.target === modal) {
+                    closeImagePopup();
+                }
+            }
+        }
+
+        function closeImagePopup() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Tutup modal dengan kekunci ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeImagePopup();
+            }
         });
     </script>
 

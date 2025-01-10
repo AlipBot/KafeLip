@@ -21,17 +21,19 @@ mysqli_data_seek($laksana, 0);
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Semak Resit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
+
 <body class="bg-[#FAF3DD] p-4">
+    <h2 class="text-2xl mt-9 font-bold mb-4 text-center text-black">
+        <i class="fas fa-receipt text-[#4A7C59] mr-1"></i> Resit
+    </h2>
     <div class="print-area max-w-[700px] mx-auto bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-bold mb-4 text-center text-black">
-            <i class="fas fa-receipt text-[#4A7C59] mr-1"></i> Resit
-        </h2>
-        
+
         <div class="text-left mb-4 flex justify-between">
             <div>
                 <p class="text-lg font-semibold mb-2">
@@ -52,11 +54,11 @@ mysqli_data_seek($laksana, 0);
                     <i class="fas fa-store text-[#4A7C59] mr-1"></i> KafeLip
                 </p>
                 <p class="text-sm mb-1">
-                    <i class="fas fa-calendar-alt text-[#4A7C59] mr-1"></i> Tarikh: 
+                    <i class="fas fa-calendar-alt text-[#4A7C59] mr-1"></i> Tarikh:
                     <?= date_format(date_create($tarikh), "d/m/Y") ?>
                 </p>
                 <p class="text-sm">
-                    <i class="fas fa-clock text-[#4A7C59] mr-1"></i> Masa: 
+                    <i class="fas fa-clock text-[#4A7C59] mr-1"></i> Masa:
                     <?= date_format(date_create($tarikh), "g:i:s A") ?>
                 </p>
             </div>
@@ -100,4 +102,5 @@ mysqli_data_seek($laksana, 0);
         </div>
     </div>
 </body>
-</html> 
+
+</html>

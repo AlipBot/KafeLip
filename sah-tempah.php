@@ -19,12 +19,15 @@ if (!isset($_SESSION['orders'])) {
     $tarikh = date('Y-m-d H:i:s');
     # Mendapatkan data menu dan menyimpankannya dalam jadual tempahan
     foreach ($sama as $key => $bil) {
+        $sqlharga = "SELECT * FROM makanan WHERE makanan.kod_makanan = '$key' ORDER BY makanan.kod_makanan";
+        $ceharga = mysqli_fetch_assoc(mysqli_query($condb, $sqlharga));
+        $jum = $ceharga['harga'] * $bil;
 
         $sqltempah  =   "insert into tempahan set
                         email              = '" . $_SESSION['email'] . "',
                         kod_makanan        =   '$key',
                         tarikh             =  '$tarikh',
-                        jumlah_harga      =   '" . $_SESSION['jumlah_harga'] . "',
+                        jumlah_harga      =   '" . $jum . "',
                         kuantiti        =   '$bil' ";
         $laktempah  =   mysqli_query($condb, $sqltempah);
     }
@@ -32,13 +35,12 @@ if (!isset($_SESSION['orders'])) {
     if ($laktempah) {
         $_SESSION['success'] = "Tempahan Berjaya, Sila Cetak Resit Anda";
     } else {
-      #jika gagal papar punca error
-      $_SESSION['error'] = "Tempahan Gagal: " . mysqli_error($condb);
+        #jika gagal papar punca error
+        $_SESSION['error'] = "Tempahan Gagal: " . mysqli_error($condb);
     }
     # Memadam nilai pembolehubah session
     unset($_SESSION['orders']);
     unset($_SESSION['jumlah_harga']);
     header("Location: resit.php?tarikh=$tarikh");
     exit();
-
 }
