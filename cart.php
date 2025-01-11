@@ -24,7 +24,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         return $count >= 1;
     });
 
-?>
+    ?>
     <html>
 
     <head>
@@ -226,7 +226,8 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                     </button>
 
-                    <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                    <div id="dropdownMenu"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                         <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                             <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
@@ -255,7 +256,8 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                     </span>
                 </h2>
                 <div class="overflow-x-auto">
-                    <table class="border-2 border-[#4A7C59] table-auto  min-w-ful border-separate shadow-lg  rounded-lg bg-[#4A7C59]">
+                    <table
+                        class="border-2 border-[#4A7C59] table-auto  min-w-ful border-separate shadow-lg  rounded-lg bg-[#4A7C59]">
                         <thead>
                             <tr class="text-white">
                                 <th width="30%" class="bg-[#4A7C59] px-4 py-2">Menu</th>
@@ -270,33 +272,37 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 $sql = "select* from makanan where kod_makanan = '$key'";
                                 $lak = mysqli_query($condb, $sql);
                                 $m = mysqli_fetch_array($lak);
-                            ?>
+                                ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-white">
                                     <td class="shadow-lg px-4 py-2 font-semibold custom-font"><?= $m['nama_makanan'] ?></td>
                                     <td class="shadow-lg px-4 py-2 flex justify-center font-semibold items-center space-x-2">
                                         <div class="quantity-controls">
-                                            <button class="quantity-btn minus bg-[#CA0000D9] hover:bg-[#d33]" onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'decrease', <?= $m['harga'] ?>)">-</button>
-                                            <span id="quantity-<?= $m['kod_makanan'] ?>" class="quantity-value"><?= $bil ?></span>
-                                            <button class="quantity-btn plus" onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'increase', <?= $m['harga'] ?>)">+</button>
+                                            <button class="quantity-btn minus bg-[#CA0000D9] hover:bg-[#d33]"
+                                                onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'decrease', <?= $m['harga'] ?>)">-</button>
+                                            <span id="quantity-<?= $m['kod_makanan'] ?>"
+                                                class="quantity-value"><?= $bil ?></span>
+                                            <button class="quantity-btn plus"
+                                                onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'increase', <?= $m['harga'] ?>)">+</button>
                                         </div>
                                     </td>
-                                    <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font"><?= $m['harga'] ?></td>
+                                    <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font"><?= $m['harga'] ?>
+                                    </td>
                                     <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font">
                                         <span id="total-<?= $m['kod_makanan'] ?>">
                                             <?php
                                             $harga = $bil * $m['harga'];
-                                            $jumlah_harga = $jumlah_harga + $harga;
+                                            $jumlah_bayaran = $jumlah_bayaran + $harga;
                                             echo number_format($harga, 2);
-                                            $_SESSION['jumlah_harga'] = $jumlah_harga;
                                             ?>
                                         </span>
                                     </td>
                                 </tr>
                             <?php } ?>
                             <tr class="bg-[#FAF3DD] hover:bg-white">
-                                <td class="shadow-lg px-4 py-2 text-right font-semibold custom-font" colspan="3">Jumlah Bayaran (RM)</td>
+                                <td class="shadow-lg px-4 py-2 text-right font-semibold custom-font" colspan="3">Jumlah
+                                    Bayaran (RM)</td>
                                 <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font">
-                                    <span id="grand-total"><?php echo number_format($jumlah_harga, 2) ?></span>
+                                    <span id="grand-total"><?php echo number_format($jumlah_bayaran, 2) ?></span>
                                 </td>
                             </tr>
                         </tbody>
@@ -363,7 +369,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             window.onresize = adjustFooter;
 
             // Show or hide the scroll to top button
-            window.onscroll = function() {
+            window.onscroll = function () {
                 var scrollToTopBtn = document.getElementById("scrollToTopBtn");
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                     scrollToTopBtn.style.display = "block";
@@ -397,7 +403,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 }
             });
 
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 <?php if (isset($_SESSION['success'])): ?>
                     Toast.fire({
                         icon: "success",
@@ -437,9 +443,16 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             })
 
             document.querySelectorAll('.Sahkan-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     notifinfo.play();
+
+                    // Kumpul semua data kuantiti terkini
+                    let updatedQuantities = {};
+                    document.querySelectorAll('[id^="quantity-"]').forEach(element => {
+                        const menuId = element.id.replace('quantity-', '');
+                        updatedQuantities[menuId] = parseInt(element.textContent);
+                    });
 
                     Swal.fire({
                         title: 'Anda pasti?',
@@ -452,14 +465,32 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = `sah-tempah.php`;
+                            // Hantar data kuantiti terkini ke server
+                            fetch('function/update-cart.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(updatedQuantities)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    window.location.href = 'sah-tempah.php';
+                                } else {
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Ralat semasa mengemas kini cart"
+                                    });
+                                }
+                            });
                         }
                     });
                 });
             });
 
             document.querySelectorAll('.buang-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     notifwarning.play();
 
@@ -496,27 +527,18 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
             function updateCartQuantity(menuId, action, hargaSeunit) {
                 const quantityElement = document.getElementById(`quantity-${menuId}`);
-                const totalElement = document.getElementById(`total-${menuId}`);
                 let quantity = parseInt(quantityElement.textContent);
 
                 if (action === 'increase') {
                     quantity++;
-                    fetch(`function/add-cart.php?id_menu=${menuId}&quantity=1&page=cart&ajax=true`)
-                        .then(response => response.text())
-                        .then(() => {
-                            quantityElement.textContent = quantity;
-                            updateItemTotal(menuId, quantity, hargaSeunit);
-                            updateGrandTotal();
-                        });
+                    quantityElement.textContent = quantity;
+                    updateItemTotal(menuId, quantity, hargaSeunit);
+                    updateGrandTotal();
                 } else if (action === 'decrease' && quantity > 1) {
                     quantity--;
-                    fetch(`function/del-cart.php?id_menu=${menuId}&ajax=true`)
-                        .then(response => response.text())
-                        .then(() => {
-                            quantityElement.textContent = quantity;
-                            updateItemTotal(menuId, quantity, hargaSeunit);
-                            updateGrandTotal();
-                        });
+                    quantityElement.textContent = quantity;
+                    updateItemTotal(menuId, quantity, hargaSeunit);
+                    updateGrandTotal();
                 }
             }
 
@@ -536,10 +558,6 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 // Kemas kini jumlah keseluruhan
                 document.getElementById('grand-total').textContent = grandTotal.toFixed(2);
 
-                // Kemas kini session jumlah_harga melalui AJAX
-                fetch('function/update-total.php?total=' + grandTotal)
-                    .then(response => response.text())
-                    .then(data => console.log('Total updated in session'));
             }
         </script>
     </body>

@@ -40,7 +40,6 @@ if (!isset($_SESSION['orders'])) {
     }
     # Memadam nilai pembolehubah session
     unset($_SESSION['orders']);
-    unset($_SESSION['jumlah_harga']);
     header("Location: resit.php?tarikh=$tarikh");
     exit();
 }

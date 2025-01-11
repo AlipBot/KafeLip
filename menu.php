@@ -10,6 +10,20 @@ if (isset($_SESSION['orders'])) {
 // --- Koneksi Database ---
 include("function/connection.php"); // Pastikan path file koneksi benar
 
+// Tambah fungsi untuk memeriksa kuantiti dalam cart
+function getCartQuantity($kod_makanan)
+{
+    if (isset($_SESSION['orders']) && !empty($_SESSION['orders'])) {
+        $count = 0;
+        foreach ($_SESSION['orders'] as $order) {
+            if ($order == $kod_makanan) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+    return 0;
+}
 
 ?>
 
@@ -370,6 +384,25 @@ include("function/connection.php"); // Pastikan path file koneksi benar
         #dropdownMenu a:active {
             background-color: #e9ecef;
         }
+
+        .add-to-cart {
+            position: relative;
+        }
+
+        .add-to-cart span {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 9999px;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 
 </head>
@@ -487,6 +520,7 @@ include("function/connection.php"); // Pastikan path file koneksi benar
             if (mysqli_num_rows($result) > 0) {
                 while ($m = mysqli_fetch_assoc($result)): ?>
                     <div class="menu-item">
+                        <?php $cartQty = getCartQuantity($m['kod_makanan']); ?>
                         <div class="w-32 h-32 overflow-hidden rounded-lg mb-4">
                             <img src='menu-images/<?php echo htmlspecialchars($m['gambar']); ?>'
                                 alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>'
@@ -502,9 +536,16 @@ include("function/connection.php"); // Pastikan path file koneksi benar
                                 <button class="quantity-btn plus"
                                     onclick="updateQuantity('<?= $m['kod_makanan'] ?>', 'increase')">+</button>
                             </div>
-                            <button class="add-to-cart"
+                            <button class="add-to-cart relative"
                                 onclick="addToCartWithQuantity('<?= htmlspecialchars($m['kod_makanan']) ?>')">
                                 Tambah ke Troli
+                                <?php if ($cartQty > 0): ?>
+                                    <span
+                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-auto h-5 text-xs flex items-center justify-center px-1">
+                                        <?= $cartQty ?> 
+                                    </span>
+                                    <i class="fas fa-shopping-cart ml-1"></i>
+                                <?php endif; ?>
                             </button>
                         </div>
                     </div>
