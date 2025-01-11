@@ -11,7 +11,7 @@ if(!empty($_POST)){
     $tambahan       =   '';
 
     # Data validation : had atas
-    if(!is_numeric($harga) and $harga > 0){
+    if(!is_numeric($harga) or $harga <= 0){
         $_SESSION['error'] = "Ralat: Sila masukkan harga yang sah";
         header("Location: ../admin/list-menu.php");
         exit();
@@ -20,11 +20,13 @@ if(!empty($_POST)){
     # Dapatkan data gambar
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === 0) {
         # Mengambil data gambar
-        $file_extension    =   pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
+        $file_extension = 'jpg'; // Set extension to jpg since we're converting all images to JPEG
         # Buang jarak dan tukar kepada huruf kecil
-        $nama_fail_baru    =   strtolower(str_replace(' ', '', $nama_menu)) . '.' . $file_extension;
-        $lokasi             =   $_FILES['gambar']['tmp_name'];
-        $tambahan = $tambahan."gambar = '".$nama_fail_baru ."',";
+        $nama_fail_baru = strtolower(str_replace(' ', '', $nama_menu)) . '.' . $file_extension;
+        $lokasi = $_FILES['gambar']['tmp_name'];
+        
+        // Tambah gambar ke query update
+        $tambahan = "gambar = '$nama_fail_baru',";
         
         // Get the filename from the database
         $sql = "SELECT gambar FROM makanan WHERE kod_makanan = '$id_menu'";
@@ -38,27 +40,31 @@ if(!empty($_POST)){
             if (file_exists($filepath)) {
                 unlink($filepath);  // Delete the file
             }
-            copy($lokasi,"../menu-images/". $nama_fail_baru);
+        }
+        
+        // Move the uploaded file
+        if (!copy($lokasi, "../menu-images/" . $nama_fail_baru)) {
+            $_SESSION['error'] = "Gagal memuat naik gambar";
+            header("Location: ../admin/list-menu.php");
+            exit();
         }
     } 
     
     # proses kemaskini data
-    $sql_kemaskini  =   "update makanan set
-                        $tambahan
-                        nama_makanan   = '$nama_menu',
-                        harga       = '$harga'                
-                        where
-                        kod_makanan     =  '$id_menu' ";
-    $laksana        =   mysqli_query($condb,$sql_kemaskini);
+    $sql_kemaskini = "UPDATE makanan SET 
+                      $tambahan
+                      nama_makanan = '$nama_menu',
+                      harga = '$harga'                
+                      WHERE kod_makanan = '$id_menu'";
+                      
+    $laksana = mysqli_query($condb, $sql_kemaskini);
 
     # Pengujian proses menyimpan data 
     if($laksana){
-        #jika berjaya
         $_SESSION['success'] = "Kemaskini Berjaya";
         header("Location: ../admin/list-menu.php");
         exit();
     }else{
-        #jika gagal papar punca error
         $_SESSION['error'] = "Kemaskini Gagal: " . mysqli_error($condb);
         header("Location: ../admin/list-menu.php");
         exit();

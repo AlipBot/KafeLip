@@ -65,8 +65,12 @@ if (isset($_POST['DaftarMenu'])) {
 
     # Pengujian proses menyimpan data 
     if ($laksana) {
-        copy($lokasi, "../menu-images/" . $nama_fail_baru);
-
+        // Move the uploaded file
+        if (!copy($lokasi, "../menu-images/" . $nama_fail_baru)) {
+            $_SESSION['error'] = "Gagal memuat naik gambar";
+            header("Location: ../admin/list-menu.php");
+            exit();
+        }
         $_SESSION['success'] = "Pendaftaran Berjaya";
         header("Location: list-menu.php");
         exit();
@@ -165,6 +169,7 @@ if (isset($_POST['upload'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
     <style>
         .drawer-open {
             transform: translateX(0);
@@ -323,6 +328,36 @@ if (isset($_POST['upload'])) {
             background-color: #68B0AB;
             color: #fff;
             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .crop-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .crop-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .crop-preview {
+            max-width: 100%;
+            max-height: 70vh;
+        }
+
+        .crop-buttons {
+            margin-top: 1rem;
+            text-align: center;
         }
     </style>
 
@@ -852,32 +887,41 @@ if (isset($_POST['upload'])) {
         function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
             const dropzone = document.getElementById(dropzoneId);
             const input = document.getElementById(inputId);
+            const preview = previewId ? document.getElementById(previewId) : null;
             const previewContainer = previewContainerId ? document.getElementById(previewContainerId) : null;
             const closePreview = closePreviewId ? document.getElementById(closePreviewId) : null;
 
             function showPreview(file) {
                 if (acceptType === 'image/*' && file.type.startsWith('image/')) {
-                    // Logik untuk preview gambar
+                    originalFile = file;
                     const reader = new FileReader();
-                    reader.onload = function () {
-                        const preview = document.getElementById(previewId);
-                        if (previewContainer) {
-                            previewContainer.style.display = 'flex';
+                    reader.onload = function(e) {
+                        const cropModal = document.getElementById('cropModal');
+                        const cropImage = document.getElementById('cropImage');
+                        
+                        // Simpan rujukan untuk kemaskini preview selepas crop
+                        cropModal.dataset.previewId = previewId;
+                        cropModal.dataset.previewContainerId = previewContainerId;
+                        cropModal.dataset.dropzoneId = dropzoneId;
+                        cropModal.dataset.inputId = inputId;
+                        
+                        cropModal.style.display = 'block';
+                        cropImage.src = e.target.result;
+                        
+                        if (cropper) {
+                            cropper.destroy();
                         }
-                        preview.src = reader.result;
-                        dropzone.style.display = 'none';
+                        
+                        cropper = new Cropper(cropImage, {
+                            aspectRatio: 1,
+                            viewMode: 1,
+                            autoCropArea: 1,
+                            background: false
+                        });
                     }
                     reader.readAsDataURL(file);
                 } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
-                    // Logik untuk fail txt
-                    dropzone.style.display = 'none';
-                    if (previewContainer) {
-                        previewContainer.style.display = 'flex';
-                        const fileName = document.getElementById('fileName');
-                        if (fileName) {
-                            fileName.textContent = file.name;
-                        }
-                    }
+                    // ... existing txt handling ...
                 }
             }
 
@@ -978,6 +1022,84 @@ if (isset($_POST['upload'])) {
             if (e.key === 'Escape') {
                 closeImagePopup();
             }
+        });
+    </script>
+
+    <!-- Tambah modal crop sebelum tutup body -->
+    <div id="cropModal" class="crop-modal">
+        <div class="crop-container">
+            <img id="cropImage" class="crop-preview">
+            <div class="crop-buttons">
+                <button type="button" id="cropDone" class="bg-[#588157] text-white p-2 rounded mr-2">
+                    <i class="fas fa-check mr-1"></i> Selesai
+                </button>
+                <button type="button" id="cropCancel" class="bg-red-500 text-white p-2 rounded">
+                    <i class="fas fa-times mr-1"></i> Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tambah script Cropper.js sebelum script sedia ada -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <script>
+        let cropper = null;
+        let originalFile = null;
+
+        // Add crop modal handlers
+        document.getElementById('cropDone').addEventListener('click', function() {
+            if (!cropper) return;
+            
+            const cropModal = document.getElementById('cropModal');
+            const previewId = cropModal.dataset.previewId;
+            const previewContainerId = cropModal.dataset.previewContainerId;
+            const dropzoneId = cropModal.dataset.dropzoneId;
+            const inputId = cropModal.dataset.inputId;
+            
+            // Tukar format ke JPEG untuk konsistensi
+            cropper.getCroppedCanvas().toBlob((blob) => {
+                const preview = document.getElementById(previewId);
+                const previewContainer = document.getElementById(previewContainerId);
+                const dropzone = document.getElementById(dropzoneId);
+                const input = document.getElementById(inputId);
+                
+                // Pastikan nama fail menggunakan extension .jpg
+                const fileName = originalFile.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                
+                // Create new file from blob
+                const croppedFile = new File([blob], fileName, {
+                    type: 'image/jpeg',
+                    lastModified: new Date().getTime()
+                });
+                
+                // Update file input dengan File API
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(croppedFile);
+                input.files = dataTransfer.files;
+                
+                // Show preview
+                preview.src = URL.createObjectURL(blob);
+                previewContainer.style.display = 'flex';
+                dropzone.style.display = 'none';
+                
+                // Close modal
+                cropModal.style.display = 'none';
+                cropper.destroy();
+                cropper = null;
+            }, 'image/jpeg', 0.8); // Specify JPEG format and quality
+        });
+
+        document.getElementById('cropCancel').addEventListener('click', function() {
+            const cropModal = document.getElementById('cropModal');
+            const inputId = cropModal.dataset.inputId;
+            
+            cropModal.style.display = 'none';
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            document.getElementById(inputId).value = '';
         });
     </script>
 

@@ -531,15 +531,76 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
                 if (action === 'increase') {
                     quantity++;
-                    quantityElement.textContent = quantity;
-                    updateItemTotal(menuId, quantity, hargaSeunit);
-                    updateGrandTotal();
                 } else if (action === 'decrease' && quantity > 1) {
                     quantity--;
-                    quantityElement.textContent = quantity;
-                    updateItemTotal(menuId, quantity, hargaSeunit);
-                    updateGrandTotal();
+                } else if (action === 'decrease' && quantity === 1) {
+                    // Tanya pengguna jika mahu buang item
+                    Swal.fire({
+                        title: 'Buang item ini?',
+                        text: "Item ini akan dibuang dari cart",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            removeItem(menuId);
+                            return;
+                        }
+                    });
+                    return;
                 }
+
+                // Kemas kini paparan
+                quantityElement.textContent = quantity;
+                updateItemTotal(menuId, quantity, hargaSeunit);
+                updateGrandTotal();
+
+                // Hantar perubahan ke server menggunakan AJAX
+                fetch('function/update-quantity.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        menuId: menuId,
+                        quantity: quantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Ralat semasa mengemas kini kuantiti"
+                        });
+                    }
+                });
+            }
+
+            function removeItem(menuId) {
+                fetch('function/remove-item.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        menuId: menuId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload(); // Reload halaman selepas item dibuang
+                    } else {
+                        Toast.fire({
+                            icon: "error",
+                            title: "Ralat semasa membuang item"
+                        });
+                    }
+                });
             }
 
             function updateItemTotal(menuId, quantity, hargaSeunit) {
