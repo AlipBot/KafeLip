@@ -642,7 +642,8 @@ if (isset($_POST['upload'])) {
                     icon: 'error',
                     title: 'Ralat',
                     text: message,
-                    showConfirmButton: true
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Faham',
                 });
             };
 
@@ -680,7 +681,8 @@ if (isset($_POST['upload'])) {
                 icon: 'error',
                 title: 'Ralat',
                 text: message,
-                showConfirmButton: true
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Faham',
             });
         }
 

@@ -190,11 +190,30 @@ $laksql = mysqli_query($condb, $sql);
                             <button type="submit" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                 <i class="fas fa-search mr-1"></i> Cari
                             </button>
+                            <button type="button" onclick="window.location.href='laporan.php'" class="bg-red-800 hover:bg-red-600 text-white p-2 rounded flex items-center">
+                                <i class="fas fa-redo mr-1"></i> Reset
+                            </button>
                         </form>
 
                         <div class="flex space-x-2">
                             <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">Laporan pada
                                 Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>
+                            <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">
+                                Hari : <?php
+                                    $tarikh = date_create($tarikhsemasa);
+                                    $hari = date_format($tarikh, "l");
+                                    $hari_melayu = [
+                                        'Sunday' => 'Ahad',
+                                        'Monday' => 'Isnin', 
+                                        'Tuesday' => 'Selasa',
+                                        'Wednesday' => 'Rabu',
+                                        'Thursday' => 'Khamis',
+                                        'Friday' => 'Jumaat',
+                                        'Saturday' => 'Sabtu'
+                                    ];
+                                    echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
+                                ?>
+                            </span>
                         </div>
 
 

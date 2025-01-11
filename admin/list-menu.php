@@ -11,8 +11,18 @@ if (!empty($_GET['nama_menu'])) {
     $tambahan = " WHERE makanan.nama_makanan LIKE ?";
 }
 
+# Handle sorting
+$sort_order = isset($_GET['sort']) ? $_GET['sort'] : '';
+if ($sort_order == 'asc') {
+    $order_by = " ORDER BY kod_makanan ASC";
+} elseif ($sort_order == 'desc') {
+    $order_by = " ORDER BY kod_makanan DESC";
+} else {
+    $order_by = " ORDER BY makanan.nama_makanan";
+}
+
 # SQL query to fetch data
-$arahan_papar = "SELECT * FROM makanan" . $tambahan . " ORDER BY makanan.nama_makanan";
+$arahan_papar = "SELECT * FROM makanan" . $tambahan . $order_by;
 $stmt = mysqli_prepare($condb, $arahan_papar);
 
 if (!empty($searchTerm)) {
@@ -52,6 +62,15 @@ if (isset($_POST['DaftarMenu'])) {
         header("Location: list-menu.php");
         exit();
     }
+
+     # Semak nama_makanan dah wujud atau belum
+     $sql_semak = "select nama_makanan from makanan where nama_makanan = '$nama_makanan' ";
+     $laksana_semak = mysqli_query($condb, $sql_semak);
+     if (mysqli_num_rows($laksana_semak) == 1) {
+         $_SESSION['error'] = "Nama Menu telah digunakan. Sila guna nama makanan yang lain";
+         header("Location: list-menu.php");
+         exit();
+     }
 
     # proses menyimpan data
     $sql_simpan = "insert into makanan set
@@ -464,7 +483,24 @@ if (isset($_POST['upload'])) {
                         <table class="w-full table-auto rounded-lg overflow-hidden">
                             <thead>
                                 <tr class="bg-[#a3b18a] font-bold text-black">
-                                    <th width='20%' class="px-[47px] py-2">Kod Menu</th>
+                                    <th width='20%' class="px-[47px] py-2">
+                                        <div class="flex items-center justify-between">
+                                            <span>Kod Menu</span>
+                                            <div class="flex ml-2">
+                                                <?php
+                                                $current_sort = isset($_GET['sort']) ? $_GET['sort'] : 'default';
+                                                $next_sort = ($current_sort == 'desc') ? 'asc' : 'desc';
+                                                $icon_class = ($current_sort == 'desc') ? 'fa-regular fa-arrow-up-1-9' : 'fa-regular fa-arrow-down-9-1';
+                                                $title_text = ($current_sort == 'desc') ? 'Susun Menaik' : 'Susun Menurun';
+                                                ?>
+                                                <a href="?sort=<?= $next_sort ?><?= !empty($_GET['nama_menu']) ? '&nama_menu=' . $_GET['nama_menu'] : '' ?>"
+                                                    class="bg-[#3a5a40] text-white px-3 py-2 rounded hover:bg-[#68B0AB] transition-colors"
+                                                    title="<?= $title_text ?>">
+                                                    <i class="<?= $icon_class ?>"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </th>
                                     <th width='30%' class="px-[47px] py-2">Gambar</th>
                                     <th width='30%' class="px-[47px] py-2">Nama Menu</th>
                                     <th width='20%' class="px-[47px] py-2">Harga (RM)</th>
@@ -502,7 +538,7 @@ if (isset($_POST['upload'])) {
                                                         class="bg-[#588157] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button data-id="<?php echo urlencode($m['kod_makanan']); ?>"
+                                                    <button data-id="<?php echo urlencode($m['kod_makanan']); ?>" data-nama_makanan="<?php echo htmlspecialchars($m['nama_makanan']); ?>"
                                                         class="delete-btn bg-red-800 text-white py-2 px-7 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
@@ -554,7 +590,10 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='upload' class="bg-[#588157] text-white p-2 rounded">Submit</button>
+                    <button type="submit" name='upload' id="uploadMenuBtn" 
+                        class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>
+                        Submit
+                    </button>
                 </div>
             </form>
         </div>
@@ -565,13 +604,12 @@ if (isset($_POST['upload'])) {
         <div class="DaftarMenu-content">
             <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Pendaftaran Menu Baru</h2>
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data" id="daftarMenuForm">
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
-                    ID Menu :<input type="text" name='kod_makanan' id="nama" class="w-full border p-2 mb-3" required>
-                    Nama Menu : <input type="text" name='nama_makanan' id="nama" class="w-full border p-2 mb-3"
-                        required>
-                    Harga : <input type='number' name='harga' step='0.01' class="w-full border p-2 mb-3" required>
+                    ID Menu :<input type="text" name='kod_makanan' id="kod_makanan" class="w-full border p-2 mb-3" required>
+                    Nama Menu : <input type="text" name='nama_makanan' id="nama_makanan_daftar" class="w-full border p-2 mb-3" required>
+                    Harga : <input type='number' name='harga' id="harga_daftar" step='0.01' class="w-full border p-2 mb-3" required>
                     <label class="block text-black">Sila Pilih Gambar Menu : </label>
 
                     <!-- Container untuk preview gambar -->
@@ -590,7 +628,7 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu' class="bg-[#588157] text-white p-2 rounded">Daftar</button>
+                    <button type="submit" name='DaftarMenu' id="daftarMenuBtn" class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>Daftar</button>
                 </div>
             </form>
         </div>
@@ -605,6 +643,8 @@ if (isset($_POST['upload'])) {
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     <input type="hidden" name="id_menu" id="id_menu">
+                    <input type="hidden" id="original_nama_makanan" name="original_nama_makanan">
+                    <input type="hidden" id="original_harga_makanan" name="original_harga_makanan">
                     Nama Menu : <input id="nama_makanan" type="text" name='nama_menu' class="w-full border p-2 mb-3"
                         required>
                     Harga : <input id="harga_makanan" type='number' name='harga' step='0.01'
@@ -625,8 +665,10 @@ if (isset($_POST['upload'])) {
 
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu'
-                        class="bg-[#588157] text-white p-2 rounded">Kemaskini</button>
+                    <button type="submit" name='DaftarMenu' id="kemaskiniMenuBtn" 
+                        class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>
+                        Kemaskini
+                    </button>
                 </div>
             </form>
         </div>
@@ -743,9 +785,14 @@ if (isset($_POST['upload'])) {
                     document.getElementById('id_menu').value = kod_menu;
                     document.getElementById('nama_makanan').value = data.nama_makanan;
                     document.getElementById('harga_makanan').value = data.harga;
+                    
+                    // Set original values
+                    document.getElementById('original_nama_makanan').value = data.nama_makanan;
+                    document.getElementById('original_harga_makanan').value = data.harga;
+                    
                     Kemaskinimenu.style.display = "block";
+                    checkUpdateFormCompletion(); // Check initial state
                 });
-
         }
 
         btn.onclick = function () {
@@ -816,14 +863,15 @@ if (isset($_POST['upload'])) {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const id = this.dataset.id;
+                    const nama_makanan = this.dataset.nama_makanan;
                     notifwarning.play();
                     Swal.fire({
                         title: 'Anda pasti?',
-                        text: "Anda tidak boleh memulihkan data ini selepas dipadam!",
+                        text: `Anda akan memadam ${nama_makanan} dan tidak dapat memulihkannya!`,
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
                         confirmButtonText: 'Ya, padam!',
                         cancelButtonText: 'Batal'
                     }).then((result) => {
@@ -841,7 +889,9 @@ if (isset($_POST['upload'])) {
                     icon: 'error',
                     title: 'Ralat',
                     text: message,
-                    showConfirmButton: true
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Faham',
+
                 });
             };
 
@@ -879,7 +929,8 @@ if (isset($_POST['upload'])) {
                 icon: 'error',
                 title: 'Ralat',
                 text: message,
-                showConfirmButton: true
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Faham',
             });
         }
 
@@ -895,91 +946,128 @@ if (isset($_POST['upload'])) {
                 if (acceptType === 'image/*' && file.type.startsWith('image/')) {
                     originalFile = file;
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         const cropModal = document.getElementById('cropModal');
                         const cropImage = document.getElementById('cropImage');
-                        
-                        // Simpan rujukan untuk kemaskini preview selepas crop
+
                         cropModal.dataset.previewId = previewId;
                         cropModal.dataset.previewContainerId = previewContainerId;
                         cropModal.dataset.dropzoneId = dropzoneId;
                         cropModal.dataset.inputId = inputId;
-                        
+
                         cropModal.style.display = 'block';
                         cropImage.src = e.target.result;
-                        
+
                         if (cropper) {
                             cropper.destroy();
                         }
-                        
+
                         cropper = new Cropper(cropImage, {
                             aspectRatio: 1,
                             viewMode: 1,
                             autoCropArea: 1,
                             background: false
                         });
+
+                        if (inputId === 'gambarDaftar') {
+                            checkFormCompletion();
+                        } else if (inputId === 'gambar') {
+                            checkUpdateFormCompletion();
+                        }
                     }
                     reader.readAsDataURL(file);
                 } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
-                    // ... existing txt handling ...
+                    const fileDisplay = document.getElementById('fileDisplay');
+                    const fileName = document.getElementById('fileName');
+                    
+                    if (fileDisplay && fileName) {
+                        fileDisplay.classList.remove('hidden');
+                        fileName.textContent = file.name;
+                        dropzone.style.display = 'none';
+                        checkUploadFormCompletion();
+                    }
                 }
             }
 
             // Handle file input change
             input.addEventListener('change', (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    const file = e.target.files[0];
+                const file = e.target.files[0];
+                if (file) {
                     if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
                         (acceptType === 'image/*' && file.type.startsWith('image/'))) {
                         showPreview(file);
                     } else {
-                        handleDropzoneError('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
+                        handleDropzoneError(`Sila pilih fail yang betul: ${acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'}`);
                         input.value = '';
                     }
                 }
             });
 
-            // Handle drag and drop
-            dropzone.addEventListener('click', () => input.click());
-
+            // Prevent default drag behaviors
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropzone.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
             });
+
+            // Highlight drop zone when item is dragged over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                dropzone.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                dropzone.classList.remove('dragover');
+            }
 
             function preventDefaults(e) {
                 e.preventDefault();
                 e.stopPropagation();
             }
 
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropzone.addEventListener(eventName, () => {
-                    dropzone.classList.add('dragover');
-                });
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, () => {
-                    dropzone.classList.remove('dragover');
-                });
-            });
-
+            // Handle dropped files
             dropzone.addEventListener('drop', (e) => {
                 const file = e.dataTransfer.files[0];
-                if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
-                    (acceptType === 'image/*' && file.type.startsWith('image/'))) {
-                    input.files = e.dataTransfer.files;
-                    showPreview(file);
-                } else {
-                    handleDropzoneError('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
+                if (file) {
+                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
+                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
+                        // Create a new FileList object
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        input.files = dataTransfer.files;
+                        showPreview(file);
+                    } else {
+                        handleDropzoneError(`Sila pilih fail yang betul: ${acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'}`);
+                    }
                 }
             });
 
-            // Handle close preview button
+            // Handle click on dropzone
+            dropzone.addEventListener('click', () => input.click());
+
+            // Handle close preview if exists
             if (closePreview) {
                 closePreview.addEventListener('click', () => {
-                    previewContainer.style.display = 'none';
-                    dropzone.style.display = 'block';
-                    input.value = ''; // Reset input file
+                    if (previewContainer) {
+                        previewContainer.style.display = 'none';
+                        dropzone.style.display = 'block';
+                        input.value = '';
+                        
+                        // Reset form validation based on input type
+                        if (inputId === 'gambarDaftar') {
+                            checkFormCompletion();
+                        } else if (inputId === 'gambar') {
+                            checkUpdateFormCompletion();
+                        } else if (inputId === 'file') {
+                            checkUploadFormCompletion();
+                        }
+                    }
                 });
             }
         }
@@ -1048,52 +1136,54 @@ if (isset($_POST['upload'])) {
         let originalFile = null;
 
         // Add crop modal handlers
-        document.getElementById('cropDone').addEventListener('click', function() {
+        document.getElementById('cropDone').addEventListener('click', function () {
             if (!cropper) return;
-            
+
             const cropModal = document.getElementById('cropModal');
-            const previewId = cropModal.dataset.previewId;
-            const previewContainerId = cropModal.dataset.previewContainerId;
-            const dropzoneId = cropModal.dataset.dropzoneId;
             const inputId = cropModal.dataset.inputId;
-            
+
             // Tukar format ke JPEG untuk konsistensi
             cropper.getCroppedCanvas().toBlob((blob) => {
-                const preview = document.getElementById(previewId);
-                const previewContainer = document.getElementById(previewContainerId);
-                const dropzone = document.getElementById(dropzoneId);
-                const input = document.getElementById(inputId);
-                
+                const preview = document.getElementById(cropModal.dataset.previewId);
+                const previewContainer = document.getElementById(cropModal.dataset.previewContainerId);
+                const dropzone = document.getElementById(cropModal.dataset.dropzoneId);
+                const input = document.getElementById(cropModal.dataset.inputId);
+
                 // Pastikan nama fail menggunakan extension .jpg
                 const fileName = originalFile.name.replace(/\.[^/.]+$/, "") + ".jpg";
-                
+
                 // Create new file from blob
                 const croppedFile = new File([blob], fileName, {
                     type: 'image/jpeg',
                     lastModified: new Date().getTime()
                 });
-                
+
                 // Update file input dengan File API
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(croppedFile);
                 input.files = dataTransfer.files;
-                
+
                 // Show preview
                 preview.src = URL.createObjectURL(blob);
                 previewContainer.style.display = 'flex';
                 dropzone.style.display = 'none';
-                
+
                 // Close modal
                 cropModal.style.display = 'none';
                 cropper.destroy();
                 cropper = null;
+
+                // Tambah: Panggil checkFormCompletion selepas crop selesai
+                if (inputId === 'gambarDaftar') {
+                    setTimeout(checkFormCompletion, 100); // Slight delay to ensure file is properly set
+                }
             }, 'image/jpeg', 0.8); // Specify JPEG format and quality
         });
 
-        document.getElementById('cropCancel').addEventListener('click', function() {
+        document.getElementById('cropCancel').addEventListener('click', function () {
             const cropModal = document.getElementById('cropModal');
             const inputId = cropModal.dataset.inputId;
-            
+
             cropModal.style.display = 'none';
             if (cropper) {
                 cropper.destroy();
@@ -1101,6 +1191,252 @@ if (isset($_POST['upload'])) {
             }
             document.getElementById(inputId).value = '';
         });
+    </script>
+
+    <script>
+        function checkFormCompletion() {
+            const kodMakanan = document.getElementById('kod_makanan').value;
+            const namaMakanan = document.getElementById('nama_makanan_daftar').value;
+            const harga = document.getElementById('harga_daftar').value;
+            const gambar = document.getElementById('gambarDaftar').files[0];
+            const daftarBtn = document.getElementById('daftarMenuBtn');
+
+            // Periksa jika semua field telah diisi
+            if (kodMakanan && namaMakanan && harga && harga > 0 && gambar) {
+                // Aktifkan butang dan tukar style
+                daftarBtn.disabled = false;
+                daftarBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                daftarBtn.classList.add('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+            } else {
+                // Nyahaktifkan butang dan tukar style
+                daftarBtn.disabled = true;
+                daftarBtn.classList.remove('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                daftarBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            }
+        }
+
+        // Tambah event listeners untuk semua input
+        document.getElementById('kod_makanan').addEventListener('input', checkFormCompletion);
+        document.getElementById('nama_makanan_daftar').addEventListener('input', checkFormCompletion);
+        document.getElementById('harga_daftar').addEventListener('input', checkFormCompletion);
+        document.getElementById('gambarDaftar').addEventListener('change', checkFormCompletion);
+
+        // Tambah event listener untuk reset form
+        document.getElementById('closeDaftarPreview').addEventListener('click', function() {
+            document.getElementById('gambarDaftar').value = '';
+            checkFormCompletion();
+        });
+    </script>
+
+    <script>
+        // Fungsi untuk memeriksa borang upload menu
+        function checkUploadFormCompletion() {
+            const fileInput = document.getElementById('file');
+            const uploadBtn = document.getElementById('uploadMenuBtn');
+            
+            if (fileInput && fileInput.files.length > 0) {
+                uploadBtn.disabled = false;
+                uploadBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                uploadBtn.classList.add('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+            } else {
+                uploadBtn.disabled = true;
+                uploadBtn.classList.remove('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                uploadBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            }
+        }
+
+        // Fungsi untuk memeriksa borang kemaskini menu
+        function checkUpdateFormCompletion() {
+            const namaInput = document.getElementById('nama_makanan');
+            const hargaInput = document.getElementById('harga_makanan');
+            const gambarInput = document.getElementById('gambar');
+            const kemaskiniBtn = document.getElementById('kemaskiniMenuBtn');
+            
+            const originalNama = document.getElementById('original_nama_makanan').value;
+            const originalHarga = document.getElementById('original_harga_makanan').value;
+            
+            const hasNameChanged = namaInput.value !== originalNama;
+            const hasPriceChanged = hargaInput.value !== originalHarga;
+            const hasImageChanged = gambarInput.files.length > 0;
+            
+            if ((hasNameChanged || hasPriceChanged || hasImageChanged) && 
+                namaInput.value.trim() !== '' && 
+                hargaInput.value.trim() !== '' && 
+                parseFloat(hargaInput.value) > 0) {
+                
+                kemaskiniBtn.disabled = false;
+                kemaskiniBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                kemaskiniBtn.classList.add('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+            } else {
+                kemaskiniBtn.disabled = true;
+                kemaskiniBtn.classList.remove('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                kemaskiniBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            }
+        }
+
+        // Modify updateMenu function to set original values
+        function updateMenu(kod_menu) {
+            fetch(`../api/get-menu.php?kod_menu=${kod_menu}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('id_menu').value = kod_menu;
+                    document.getElementById('nama_makanan').value = data.nama_makanan;
+                    document.getElementById('harga_makanan').value = data.harga;
+                    
+                    // Set original values
+                    document.getElementById('original_nama_makanan').value = data.nama_makanan;
+                    document.getElementById('original_harga_makanan').value = data.harga;
+                    
+                    Kemaskinimenu.style.display = "block";
+                    checkUpdateFormCompletion(); // Check initial state
+                });
+        }
+
+        // Add event listeners for upload menu form
+        document.getElementById('file').addEventListener('change', checkUploadFormCompletion);
+        
+        // Add event listeners for update menu form
+        document.getElementById('nama_makanan').addEventListener('input', checkUpdateFormCompletion);
+        document.getElementById('harga_makanan').addEventListener('input', checkUpdateFormCompletion);
+        document.getElementById('gambar').addEventListener('change', checkUpdateFormCompletion);
+
+        // Update dropzone setup to trigger form checks
+        function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
+            const dropzone = document.getElementById(dropzoneId);
+            const input = document.getElementById(inputId);
+            const preview = previewId ? document.getElementById(previewId) : null;
+            const previewContainer = previewContainerId ? document.getElementById(previewContainerId) : null;
+            const closePreview = closePreviewId ? document.getElementById(closePreviewId) : null;
+
+            function showPreview(file) {
+                if (acceptType === 'image/*' && file.type.startsWith('image/')) {
+                    originalFile = file;
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const cropModal = document.getElementById('cropModal');
+                        const cropImage = document.getElementById('cropImage');
+
+                        cropModal.dataset.previewId = previewId;
+                        cropModal.dataset.previewContainerId = previewContainerId;
+                        cropModal.dataset.dropzoneId = dropzoneId;
+                        cropModal.dataset.inputId = inputId;
+
+                        cropModal.style.display = 'block';
+                        cropImage.src = e.target.result;
+
+                        if (cropper) {
+                            cropper.destroy();
+                        }
+
+                        cropper = new Cropper(cropImage, {
+                            aspectRatio: 1,
+                            viewMode: 1,
+                            autoCropArea: 1,
+                            background: false
+                        });
+
+                        if (inputId === 'gambarDaftar') {
+                            checkFormCompletion();
+                        } else if (inputId === 'gambar') {
+                            checkUpdateFormCompletion();
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
+                    const fileDisplay = document.getElementById('fileDisplay');
+                    const fileName = document.getElementById('fileName');
+                    
+                    if (fileDisplay && fileName) {
+                        fileDisplay.classList.remove('hidden');
+                        fileName.textContent = file.name;
+                        dropzone.style.display = 'none';
+                        checkUploadFormCompletion();
+                    }
+                }
+            }
+
+            // Handle file input change
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
+                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
+                        showPreview(file);
+                    } else {
+                        handleDropzoneError(`Sila pilih fail yang betul: ${acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'}`);
+                        input.value = '';
+                    }
+                }
+            });
+
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            // Highlight drop zone when item is dragged over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                dropzone.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                dropzone.classList.remove('dragover');
+            }
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Handle dropped files
+            dropzone.addEventListener('drop', (e) => {
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
+                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
+                        // Create a new FileList object
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        input.files = dataTransfer.files;
+                        showPreview(file);
+                    } else {
+                        handleDropzoneError(`Sila pilih fail yang betul: ${acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'}`);
+                    }
+                }
+            });
+
+            // Handle click on dropzone
+            dropzone.addEventListener('click', () => input.click());
+
+            // Handle close preview if exists
+            if (closePreview) {
+                closePreview.addEventListener('click', () => {
+                    if (previewContainer) {
+                        previewContainer.style.display = 'none';
+                        dropzone.style.display = 'block';
+                        input.value = '';
+                        
+                        // Reset form validation based on input type
+                        if (inputId === 'gambarDaftar') {
+                            checkFormCompletion();
+                        } else if (inputId === 'gambar') {
+                            checkUpdateFormCompletion();
+                        } else if (inputId === 'file') {
+                            checkUploadFormCompletion();
+                        }
+                    }
+                });
+            }
+        }
     </script>
 
 </body>

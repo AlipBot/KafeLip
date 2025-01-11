@@ -246,6 +246,9 @@
                             <br>
                             <span class="font-bold text-lg">Masa: </span>
                             <span id="currentTime" class="font-bold text-lg"></span>
+                            <br>
+                            <span class="font-bold text-lg">Hari: </span>
+                            <span id="currentDay" class="font-bold text-lg"></span>
                         </div>
                         <div class="table-container">
                             <table class="w-full table-auto rounded-lg overflow-hidden">
@@ -306,6 +309,7 @@
             const laporanTempahan = document.querySelector('.laporan-pelanggan');
             const currentDate = document.getElementById('currentDate');
             const currentTime = document.getElementById('currentTime');
+            const currentDay = document.getElementById('currentDay');
             const soundToggle = document.getElementById('soundToggle');
 
             drawerToggle.addEventListener('click', () => {
@@ -408,8 +412,8 @@
                 // Format to day/month/year
                 currentDate.textContent = `${day}/${month}/${year}`;
                 currentTime.textContent = now.toLocaleTimeString();
+                currentDay.textContent = now.toLocaleDateString('ms-MY', { weekday: 'long' });
             }
-
 
             // Update date and time every second
             setInterval(updateDateTime, 1000);
