@@ -188,7 +188,8 @@ $laksana = mysqli_query($condb, $sql_pilih);
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
 
-                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                <div id="dropdownMenu"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                         <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
@@ -214,7 +215,8 @@ $laksana = mysqli_query($condb, $sql_pilih);
         <div class="bg-white shadow-md rounded-lg p-6 max-w-[700px] mx-auto ">
             <div class="text-left mb-4 flex justify-between">
                 <div>
-                    <p class="text-lg font-semibold mb-2"><i class="fas fa-user-circle text-[#4A7C59] mr-1"></i> Maklumat Pelanggan</p>
+                    <p class="text-lg font-semibold mb-2"><i class="fas fa-user-circle text-[#4A7C59] mr-1"></i>
+                        Maklumat Pelanggan</p>
                     <p class="text-sm mb-1"><i class="fas fa-user text-[#4A7C59] mr-1"></i> Nama :
                         <?= $_SESSION['nama'] ?>
                     </p>
@@ -236,6 +238,21 @@ $laksana = mysqli_query($condb, $sql_pilih);
                         <?php
                         $masa = date_create($tarikh);
                         echo date_format($masa, "g:i:s A") ?>
+                    </p>
+                    <p class="text-sm"><i class="fas fa-calendar-week text-[#4A7C59] mr-1"></i> Hari:
+                        <?php
+                        $hari = date('l', strtotime($tarikh));
+                        $hari_melayu = [
+                            'Sunday' => 'Ahad',
+                            'Monday' => 'Isnin',
+                            'Tuesday' => 'Selasa',
+                            'Wednesday' => 'Rabu',
+                            'Thursday' => 'Khamis',
+                            'Friday' => 'Jumaat',
+                            'Saturday' => 'Sabtu'
+                        ];
+                        echo $hari_melayu[$hari];
+                        ?>
                     </p>
                 </div>
             </div>
@@ -310,7 +327,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -345,7 +362,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",

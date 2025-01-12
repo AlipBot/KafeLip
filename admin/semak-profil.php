@@ -8,19 +8,23 @@ if (!isset($_GET['email'])) {
 
 $email = $_GET['email'];
 $sql = "SELECT p.*, 
-       COUNT(DISTINCT CASE WHEN DATE(t.tarikh) = CURDATE() THEN CONCAT(t.email, t.tarikh) END) as tempahan_hari,
-       COUNT(DISTINCT CASE WHEN MONTH(t.tarikh) = MONTH(CURDATE()) THEN CONCAT(t.email, t.tarikh) END) as tempahan_bulan,
-       COUNT(DISTINCT CASE WHEN YEAR(t.tarikh) = YEAR(CURDATE()) THEN CONCAT(t.email, t.tarikh) END) as tempahan_tahun,
-       SUM(DISTINCT CASE WHEN DATE(t.tarikh) = CURDATE() THEN t.jumlah_harga END) as harga_hari,
-       SUM(DISTINCT CASE WHEN MONTH(t.tarikh) = MONTH(CURDATE()) AND YEAR(t.tarikh) = YEAR(CURDATE()) THEN t.jumlah_harga END) as harga_bulan,
-       SUM(DISTINCT CASE WHEN YEAR(t.tarikh) = YEAR(CURDATE()) THEN t.jumlah_harga END) as harga_tahun
+       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_hari,
+       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_bulan,
+       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_tahun,
+       (SELECT SUM(jumlah_harga) FROM tempahan 
+        WHERE email = ? AND DATE(tarikh) = CURDATE()) as harga_hari,
+       (SELECT SUM(jumlah_harga) FROM tempahan 
+        WHERE email = ? AND MONTH(tarikh) = MONTH(CURDATE()) 
+        AND YEAR(tarikh) = YEAR(CURDATE())) as harga_bulan,
+       (SELECT SUM(jumlah_harga) FROM tempahan 
+        WHERE email = ? AND YEAR(tarikh) = YEAR(CURDATE())) as harga_tahun
        FROM pelanggan p
        LEFT JOIN tempahan t ON p.email = t.email
        WHERE p.email = ?
        GROUP BY p.email";
 
 $stmt = mysqli_prepare($condb, $sql);
-mysqli_stmt_bind_param($stmt, "s", $email);
+mysqli_stmt_bind_param($stmt, "ssss", $email, $email, $email, $email);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $user_data = mysqli_fetch_assoc($result);

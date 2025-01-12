@@ -6,6 +6,16 @@ include('../function/autoKeluarAdmin.php');
 include('../function/connection.php');
 
 
+// Tetapkan bilangan rekod per halaman
+$rekodSehalaman = 10;
+
+// Dapatkan halaman semasa
+$halaman = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
+
+// Kira offset untuk query
+$offset = ($halaman - 1) * $rekodSehalaman;
+
+// Ubahsuai query untuk pagination
 $sql = "SELECT * FROM pelanggan";
 
 // Logik untuk carian nama
@@ -17,8 +27,6 @@ if (isset($_GET['nama']) && !empty($_GET['nama'])) {
 // Logik untuk filter tahap
 if (isset($_GET['tapis_tahap']) && !empty($_GET['tapis_tahap'])) {
     $tapis_tahap = $_GET['tapis_tahap'];
-
-    // Jika carian nama sudah ditetapkan, tambahkan AND, jika tidak WHERE
     if (strpos($sql, 'WHERE') !== false) {
         $sql .= " AND tahap = '$tapis_tahap'";
     } else {
@@ -26,7 +34,16 @@ if (isset($_GET['tapis_tahap']) && !empty($_GET['tapis_tahap'])) {
     }
 }
 
-# Mendapatkan data pengguna dari pangkalan data 
+// Query untuk kira jumlah rekod
+$sql_total = $sql;
+$result_total = mysqli_query($condb, $sql_total);
+$jumlahRekod = mysqli_num_rows($result_total);
+
+// Kira jumlah halaman
+$jumlahHalaman = ceil($jumlahRekod / $rekodSehalaman);
+
+// Tambah LIMIT dan OFFSET pada query utama
+$sql .= " LIMIT $rekodSehalaman OFFSET $offset";
 $laksana = mysqli_query($condb, $sql);
 
 
@@ -380,7 +397,7 @@ if (isset($_POST['upload'])) {
                                                         class="bg-[#588157] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button data-id="<?php echo urlencode($m['notel']); ?>"
+                                                    <button data-namauser="<?= $m['nama'] ?>" data-id="<?php echo urlencode($m['notel']); ?>"
                                                         class="delete-btn bg-red-800 text-white py-2 px-6 w-32 rounded  flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
@@ -399,6 +416,58 @@ if (isset($_POST['upload'])) {
                                 <?php } ?>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="pagination-container flex justify-center items-center space-x-2 mt-4">
+                        <?php if ($jumlahHalaman > 1): ?>
+                            <!-- First Page -->
+                            <?php if ($halaman > 1): ?>
+                                <a href="?halaman=1<?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
+                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            <?php endif; ?>
+
+                            <!-- Previous Page -->
+                            <?php if ($halaman > 1): ?>
+                                <a href="?halaman=<?= $halaman-1 ?><?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
+                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            <?php endif; ?>
+
+                            <!-- Page Numbers -->
+                            <?php
+                            $start = max(1, $halaman - 2);
+                            $end = min($jumlahHalaman, $halaman + 2);
+                            
+                            for ($i = $start; $i <= $end; $i++): ?>
+                                <a href="?halaman=<?= $i ?><?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
+                                   class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#588157] text-white hover:bg-[#68B0AB]' ?> rounded">
+                                    <?= $i ?>
+                                </a>
+                            <?php endfor; ?>
+
+                            <!-- Next Page -->
+                            <?php if ($halaman < $jumlahHalaman): ?>
+                                <a href="?halaman=<?= $halaman+1 ?><?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
+                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            <?php endif; ?>
+
+                            <!-- Last Page -->
+                            <?php if ($halaman < $jumlahHalaman): ?>
+                                <a href="?halaman=<?= $jumlahHalaman ?><?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
+                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <!-- Page Info -->
+                        <span class="text-gray-600">
+                            Halaman <?= $halaman ?> dari <?= $jumlahHalaman ?> (<?= $jumlahRekod ?> rekod)
+                        </span>
                     </div>
                 </div>
             </div>
@@ -616,11 +685,12 @@ if (isset($_POST['upload'])) {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const id = this.dataset.id;
+                    const nama = this.dataset.namauser;
                     notifwarning.play();
 
                     Swal.fire({
                         title: 'Anda pasti?',
-                        text: "Anda tidak boleh memulihkan data ini selepas dipadam!",
+                        text: `Anda memadam ${nama} dan tidak boleh memulihkan data ini selepas dipadam!`,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#d33',

@@ -61,6 +61,21 @@ mysqli_data_seek($laksana, 0);
                     <i class="fas fa-clock text-[#4A7C59] mr-1"></i> Masa:
                     <?= date_format(date_create($tarikh), "g:i:s A") ?>
                 </p>
+                <p class="text-sm"><i class="fas fa-calendar-week text-[#4A7C59] mr-1"></i> Hari:
+                    <?php
+                    $hari = date('l', strtotime($tarikh));
+                    $hari_melayu = [
+                        'Sunday' => 'Ahad',
+                        'Monday' => 'Isnin',
+                        'Tuesday' => 'Selasa',
+                        'Wednesday' => 'Rabu',
+                        'Thursday' => 'Khamis',
+                        'Friday' => 'Jumaat',
+                        'Saturday' => 'Sabtu'
+                    ];
+                    echo $hari_melayu[$hari];
+                    ?>
+                </p>
             </div>
         </div>
 
@@ -96,7 +111,8 @@ mysqli_data_seek($laksana, 0);
         </table>
 
         <div class="text-center mt-4">
-            <button onclick="window.print()" class="bg-[#4A7C59] text-white py-2 px-4 rounded-lg hover:bg-[#68B0AB] transition duration-300">
+            <button onclick="window.print()"
+                class="bg-[#4A7C59] text-white py-2 px-4 rounded-lg hover:bg-[#68B0AB] transition duration-300">
                 <i class="fas fa-print mr-2"></i> Cetak
             </button>
         </div>

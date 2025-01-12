@@ -70,7 +70,7 @@ $laksql = mysqli_query($condb, $sql);
                 display: none;
             }
 
-           
+
         }
 
         /* Custom scrollbar styles */
@@ -141,8 +141,8 @@ $laksql = mysqli_query($condb, $sql);
 </head>
 
 <body class="bg-[#FAF3DD] text-gray-800">
-     <!-- Header -->
-     <div class="w-full bg-[#FAF3DD]">
+    <!-- Header -->
+    <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
@@ -174,7 +174,8 @@ $laksql = mysqli_query($condb, $sql);
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
 
-                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                <div id="dropdownMenu"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                         <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
@@ -200,7 +201,8 @@ $laksql = mysqli_query($condb, $sql);
             <h2 class="text-2xl font-bold mb-6 relative inline-block text-center w-full text-black">
                 <i class="fas fa-history text-[#4A7C59] mr-1"></i> Sejarah Tempahan
             </h2>
-            <form action="sejarah-tempah.php" method="GET" class="py-5 flex items-center space-x-2 w-full justify-center">
+            <form action="sejarah-tempah.php" method="GET"
+                class="py-5 flex items-center space-x-2 w-full justify-center">
                 <select name='tarikh_semasa' class="border rounded p-2 w-1/4">
                     <option value='<?= $tarikhsemasa ?>'>
                         <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?>
@@ -215,30 +217,65 @@ $laksql = mysqli_query($condb, $sql);
                 <button type="submit" class="bg-[#4A7C59] text-white p-2 rounded flex items-center hover:bg-[#68B0AB]">
                     <i class="fas fa-search mr-1"></i> Cari
                 </button>
-                <a href="sejarah-tempah.php" class="bg-red-500 text-white p-2 rounded flex items-center hover:bg-red-600">
+                <a href="sejarah-tempah.php"
+                    class="bg-red-500 text-white p-2 rounded flex items-center hover:bg-red-600">
                     <i class="fas fa-undo mr-1"></i> Reset
                 </a>
             </form>
             <div class="overflow-x-auto">
                 <?php if (mysqli_num_rows($laksql) > 0): ?>
-                    <table class="table-auto mx-auto border-collapse border-2 border-[#4A7C59] border-separate shadow-lg w-full sm:w-auto rounded-lg">
+                    <table
+                        class="table-auto mx-auto border-collapse border-2 border-[#4A7C59] border-separate shadow-lg w-full sm:w-auto rounded-lg">
                         <thead>
                             <tr>
-                                <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tl-lg"><i class="fas fa-calendar-alt"></i> Tarikh</th>
-                                <th class="px-4 py-2 bg-[#4A7C59] text-white"><i class="fas fa-money-bill-wave"></i> Jumlah Bayaran (RM)</th>
-                                <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tr-lg"><i class="fas fa-receipt"></i> Semak Resit</th>
+                                <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tl-lg"><i
+                                        class="fas fa-calendar-alt"></i> Tarikh</th>
+                                <th class="px-4 py-2 bg-[#4A7C59] text-white"><i class="fas fa-money-bill-wave"></i> Jumlah
+                                    Bayaran (RM)</th>
+                                <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tr-lg"><i class="fas fa-receipt"></i>
+                                    Semak Resit</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php while ($m = mysqli_fetch_array($laksql)):
                                 $tarikh = date_create($m['tarikh']);
-                            ?>
+                                ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
                                     <td class="border-0 shadow-lg  px-4 py-2 	">
-                                        <i class="fas fa-calendar-day"></i> Tarikh: <?php echo date_format($tarikh, "d/m/Y") ?> <br>
+                                        <i class="fas fa-calendar-day"></i> Tarikh: <?php echo date_format($tarikh, "d/m/Y") ?>
+                                        <br>
                                         <i class="fas fa-clock"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
+                                        <?php
+                                        $hari = date_format($tarikh, "l");
+                                        $hariMelayu = "";
+                                        switch ($hari) {
+                                            case 'Sunday':
+                                                $hariMelayu = "Ahad";
+                                                break;
+                                            case 'Monday':
+                                                $hariMelayu = "Isnin";
+                                                break;
+                                            case 'Tuesday':
+                                                $hariMelayu = "Selasa";
+                                                break;
+                                            case 'Wednesday':
+                                                $hariMelayu = "Rabu";
+                                                break;
+                                            case 'Thursday':
+                                                $hariMelayu = "Khamis";
+                                                break;
+                                            case 'Friday':
+                                                $hariMelayu = "Jumaat";
+                                                break;
+                                            case 'Saturday':
+                                                $hariMelayu = "Sabtu";
+                                                break;
+                                        }
+                                        ?>
+                                        <i class="fas fa-calendar-week"></i> Hari: <?php echo $hariMelayu ?> <br>
                                     </td>
-                                    <td class="border-0 shadow-lg  px-4 py-2 text-center">RM <?= number_format($m['jumlah_harga_semua'], 2) ?> </td>
+                                    <td class="border-0 shadow-lg  px-4 py-2 text-center">RM
+                                        <?= number_format($m['jumlah_harga_semua'], 2) ?> </td>
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center 	">
                                         <?php $masa = date_format($tarikh, "Y-m-d H:i:s"); ?>
                                         <div class="flex flex-col gap-2">
@@ -248,11 +285,13 @@ $laksql = mysqli_query($condb, $sql);
                                             </button>
                                             <?php if ($m['seconds_passed'] <= 60): ?>
                                                 <div>
-                                                    <button data-id="<?= $masa ?>"  class="batal-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-full">
+                                                    <button data-id="<?= $masa ?>"
+                                                        class="batal-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md w-full">
                                                         <i class="fas fa-trash"></i> Batal
                                                     </button>
                                                     <div class="text-sm text-red-500 mt-1">
-                                                        Masa tinggal: <span class="countdown" data-seconds-passed="<?= $m['seconds_passed'] ?>">60</span> saat
+                                                        Masa tinggal: <span class="countdown"
+                                                            data-seconds-passed="<?= $m['seconds_passed'] ?>">60</span> saat
                                                     </div>
                                                 </div>
                                             <?php endif; ?>
@@ -265,7 +304,8 @@ $laksql = mysqli_query($condb, $sql);
                 <?php else: ?>
                     <div class="overflow-x-auto">
                         <p class="text-2xl text-white bg-[#A3B18A] p-4 rounded-lg shadow-lg inline-block">
-                            <i class="fas fa-exclamation-circle"></i> Tiada Tempahan Pada Tarikh <?= date_format(date_create($tarikhsemasa), "d/m/Y") ?>
+                            <i class="fas fa-exclamation-circle"></i> Tiada Tempahan Pada Tarikh
+                            <?= date_format(date_create($tarikhsemasa), "d/m/Y") ?>
                         </p>
                     </div> <?php endif; ?>
             </div>
@@ -300,7 +340,7 @@ $laksql = mysqli_query($condb, $sql);
     <script>
         // Show or hide the scroll to top button
 
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -339,7 +379,7 @@ $laksql = mysqli_query($condb, $sql);
         window.onresize = adjustFooter;
 
         // Fungsi untuk mengira masa yang tinggal
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const countdowns = document.querySelectorAll('.countdown');
 
             countdowns.forEach(countdown => {
@@ -378,7 +418,7 @@ $laksql = mysqli_query($condb, $sql);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -419,27 +459,27 @@ $laksql = mysqli_query($condb, $sql);
 
 
         document.querySelectorAll('.batal-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const tarikh = this.dataset.id;
-                    e.preventDefault();
-                    notifwarning.play();
+            button.addEventListener('click', function (e) {
+                const tarikh = this.dataset.id;
+                e.preventDefault();
+                notifwarning.play();
 
-                    Swal.fire({
-                        title: 'Anda pasti?',
-                        text: "Batalkan pesanan anda",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = `function/batal-tempah.php?tarikh=${tarikh}`;
-                        }
-                    });
+                Swal.fire({
+                    title: 'Anda pasti?',
+                    text: "Batalkan pesanan anda",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `function/batal-tempah.php?tarikh=${tarikh}`;
+                    }
                 });
             });
+        });
 
         const menuButton = document.getElementById('menuButton');
         const dropdownMenu = document.getElementById('dropdownMenu');

@@ -21,9 +21,57 @@ if ($sort_order == 'asc') {
     $order_by = " ORDER BY makanan.nama_makanan";
 }
 
-# SQL query to fetch data
-$arahan_papar = "SELECT * FROM makanan" . $tambahan . $order_by;
-$stmt = mysqli_prepare($condb, $arahan_papar);
+# Tetapkan bilangan rekod per halaman
+$rekodSehalaman = 10;
+
+# Dapatkan halaman semasa
+$halaman = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
+
+# Kira offset untuk query
+$offset = ($halaman - 1) * $rekodSehalaman;
+
+# Ubahsuai query untuk pagination
+$sql = "SELECT * FROM makanan";
+
+# Logik untuk carian nama makanan
+if (isset($_GET['nama_makanan']) && !empty($_GET['nama_makanan'])) {
+    $nama_makanan = $_GET['nama_makanan'];
+    $sql .= " WHERE nama_makanan LIKE '%$nama_makanan%'";
+}
+
+# Logik untuk filter kategori
+if (isset($_GET['tapis_kategori']) && !empty($_GET['tapis_kategori'])) {
+    $tapis_kategori = $_GET['tapis_kategori'];
+    if (strpos($sql, 'WHERE') !== false) {
+        $sql .= " AND kategori = '$tapis_kategori'";
+    } else {
+        $sql .= " WHERE kategori = '$tapis_kategori'";
+    }
+}
+
+# Tambah order by jika ada
+if (isset($_GET['sort']) && $_GET['sort'] == 'desc') {
+    $sql .= " ORDER BY kod_makanan DESC";
+} elseif (isset($_GET['sort']) && $_GET['sort'] == 'asc') {
+    $sql .= " ORDER BY kod_makanan ASC";
+} else {
+    $sql .= " ORDER BY nama_makanan";
+}
+
+# Query untuk kira jumlah rekod
+$sql_total = $sql;
+$result_total = mysqli_query($condb, $sql_total);
+$jumlahRekod = mysqli_num_rows($result_total);
+
+# Kira jumlah halaman
+$jumlahHalaman = ceil($jumlahRekod / $rekodSehalaman);
+
+# Tambah LIMIT dan OFFSET pada query utama
+$sql .= " LIMIT $rekodSehalaman OFFSET $offset";
+$laksana = mysqli_query($condb, $sql);
+
+# Debug: Cetak query untuk semakan
+# echo $sql;
 
 if (!empty($searchTerm)) {
     $searchTerm = "%" . $searchTerm . "%";
@@ -455,8 +503,8 @@ if (isset($_POST['upload'])) {
                         <span id="currentTime" class="font-bold text-lg"></span>
                         <div class="flex items-center justify-between space-x-5">
                             <form action="list-menu.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
-                                <input type="text" name="nama_menu" placeholder="Carian Menu"
-                                    value="<?php echo htmlspecialchars($_GET['nama_menu'] ?? ''); ?>"
+                                <input type="text" name="nama_makanan" placeholder="Carian Menu"
+                                    value="<?php echo htmlspecialchars($_GET['nama_makanan'] ?? ''); ?>"
                                     class="border rounded p-2 w-2/5">
                                 <button type="submit"
                                     class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
@@ -493,7 +541,7 @@ if (isset($_POST['upload'])) {
                                                 $icon_class = ($current_sort == 'desc') ? 'fa-regular fa-arrow-up-1-9' : 'fa-regular fa-arrow-down-9-1';
                                                 $title_text = ($current_sort == 'desc') ? 'Susun Menaik' : 'Susun Menurun';
                                                 ?>
-                                                <a href="?sort=<?= $next_sort ?><?= !empty($_GET['nama_menu']) ? '&nama_menu=' . $_GET['nama_menu'] : '' ?>"
+                                                <a href="?sort=<?= $next_sort ?><?= !empty($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?>"
                                                     class="bg-[#3a5a40] text-white px-3 py-2 rounded hover:bg-[#68B0AB] transition-colors"
                                                     title="<?= $title_text ?>">
                                                     <i class="<?= $icon_class ?>"></i>
@@ -508,11 +556,10 @@ if (isset($_POST['upload'])) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (mysqli_num_rows($result) > 0) { ?>
-                                    <?php while ($m = mysqli_fetch_assoc($result)) { ?>
+                                <?php if (mysqli_num_rows($laksana) > 0) { ?>
+                                    <?php while ($m = mysqli_fetch_assoc($laksana)) { ?>
                                         <tr class='bg-white border-b hover:bg-blue-50'>
-                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['kod_makanan']); ?>
-                                            </td>
+                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['kod_makanan']); ?></td>
                                             <td class='px-8 py-4 flex justify-center items-center'>
                                                 <div class="relative group">
                                                     <div class="w-32 h-32 overflow-hidden">
@@ -527,18 +574,16 @@ if (isset($_POST['upload'])) {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class='px-4 py-2 text-center'>
-                                                <?php echo htmlspecialchars($m['nama_makanan']); ?>
-                                            </td>
-                                            <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?>
-                                            </td>
+                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['nama_makanan']); ?></td>
+                                            <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?></td>
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
                                                     <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')"
                                                         class="bg-[#588157] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button data-id="<?php echo urlencode($m['kod_makanan']); ?>" data-nama_makanan="<?php echo htmlspecialchars($m['nama_makanan']); ?>"
+                                                    <button data-id="<?php echo urlencode($m['kod_makanan']); ?>" 
+                                                            data-nama_makanan="<?php echo htmlspecialchars($m['nama_makanan']); ?>"
                                                         class="delete-btn bg-red-800 text-white py-2 px-7 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
@@ -557,6 +602,58 @@ if (isset($_POST['upload'])) {
                                 <?php } ?>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="pagination-container flex justify-center items-center space-x-2 mt-4">
+                        <?php if ($jumlahHalaman > 1): ?>
+                            <!-- First Page -->
+                            <?php if ($halaman > 1): ?>
+                                <a href="?halaman=1<?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
+                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            <?php endif; ?>
+
+                            <!-- Previous Page -->
+                            <?php if ($halaman > 1): ?>
+                                <a href="?halaman=<?= $halaman-1 ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
+                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            <?php endif; ?>
+
+                            <!-- Page Numbers -->
+                            <?php
+                            $start = max(1, $halaman - 2);
+                            $end = min($jumlahHalaman, $halaman + 2);
+                            
+                            for ($i = $start; $i <= $end; $i++): ?>
+                                <a href="?halaman=<?= $i ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
+                                   class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#588157] text-white hover:bg-[#68B0AB]' ?> rounded">
+                                    <?= $i ?>
+                                </a>
+                            <?php endfor; ?>
+
+                            <!-- Next Page -->
+                            <?php if ($halaman < $jumlahHalaman): ?>
+                                <a href="?halaman=<?= $halaman+1 ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
+                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            <?php endif; ?>
+
+                            <!-- Last Page -->
+                            <?php if ($halaman < $jumlahHalaman): ?>
+                                <a href="?halaman=<?= $jumlahHalaman ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
+                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <!-- Page Info -->
+                        <span class="text-gray-600">
+                            Halaman <?= $halaman ?> dari <?= $jumlahHalaman ?> (<?= $jumlahRekod ?> rekod)
+                        </span>
                     </div>
                 </div>
             </div>
