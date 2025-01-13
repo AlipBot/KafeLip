@@ -1,19 +1,25 @@
-<?php $lifetime = 60 * 60 * 24 * 30;  // 30 days
+<?php
+# Set masa session biar tahan lama dan bila tutup browser dat session masih ada
+$lifetime = 60 * 60 * 24 * 30; # Setkan 30 hari atau 1 bulan
 session_set_cookie_params($lifetime);
 session_start();
 ?>
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>
-        KAFELIP
+        KafeLip
     </title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com">
-    </script>
+    <link rel="stylesheet" href="lib/css/all.css">
+    <link rel="stylesheet" href="lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="lib/css/sharp-light.css">
+    <link rel="stylesheet" href="lib/css/duotone.css" />
+    <link rel="stylesheet" href="lib/css/brands.css" />
+    <link href="lib/css/css2.css" rel="stylesheet" />
+    <script src="lib/js/tailwind.js"></script>
     <style>
         .explore-menu:hover,
         .get-started:hover,
