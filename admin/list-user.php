@@ -348,7 +348,7 @@ if (isset($_POST['upload'])) {
                                 </button>
                                 <button type="button" onclick="window.location.href='list-user.php';"
                                     class="bg-red-800 text-white p-2 rounded flex items-center">
-                                    <i class="fas fa-times mr-1"></i> Padam
+                                    <i class="fas fa-redo mr-1"></i> Reset
                                 </button>
                             </form>
                             <div class="flex space-x-2">
@@ -423,16 +423,16 @@ if (isset($_POST['upload'])) {
                         <?php if ($jumlahHalaman > 1): ?>
                             <!-- First Page -->
                             <?php if ($halaman > 1): ?>
-                                <a href="?halaman=1<?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
-                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                <a href="?halaman=1<?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
+                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-double-left"></i>
                                 </a>
                             <?php endif; ?>
 
                             <!-- Previous Page -->
                             <?php if ($halaman > 1): ?>
-                                <a href="?halaman=<?= $halaman-1 ?><?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
-                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                <a href="?halaman=<?= $halaman - 1 ?><?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
+                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-left"></i>
                                 </a>
                             <?php endif; ?>
@@ -441,36 +441,37 @@ if (isset($_POST['upload'])) {
                             <?php
                             $start = max(1, $halaman - 2);
                             $end = min($jumlahHalaman, $halaman + 2);
-                            
+
                             for ($i = $start; $i <= $end; $i++): ?>
-                                <a href="?halaman=<?= $i ?><?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
-                                   class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#588157] text-white hover:bg-[#68B0AB]' ?> rounded">
+                                <a href="?halaman=<?= $i ?><?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
+                                    class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#588157] text-white hover:bg-[#68B0AB]' ?> rounded">
                                     <?= $i ?>
                                 </a>
                             <?php endfor; ?>
 
                             <!-- Next Page -->
                             <?php if ($halaman < $jumlahHalaman): ?>
-                                <a href="?halaman=<?= $halaman+1 ?><?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
-                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                <a href="?halaman=<?= $halaman + 1 ?><?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
+                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-right"></i>
                                 </a>
                             <?php endif; ?>
 
                             <!-- Last Page -->
                             <?php if ($halaman < $jumlahHalaman): ?>
-                                <a href="?halaman=<?= $jumlahHalaman ?><?= isset($_GET['nama']) ? '&nama='.$_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap='.$_GET['tapis_tahap'] : '' ?>" 
-                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                <a href="?halaman=<?= $jumlahHalaman ?><?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
+                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-double-right"></i>
                                 </a>
                             <?php endif; ?>
                         <?php endif; ?>
 
-                        <!-- Page Info -->
-                        <span class="text-gray-600">
-                            Halaman <?= $halaman ?> dari <?= $jumlahHalaman ?> (<?= $jumlahRekod ?> rekod)
-                        </span>
+
                     </div>
+                    <!-- Page Info -->
+                    <span class="flex mt-5 justify-center text-gray-600">
+                        Halaman <?= $halaman ?> dari <?= $jumlahHalaman ?> (<?= $jumlahRekod ?> rekod)
+                    </span>
                 </div>
             </div>
         </div>
@@ -533,7 +534,7 @@ if (isset($_POST['upload'])) {
 
                 <div class="flex mt-[20px] justify-center">
                     <button type="submit" name="KemaskiniDataPengguna"
-                    class="bg-[#588157] text-white p-2 rounded">Kemaskini</button>
+                        class="bg-[#588157] text-white p-2 rounded">Kemaskini</button>
                 </div>
             </form>
         </div>

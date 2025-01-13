@@ -39,15 +39,6 @@ if (isset($_GET['nama_makanan']) && !empty($_GET['nama_makanan'])) {
     $sql .= " WHERE nama_makanan LIKE '%$nama_makanan%'";
 }
 
-# Logik untuk filter kategori
-if (isset($_GET['tapis_kategori']) && !empty($_GET['tapis_kategori'])) {
-    $tapis_kategori = $_GET['tapis_kategori'];
-    if (strpos($sql, 'WHERE') !== false) {
-        $sql .= " AND kategori = '$tapis_kategori'";
-    } else {
-        $sql .= " WHERE kategori = '$tapis_kategori'";
-    }
-}
 
 # Tambah order by jika ada
 if (isset($_GET['sort']) && $_GET['sort'] == 'desc') {
@@ -111,14 +102,14 @@ if (isset($_POST['DaftarMenu'])) {
         exit();
     }
 
-     # Semak nama_makanan dah wujud atau belum
-     $sql_semak = "select nama_makanan from makanan where nama_makanan = '$nama_makanan' ";
-     $laksana_semak = mysqli_query($condb, $sql_semak);
-     if (mysqli_num_rows($laksana_semak) == 1) {
-         $_SESSION['error'] = "Nama Menu telah digunakan. Sila guna nama makanan yang lain";
-         header("Location: list-menu.php");
-         exit();
-     }
+    # Semak nama_makanan dah wujud atau belum
+    $sql_semak = "select nama_makanan from makanan where nama_makanan = '$nama_makanan' ";
+    $laksana_semak = mysqli_query($condb, $sql_semak);
+    if (mysqli_num_rows($laksana_semak) == 1) {
+        $_SESSION['error'] = "Nama Menu telah digunakan. Sila guna nama makanan yang lain";
+        header("Location: list-menu.php");
+        exit();
+    }
 
     # proses menyimpan data
     $sql_simpan = "insert into makanan set
@@ -512,7 +503,7 @@ if (isset($_POST['upload'])) {
                                 </button>
                                 <button type="button" onclick="window.location.href='list-menu.php';"
                                     class="bg-red-800 text-white p-2 rounded flex items-center">
-                                    <i class="fas fa-times mr-1"></i> Padam
+                                    <i class="fas fa-redo mr-1"></i> Reset
                                 </button>
                             </form>
                             <div class="flex space-x-2">
@@ -582,8 +573,8 @@ if (isset($_POST['upload'])) {
                                                         class="bg-[#588157] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button data-id="<?php echo urlencode($m['kod_makanan']); ?>" 
-                                                            data-nama_makanan="<?php echo htmlspecialchars($m['nama_makanan']); ?>"
+                                                    <button data-id="<?php echo urlencode($m['kod_makanan']); ?>"
+                                                        data-nama_makanan="<?php echo htmlspecialchars($m['nama_makanan']); ?>"
                                                         class="delete-btn bg-red-800 text-white py-2 px-7 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
@@ -607,16 +598,16 @@ if (isset($_POST['upload'])) {
                         <?php if ($jumlahHalaman > 1): ?>
                             <!-- First Page -->
                             <?php if ($halaman > 1): ?>
-                                <a href="?halaman=1<?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
-                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                <a href="?halaman=1<?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
+                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-double-left"></i>
                                 </a>
                             <?php endif; ?>
 
                             <!-- Previous Page -->
                             <?php if ($halaman > 1): ?>
-                                <a href="?halaman=<?= $halaman-1 ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
-                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                <a href="?halaman=<?= $halaman - 1 ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
+                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-left"></i>
                                 </a>
                             <?php endif; ?>
@@ -625,36 +616,36 @@ if (isset($_POST['upload'])) {
                             <?php
                             $start = max(1, $halaman - 2);
                             $end = min($jumlahHalaman, $halaman + 2);
-                            
+
                             for ($i = $start; $i <= $end; $i++): ?>
-                                <a href="?halaman=<?= $i ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
-                                   class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#588157] text-white hover:bg-[#68B0AB]' ?> rounded">
+                                <a href="?halaman=<?= $i ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
+                                    class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#588157] text-white hover:bg-[#68B0AB]' ?> rounded">
                                     <?= $i ?>
                                 </a>
                             <?php endfor; ?>
 
                             <!-- Next Page -->
                             <?php if ($halaman < $jumlahHalaman): ?>
-                                <a href="?halaman=<?= $halaman+1 ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
-                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                <a href="?halaman=<?= $halaman + 1 ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
+                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-right"></i>
                                 </a>
                             <?php endif; ?>
 
                             <!-- Last Page -->
                             <?php if ($halaman < $jumlahHalaman): ?>
-                                <a href="?halaman=<?= $jumlahHalaman ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan='.$_GET['nama_makanan'] : '' ?><?= isset($_GET['tapis_kategori']) ? '&tapis_kategori='.$_GET['tapis_kategori'] : '' ?>" 
-                                   class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                <a href="?halaman=<?= $jumlahHalaman ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
+                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-double-right"></i>
                                 </a>
                             <?php endif; ?>
                         <?php endif; ?>
 
-                        <!-- Page Info -->
-                        <span class="text-gray-600">
-                            Halaman <?= $halaman ?> dari <?= $jumlahHalaman ?> (<?= $jumlahRekod ?> rekod)
-                        </span>
                     </div>
+                    <!-- Page Info -->
+                    <span class="flex mt-5 justify-center text-gray-600">
+                        Halaman <?= $halaman ?> dari <?= $jumlahHalaman ?> (<?= $jumlahRekod ?> rekod)
+                    </span>
                 </div>
             </div>
         </div>
@@ -687,7 +678,7 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='upload' id="uploadMenuBtn" 
+                    <button type="submit" name='upload' id="uploadMenuBtn"
                         class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>
                         Submit
                     </button>
@@ -762,7 +753,7 @@ if (isset($_POST['upload'])) {
 
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu' id="kemaskiniMenuBtn" 
+                    <button type="submit" name='DaftarMenu' id="kemaskiniMenuBtn"
                         class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>
                         Kemaskini
                     </button>
@@ -792,7 +783,7 @@ if (isset($_POST['upload'])) {
     </button>
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -825,7 +816,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function () {
+            reader.onload = function() {
                 var imgElement = document.getElementById('preview');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -838,7 +829,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function () {
+            reader.onload = function() {
                 var imgElement = document.getElementById('preview_kemas');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -882,27 +873,27 @@ if (isset($_POST['upload'])) {
                     document.getElementById('id_menu').value = kod_menu;
                     document.getElementById('nama_makanan').value = data.nama_makanan;
                     document.getElementById('harga_makanan').value = data.harga;
-                    
+
                     // Set original values
                     document.getElementById('original_nama_makanan').value = data.nama_makanan;
                     document.getElementById('original_harga_makanan').value = data.harga;
-                    
+
                     Kemaskinimenu.style.display = "block";
                     checkUpdateFormCompletion(); // Check initial state
                 });
         }
 
-        btn.onclick = function () {
+        btn.onclick = function() {
             menu.style.display = "block";
 
         }
 
-        btnDaftarmenu.onclick = function () {
+        btnDaftarmenu.onclick = function() {
             Daftarmenu.style.display = "block";
         }
 
 
-        window.onclick = function (event) {
+        window.onclick = function(event) {
             if (event.target == Kemaskinimenu) {
                 window.location.href = window.location.href;
                 Kemaskinimenu.style.display = "none";
@@ -924,7 +915,7 @@ if (isset($_POST['upload'])) {
         const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
 
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
                 notifsuccess.play();
@@ -957,7 +948,7 @@ if (isset($_POST['upload'])) {
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function (e) {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const id = this.dataset.id;
                     const nama_makanan = this.dataset.nama_makanan;
@@ -994,7 +985,7 @@ if (isset($_POST['upload'])) {
 
             // Form validation dengan SweetAlert
             document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function (e) {
+                form.addEventListener('submit', function(e) {
                     // Contoh validasi untuk fail
                     const fileInput = this.querySelector('input[type="file"]');
                     if (fileInput && fileInput.files.length > 0) {
@@ -1043,7 +1034,7 @@ if (isset($_POST['upload'])) {
                 if (acceptType === 'image/*' && file.type.startsWith('image/')) {
                     originalFile = file;
                     const reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         const cropModal = document.getElementById('cropModal');
                         const cropImage = document.getElementById('cropImage');
 
@@ -1076,7 +1067,7 @@ if (isset($_POST['upload'])) {
                 } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
                     const fileDisplay = document.getElementById('fileDisplay');
                     const fileName = document.getElementById('fileName');
-                    
+
                     if (fileDisplay && fileName) {
                         fileDisplay.classList.remove('hidden');
                         fileName.textContent = file.name;
@@ -1155,7 +1146,7 @@ if (isset($_POST['upload'])) {
                         previewContainer.style.display = 'none';
                         dropzone.style.display = 'block';
                         input.value = '';
-                        
+
                         // Reset form validation based on input type
                         if (inputId === 'gambarDaftar') {
                             checkFormCompletion();
@@ -1189,7 +1180,7 @@ if (isset($_POST['upload'])) {
             modal.classList.add('flex');
 
             // Tutup modal bila klik di luar gambar
-            modal.onclick = function (e) {
+            modal.onclick = function(e) {
                 if (e.target === modal) {
                     closeImagePopup();
                 }
@@ -1203,7 +1194,7 @@ if (isset($_POST['upload'])) {
         }
 
         // Tutup modal dengan kekunci ESC
-        document.addEventListener('keydown', function (e) {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeImagePopup();
             }
@@ -1233,7 +1224,7 @@ if (isset($_POST['upload'])) {
         let originalFile = null;
 
         // Add crop modal handlers
-        document.getElementById('cropDone').addEventListener('click', function () {
+        document.getElementById('cropDone').addEventListener('click', function() {
             if (!cropper) return;
 
             const cropModal = document.getElementById('cropModal');
@@ -1277,7 +1268,7 @@ if (isset($_POST['upload'])) {
             }, 'image/jpeg', 0.8); // Specify JPEG format and quality
         });
 
-        document.getElementById('cropCancel').addEventListener('click', function () {
+        document.getElementById('cropCancel').addEventListener('click', function() {
             const cropModal = document.getElementById('cropModal');
             const inputId = cropModal.dataset.inputId;
 
@@ -1330,7 +1321,7 @@ if (isset($_POST['upload'])) {
         function checkUploadFormCompletion() {
             const fileInput = document.getElementById('file');
             const uploadBtn = document.getElementById('uploadMenuBtn');
-            
+
             if (fileInput && fileInput.files.length > 0) {
                 uploadBtn.disabled = false;
                 uploadBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
@@ -1348,19 +1339,19 @@ if (isset($_POST['upload'])) {
             const hargaInput = document.getElementById('harga_makanan');
             const gambarInput = document.getElementById('gambar');
             const kemaskiniBtn = document.getElementById('kemaskiniMenuBtn');
-            
+
             const originalNama = document.getElementById('original_nama_makanan').value;
             const originalHarga = document.getElementById('original_harga_makanan').value;
-            
+
             const hasNameChanged = namaInput.value !== originalNama;
             const hasPriceChanged = hargaInput.value !== originalHarga;
             const hasImageChanged = gambarInput.files.length > 0;
-            
-            if ((hasNameChanged || hasPriceChanged || hasImageChanged) && 
-                namaInput.value.trim() !== '' && 
-                hargaInput.value.trim() !== '' && 
+
+            if ((hasNameChanged || hasPriceChanged || hasImageChanged) &&
+                namaInput.value.trim() !== '' &&
+                hargaInput.value.trim() !== '' &&
                 parseFloat(hargaInput.value) > 0) {
-                
+
                 kemaskiniBtn.disabled = false;
                 kemaskiniBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
                 kemaskiniBtn.classList.add('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
@@ -1379,11 +1370,11 @@ if (isset($_POST['upload'])) {
                     document.getElementById('id_menu').value = kod_menu;
                     document.getElementById('nama_makanan').value = data.nama_makanan;
                     document.getElementById('harga_makanan').value = data.harga;
-                    
+
                     // Set original values
                     document.getElementById('original_nama_makanan').value = data.nama_makanan;
                     document.getElementById('original_harga_makanan').value = data.harga;
-                    
+
                     Kemaskinimenu.style.display = "block";
                     checkUpdateFormCompletion(); // Check initial state
                 });
@@ -1391,7 +1382,7 @@ if (isset($_POST['upload'])) {
 
         // Add event listeners for upload menu form
         document.getElementById('file').addEventListener('change', checkUploadFormCompletion);
-        
+
         // Add event listeners for update menu form
         document.getElementById('nama_makanan').addEventListener('input', checkUpdateFormCompletion);
         document.getElementById('harga_makanan').addEventListener('input', checkUpdateFormCompletion);
@@ -1409,7 +1400,7 @@ if (isset($_POST['upload'])) {
                 if (acceptType === 'image/*' && file.type.startsWith('image/')) {
                     originalFile = file;
                     const reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         const cropModal = document.getElementById('cropModal');
                         const cropImage = document.getElementById('cropImage');
 
@@ -1442,7 +1433,7 @@ if (isset($_POST['upload'])) {
                 } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
                     const fileDisplay = document.getElementById('fileDisplay');
                     const fileName = document.getElementById('fileName');
-                    
+
                     if (fileDisplay && fileName) {
                         fileDisplay.classList.remove('hidden');
                         fileName.textContent = file.name;
@@ -1521,7 +1512,7 @@ if (isset($_POST['upload'])) {
                         previewContainer.style.display = 'none';
                         dropzone.style.display = 'block';
                         input.value = '';
-                        
+
                         // Reset form validation based on input type
                         if (inputId === 'gambarDaftar') {
                             checkFormCompletion();
