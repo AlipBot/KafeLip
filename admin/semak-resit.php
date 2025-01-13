@@ -57,7 +57,7 @@ mysqli_data_seek($laksana, 0);
                     <i class="fas fa-calendar-alt text-[#4A7C59] mr-1"></i> Tarikh:
                     <?= date_format(date_create($tarikh), "d/m/Y") ?>
                 </p>
-                <p class="text-sm">
+                <p class="text-sm mb-1">
                     <i class="fas fa-clock text-[#4A7C59] mr-1"></i> Masa:
                     <?= date_format(date_create($tarikh), "g:i:s A") ?>
                 </p>

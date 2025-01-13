@@ -64,7 +64,9 @@ if (isset($_POST['upload'])) {
             list($email, $notel, $nama, $katalaluan) = $pecahkanbaris;
 
             $pilih = mysqli_query($condb, "select* from pelanggan where notel = '" . $notel . "'");
-            if (mysqli_num_rows($pilih) == 1) {
+            $pilih2 = mysqli_query($condb, "select* from pelanggan where email = '" . $email . "'");
+
+            if (mysqli_num_rows($pilih) == 1 || mysqli_num_rows($pilih2) == 1) {
                 $_SESSION['error'] = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
                 header("Location: list-user.php");
                 exit();

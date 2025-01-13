@@ -234,7 +234,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
                         $masa = date_create($tarikh);
                         echo date_format($masa, "d/m/Y") ?>
                     </p>
-                    <p class="text-sm"><i class="fas fa-clock text-[#4A7C59] mr-1"></i> Masa:
+                    <p class="text-sm mb-1"><i class="fas fa-clock text-[#4A7C59] mr-1"></i> Masa:
                         <?php
                         $masa = date_create($tarikh);
                         echo date_format($masa, "g:i:s A") ?>
