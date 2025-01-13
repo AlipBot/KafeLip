@@ -1,9 +1,14 @@
 <?php
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+
 include("function/autoKeluar.php");
 include('function/connection.php');
 
-$jumlah_harga = 0;
+//―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
 
+$jumlah_harga = 0; # setkan nila awal kosong
+
+# Memamparkan Bilanggan Senarai Tempahan
 if (isset($_SESSION['orders'])) {
     $bil = "<span style='color:red';'>[" . count($_SESSION['orders']) . "]</span>";
 } else {
@@ -12,11 +17,12 @@ if (isset($_SESSION['orders'])) {
 
 # menyemak jika tatasusunan order kosong
 if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
+    #jika tiada data tempahan di session pergi ke page menu semula dan memulang toast
     $_SESSION['info'] = "Cart Anda Kosong";
     header("Location: menu.php");
     exit();
 } else {
-
+    # jika ada data tempahan muat fail html cart
     # dapatkan bilangan setiap elemen 
     $bilangan = array_count_values($_SESSION['orders']);
     # Filter elemen yang muncul lebih dari satu kali
@@ -24,18 +30,23 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         return $count >= 1;
     });
 
-    ?>
+?>
+    <!-- Kod HTML & CSS + TAILWIND & JAVASCRIPT  -->
+
     <html>
 
     <head>
         <title>CART</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-        <!-- SweetAlert2 CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-        <!-- SweetAlert2 JS -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="lib/css/all.css">
+        <link rel="stylesheet" href="lib/css/sharp-solid.css">
+        <link rel="stylesheet" href="lib/css/sharp-regular.css">
+        <link rel="stylesheet" href="lib/css/sharp-light.css">
+        <link rel="stylesheet" href="lib/css/duotone.css" />
+        <link rel="stylesheet" href="lib/css/brands.css" />
+        <link href="lib/css/css2.css" rel="stylesheet" />
+        <script src="lib/js/tailwind.js"></script>
+        <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
+        <script src="lib/js/sweetalert2@11.js"></script>
         <style>
             .content {
                 flex: 1;
@@ -197,14 +208,9 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         <div class="w-full bg-[#FAF3DD]">
             <div class="container mx-auto flex justify-between items-center py-6 px-4">
                 <div class="logo text-2xl font-bold flex items-center mr-4">
-                    <i class="fas fa-coffee text-[#4A7C59] mr-2">
-                    </i>
-                    <span class="text-black">
-                        Kafe
-                    </span>
-                    <span class="text-black">
-                        lip
-                    </span>
+                    <i class="fas fa-coffee text-[#4A7C59] mr-2"></i>
+                    <span class="text-black">Kafe</span>
+                    <span class="text-black">lip</span>
                 </div>
                 <div class="nav flex gap-6 -ml-10 mr-20">
                     <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -220,12 +226,10 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         <span>SEJARAH TEMPAHAN</span>
                     </a>
                 </div>
-
                 <div class="relative">
                     <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
                         <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                     </button>
-
                     <div id="dropdownMenu"
                         class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                         <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
@@ -248,6 +252,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             </div>
         </div>
 
+        <!-- Body -->
         <div class="content">
             <div class="container mx-auto text-center py-8 px-4  rounded-lg">
                 <h2 class="text-4xl font-bold mb-6 relative inline-block text-center w-full text-black">
@@ -272,7 +277,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 $sql = "select* from makanan where kod_makanan = '$key'";
                                 $lak = mysqli_query($condb, $sql);
                                 $m = mysqli_fetch_array($lak);
-                                ?>
+                            ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-white">
                                     <td class="shadow-lg px-4 py-2 font-semibold custom-font"><?= $m['nama_makanan'] ?></td>
                                     <td class="shadow-lg px-4 py-2 flex justify-center font-semibold items-center space-x-2">
@@ -299,8 +304,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 </tr>
                             <?php } ?>
                             <tr class="bg-[#FAF3DD] hover:bg-white">
-                                <td class="shadow-lg px-4 py-2 text-right font-semibold custom-font" colspan="3">Jumlah
-                                    Bayaran (RM)</td>
+                                <td class="shadow-lg px-4 py-2 text-right font-semibold custom-font" colspan="3">Jumlah Bayaran (RM)</td>
                                 <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font">
                                     <span id="grand-total"><?php echo number_format($jumlah_bayaran, 2) ?></span>
                                 </td>
@@ -319,10 +323,11 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             </div>
         </div>
 
+        <!-- Footer -->
         <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
             <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
                 <div class="mb-4 lg:mb-0">
-                    © 2023 KAFELIP. All rights reserved.
+                    © 2025 KAFELIP. Semua hak terpelihara.
                 </div>
                 <div class="flex gap-6">
                     <a class="text-[#4A7C59]" href="#">
@@ -340,11 +345,14 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 </div>
             </div>
         </footer>
+        <!-- Butang scroll keatas -->
         <button id="scrollToTopBtn" onclick="scrollToTop()">
             <i class="fas fa-arrow-up">
             </i>
         </button>
+
         <script>
+            // function butang scroll keatas dan auto ajdust kedudukan footer
             function adjustFooter() {
                 const content = document.querySelector('.content');
                 const footer = document.querySelector('footer');
@@ -369,7 +377,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             window.onresize = adjustFooter;
 
             // Show or hide the scroll to top button
-            window.onscroll = function () {
+            window.onscroll = function() {
                 var scrollToTopBtn = document.getElementById("scrollToTopBtn");
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                     scrollToTopBtn.style.display = "block";
@@ -383,12 +391,13 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 document.body.scrollTop = 0;
                 document.documentElement.scrollTop = 0;
             }
-
-
-            const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-            const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
-            const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
-            const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+        </script>
+        <script>
+            // function toast dan popup
+            const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+            const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+            const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+            const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
 
             const Toast = Swal.mixin({
@@ -403,7 +412,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 }
             });
 
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 <?php if (isset($_SESSION['success'])): ?>
                     Toast.fire({
                         icon: "success",
@@ -443,7 +452,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             })
 
             document.querySelectorAll('.Sahkan-btn').forEach(button => {
-                button.addEventListener('click', function (e) {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
                     notifinfo.play();
 
@@ -467,30 +476,31 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         if (result.isConfirmed) {
                             // Hantar data kuantiti terkini ke server
                             fetch('function/update-cart.php', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(updatedQuantities)
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    window.location.href = 'sah-tempah.php';
-                                } else {
-                                    Toast.fire({
-                                        icon: "error",
-                                        title: "Ralat semasa mengemas kini cart"
-                                    });
-                                }
-                            });
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(updatedQuantities)
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        window.location.href = 'sah-tempah.php';
+                                    } else {
+                                        notiferror.play();
+                                        Toast.fire({
+                                            icon: "error",
+                                            title: "Ralat semasa mengemas kini cart"
+                                        });
+                                    }
+                                });
                         }
                     });
                 });
             });
 
             document.querySelectorAll('.buang-btn').forEach(button => {
-                button.addEventListener('click', function (e) {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
                     notifwarning.play();
 
@@ -510,7 +520,9 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                     });
                 });
             });
-
+        </script>
+        <script>
+            //function drawer menu di header
             const menuButton = document.getElementById('menuButton');
             const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -524,7 +536,9 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                     dropdownMenu.classList.add('hidden');
                 }
             });
-
+        </script>
+        <script>
+            // function butang + dan  -  untuk kuantii makanan
             function updateCartQuantity(menuId, action, hargaSeunit) {
                 const quantityElement = document.getElementById(`quantity-${menuId}`);
                 let quantity = parseInt(quantityElement.textContent);
@@ -534,6 +548,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 } else if (action === 'decrease' && quantity > 1) {
                     quantity--;
                 } else if (action === 'decrease' && quantity === 1) {
+                    notifwarning.play();
                     // Tanya pengguna jika mahu buang item
                     Swal.fire({
                         title: 'Buang item ini?',
@@ -560,47 +575,48 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
                 // Hantar perubahan ke server menggunakan AJAX
                 fetch('function/update-quantity.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        menuId: menuId,
-                        quantity: quantity
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            menuId: menuId,
+                            quantity: quantity
+                        })
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.success) {
-                        Toast.fire({
-                            icon: "error",
-                            title: "Ralat semasa mengemas kini kuantiti"
-                        });
-                    }
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            notiferror.play();
+                            Toast.fire({
+                                icon: "error",
+                                title: "Ralat semasa mengemas kini kuantiti"
+                            });
+                        }
+                    });
             }
 
             function removeItem(menuId) {
-                fetch('function/remove-item.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        menuId: menuId
+                fetch('function/del-item.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            menuId: menuId
+                        })
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload(); // Reload halaman selepas item dibuang
-                    } else {
-                        Toast.fire({
-                            icon: "error",
-                            title: "Ralat semasa membuang item"
-                        });
-                    }
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload(); // Reload halaman selepas item dibuang
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: "Ralat semasa membuang item"
+                            });
+                        }
+                    });
             }
 
             function updateItemTotal(menuId, quantity, hargaSeunit) {

@@ -9,9 +9,7 @@ session_start();
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>
-        KafeLip
-    </title>
+    <title> KafeLip </title>
     <link rel="stylesheet" href="lib/css/all.css">
     <link rel="stylesheet" href="lib/css/sharp-solid.css">
     <link rel="stylesheet" href="lib/css/sharp-regular.css">
@@ -92,45 +90,40 @@ session_start();
 </head>
 
 <body class="bg-[#FAF3DD] font-poppins">
+    <!-- Header -->
     <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
-                <span class="text-black">
-                    Kafe
-                </span>
-                <span class="text-black">
-                    lip
-                </span>
+                <span class="text-black">Kafe</span>
+                <span class="text-black">lip</span>
             </div>
             <?php if (!empty($_SESSION['tahap'])) { ?>
+                <!-- Jika data tahap session pengguna dah ada -->
                 <div class="goMenu flex gap-6">
                     <a class="text-black font-medium" href="login.php">
                         <i class="fas fa-sign-in-alt text-[#4A7C59] mr-1"></i>
-                        <span>
-                            LOG MASUK
-                        </span>
+                        <span>LOG MASUK </span>
                     </a>
                 </div>
             <?php } else { ?>
+                <!-- Jika data tahap session pengguna Tiada  -->
                 <div class="goMenu flex gap-6">
                     <a class="text-black font-medium" href="login.php">
                         <i class="fas fa-sign-in-alt text-[#4A7C59] mr-1"></i>
-                        <span>
-                            LOG MASUK
-                        </span>
+                        <span> LOG MASUK </span>
                     </a>
                     <a class="text-black font-medium" href="signup.php">
                         <i class="fas fa-user-plus text-[#4A7C59] mr-1"> </i>
-                        <span>
-                            DAFTAR MASUK
-                        </span>
+                        <span> DAFTAR MASUK </span>
                     </a>
                 </div>
             <?php } ?>
         </div>
     </div>
+
+    <!-- Muka depan 1 -->
     <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center py-12 px-10">
             <div class="text-content max-w-lg">
@@ -204,6 +197,8 @@ session_start();
             </div>
         </div>
     </div>
+
+    <!-- Muka depan 2 -->
     <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto py-12 px-10">
             <h2 class="text-4xl font-bold mb-6 relative inline-block text-center w-full text-black">
@@ -294,6 +289,8 @@ session_start();
             </div>
         </div>
     </div>
+
+    <!-- Muka depan 3 -->
     <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto py-12 px-10">
             <div class="bg-[#A1CCA5] p-8 rounded-lg">
@@ -322,6 +319,8 @@ session_start();
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
     <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
         <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div class="mb-4 lg:mb-0">
@@ -343,12 +342,15 @@ session_start();
             </div>
         </div>
     </footer>
+
+    <!-- Butang scroll ke atas -->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up">
         </i>
     </button>
+
     <script>
-        // Show or hide the scroll to top button
+        // Script untung muncul butang scroll keatas
         window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -358,7 +360,7 @@ session_start();
             }
         };
 
-        // Scroll to top function
+        // Scroll ke atasss
         function scrollToTop() {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;

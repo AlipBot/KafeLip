@@ -1,21 +1,29 @@
 <?php
-include("function/autoKeluar.php");
-// --- Koneksi Database ---
-include("function/connection.php"); // Pastikan path file koneksi benar
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
 
+include("function/autoKeluar.php");  # fail function auto logout jika pengguna belum login
+include("function/connection.php"); # Sambung Ke database
+
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
+
+# Mempaparkan bilangan senarai tempahan
 if (isset($_SESSION['orders'])) {
   $bil = "<span style='color:red';'>[" . count($_SESSION['orders']) . "]</span>";
 } else {
   $bil = "";
 }
+//――――――――――――――――――――――――――――― ┏  POST DATA & KOD SQL & FUNCTION   ┓ ――――――――――――――――――――――――― \\
 
+#    POST DATA KEMASKINI  NAMA
 if (isset($_POST['KemaskiniNama'])) {
   $nama = $_POST['nama'];
+
   if ($nama == $_SESSION['nama']) {
     $_SESSION['error'] = "NAMA SAMA DENGAN NAMA SEMASA";
     header("Location: account.php");
     exit();
   }
+
   if (strlen($nama) < 3) {
     $_SESSION['error'] = "NAMA MESTI 3 AKSARA KE ATAS";
     header("Location: account.php");
@@ -28,22 +36,26 @@ if (isset($_POST['KemaskiniNama'])) {
     exit();
   }
 
+  #kod SQL untuk kemaskini nama baharu
   $sqlKemaskiniNama = "UPDATE pelanggan SET nama = '$nama' WHERE notel = '" . $_SESSION['notel'] . "'";
+
   if (mysqli_query($condb, $sqlKemaskiniNama)) {
-    $_SESSION['nama'] = $nama;
-    $_SESSION['success'] = "Nama Berjaya Di Kemaskini";
+    $_SESSION['nama'] = $nama; # Simpan data nama baharu di session
+    $_SESSION['success'] = "Kemaskini Nama Berjaya";
     header("Location: account.php");
     exit();
   } else {
-    $_SESSION['error'] = "Kemaskini Gagal";
+    $_SESSION['error'] = "Kemaskini Nama Gagal";
     header("Location: account.php");
     exit();
   }
 }
 
+
+#    POST  Data Kemaskini Email
 if (isset($_POST['KemaskiniEmail'])) {
   $email = $_POST['email'];
-
+  # semak email belum digunakan lagi
   $sql_semakemail = "select email from pelanggan where email = '$email' ";
   $check = mysqli_query($condb, $sql_semakemail);
   if (mysqli_num_rows($check) == 1) {
@@ -51,29 +63,31 @@ if (isset($_POST['KemaskiniEmail'])) {
     header("Location: account.php");
     exit();
   }
-
+  #Jika email sama dengan email sekarang
   if ($email == $_SESSION['email']) {
     $_SESSION['error'] = "EMAIL SAMA DENGAN EMAIL SEMASA";
     header("Location: account.php");
     exit();
   }
-
+  # kod SQL untuk update email baharu
   $sqlKemaskiniEmail = "UPDATE pelanggan SET email = '" . $_POST['email'] . "' WHERE notel = '" . $_SESSION['notel'] . "'";
   if (mysqli_query($condb, $sqlKemaskiniEmail)) {
-    $_SESSION['email'] = $email;
-    $_SESSION['success'] = "Kemaskini Berjaya";
+    $_SESSION['email'] = $email; # simpan data email baharu ke dalam session
+    $_SESSION['success'] = "Kemaskini Email Berjaya";
     header("Location: account.php");
     exit();
   } else {
-    $_SESSION['error'] = "Kemaskini Gagal";
+    $_SESSION['error'] = "Kemaskini Email Gagal";
     header("Location: account.php");
     exit();
   }
 }
 
+
+#   POST data kemaskini Nombor Telefon Baharu
 if (isset($_POST['KemaskiniNotel'])) {
   $notel = $_POST['notel'];
-
+  #   Semak nombor telefon telah digunakan belum
   $sql_semaknotel = "select notel from pelanggan where notel = '$notel' ";
   $check = mysqli_query($condb, $sql_semaknotel);
   if (mysqli_num_rows($check) == 1) {
@@ -81,7 +95,7 @@ if (isset($_POST['KemaskiniNotel'])) {
     header("Location: account.php");
     exit();
   }
-
+  #    semak nombor telefon tidak sama dengan fail session
   if ($notel == $_SESSION['notel']) {
     $_SESSION['error'] = "NOMBOR TELEFON SAMA DENGAN NOMBOR TELEFON SEMASA";
     header("Location: account.php");
@@ -99,10 +113,10 @@ if (isset($_POST['KemaskiniNotel'])) {
     header("Location: account.php");
     exit();
   }
-
+  #   Kod SQL kemaskini Nombor telefon baharu
   $sqlKemaskiniNotel = "UPDATE pelanggan SET notel = '" . $_POST['notel'] . "' WHERE notel = '" . $_SESSION['notel'] . "'";
   if (mysqli_query($condb, $sqlKemaskiniNotel)) {
-    $_SESSION['notel'] = $notel;
+    $_SESSION['notel'] = $notel; # Simpan data nombor telefon baharu di session
     $_SESSION['success'] = "Nombor Telefon Berjaya DiKemaskini";
     header("Location: account.php");
     exit();
@@ -113,9 +127,13 @@ if (isset($_POST['KemaskiniNotel'])) {
   }
 }
 
+
+#  POST Data Kemaskini Kata Laluan
 if (isset($_POST['KemaskiniPassword'])) {
   $pass = $_POST['password'];
   $pass2 = $_POST['password2'];
+
+  # semak kata laluan sama ke tak
   if ($pass != $pass2) {
     $_SESSION['error'] = "Kata Laluan Tidak Sepadan";
     header("Location: account.php");
@@ -133,14 +151,21 @@ if (isset($_POST['KemaskiniPassword'])) {
     header("Location: account.php");
     exit();
   }
-
+  #Kod SQL kemaskini Kata Laluan Baharu
   $sqlKemaskiniPassword = "UPDATE pelanggan SET password = '" . $_POST['password'] . "' WHERE notel = '" . $_SESSION['notel'] . "'";
-  mysqli_query($condb, $sqlKemaskiniPassword);
-  $_SESSION['success'] = "Kata Laluan Baharu Berjaya Dikemaskini";
-  header("Location: account.php");
-  exit();
+  if (mysqli_query($condb, $sqlKemaskiniPassword)) {
+    $_SESSION['success'] = "Kata Laluan Baharu Berjaya Dikemaskini";
+    header("Location: account.php");
+    exit();
+  } else {
+    $_SESSION['error'] = "Kata Laluan Gagal DiKemaskini";
+    header("Location: account.php");
+    exit();
+  }
 }
 
+
+#  Function Padam Akaun
 if (isset($_POST['HapusAkaun'])) {
   $email = $_POST['email'];
   $notel = $_SESSION['notel'];
@@ -164,6 +189,7 @@ if (isset($_POST['HapusAkaun'])) {
   mysqli_stmt_bind_param($stmt, "ss", $notel, $email);
 
   if (mysqli_stmt_execute($stmt)) {
+    # Refresh page pastu function auto keluar berkerja untuk auto logout akaun untuk buang semua data session
     header("Location: account.php");
     exit();
   } else {
@@ -173,42 +199,33 @@ if (isset($_POST['HapusAkaun'])) {
   }
 }
 
+
+# Dapatkan maklumat pelanggan untuk isi kat value di borang kemaskini masing2
 $sql        =   "select* from pelanggan where notel = '" . $_SESSION['notel'] . "' AND email = '" . $_SESSION['email'] . "' LIMIT 1";
 $laksana    =   mysqli_query($condb, $sql);
 $m          =   mysqli_fetch_array($laksana);
 
 
 ?>
-<html lang="en">
+
+<!-- Kod HTML & CSS + TAILWIND & JAVASCRIPT  -->
+
+<html lang="ms">
 
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>
-    Urus Akaun 
-  </title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <!-- SweetAlert2 CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <!-- SweetAlert2 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-  <script>
-    function togglePasswordVisibility(id) {
-      const passwordInput = document.getElementById(id);
-      const icon = document.getElementById(id + '-icon');
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-      } else {
-        passwordInput.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-      }
-    }
-  </script>
+  <title> Urus Akaun </title>
+  <link rel="stylesheet" href="lib/css/all.css">
+  <link rel="stylesheet" href="lib/css/sharp-solid.css">
+  <link rel="stylesheet" href="lib/css/sharp-regular.css">
+  <link rel="stylesheet" href="lib/css/sharp-light.css">
+  <link rel="stylesheet" href="lib/css/duotone.css" />
+  <link rel="stylesheet" href="lib/css/brands.css" />
+  <link href="lib/css/css2.css" rel="stylesheet" />
+  <script src="lib/js/tailwind.js"></script>
+  <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
+  <script src="lib/js/sweetalert2@11.js"></script>
   <style>
     @media (max-width: 768px) {
 
@@ -286,12 +303,8 @@ $m          =   mysqli_fetch_array($laksana);
       <div class="logo text-2xl font-bold flex items-center mr-4">
         <i class="fas fa-coffee text-[#4A7C59] mr-2">
         </i>
-        <span class="text-black">
-          Kafe
-        </span>
-        <span class="text-black">
-          lip
-        </span>
+        <span class="text-black">Kafe </span>
+        <span class="text-black">lip</span>
       </div>
       <div class="nav flex gap-6 -ml-10 mr-20">
         <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -307,12 +320,10 @@ $m          =   mysqli_fetch_array($laksana);
           <span>SEJARAH TEMPAHAN</span>
         </a>
       </div>
-
       <div class="relative">
         <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
           <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
         </button>
-
         <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
           <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
             <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -334,18 +345,13 @@ $m          =   mysqli_fetch_array($laksana);
     </div>
   </div>
 
-
-
+  <!-- Body -->
   <main class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-center mb-4">
-      Akaun
-    </h1>
-    <p class="text-center mb-8">
-      Kemaskini profil anda dan tetapkan pilihan akaun anda.
-    </p>
+    <h1 class="text-3xl font-bold text-center mb-4"> Akaun</h1>
+    <p class="text-center mb-8">Kemaskini Profil Anda Dan Tetapkan Pilihan Akaun Anda. </p>
     <div class="flex flex-col md:flex-row justify-center">
       <section class="w-full md:w-3/4 space-y-8">
-
+        <!-- Borang Kemaskin Nama -->
         <form id='KemaskiniNama' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
           <input type="hidden" name="KemaskiniNama" value="1">
           <h2 class="text-xl font-bold mb-4">
@@ -363,7 +369,7 @@ $m          =   mysqli_fetch_array($laksana);
             </button>
           </div>
         </form>
-
+        <!-- Borang Kemaskini Email -->
         <form id='KemaskiniEmail' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
           <input type="hidden" name="KemaskiniEmail" value="1">
           <h2 class="text-xl font-bold mb-4">
@@ -374,10 +380,9 @@ $m          =   mysqli_fetch_array($laksana);
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="email" required type="email" name="email" value="<?= $m['email'] ?>" />
-
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
-            Sila masukkan alamat e-mel yang sah.
+            Sila masukkan alamat email yang sah.
           </p>
           <div class="flex justify-end">
             <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniEmail" type="button" onclick="Kemaskini('KemaskiniEmail')">
@@ -385,7 +390,7 @@ $m          =   mysqli_fetch_array($laksana);
             </button>
           </div>
         </form>
-
+        <!-- Borang Kemaskini Nombor Telefon -->
         <form id='KemaskiniNotel' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
           <input type="hidden" name="KemaskiniNotel" value="1">
           <h2 class="text-xl font-bold mb-4">
@@ -406,7 +411,7 @@ $m          =   mysqli_fetch_array($laksana);
             </button>
           </div>
         </form>
-
+        <!-- Borang Kemaskini Kata Laluan -->
         <form id='KemaskiniPassword' method='POST' class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg		">
           <input type="hidden" name="KemaskiniPassword" value="1">
           <h2 class="text-xl font-bold mb-4">
@@ -438,20 +443,20 @@ $m          =   mysqli_fetch_array($laksana);
             </button>
           </div>
         </form>
-
+        <!-- Borang Padam akaun -->
         <form id="delete-email-form" action="" method="POST" class="bg-white shadow rounded-lg p-6 mx-auto max-w-lg">
           <input type="hidden" name="HapusAkaun" value="1">
           <h2 class="text-xl font-bold mb-4">
             Padam Akaun Ini
           </h2>
           <p class="text-gray-600 mb-4">
-            Masukkan email anda untuk memadam akaun anda
+            Masukkan Email Anda Untuk Memadam Akaun Anda
           </p>
           <div class="flex items-center">
             <input id="deleteEmail" class="border border-gray-300 rounded-lg p-2 flex-grow" placeholder="Sila ketik <?= $m['email'] ?>" required type="email" name="email" />
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="deleteEmailError">
-            Sila masukkan alamat e-mel yang sah.
+            Sila Masukkan Alamat Email Yang Sah.
           </p>
           <div class="flex justify-end">
             <button type="button" class="delete-email ml-4 my-5 bg-red-500 text-white px-4 py-2 rounded-lg" onclick="confirmDelete()">
@@ -459,15 +464,14 @@ $m          =   mysqli_fetch_array($laksana);
             </button>
           </div>
         </form>
-
       </section>
     </div>
   </main>
-
+  <!-- Footer -->
   <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
     <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
       <div class="mb-4 lg:mb-0">
-        © 2023 KAFELIP. All rights reserved.
+        © 2025 KAFELIP. Semua hak terpelihara.
       </div>
       <div class="flex gap-6">
         <a class="text-[#4A7C59]" href="#">
@@ -485,13 +489,33 @@ $m          =   mysqli_fetch_array($laksana);
       </div>
     </div>
   </footer>
+
+  <!-- Butang scroll keatas -->
   <button id="scrollToTopBtn" onclick="scrollToTop()">
-    <i class="fas fa-arrow-up">
-    </i>
+    <i class="fas fa-arrow-up"></i>
   </button>
 
+  <!-------------SCRIPT & FUNCTION------------>
+
   <script>
-    // Show or hide the scroll to top button
+    // Function untuk sembunyikan kata lalauan
+    function togglePasswordVisibility(id) {
+      const passwordInput = document.getElementById(id);
+      const icon = document.getElementById(id + '-icon');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+  </script>
+
+  <script>
+    // Tunjukan atau sorokkan butang scroll keatas
     window.onscroll = function() {
       var scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -506,7 +530,9 @@ $m          =   mysqli_fetch_array($laksana);
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     }
-
+  </script>
+  <script>
+    //  Function Untuk memamparkan syarat untuk isi borang mengikut jenis data diperlukan 
     document.getElementById('email').addEventListener('input', function() {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const emailError = document.getElementById('emailError');
@@ -700,13 +726,12 @@ $m          =   mysqli_fetch_array($laksana);
     });
   </script>
   <script>
-    const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-    const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
-    const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
-    const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+    const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+    const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+    const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+    const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
-
-
+    // setkan function toast 
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",
@@ -747,7 +772,6 @@ $m          =   mysqli_fetch_array($laksana);
         <?php unset($_SESSION['warning']); ?>
       <?php endif; ?>
 
-      // Untuk popup error
       <?php if (isset($_SESSION['error'])): ?>
         Toast.fire({
           icon: "error",
@@ -760,10 +784,12 @@ $m          =   mysqli_fetch_array($laksana);
     })
   </script>
   <script>
+    // Function popup untuk menyakinkan pengguna
+
+    // popup butang delete
     function confirmDelete() {
       const emailInput = document.getElementById('deleteEmail');
       const expectedEmail = "<?= $m['email'] ?>";
-
       if (emailInput.value !== expectedEmail) {
         notiferror.play();
         Toast.fire({
@@ -772,7 +798,6 @@ $m          =   mysqli_fetch_array($laksana);
         });
         return;
       }
-
       notifwarning.play();
       Swal.fire({
         title: 'Anda pasti mahu padam akaun?',
@@ -790,7 +815,7 @@ $m          =   mysqli_fetch_array($laksana);
       });
     }
 
-
+    // Functio bila tekan button kemaskini
     function Kemaskini(id) {
       notifwarning.play();
       Swal.fire({
