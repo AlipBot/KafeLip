@@ -1,22 +1,29 @@
 <?php
-include("function/autoKeluar.php");
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
 
+#  semak pengguna dah login ke belum
+include("function/autoKeluar.php");
+// --- Koneksi Database ---
+include("function/connection.php");
+
+//―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
+
+# memaparkan bilangan senarai tempahan di dalam session
 if (isset($_SESSION['orders'])) {
     $bil = "<span style='color:red';'>[" . count($_SESSION['orders']) . "]</span>";
 } else {
     $bil = "";
 }
 
-// --- Koneksi Database ---
-include("function/connection.php"); // Pastikan path file koneksi benar
 
-// Tambah fungsi untuk memeriksa kuantiti dalam cart
-function getCartQuantity($kod_makanan)
+
+// function untuk semak kuantiti makanan yang sudah ditempah atau di dalam session orders
+function semakKuantitiOrders($kod_makanan)
 {
-    if (isset($_SESSION['orders']) && !empty($_SESSION['orders'])) {
+    if (isset($_SESSION['orders']) && !empty($_SESSION['orders'])) {  #  Semak session orders wujud ke tak
         $count = 0;
-        foreach ($_SESSION['orders'] as $order) {
-            if ($order == $kod_makanan) {
+        foreach ($_SESSION['orders'] as $order) { # jika ada ulang berapa kod makanan yang berada di file session
+            if ($order == $kod_makanan) {  #  jika kod makanan sama dengan kod makanan yang didalam parameter kira 1
                 $count++;
             }
         }
@@ -36,14 +43,16 @@ function getCartQuantity($kod_makanan)
     <title>
         KAFELIP
     </title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="lib/css/all.css">
+    <link rel="stylesheet" href="lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="lib/css/sharp-light.css">
+    <link rel="stylesheet" href="lib/css/duotone.css" />
+    <link rel="stylesheet" href="lib/css/brands.css" />
+    <link href="lib/css/css2.css" rel="stylesheet" />
+    <script src="lib/js/tailwind.js"></script>
+    <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
+    <script src="lib/js/sweetalert2@11.js"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -414,12 +423,8 @@ function getCartQuantity($kod_makanan)
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
-                <span class="text-black">
-                    Kafe
-                </span>
-                <span class="text-black">
-                    lip
-                </span>
+                <span class="text-black">Kafe</span>
+                <span class="text-black">Lip</span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
                 <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -435,12 +440,10 @@ function getCartQuantity($kod_makanan)
                     <span>SEJARAH TEMPAHAN</span>
                 </a>
             </div>
-
             <div class="relative">
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
-
                 <div id="dropdownMenu"
                     class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
@@ -463,31 +466,27 @@ function getCartQuantity($kod_makanan)
         </div>
     </div>
 
-
+    <!-- Slider 3 slide gambar -->
     <div class="slidebro">
         <div class="top-slider">
             <div class="slides">
-
+                <!-- Gambar 1 -->
                 <div style="background-image: url('lib/image/welcome.jpg');" class="slide iklan">
                     <h2>SELAMAT KEMBALI, <br> <?= $_SESSION['nama'] ?> </h2>
                     <p>Sudah lapar ke?</p>
                 </div>
-
+                <!-- Gambar 2 -->
                 <div style="background-image: url('lib/image/banner2.jpg');" class="slide iklan">
-
                     <h2 id="tarikhSlide"></h2>
                     <p id="hariSlide"></p>
                     <p id="masaSlide"></p>
-
-
                 </div>
-
+                <!-- Gambar 3 -->
                 <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
                     <h2>BUKA KEDAI</h2>
                     <p>Pukul 8:00 AM - 10:00 PM</p>
                 </div>
             </div>
-
             <button class="slider-arrow left" aria-label="Previous slide">
                 <i class="fas fa-chevron-left"></i>
             </button>
@@ -497,6 +496,8 @@ function getCartQuantity($kod_makanan)
             <div class="slider-nav"></div>
         </div>
     </div>
+
+    <!-- Tajuk MENU dan garisan -->
     <div class="mx-auto px-10">
         <h2 class="text-4xl font-bold mb-6 relative inline-block text-center w-full text-[#111811]">
             Menu
@@ -504,6 +505,8 @@ function getCartQuantity($kod_makanan)
             </span>
         </h2>
     </div>
+
+    <!-- List menu tempahan -->
     <div class="bg-[#A1CCA5] overflow-auto	my-5 mx-[90px]  rounded-2xl p-6 shadow-lg items-center">
         <div class="menu-container">
             <?php
@@ -520,7 +523,7 @@ function getCartQuantity($kod_makanan)
             if (mysqli_num_rows($result) > 0) {
                 while ($m = mysqli_fetch_assoc($result)): ?>
                     <div class="menu-item">
-                        <?php $cartQty = getCartQuantity($m['kod_makanan']); ?>
+                        <?php $cartQty = semakKuantitiOrders($m['kod_makanan']); ?>
                         <div class="w-32 h-32 overflow-hidden rounded-lg mb-4">
                             <img src='menu-images/<?php echo htmlspecialchars($m['gambar']); ?>'
                                 alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>'
@@ -542,24 +545,26 @@ function getCartQuantity($kod_makanan)
                                 <?php if ($cartQty > 0): ?>
                                     <span
                                         class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-auto h-5 text-xs flex items-center justify-center px-1">
-                                        <?= $cartQty ?> 
+                                        <?= $cartQty ?>
                                     </span>
                                     <i class="fas fa-shopping-cart ml-1"></i>
                                 <?php endif; ?>
                             </button>
                         </div>
                     </div>
-                <?php endwhile;
+            <?php endwhile;
             } else {
+                # jika tiada menu makanan di dalama database
                 echo "<p style='color: red;'>TIADA MAKANAN TERSEDIA SEKARANG</p>";
             } ?>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
         <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div class="mb-4 lg:mb-0">
-                © 2023 KAFELIP. All rights reserved.
+                © 2025 KAFELIP. Semua hak terpelihara.
             </div>
             <div class="flex gap-6">
                 <a class="text-[#4A7C59]" href="#">
@@ -577,14 +582,17 @@ function getCartQuantity($kod_makanan)
             </div>
         </div>
     </footer>
+
+    <!-- Butang scroll ke atas -->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up">
         </i>
     </button>
 
     <script>
+        // script untuk butang scroll ke atas
         // Show or hide the scroll to top button
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -598,7 +606,9 @@ function getCartQuantity($kod_makanan)
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
-
+    </script>
+    <script>
+        // script untuk slider berfungsi
         document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelector('.slides');
             const sliderNav = document.querySelector('.slider-nav');
@@ -720,12 +730,13 @@ function getCartQuantity($kod_makanan)
             });
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="lib/js/three.min.js"></script>
     <script>
-        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-        const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
-        const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
-        const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+        // function toast dan popup
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
 
         const Toast = Swal.mixin({
@@ -740,7 +751,7 @@ function getCartQuantity($kod_makanan)
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -780,6 +791,7 @@ function getCartQuantity($kod_makanan)
         })
     </script>
     <script>
+        // script untuk tambah kuantiti tempahan ke dalam file session
         function updateQuantity(menuId, action) {
             const quantityElement = document.getElementById(`quantity-${menuId}`);
             let quantity = parseInt(quantityElement.textContent);
@@ -789,11 +801,11 @@ function getCartQuantity($kod_makanan)
             } else if (action === 'decrease' && quantity > 1) {
                 quantity--;
             }
-
-            quantityElement.textContent = quantity;
+            quantityElement.textContent = quantity;  // set nombor kuantiti baru ke text
         }
 
         function addToCartWithQuantity(menuId) {
+            // dapatkan nilai kuantiti di text quantiti-(kodmenu)
             const quantity = parseInt(document.getElementById(`quantity-${menuId}`).textContent);
 
             // Hantar permintaan ke add-cart.php menggunakan format URL yang betul
@@ -801,6 +813,7 @@ function getCartQuantity($kod_makanan)
         }
     </script>
     <script>
+        // function di header untuk untuk list selebihnya
         const menuButton = document.getElementById('menuButton');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -816,6 +829,7 @@ function getCartQuantity($kod_makanan)
         });
     </script>
     <script>
+        // script untuk masa
         function kemaskiniMasaTarikh() {
             const masa = new Date();
             const hari = String(masa.getDate()).padStart(2, '0');

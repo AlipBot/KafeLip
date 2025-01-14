@@ -1,21 +1,22 @@
 <?php
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
 include("function/autoKeluar.php");
-
 include('function/connection.php');
-
+//―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
+# memaparkan bilanggan senarai makanan
 if (isset($_SESSION['orders'])) {
     $bil = "<span style='color:red';'>[" . count($_SESSION['orders']) . "]</span>";
 } else {
     $bil = "";
 }
-
+# setkan tarikh semasa kepada harini jika tiada get tarikh_semasa
 if (isset($_GET['tarikh_semasa'])) {
     $tarikhsemasa = $_GET['tarikh_semasa'];
 } else {
     $tarikhsemasa = date("Y-m-d");
 }
 
-# Dapatkan Senarai tarikh
+# Query Dapatkan Senarai tarikh
 $sqltarikh = "SELECT DATE(tarikh) AS tarikh, count(*) as bilangan 
 FROM tempahan 
 WHERE email = '" . $_SESSION['email'] . "'
@@ -23,7 +24,7 @@ GROUP BY DATE(tarikh)
 ORDER BY DATE(tarikh) DESC";
 $laktarikh = mysqli_query($condb, $sqltarikh);
 
-# dapatkan semua senarai tempahan
+# Query dapatkan semua senarai tempahan
 $sql = "SELECT t.email, 
                t.tarikh,
                TIMESTAMPDIFF(SECOND, t.tarikh, NOW()) as seconds_passed,
@@ -36,22 +37,24 @@ $sql = "SELECT t.email,
         ORDER BY t.tarikh DESC";
 $laksql = mysqli_query($condb, $sql);
 
-
-
 ?>
 
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Tempahan Makanan Roti</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="lib/css/all.css">
+    <link rel="stylesheet" href="lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="lib/css/sharp-light.css">
+    <link rel="stylesheet" href="lib/css/duotone.css" />
+    <link rel="stylesheet" href="lib/css/brands.css" />
+    <link href="lib/css/css2.css" rel="stylesheet" />
+    <script src="lib/js/tailwind.js"></script>
+    <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
+    <script src="lib/js/sweetalert2@11.js"></script>
     <style>
         .custom-font {
             font-family: 'Roboto', sans-serif;
@@ -69,8 +72,6 @@ $laksql = mysqli_query($condb, $sql);
             .goMenu a span {
                 display: none;
             }
-
-
         }
 
         /* Custom scrollbar styles */
@@ -147,12 +148,8 @@ $laksql = mysqli_query($condb, $sql);
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
-                <span class="text-black">
-                    Kafe
-                </span>
-                <span class="text-black">
-                    lip
-                </span>
+                <span class="text-black">Kafe</span>
+                <span class="text-black">Lip</span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
                 <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -168,12 +165,10 @@ $laksql = mysqli_query($condb, $sql);
                     <span>SEJARAH TEMPAHAN</span>
                 </a>
             </div>
-
             <div class="relative">
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
-
                 <div id="dropdownMenu"
                     class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
@@ -196,6 +191,7 @@ $laksql = mysqli_query($condb, $sql);
         </div>
     </div>
 
+    <!-- Content -->
     <div class="content">
         <div class="container mx-auto text-center py-8 px-4">
             <h2 class="text-2xl font-bold mb-6 relative inline-block text-center w-full text-black">
@@ -239,7 +235,7 @@ $laksql = mysqli_query($condb, $sql);
                         <tbody>
                             <?php while ($m = mysqli_fetch_array($laksql)):
                                 $tarikh = date_create($m['tarikh']);
-                                ?>
+                            ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
                                     <td class="border-0 shadow-lg  px-4 py-2 	">
                                         <i class="fas fa-calendar-day"></i> Tarikh: <?php echo date_format($tarikh, "d/m/Y") ?>
@@ -311,10 +307,12 @@ $laksql = mysqli_query($condb, $sql);
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
     <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
         <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div class="mb-4 lg:mb-0">
-                © 2023 KAFELIP. All rights reserved.
+                © 2025 KAFELIP. Semua hak terpelihara.
             </div>
             <div class="flex gap-6">
                 <a class="text-[#4A7C59]" href="#">
@@ -332,15 +330,15 @@ $laksql = mysqli_query($condb, $sql);
             </div>
         </div>
     </footer>
+
+    <!-- Butang scroll ke atas -->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
-        <i class="fas fa-arrow-up">
-        </i>
+        <i class="fas fa-arrow-up"></i>
     </button>
 
     <script>
-        // Show or hide the scroll to top button
-
-        window.onscroll = function () {
+        // Tunjukkan dan sorokkan butang scroll up
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -354,7 +352,9 @@ $laksql = mysqli_query($condb, $sql);
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
-
+    </script>
+    <script>
+        // script auto ajdust footer biar ke bawah sekali
         function adjustFooter() {
             const content = document.querySelector('.content');
             const footer = document.querySelector('footer');
@@ -379,7 +379,7 @@ $laksql = mysqli_query($condb, $sql);
         window.onresize = adjustFooter;
 
         // Fungsi untuk mengira masa yang tinggal
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const countdowns = document.querySelectorAll('.countdown');
 
             countdowns.forEach(countdown => {
@@ -399,11 +399,13 @@ $laksql = mysqli_query($condb, $sql);
                 }, 1000);
             });
         });
-
-        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-        const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
-        const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
-        const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+    </script>
+    <script>
+        // function toast dan popup
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
 
         const Toast = Swal.mixin({
@@ -418,7 +420,7 @@ $laksql = mysqli_query($condb, $sql);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -459,7 +461,7 @@ $laksql = mysqli_query($condb, $sql);
 
 
         document.querySelectorAll('.batal-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
+            button.addEventListener('click', function(e) {
                 const tarikh = this.dataset.id;
                 e.preventDefault();
                 notifwarning.play();

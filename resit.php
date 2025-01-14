@@ -1,19 +1,22 @@
 <?php
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
 include("function/autoKeluar.php");
 include('function/connection.php');
-$jumlah_harga = 0;
+//―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
 
+$jumlah_harga = 0;
+#  memaparkan bilangan senarai tempahan
 if (isset($_SESSION['orders'])) {
     $bil = "<span style='color:red';'>[" . count($_SESSION['orders']) . "]</span>";
 } else {
     $bil = "";
 }
 
-# Dapatkan email dan tarikh daripada URL
+# Dapatkan email dan tarikh daripada URL dan session
 $email = $_SESSION['email'];
 $tarikh = $_GET['tarikh'];
 
-# Mendapatkan data tempahan berdasarkan email dan tarikh
+# Query Mendapatkan data tempahan berdasarkan email dan tarikh
 $sql_pilih = "SELECT tempahan.*, makanan.nama_makanan, makanan.harga
               FROM tempahan
               JOIN makanan ON tempahan.kod_makanan = makanan.kod_makanan
@@ -21,18 +24,23 @@ $sql_pilih = "SELECT tempahan.*, makanan.nama_makanan, makanan.harga
 
 $laksana = mysqli_query($condb, $sql_pilih);
 ?>
-<html lang="en">
+
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resit</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="lib/css/all.css">
+    <link rel="stylesheet" href="lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="lib/css/sharp-light.css">
+    <link rel="stylesheet" href="lib/css/duotone.css" />
+    <link rel="stylesheet" href="lib/css/brands.css" />
+    <link href="lib/css/css2.css" rel="stylesheet" />
+    <script src="lib/js/tailwind.js"></script>
+    <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
+    <script src="lib/js/sweetalert2@11.js"></script>
     <style>
         .custom-font {
             font-family: 'Roboto', sans-serif;
@@ -161,12 +169,8 @@ $laksana = mysqli_query($condb, $sql_pilih);
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
-                <span class="text-black">
-                    Kafe
-                </span>
-                <span class="text-black">
-                    lip
-                </span>
+                <span class="text-black">Kafe</span>
+                <span class="text-black">Lip</span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
                 <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -182,12 +186,10 @@ $laksana = mysqli_query($condb, $sql_pilih);
                     <span>SEJARAH TEMPAHAN</span>
                 </a>
             </div>
-
             <div class="relative">
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
-
                 <div id="dropdownMenu"
                     class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
@@ -210,6 +212,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
         </div>
     </div>
 
+    <!-- Content  Resit -->
     <div class="conten container mx-auto text-center py-8 px-4 print-area">
         <h2 class="text-2xl font-bold mb-4 text-black"><i class="fas fa-receipt text-[#4A7C59] mr-1"></i> Resit</h2>
         <div class="bg-white shadow-md rounded-lg p-6 max-w-[700px] mx-auto ">
@@ -303,10 +306,11 @@ $laksana = mysqli_query($condb, $sql_pilih);
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
         <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div class="mb-4 lg:mb-0">
-                © 2023 KAFELIP. All rights reserved.
+                © 2025 KAFELIP. Semua hak terpelihara.
             </div>
             <div class="flex gap-6">
                 <a class="text-[#4A7C59]" href="#">
@@ -321,13 +325,15 @@ $laksana = mysqli_query($condb, $sql_pilih);
             </div>
         </div>
     </footer>
+
+    <!-- Butang scroll ke atas -->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <script>
-        // Show or hide the scroll to top button
-        window.onscroll = function () {
+        // Tunjukkan dan sorokkan kata laluan
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -336,18 +342,18 @@ $laksana = mysqli_query($condb, $sql_pilih);
             }
         };
 
-        // Scroll to top function
+        // Scroll ke atas
         function scrollToTop() {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
-
-
-
-        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-        const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
-        const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
-        const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+    </script>
+    <script>
+        // function toast dan popup
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
 
         const Toast = Swal.mixin({
@@ -362,7 +368,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -400,8 +406,9 @@ $laksana = mysqli_query($condb, $sql_pilih);
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         })
-
-
+    </script>
+    <script>
+        // function kat header untuk tunjuk menu tambahan garis tiga di kanan
         const menuButton = document.getElementById('menuButton');
         const dropdownMenu = document.getElementById('dropdownMenu');
 

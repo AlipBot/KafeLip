@@ -1,16 +1,19 @@
 <?php
+//―――――――――――――――――――――――――――――――――― ┏  Setkan session ┓ ―――――――――――――――――――――――――――――――― \\
 $lifetime = 60 * 60 * 24 * 30;  // 30 days
 session_set_cookie_params($lifetime);
 session_start();
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include("function\connection.php"); # sambung ke dalam database
+//―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
+#  semak jika session tahap wujud redirect ke menu.php
 if (!empty($_SESSION['tahap'])) { ?>
     <script>
         window.location.href = 'menu.php';
     </script>
 <?php }
-
+# POST DaftarMasuk
 if (isset($_POST['DaftarMasuk'])) {
-
-    include("function\connection.php");
 
     $nama = $_POST["nama"];
     $notel = $_POST["notel"];
@@ -89,15 +92,20 @@ if (isset($_POST['DaftarMasuk'])) {
     <title>
         Daftar Akaun
     </title>
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="lib/css/all.css">
+    <link rel="stylesheet" href="lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="lib/css/sharp-light.css">
+    <link rel="stylesheet" href="lib/css/duotone.css" />
+    <link rel="stylesheet" href="lib/css/brands.css" />
+    <link href="lib/css/css2.css" rel="stylesheet" />
+    <script src="lib/js/tailwind.js"></script>
+    <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
+    <script src="lib/js/sweetalert2@11.js"></script>
 </head>
 
 <body class="bg-[#FAF3DD]  font-roboto">
+    <!-- Content -->
     <div class="min-h-screen flex items-center justify-center px-4">
         <div class="bg-[#A1CCA5] p-8 rounded-lg shadow-lg my-10 w-full max-w-md">
             <div class="flex justify-center mb-4">
@@ -170,6 +178,7 @@ if (isset($_POST['DaftarMasuk'])) {
             </p>
         </div>
     </div>
+
     <script>
         document.getElementById('togglePassword').addEventListener('click', function() {
             const passwordField = document.getElementById('password');
@@ -234,10 +243,11 @@ if (isset($_POST['DaftarMasuk'])) {
         });
     </script>
     <script>
-        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-        const notiferror = new Audio('lib/audio/error.mp3'); // Tukar path ke fail audio anda
-        const notifinfo = new Audio('lib/audio/info.mp3'); // Tukar path ke fail audio anda
-        const notifwarning = new Audio('lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+        // function toast dan popup
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
 
         const Toast = Swal.mixin({

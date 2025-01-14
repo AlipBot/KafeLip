@@ -1,36 +1,59 @@
 <?php
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
 include('function/autoKeluar.php');
 include('function/connection.php');
+//―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
 
+# memaparkan bilangan senarai tempahan
 if (isset($_SESSION['orders'])) {
     $bil = "<span style='color:red';'>[" . count($_SESSION['orders']) . "]</span>";
 } else {
     $bil = "";
 }
 
+#set email berdasakan di dalama data di session yang sudah disetkan di login
 $email = $_SESSION['email'];
+# query untuk dapatkan maklumat pelanggan
+
 $sql = "SELECT p.*, 
-       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_hari,
-       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_bulan,
-       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_tahun,
-       (SELECT SUM(jumlah_harga) FROM tempahan 
-        WHERE email = ? AND DATE(tarikh) = CURDATE()) as harga_hari,
-       (SELECT SUM(jumlah_harga) FROM tempahan 
-        WHERE email = ? AND MONTH(tarikh) = MONTH(CURDATE()) 
-        AND YEAR(tarikh) = YEAR(CURDATE())) as harga_bulan,
-       (SELECT SUM(jumlah_harga) FROM tempahan 
-        WHERE email = ? AND YEAR(tarikh) = YEAR(CURDATE())) as harga_tahun
-       FROM pelanggan p
-       LEFT JOIN tempahan t ON p.email = t.email
-       WHERE p.email = ?
-       GROUP BY p.email";
+       (SELECT COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) 
+        FROM tempahan t 
+        WHERE DATE(t.tarikh) = CURDATE() 
+        AND t.email = ?) AS tempahan_hari,
+       (SELECT COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) 
+        FROM tempahan t 
+        WHERE MONTH(t.tarikh) = MONTH(CURDATE()) 
+        AND YEAR(t.tarikh) = YEAR(CURDATE()) 
+        AND t.email = ?) AS tempahan_bulan,
+       (SELECT COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) 
+        FROM tempahan t 
+        WHERE YEAR(t.tarikh) = YEAR(CURDATE()) 
+        AND t.email = ?) AS tempahan_tahun,
+       (SELECT SUM(jumlah_harga) 
+        FROM tempahan t 
+        WHERE DATE(t.tarikh) = CURDATE() 
+        AND t.email = ?) AS harga_hari,
+       (SELECT SUM(jumlah_harga) 
+        FROM tempahan t 
+        WHERE MONTH(t.tarikh) = MONTH(CURDATE()) 
+        AND YEAR(t.tarikh) = YEAR(CURDATE()) 
+        AND t.email = ?) AS harga_bulan,
+       (SELECT SUM(jumlah_harga) 
+        FROM tempahan t 
+        WHERE YEAR(t.tarikh) = YEAR(CURDATE()) 
+        AND t.email = ?) AS harga_tahun
+FROM pelanggan p
+WHERE p.email = ?;
+";
 
 $stmt = mysqli_prepare($condb, $sql);
-mysqli_stmt_bind_param($stmt, "ssss", $email, $email, $email, $email);
+# Cara  execute sql lebih selamat dan mengelak injection SQL daripada digodam 
+mysqli_stmt_bind_param($stmt, "sssssss", $email, $email, $email, $email, $email, $email, $email,);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $user_data = mysqli_fetch_assoc($result);
 
+#query dapatkan list top 1 - 3 yang paling banyak dibeli oleh pelanggan
 $sql_top_menu = "SELECT m.kod_makanan, m.nama_makanan, m.gambar, SUM(t.kuantiti) as jumlah
                  FROM tempahan t 
                  JOIN makanan m ON t.kod_makanan = m.kod_makanan
@@ -49,16 +72,22 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
 }
 ?>
 
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    </link>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lib/css/all.css">
+    <link rel="stylesheet" href="lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="lib/css/sharp-light.css">
+    <link rel="stylesheet" href="lib/css/duotone.css" />
+    <link rel="stylesheet" href="lib/css/brands.css" />
+    <link href="lib/css/css2.css" rel="stylesheet" />
+    <script src="lib/js/tailwind.js"></script>
+    <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
+    <script src="lib/js/sweetalert2@11.js"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -159,12 +188,8 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
-                <span class="text-black">
-                    Kafe
-                </span>
-                <span class="text-black">
-                    lip
-                </span>
+                <span class="text-black">Kafe</span>
+                <span class="text-black">Lip</span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
                 <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -180,12 +205,10 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                     <span>SEJARAH TEMPAHAN</span>
                 </a>
             </div>
-
             <div class="relative">
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
-
                 <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                         <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -245,7 +268,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                         </div>
                     </div>
                     <div class="mt-8">
-                        <h3 class="text-xl font-semibold mb-4">Top 3 Menu Paling Kerap Beli</h3>
+                        <h3 class="text-xl font-semibold mb-4">Top 3 Menu Paling Banyak Dibeli</h3>
                         <div class="flex justify-center">
                             <?php foreach ($top_menus as $index => $menu): ?>
                                 <div class="menu-box">
@@ -268,7 +291,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
     <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
         <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div class="mb-4 lg:mb-0">
-                © 2023 KAFELIP. All rights reserved.
+                © 2025 KAFELIP. Semua hak terpelihara.
             </div>
             <div class="flex gap-6">
                 <a class="text-[#4A7C59]" href="#">
@@ -287,13 +310,13 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
         </div>
     </footer>
 
-    <!-- Scroll to top button -->
+    <!-- butang scroll keatas-->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <script>
-        // Show or hide the scroll to top button
+        // Scrip butang keatas
         window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -303,13 +326,14 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             }
         };
 
-        // Scroll to top function
+        // scroll ketas
         function scrollToTop() {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
-
-
+    </script>
+    <script>
+        // script butang garis tiga di header
         const menuButton = document.getElementById('menuButton');
         const dropdownMenu = document.getElementById('dropdownMenu');
 

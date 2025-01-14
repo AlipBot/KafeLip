@@ -33,7 +33,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 ?>
     <!-- Kod HTML & CSS + TAILWIND & JAVASCRIPT  -->
 
-    <html>
+    <html lang="ms">
 
     <head>
         <title>CART</title>
@@ -345,10 +345,10 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 </div>
             </div>
         </footer>
+
         <!-- Butang scroll keatas -->
         <button id="scrollToTopBtn" onclick="scrollToTop()">
-            <i class="fas fa-arrow-up">
-            </i>
+            <i class="fas fa-arrow-up"></i>
         </button>
 
         <script>
