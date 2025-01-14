@@ -15,20 +15,17 @@ include('../function/connection.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel KafeLip</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/duotone.css" />
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/brands.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../lib/css/all.css">
+    <link rel="stylesheet" href="../lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="../lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="../lib/css/sharp-light.css">
+    <link rel="stylesheet" href="../lib/css/duotone.css" />
+    <link rel="stylesheet" href="../lib/css/brands.css" />
+    <link href="../lib/css/css2.css" rel="stylesheet" />
+    <script src="../lib/js/tailwind.js"></script>
+    <link rel="stylesheet" href="../lib/css/sweetalert2.min.css">
+    <script src="../lib/js/sweetalert2@11.js"></script>
+    <script src="../lib/js/chart.js"></script>
     <style>
         .drawer-open {
             transform: translateX(0);

@@ -24,8 +24,16 @@ mysqli_data_seek($laksana, 0);
 
 <head>
     <title>Semak Resit</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="../lib/css/all.css">
+    <link rel="stylesheet" href="../lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="../lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="../lib/css/sharp-light.css">
+    <link rel="stylesheet" href="../lib/css/duotone.css" />
+    <link rel="stylesheet" href="../lib/css/brands.css" />
+    <link href="../lib/css/css2.css" rel="stylesheet" />
+    <script src="../lib/js/tailwind.js"></script>
+    <link rel="stylesheet" href="../lib/css/sweetalert2.min.css">
+    <script src="../lib/js/sweetalert2@11.js"></script>
 </head>
 
 <body class="bg-[#FAF3DD] p-4">

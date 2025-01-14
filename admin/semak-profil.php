@@ -8,23 +8,38 @@ if (!isset($_GET['email'])) {
 
 $email = $_GET['email'];
 $sql = "SELECT p.*, 
-       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_hari,
-       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_bulan,
-       COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) as tempahan_tahun,
-       (SELECT SUM(jumlah_harga) FROM tempahan 
-        WHERE email = ? AND DATE(tarikh) = CURDATE()) as harga_hari,
-       (SELECT SUM(jumlah_harga) FROM tempahan 
-        WHERE email = ? AND MONTH(tarikh) = MONTH(CURDATE()) 
-        AND YEAR(tarikh) = YEAR(CURDATE())) as harga_bulan,
-       (SELECT SUM(jumlah_harga) FROM tempahan 
-        WHERE email = ? AND YEAR(tarikh) = YEAR(CURDATE())) as harga_tahun
-       FROM pelanggan p
-       LEFT JOIN tempahan t ON p.email = t.email
-       WHERE p.email = ?
-       GROUP BY p.email";
+       (SELECT COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) 
+        FROM tempahan t 
+        WHERE DATE(t.tarikh) = CURDATE() 
+        AND t.email = ?) AS tempahan_hari,
+       (SELECT COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) 
+        FROM tempahan t 
+        WHERE MONTH(t.tarikh) = MONTH(CURDATE()) 
+        AND YEAR(t.tarikh) = YEAR(CURDATE()) 
+        AND t.email = ?) AS tempahan_bulan,
+       (SELECT COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) 
+        FROM tempahan t 
+        WHERE YEAR(t.tarikh) = YEAR(CURDATE()) 
+        AND t.email = ?) AS tempahan_tahun,
+       (SELECT SUM(jumlah_harga) 
+        FROM tempahan t 
+        WHERE DATE(t.tarikh) = CURDATE() 
+        AND t.email = ?) AS harga_hari,
+       (SELECT SUM(jumlah_harga) 
+        FROM tempahan t 
+        WHERE MONTH(t.tarikh) = MONTH(CURDATE()) 
+        AND YEAR(t.tarikh) = YEAR(CURDATE()) 
+        AND t.email = ?) AS harga_bulan,
+       (SELECT SUM(jumlah_harga) 
+        FROM tempahan t 
+        WHERE YEAR(t.tarikh) = YEAR(CURDATE()) 
+        AND t.email = ?) AS harga_tahun
+FROM pelanggan p
+WHERE p.email = ?;
+";
 
 $stmt = mysqli_prepare($condb, $sql);
-mysqli_stmt_bind_param($stmt, "ssss", $email, $email, $email, $email);
+mysqli_stmt_bind_param($stmt, "sssssss", $email, $email, $email, $email, $email, $email, $email,);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $user_data = mysqli_fetch_assoc($result);
@@ -48,17 +63,26 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
 ?>
 
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Pengguna</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../lib/css/all.css">
+    <link rel="stylesheet" href="../lib/css/sharp-solid.css">
+    <link rel="stylesheet" href="../lib/css/sharp-regular.css">
+    <link rel="stylesheet" href="../lib/css/sharp-light.css">
+    <link rel="stylesheet" href="../lib/css/duotone.css" />
+    <link rel="stylesheet" href="../lib/css/brands.css" />
+    <link href="../lib/css/css2.css" rel="stylesheet" />
+    <script src="../lib/js/tailwind.js"></script>
+    <link rel="stylesheet" href="../lib/css/sweetalert2.min.css">
+    <script src="../lib/js/sweetalert2@11.js"></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
         }
+
         .stat-box {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -66,6 +90,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             padding: 1rem;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
+
         .menu-box {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -78,6 +103,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
         }
     </style>
 </head>
+
 <body class="bg-[#FAF3DD] min-h-screen">
     <div class="container mx-auto py-8">
         <div class="w-full max-w-4xl mx-auto">
@@ -127,9 +153,9 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                             <?php foreach ($top_menus as $index => $menu): ?>
                                 <div class="menu-box">
                                     <h4 class="text-lg font-semibold mb-2">Top <?= $index + 1 ?></h4>
-                                    <img src="../menu-images/<?= htmlspecialchars($menu['gambar']) ?>" 
-                                         alt="<?= htmlspecialchars($menu['nama_makanan']) ?>" 
-                                         class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
+                                    <img src="../menu-images/<?= htmlspecialchars($menu['gambar']) ?>"
+                                        alt="<?= htmlspecialchars($menu['nama_makanan']) ?>"
+                                        class="w-24 h-24 rounded-full mx-auto mb-2 object-cover">
                                     <p class="text-lg font-bold"><?= htmlspecialchars($menu['nama_makanan']) ?></p>
                                     <p class="text-md">Jumlah Dibeli: <?= $menu['jumlah'] ?></p>
                                 </div>
@@ -144,4 +170,5 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
         </div>
     </div>
 </body>
-</html> 
+
+</html>
