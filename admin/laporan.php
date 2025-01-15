@@ -1,21 +1,23 @@
 <?php
-include('../function/autoKeluarAdmin.php');
-include('../function/connection.php');
-
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
+include('../function/connection.php');  # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
+# setkan tarikh harini jika tiada data get parameter 
 if (isset($_GET['tarikh_semasa'])) {
     $tarikhsemasa = $_GET['tarikh_semasa'];
 } else {
     $tarikhsemasa = date("Y-m-d");
 }
 
-# Dapatkan Senarai tarikh
+# Query Dapatkan Senarai tarikh yang ada pelanggan buat tempahan
 $sqltarikh = "SELECT DATE(tarikh) AS tarikh, count(*) as bilangan
-FROM tempahan
-GROUP BY DATE(tarikh)
-ORDER BY DATE(tarikh) DESC";
+              FROM tempahan
+              GROUP BY DATE(tarikh)
+              ORDER BY DATE(tarikh) DESC";
 $laktarikh = mysqli_query($condb, $sqltarikh);
 
-# dapatkan semua senarai tempahan
+# Query dapatkan semua senarai tempahan
 $sql = "SELECT t.email, 
                t.tarikh,
                SUM(t.jumlah_harga) AS jumlah_harga_semua
@@ -26,12 +28,9 @@ $sql = "SELECT t.email,
         ORDER BY t.tarikh DESC";
 $laksql = mysqli_query($condb, $sql);
 
-
 ?>
 
-
-
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
@@ -119,6 +118,7 @@ $laksql = mysqli_query($condb, $sql);
             <div class="w-12"></div>
         </header>
 
+        <!-- Content -->
         <div class="flex flex-1 pt-16">
             <!-- Sidebar -->
             <div id="drawer"
@@ -177,6 +177,9 @@ $laksql = mysqli_query($condb, $sql);
                         <br>
                         <span class="font-bold text-lg">Masa: </span>
                         <span id="currentTime" class="font-bold text-lg"></span>
+                        <br>
+                        <span class="font-bold text-lg">Hari: </span>
+                        <span id="currentDay" class="font-bold text-lg"></span>
                         <form action="laporan.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                             <select name='tarikh_semasa'>
                                 <option value='<?= $tarikhsemasa ?>' class="border rounded p-2 w-2/5">
@@ -196,29 +199,27 @@ $laksql = mysqli_query($condb, $sql);
                                 <i class="fas fa-redo mr-1"></i> Reset
                             </button>
                         </form>
-
                         <div class="flex space-x-2">
                             <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">Laporan pada
                                 Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>
                             <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">
                                 Hari : <?php
-                                    $tarikh = date_create($tarikhsemasa);
-                                    $hari = date_format($tarikh, "l");
-                                    $hari_melayu = [
-                                        'Sunday' => 'Ahad',
-                                        'Monday' => 'Isnin', 
-                                        'Tuesday' => 'Selasa',
-                                        'Wednesday' => 'Rabu',
-                                        'Thursday' => 'Khamis',
-                                        'Friday' => 'Jumaat',
-                                        'Saturday' => 'Sabtu'
-                                    ];
-                                    echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
-                                ?>
+                                        $tarikh = date_create($tarikhsemasa);
+                                        $hari = date_format($tarikh, "l");
+                                        $hari_melayu = [
+                                            'Sunday' => 'Ahad',
+                                            'Monday' => 'Isnin',
+                                            'Tuesday' => 'Selasa',
+                                            'Wednesday' => 'Rabu',
+                                            'Thursday' => 'Khamis',
+                                            'Friday' => 'Jumaat',
+                                            'Saturday' => 'Sabtu'
+                                        ];
+                                        echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
+                                        ?>
                             </span>
                         </div>
-
-
+                        <!-- Jadual laporan tempahan -->
                         <div class="table-container">
                             <table class="w-full table-auto rounded-lg overflow-hidden">
                                 <thead>
@@ -286,14 +287,15 @@ $laksql = mysqli_query($condb, $sql);
         </div>
         <!-- Footer -->
         <footer class="bg-[#588157] text-white p-4 text-center bottom-0 w-full">
-            &copy; 2024 Kedai KafeLip. All rights reserved.
+            &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
-
     </div>
+    <!-- Butang scroll keatas -->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up">
         </i>
     </button>
+
     <script>
         // Show or hide the scroll to top button
         window.onscroll = function() {
@@ -312,10 +314,12 @@ $laksql = mysqli_query($condb, $sql);
         }
     </script>
     <script>
+        //  script drawer
         const drawerToggle = document.getElementById('drawerToggle');
         const drawer = document.getElementById('drawer');
         const mainContent = document.getElementById('mainContent');
         const currentDate = document.getElementById('currentDate');
+        const currentDay = document.getElementById('currentDay');
         const currentTime = document.getElementById('currentTime');
 
         drawerToggle.addEventListener('click', () => {
@@ -325,6 +329,7 @@ $laksql = mysqli_query($condb, $sql);
             mainContent.classList.toggle('content-collapsed');
         });
 
+        // function memamparkan masa
         function updateDateTime() {
             const now = new Date();
 
@@ -336,13 +341,15 @@ $laksql = mysqli_query($condb, $sql);
             // Format to day/month/year
             currentDate.textContent = `${day}/${month}/${year}`;
             currentTime.textContent = now.toLocaleTimeString();
+            currentDay.textContent = now.toLocaleDateString('ms-MY', {
+                weekday: 'long'
+            });
         }
-
-
         // Update date and time every second
         setInterval(updateDateTime, 1000);
         updateDateTime(); // Initial call to set the date and time immediately
 
+        // function semak reset
         function bukaResit(email, tarikh) {
             // Buka window baru dengan saiz yang ditetapkan
             let popupWindow = window.open(`semak-resit.php?email=${email}&tarikh=${tarikh}`, 'Resit',

@@ -1,12 +1,16 @@
 <?php
-include('../function/connection.php');
-include('../function/autoKeluarAdmin.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
+include('../function/connection.php');  # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
+// jika kawalan get email tidak wujud
 if (!isset($_GET['email'])) {
     die("Email tidak diterima");
 }
 
 $email = $_GET['email'];
+#  Query dapatkan data pelanggan daripada email
 $sql = "SELECT p.*, 
        (SELECT COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) 
         FROM tempahan t 
@@ -62,7 +66,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
 }
 ?>
 
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">

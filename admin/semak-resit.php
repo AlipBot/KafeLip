@@ -1,13 +1,15 @@
 <?php
-include('../function/autoKeluarAdmin.php');
-include('../function/connection.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
+include('../function/connection.php');  # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 $jumlah_harga = 0;
 
 # Dapatkan email dan tarikh daripada URL
 $email = $_GET['email'];
 $tarikh = $_GET['tarikh'];
 
-# Mendapatkan data tempahan
+# Query Mendapatkan data tempahan
 $sql_pilih = "SELECT t.*, m.nama_makanan, m.harga, p.nama, p.notel 
               FROM tempahan t
               JOIN makanan m ON t.kod_makanan = m.kod_makanan

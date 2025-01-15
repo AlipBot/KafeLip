@@ -1,17 +1,16 @@
 <?php
-include('../function/autoKeluarAdmin.php');
-include('../function/connection.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
+include('../function/connection.php');  # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
-$tambahan = "";
+# umpukan nilai pemboleh ubah
+$tambahan = ""; # Query untuk pencarian makanan
 $searchTerm = "";
+$rekodSehalaman = 10; # Tetapkan bilangan rekod per halaman
 
-# Handle GET request for displaying filtered results
-if (!empty($_GET['nama_menu'])) {
-    $searchTerm = $_GET['nama_menu'];
-    $tambahan = " WHERE makanan.nama_makanan LIKE ?";
-}
 
-# Handle sorting
+# filter data atau sorting mengikut menaik atau menurun
 $sort_order = isset($_GET['sort']) ? $_GET['sort'] : '';
 if ($sort_order == 'asc') {
     $order_by = " ORDER BY kod_makanan ASC";
@@ -21,24 +20,20 @@ if ($sort_order == 'asc') {
     $order_by = " ORDER BY makanan.nama_makanan";
 }
 
-# Tetapkan bilangan rekod per halaman
-$rekodSehalaman = 10;
-
 # Dapatkan halaman semasa
 $halaman = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
 
-# Kira offset untuk query
+# Kira offset untuk query (formula kira untuk data pertama di halaman data ke berapa perlu bermula)
 $offset = ($halaman - 1) * $rekodSehalaman;
 
-# Ubahsuai query untuk pagination
+# query memapaparkan semua list menu
 $sql = "SELECT * FROM makanan";
 
-# Logik untuk carian nama makanan
+# Semak pangilang get nama_makanan untuk fungsi pencarian menu
 if (isset($_GET['nama_makanan']) && !empty($_GET['nama_makanan'])) {
     $nama_makanan = $_GET['nama_makanan'];
-    $sql .= " WHERE nama_makanan LIKE '%$nama_makanan%'";
+    $sql .= " WHERE nama_makanan LIKE '%$nama_makanan%'"; # tambah di query sql papar semua makanan
 }
-
 
 # Tambah order by jika ada
 if (isset($_GET['sort']) && $_GET['sort'] == 'desc') {
@@ -46,34 +41,24 @@ if (isset($_GET['sort']) && $_GET['sort'] == 'desc') {
 } elseif (isset($_GET['sort']) && $_GET['sort'] == 'asc') {
     $sql .= " ORDER BY kod_makanan ASC";
 } else {
-    $sql .= " ORDER BY nama_makanan";
+    $sql .= " ORDER BY nama_makanan"; #jika tiada pangilan get makanan set campur
 }
 
 # Query untuk kira jumlah rekod
-$sql_total = $sql;
+$sql_total = $sql; #gambung semua sql keapda sql_total
 $result_total = mysqli_query($condb, $sql_total);
 $jumlahRekod = mysqli_num_rows($result_total);
 
-# Kira jumlah halaman
+# Kira jumlah halaman 
 $jumlahHalaman = ceil($jumlahRekod / $rekodSehalaman);
 
-# Tambah LIMIT dan OFFSET pada query utama
+# Tambah LIMIT dan OFFSET pada query utama 
+# limit untuk berapa data je keluar dalam satu halaman dan  offset untuk data ke berapa yang perlu dimula di halaman tersebut
 $sql .= " LIMIT $rekodSehalaman OFFSET $offset";
 $laksana = mysqli_query($condb, $sql);
 
-# Debug: Cetak query untuk semakan
-# echo $sql;
-
-if (!empty($searchTerm)) {
-    $searchTerm = "%" . $searchTerm . "%";
-    mysqli_stmt_bind_param($stmt, "s", $searchTerm);
-}
-
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-
-
-
+//――――――――――――――――――――――――――――――――――――――― ┏  KAWALAN POST  ┓ ――――――――――――――――――――――――――――――――――――――― \\
+#jika post daftarmenu wujud atau button daftar menu ditekan
 if (isset($_POST['DaftarMenu'])) {
 
     # Mengambil data daripada borang (form)
@@ -84,11 +69,12 @@ if (isset($_POST['DaftarMenu'])) {
     # Mengambil data gambar
     $file_extension = pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
     # Buang jarak dan tukar kepada huruf kecil
+    #buat nama file gamabr berdasarkan nama makanan
     $nama_fail_baru = strtolower(str_replace(' ', '', $nama_makanan)) . '.' . $file_extension;
     $lokasi = $_FILES['gambar']['tmp_name'];
 
     # Data validation : had atas
-    if (!is_numeric($harga) and $harga > 0) {
+    if (!is_numeric($harga) || $harga < 0) {
         $_SESSION['error'] = "Ralat: Sila masukkan harga yang sah";
         header("Location: list-menu.php");
         exit();
@@ -123,12 +109,14 @@ if (isset($_POST['DaftarMenu'])) {
 
     # Pengujian proses menyimpan data 
     if ($laksana) {
-        // Move the uploaded file
+        // Copy files gambar ke folder menu-images
         if (!copy($lokasi, "../menu-images/" . $nama_fail_baru)) {
+            #jika gagal
             $_SESSION['error'] = "Gagal memuat naik gambar";
             header("Location: ../admin/list-menu.php");
             exit();
         }
+
         $_SESSION['success'] = "Pendaftaran Berjaya";
         header("Location: list-menu.php");
         exit();
@@ -140,7 +128,7 @@ if (isset($_POST['DaftarMenu'])) {
 }
 
 
-
+# semak post upload jika butang upload menu form
 if (isset($_POST['upload'])) {
 
     # mengambil nama sementara fail
@@ -206,25 +194,25 @@ if (isset($_POST['upload'])) {
 }
 
 ?>
-
-<html lang="en">
+<html lang="ms">
 
 </html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel KafeLip</title>
+    <title>Senarai Makanan</title>
     <link rel="stylesheet" href="../lib/css/all.css">
     <link rel="stylesheet" href="../lib/css/sharp-solid.css">
     <link rel="stylesheet" href="../lib/css/sharp-regular.css">
     <link rel="stylesheet" href="../lib/css/sharp-light.css">
-    <link rel="stylesheet" href="../lib/css/duotone.css" />
-    <link rel="stylesheet" href="../lib/css/brands.css" />
-    <link href="../lib/css/css2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../lib/css/duotone.css"/>
+    <link rel="stylesheet" href="../lib/css/brands.css"/>
+    <link rel="stylesheet" href="../lib/css/css2.css"/>
     <script src="../lib/js/tailwind.js"></script>
     <link rel="stylesheet" href="../lib/css/sweetalert2.min.css">
     <script src="../lib/js/sweetalert2@11.js"></script>
+    <link rel="stylesheet" href="../lib/css/cropper.min.css">
     <style>
         .drawer-open {
             transform: translateX(0);
@@ -240,28 +228,6 @@ if (isset($_POST['upload'])) {
 
         .content-collapsed {
             margin-left: 16rem;
-        }
-
-        .notif {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .notif-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
         }
 
         .DaftarMenu,
@@ -420,7 +386,6 @@ if (isset($_POST['upload'])) {
 
 <body class="font-roboto bg-gray-100">
 
-
     <div class="flex h-screen flex-col">
         <!-- Header -->
         <header class="bg-[#588157] text-white p-4 flex justify-between items-center fixed w-full z-10">
@@ -484,11 +449,6 @@ if (isset($_POST['upload'])) {
                         <span>Senarai Makanan</span>
                     </div>
                     <div class="text-center text-gray-600 mb-4">
-                        <span class="font-bold text-lg">Tarikh: </span>
-                        <span id="currentDate" class="font-bold text-lg"></span>
-                        <br>
-                        <span class="font-bold text-lg">Masa: </span>
-                        <span id="currentTime" class="font-bold text-lg"></span>
                         <div class="flex items-center justify-between space-x-5">
                             <form action="list-menu.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama_makanan" placeholder="Carian Menu"
@@ -649,7 +609,7 @@ if (isset($_POST['upload'])) {
 
         <!-- Footer -->
         <footer class="bg-[#588157] text-white p-4 text-center w-full">
-            &copy; 2024 Kedai KafeLip. All rights reserved.
+        &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 
@@ -772,12 +732,28 @@ if (isset($_POST['upload'])) {
         </div>
     </div>
 
+    <!-- Popup crop image  -->
+    <div id="cropModal" class="crop-modal">
+    <div class="crop-container">
+        <img id="cropImage" class="crop-preview">
+        <div class="crop-buttons">
+            <button type="button" id="cropDone" class="bg-[#588157] text-white p-2 rounded mr-2">
+                <i class="fas fa-check mr-1"></i> Selesai
+            </button>
+            <button type="button" id="cropCancel" class="bg-red-500 text-white p-2 rounded">
+                <i class="fas fa-times mr-1"></i> Batal
+            </button>
+        </div>
+    </div>
+</div>
 
-
+   <!-- Butang scroll ke atas -->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
-        <i class="fas fa-arrow-up">
-        </i>
+        <i class="fas fa-arrow-up"></i>
     </button>
+
+    <!-- script Cropper.js  -->
+    <script src="../lib/js/cropper.min.js"></script>
     <script>
         // Show or hide the scroll to top button
         window.onscroll = function() {
@@ -796,6 +772,7 @@ if (isset($_POST['upload'])) {
         }
     </script>
     <script>
+        // script drawer
         const drawerToggle = document.getElementById('drawerToggle');
         const drawer = document.getElementById('drawer');
         const mainContent = document.getElementById('mainContent');
@@ -835,27 +812,6 @@ if (isset($_POST['upload'])) {
             reader.readAsDataURL(input.files[0]); // Baca fail sebagai URL
         }
 
-
-
-        function updateDateTime() {
-            const now = new Date();
-
-            // Extract day, month, year
-            const day = String(now.getDate()).padStart(2, '0'); // Add leading zero if needed
-            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-            const year = now.getFullYear();
-
-            // Format to day/month/year
-            currentDate.textContent = `${day}/${month}/${year}`;
-            currentTime.textContent = now.toLocaleTimeString();
-        }
-
-
-        // Update date and time every second
-        setInterval(updateDateTime, 1000);
-        updateDateTime(); // Initial call to set the date and time immediately
-
-
         // menu functionality
         const menu = document.getElementById("uploadmenu");
         const Daftarmenu = document.getElementById("DaftarMenu");
@@ -870,11 +826,9 @@ if (isset($_POST['upload'])) {
                     document.getElementById('id_menu').value = kod_menu;
                     document.getElementById('nama_makanan').value = data.nama_makanan;
                     document.getElementById('harga_makanan').value = data.harga;
-
                     // Set original values
                     document.getElementById('original_nama_makanan').value = data.nama_makanan;
                     document.getElementById('original_harga_makanan').value = data.harga;
-
                     Kemaskinimenu.style.display = "block";
                     checkUpdateFormCompletion(); // Check initial state
                 });
@@ -906,11 +860,10 @@ if (isset($_POST['upload'])) {
 
         }
 
-        const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-        const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
-        const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
-        const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
-
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
         document.addEventListener('DOMContentLoaded', function() {
             // Untuk popup success
@@ -940,8 +893,6 @@ if (isset($_POST['upload'])) {
                 });
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
-
-
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
@@ -1197,24 +1148,6 @@ if (isset($_POST['upload'])) {
             }
         });
     </script>
-
-    <!-- Tambah modal crop sebelum tutup body -->
-    <div id="cropModal" class="crop-modal">
-        <div class="crop-container">
-            <img id="cropImage" class="crop-preview">
-            <div class="crop-buttons">
-                <button type="button" id="cropDone" class="bg-[#588157] text-white p-2 rounded mr-2">
-                    <i class="fas fa-check mr-1"></i> Selesai
-                </button>
-                <button type="button" id="cropCancel" class="bg-red-500 text-white p-2 rounded">
-                    <i class="fas fa-times mr-1"></i> Batal
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tambah script Cropper.js sebelum script sedia ada -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
     <script>
         let cropper = null;

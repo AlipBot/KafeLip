@@ -1,6 +1,7 @@
 <?php
-include('../function/autoKeluarAdmin.php');
-include('../function/connection.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
+include('../function/connection.php');  # Sambung Ke database
 ?>
 
 <html lang="ms">
@@ -272,7 +273,7 @@ include('../function/connection.php');
 
         <!-- Footer -->
         <footer class="bg-[#588157] text-white p-4 text-center bottom-0 w-full">
-            &copy; 2024 Kedai KafeLip. All rights reserved.
+            &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 
@@ -298,8 +299,8 @@ include('../function/connection.php');
             document.documentElement.scrollTop = 0;
         }
     </script>
-
     <script>
+        // drawer script
         const drawerToggle = document.getElementById('drawerToggle');
         const drawer = document.getElementById('drawer');
         const mainContent = document.getElementById('mainContent');
@@ -338,6 +339,7 @@ include('../function/connection.php');
             }
         });
 
+        // function dapatkan masa yang lalu
         function timeSince(date) {
             const seconds = Math.floor((new Date() - new Date(date)) / 1000);
             let minutes = Math.floor(seconds / 60);
@@ -352,7 +354,8 @@ include('../function/connection.php');
             }
             return `${days} hari yang lalu`;
         }
-
+       
+        // gunakan fecth data tempahan daripada api untuk mendapatkan data secara realtime
         function updateRealtimeData() {
             fetch('../api/get-laporan.php')
                 .then(response => response.json())
@@ -398,7 +401,8 @@ include('../function/connection.php');
                     document.querySelector('.laporan-pelanggan tbody').innerHTML = `<tr><td colspan="4" class="text-center text-xl text-red-500 py-4 no-data">TIADA PELANGGAN SEKARANG</td></tr>`;
                 });
         }
-
+        
+        // function memamparkan masa , tarikh dan hari
         function updateDateTime() {
             const now = new Date();
 
@@ -430,13 +434,10 @@ include('../function/connection.php');
             audio.play();
         }
 
-
-
-        const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-        const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
-        const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
-        const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
-
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success 
+        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
         const Toast = Swal.mixin({
             toast: true,
@@ -491,7 +492,7 @@ include('../function/connection.php');
 
         let lastOrderCount = null;
         let isFirstLoad = true;
-
+        // function keluarkan bunyi dan toast jika ada perubahan di jadual tempahan
         function checkOrderChanges() {
             fetch('../api/get-laporan.php')
                 .then(response => response.json())

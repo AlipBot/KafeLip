@@ -1,20 +1,15 @@
-<html lang="en">
-
-</html>
 <?php
-include('../function/autoKeluarAdmin.php');
-include('../function/connection.php');
-
-
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
+include('../function/connection.php');  # Sambung Ke database
 ?>
-
-
-
+<html lang="ms">
+</html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel KafeLip</title>
+    <title>Statistik</title>
     <link rel="stylesheet" href="../lib/css/all.css">
     <link rel="stylesheet" href="../lib/css/sharp-solid.css">
     <link rel="stylesheet" href="../lib/css/sharp-regular.css">
@@ -150,7 +145,7 @@ include('../function/connection.php');
             <div id="mainContent" class="flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="senarai-menu bg-white p-6 rounded-lg shadow relative">
                     <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
-                        <span>Statistik</span>
+                        <span>Statistik Langsung</span>
                     </div>
 
                     <!-- Tambah form pemilihan bulan -->
@@ -221,7 +216,7 @@ include('../function/connection.php');
 
         <!-- Footer -->
         <footer class="bg-[#588157] text-white p-4 text-center w-full">
-            &copy; 2024 Kedai KafeLip. All rights reserved.
+        &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 

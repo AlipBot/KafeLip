@@ -1,13 +1,10 @@
 <?php
-include('../function/autoKeluarAdmin.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
+include('../function/connection.php');  # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
-
-#memanggil fail 
-include('../function/connection.php');
-
-
-// Tetapkan bilangan rekod per halaman
-$rekodSehalaman = 10;
+$rekodSehalaman = 10; # Tetapkan bilangan rekod per halaman
 
 // Dapatkan halaman semasa
 $halaman = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
@@ -46,9 +43,9 @@ $jumlahHalaman = ceil($jumlahRekod / $rekodSehalaman);
 $sql .= " LIMIT $rekodSehalaman OFFSET $offset";
 $laksana = mysqli_query($condb, $sql);
 
+//――――――――――――――――――――――――――――――――――――――― ┏  KAWALAN POST ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
-
-
+# POST data upload pekerja form
 if (isset($_POST['upload'])) {
     $namafailsementara = $_FILES["data_pengguna"]["tmp_name"];
     $namafail = $_FILES['data_pengguna']['name'];
@@ -66,8 +63,12 @@ if (isset($_POST['upload'])) {
             $pilih = mysqli_query($condb, "select* from pelanggan where notel = '" . $notel . "'");
             $pilih2 = mysqli_query($condb, "select* from pelanggan where email = '" . $email . "'");
 
-            if (mysqli_num_rows($pilih) == 1 || mysqli_num_rows($pilih2) == 1) {
+            if (mysqli_num_rows($pilih) == 1 ) {
                 $_SESSION['error'] = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
+                header("Location: list-user.php");
+                exit();
+            }elseif(mysqli_num_rows($pilih2) == 1){
+                $_SESSION['error'] = "email $email di fail txt telah ada di pangkalan data. TUKAR EMAIL DALAM FAIL TXT";
                 header("Location: list-user.php");
                 exit();
             } else {
@@ -80,6 +81,10 @@ if (isset($_POST['upload'])) {
 
         if (mysqli_num_rows($pilih) == 1) {
             $_SESSION['error'] = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
+            header("Location: list-user.php");
+            exit();
+        } elseif(mysqli_num_rows($pilih2) == 1){
+            $_SESSION['error'] = "email $email di fail txt telah ada di pangkalan data. TUKAR EMAIL DALAM FAIL TXT";
             header("Location: list-user.php");
             exit();
         } else {
@@ -97,7 +102,7 @@ if (isset($_POST['upload'])) {
 
 
 
-<html lang="en">
+<html lang="ms">
 
 <head>
     <meta charset="UTF-8">
@@ -254,15 +259,9 @@ if (isset($_POST['upload'])) {
             transition: background-color 0.3s ease, color 0.3s ease;
         }
     </style>
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="font-roboto bg-gray-100">
-
 
     <div class="flex h-screen flex-col">
         <!-- Header -->
@@ -327,13 +326,7 @@ if (isset($_POST['upload'])) {
                         <span>Senarai Pelanggan Dan Pekerja</span>
                     </div>
                     <div class="text-center text-gray-600 mb-4">
-                        <span class="font-bold text-lg">Tarikh: </span>
-                        <span id="currentDate" class="font-bold text-lg"></span>
-                        <br>
-                        <span class="font-bold text-lg">Masa: </span>
-                        <span id="currentTime" class="font-bold text-lg"></span>
                         <div class="flex items-center justify-between space-x-5">
-
                             <form action="list-user.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama" placeholder="Carian Nama pengguna"
                                     value="<?= $_GET['nama'] ?>" class="border rounded p-2 w-2/5">
@@ -479,11 +472,11 @@ if (isset($_POST['upload'])) {
 
         <!-- Footer -->
         <footer class="bg-[#588157] text-white p-4 text-center bottom-0 w-full">
-            &copy; 2024 Kedai KafeLip. All rights reserved.
+        &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 
-    <!-- pekerja -->
+    <!-- Borang pekerja -->
     <div id="uploadPekerja" class="pekerja">
         <div class="pekerja-content">
             <span class="close">&times;</span>
@@ -510,8 +503,8 @@ if (isset($_POST['upload'])) {
         </div>
     </div>
 
-    <!-- Popup Modal -->
-    <div id="editModal" class="KemaskiniPengguna">
+    <!--  Borang Kemakini Pengguna -->
+    <div id="kemaskiniPengguna" class="KemaskiniPengguna">
         <div class="kemaskiniPengguna-content">
             <span onclick="kemaskiniPengguna.style.display = 'none' " class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Kemaskini Pengguna</h2>
@@ -540,10 +533,13 @@ if (isset($_POST['upload'])) {
             </form>
         </div>
     </div>
+
+    <!-- Butang scroll ke atas -->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up">
         </i>
     </button>
+    
     <script>
         // Show or hide the scroll to top button
         window.onscroll = function() {
@@ -562,10 +558,9 @@ if (isset($_POST['upload'])) {
         }
     </script>
     <script>
-        const kemaskiniPengguna = document.getElementById("editModal");
+        const kemaskiniPengguna = document.getElementById("kemaskiniPengguna");
 
         function updateUser(notel) {
-
             fetch(`../api/get-user.php?notel=${notel}`)
                 .then(response => response.json())
                 .then(data => {
@@ -602,8 +597,7 @@ if (isset($_POST['upload'])) {
         const drawerToggle = document.getElementById('drawerToggle');
         const drawer = document.getElementById('drawer');
         const mainContent = document.getElementById('mainContent');
-        const currentDate = document.getElementById('currentDate');
-        const currentTime = document.getElementById('currentTime');
+
 
         drawerToggle.addEventListener('click', () => {
             drawer.classList.toggle('drawer-open');
@@ -612,23 +606,6 @@ if (isset($_POST['upload'])) {
             mainContent.classList.toggle('content-collapsed');
         });
 
-        function updateDateTime() {
-            const now = new Date();
-
-            // Extract day, month, year
-            const day = String(now.getDate()).padStart(2, '0'); // Add leading zero if needed
-            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-            const year = now.getFullYear();
-
-            // Format to day/month/year
-            currentDate.textContent = `${day}/${month}/${year}`;
-            currentTime.textContent = now.toLocaleTimeString();
-        }
-
-
-        // Update date and time every second
-        setInterval(updateDateTime, 1000);
-        updateDateTime(); // Initial call to set the date and time immediately
 
         // pekerja functionality
         const pekerja = document.getElementById("uploadPekerja");
@@ -651,10 +628,10 @@ if (isset($_POST['upload'])) {
             }
         }
 
-        const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Tukar path ke fail audio anda
-        const notiferror = new Audio('../lib/audio/error.mp3'); // Tukar path ke fail audio anda
-        const notifinfo = new Audio('../lib/audio/info.mp3'); // Tukar path ke fail audio anda
-        const notifwarning = new Audio('../lib/audio/warning.mp3'); // Tukar path ke fail audio anda
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
 
         document.addEventListener('DOMContentLoaded', function() {
