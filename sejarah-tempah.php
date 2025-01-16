@@ -296,8 +296,8 @@ $laksql = mysqli_query($condb, $sql);
                                 ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
                                     <td class="border-0 shadow-lg px-4 py-2">
-                                        <i class="fas fa-clock"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
-                                        <i class="fas fa-clock"></i> <span class="time-ago"
+                                        <i class="fas fa-clock text-[#4A7C59]"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
+                                        <i class="fas fa-clock text-[#4A7C59]"></i> <span class="time-ago"
                                             data-timestamp="<?= date_format($tarikh, 'Y-m-d H:i:s') ?>"></span>
                                     </td>
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center">RM
