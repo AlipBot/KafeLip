@@ -44,7 +44,11 @@ $laksql = mysqli_query($condb, $sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Tempahan Makanan Roti</title>
+    <title>Sejarah Tempahan</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="lib/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="lib/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="lib/icon/favicon-16x16.png">
+    <link rel="manifest" href="lib/icon/site.webmanifest">
     <link rel="stylesheet" href="lib/css/all.css">
     <link rel="stylesheet" href="lib/css/sharp-solid.css">
     <link rel="stylesheet" href="lib/css/sharp-regular.css">
@@ -201,12 +205,66 @@ $laksql = mysqli_query($condb, $sql);
                 class="py-5 flex items-center space-x-2 w-full justify-center">
                 <select name='tarikh_semasa' class="border rounded p-2 w-1/4">
                     <option value='<?= $tarikhsemasa ?>'>
-                        <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?>
+                        <?php
+                        $hstarikh = date_create($tarikhsemasa);
+                        $hhari = date_format($hstarikh, "l");
+                        switch ($hhari) {
+                            case 'Sunday':
+                                $hhari = "Ahad";
+                                break;
+                            case 'Monday':
+                                $hhari = "Isnin";
+                                break;
+                            case 'Tuesday':
+                                $hhari = "Selasa";
+                                break;
+                            case 'Wednesday':
+                                $hhari = "Rabu";
+                                break;
+                            case 'Thursday':
+                                $hhari = "Khamis";
+                                break;
+                            case 'Friday':
+                                $hhari = "Jumaat";
+                                break;
+                            case 'Saturday':
+                                $hhari = "Sabtu";
+                                break;
+                        }
+                        ?>
+                        <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> (<?= $hhari ?>)
                     </option>
                     <option disabled>Pilih Tarikh Lain Di bawah</option>
                     <?php while ($mm = mysqli_fetch_array($laktarikh)): ?>
                         <option value='<?= $mm['tarikh'] ?>'>
-                            <?= date_format(date_create($mm['tarikh']), "d/m/Y") ?>
+                            <?php
+                            $htarikh = date_create($mm['tarikh']);
+                            $hari = date_format($htarikh, "l");
+                            switch ($hari) {
+                                case 'Sunday':
+                                    $hari = "Ahad";
+                                    break;
+                                case 'Monday':
+                                    $hari = "Isnin";
+                                    break;
+                                case 'Tuesday':
+                                    $hari = "Selasa";
+                                    break;
+                                case 'Wednesday':
+                                    $hari = "Rabu";
+                                    break;
+                                case 'Thursday':
+                                    $hari = "Khamis";
+                                    break;
+                                case 'Friday':
+                                    $hari = "Jumaat";
+                                    break;
+                                case 'Saturday':
+                                    $hari = "Sabtu";
+                                    break;
+                            }
+                            ?>
+                            <?= date_format(date_create($mm['tarikh']), "d/m/Y") ?> ( <?= $hari ?> )
                         </option>
                     <?php endwhile; ?>
                 </select>
@@ -225,7 +283,7 @@ $laksql = mysqli_query($condb, $sql);
                         <thead>
                             <tr>
                                 <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tl-lg"><i
-                                        class="fas fa-calendar-alt"></i> Tarikh</th>
+                                        class="fas fa-calendar-alt"></i> Masa</th>
                                 <th class="px-4 py-2 bg-[#4A7C59] text-white"><i class="fas fa-money-bill-wave"></i> Jumlah
                                     Bayaran (RM)</th>
                                 <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tr-lg"><i class="fas fa-receipt"></i>
@@ -235,43 +293,16 @@ $laksql = mysqli_query($condb, $sql);
                         <tbody>
                             <?php while ($m = mysqli_fetch_array($laksql)):
                                 $tarikh = date_create($m['tarikh']);
-                            ?>
+                                ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
-                                    <td class="border-0 shadow-lg  px-4 py-2 	">
-                                        <i class="fas fa-calendar-day"></i> Tarikh: <?php echo date_format($tarikh, "d/m/Y") ?>
-                                        <br>
+                                    <td class="border-0 shadow-lg px-4 py-2">
                                         <i class="fas fa-clock"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
-                                        <?php
-                                        $hari = date_format($tarikh, "l");
-                                        $hariMelayu = "";
-                                        switch ($hari) {
-                                            case 'Sunday':
-                                                $hariMelayu = "Ahad";
-                                                break;
-                                            case 'Monday':
-                                                $hariMelayu = "Isnin";
-                                                break;
-                                            case 'Tuesday':
-                                                $hariMelayu = "Selasa";
-                                                break;
-                                            case 'Wednesday':
-                                                $hariMelayu = "Rabu";
-                                                break;
-                                            case 'Thursday':
-                                                $hariMelayu = "Khamis";
-                                                break;
-                                            case 'Friday':
-                                                $hariMelayu = "Jumaat";
-                                                break;
-                                            case 'Saturday':
-                                                $hariMelayu = "Sabtu";
-                                                break;
-                                        }
-                                        ?>
-                                        <i class="fas fa-calendar-week"></i> Hari: <?php echo $hariMelayu ?> <br>
+                                        <i class="fas fa-clock"></i> <span class="time-ago"
+                                            data-timestamp="<?= date_format($tarikh, 'Y-m-d H:i:s') ?>"></span>
                                     </td>
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center">RM
-                                        <?= number_format($m['jumlah_harga_semua'], 2) ?> </td>
+                                        <?= number_format($m['jumlah_harga_semua'], 2) ?>
+                                    </td>
                                     <td class="border-0 shadow-lg  px-4 py-2 text-center 	">
                                         <?php $masa = date_format($tarikh, "Y-m-d H:i:s"); ?>
                                         <div class="flex flex-col gap-2">
@@ -338,7 +369,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Tunjukkan dan sorokkan butang scroll up
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -379,7 +410,7 @@ $laksql = mysqli_query($condb, $sql);
         window.onresize = adjustFooter;
 
         // Fungsi untuk mengira masa yang tinggal
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const countdowns = document.querySelectorAll('.countdown');
 
             countdowns.forEach(countdown => {
@@ -420,7 +451,7 @@ $laksql = mysqli_query($condb, $sql);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -461,7 +492,7 @@ $laksql = mysqli_query($condb, $sql);
 
 
         document.querySelectorAll('.batal-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 const tarikh = this.dataset.id;
                 e.preventDefault();
                 notifwarning.play();
@@ -496,6 +527,43 @@ $laksql = mysqli_query($condb, $sql);
                 dropdownMenu.classList.add('hidden');
             }
         });
+    </script>
+    <script>
+        function updateTimesAgo() {
+            document.querySelectorAll('.time-ago').forEach(element => {
+                const timestamp = new Date(element.dataset.timestamp);
+                const now = new Date();
+                const diffSeconds = Math.floor((now - timestamp) / 1000);
+                
+                let timeAgo;
+                if (diffSeconds < 60) {
+                    const seconds = Math.floor((new Date() - new Date(timestamp)) / 1000);
+                    timeAgo = `${seconds} Baru sahaja`;
+                } else if (diffSeconds < 3600) {
+                    const minutes = Math.floor(diffSeconds / 60);
+                    timeAgo = `${minutes} minit yang lalu`;
+                } else if (diffSeconds < 86400) {
+                    const hours = Math.floor(diffSeconds / 3600);
+                    const minutes = Math.floor((diffSeconds % 3600) / 60);
+                    timeAgo = `${hours} jam ${minutes} minit yang lalu`;
+                } else if (diffSeconds < 2592000) { // kurang dari 30 hari
+                    const days = Math.floor(diffSeconds / 86400);
+                    timeAgo = `${days} hari yang lalu`;
+                } else if (diffSeconds < 31536000) { // kurang dari setahun
+                    const months = Math.floor(diffSeconds / 2592000);
+                    timeAgo = months === 1 ? 'Sebulan yang lalu' : `${months} bulan yang lalu`;
+                } else {
+                    const years = Math.floor(diffSeconds / 31536000);
+                    timeAgo = years === 1 ? 'Setahun yang lalu' : `${years} tahun yang lalu`;
+                }
+                
+                element.textContent = timeAgo;
+            });
+        }
+
+        // Kemas kini masa setiap saat
+        updateTimesAgo();
+        setInterval(updateTimesAgo, 1000);
     </script>
 </body>
 

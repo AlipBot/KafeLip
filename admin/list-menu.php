@@ -202,13 +202,17 @@ if (isset($_POST['upload'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senarai Makanan</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../lib/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../lib/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../lib/icon/favicon-16x16.png">
+    <link rel="manifest" href="../lib/icon/site.webmanifest">
     <link rel="stylesheet" href="../lib/css/all.css">
     <link rel="stylesheet" href="../lib/css/sharp-solid.css">
     <link rel="stylesheet" href="../lib/css/sharp-regular.css">
     <link rel="stylesheet" href="../lib/css/sharp-light.css">
-    <link rel="stylesheet" href="../lib/css/duotone.css"/>
-    <link rel="stylesheet" href="../lib/css/brands.css"/>
-    <link rel="stylesheet" href="../lib/css/css2.css"/>
+    <link rel="stylesheet" href="../lib/css/duotone.css" />
+    <link rel="stylesheet" href="../lib/css/brands.css" />
+    <link rel="stylesheet" href="../lib/css/css2.css" />
     <script src="../lib/js/tailwind.js"></script>
     <link rel="stylesheet" href="../lib/css/sweetalert2.min.css">
     <script src="../lib/js/sweetalert2@11.js"></script>
@@ -609,7 +613,7 @@ if (isset($_POST['upload'])) {
 
         <!-- Footer -->
         <footer class="bg-[#588157] text-white p-4 text-center w-full">
-        &copy; © 2025 KAFELIP. Semua hak terpelihara.
+            &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 
@@ -734,20 +738,20 @@ if (isset($_POST['upload'])) {
 
     <!-- Popup crop image  -->
     <div id="cropModal" class="crop-modal">
-    <div class="crop-container">
-        <img id="cropImage" class="crop-preview">
-        <div class="crop-buttons">
-            <button type="button" id="cropDone" class="bg-[#588157] text-white p-2 rounded mr-2">
-                <i class="fas fa-check mr-1"></i> Selesai
-            </button>
-            <button type="button" id="cropCancel" class="bg-red-500 text-white p-2 rounded">
-                <i class="fas fa-times mr-1"></i> Batal
-            </button>
+        <div class="crop-container">
+            <img id="cropImage" class="crop-preview">
+            <div class="crop-buttons">
+                <button type="button" id="cropDone" class="bg-[#588157] text-white p-2 rounded mr-2">
+                    <i class="fas fa-check mr-1"></i> Selesai
+                </button>
+                <button type="button" id="cropCancel" class="bg-red-500 text-white p-2 rounded">
+                    <i class="fas fa-times mr-1"></i> Batal
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-   <!-- Butang scroll ke atas -->
+    <!-- Butang scroll ke atas -->
     <button id="scrollToTopBtn" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
     </button>

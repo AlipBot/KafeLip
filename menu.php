@@ -40,9 +40,11 @@ function semakKuantitiOrders($kod_makanan)
 <html>
 
 <head>
-    <title>
-        KAFELIP
-    </title>
+    <title>KAFELIP | MENU</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="lib/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="lib/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="lib/icon/favicon-16x16.png">
+    <link rel="manifest" href="lib/icon/site.webmanifest">
     <link rel="stylesheet" href="lib/css/all.css">
     <link rel="stylesheet" href="lib/css/sharp-solid.css">
     <link rel="stylesheet" href="lib/css/sharp-regular.css">

@@ -89,9 +89,11 @@ if (isset($_POST['DaftarMasuk'])) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>
-        Daftar Akaun
-    </title>
+    <title>Daftar Akaun</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="lib/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="lib/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="lib/icon/favicon-16x16.png">
+    <link rel="manifest" href="lib/icon/site.webmanifest">
     <link rel="stylesheet" href="lib/css/all.css">
     <link rel="stylesheet" href="lib/css/sharp-solid.css">
     <link rel="stylesheet" href="lib/css/sharp-regular.css">
@@ -109,7 +111,7 @@ if (isset($_POST['DaftarMasuk'])) {
     <div class="min-h-screen flex items-center justify-center px-4">
         <div class="bg-[#A1CCA5] p-8 rounded-lg shadow-lg my-10 w-full max-w-md">
             <div class="flex justify-center mb-4">
-                <img class="w-24 h-24" height="100" src="https://storage.googleapis.com/a1aa/image/LQPFEfzjLQ3FSiVaoQjIIsMkqbnxqfbQMfo1vKLZeMkeuhEgC.jpg" width="100" />
+                <img alt="Logo KafeLip" class="w-24 h-24" height="100" src="lib/icon/logo.png" width="100" />
             </div>
             <h2 class="text-2xl font-bold text-center mb-6">
                 Daftar Akaun Baharu
