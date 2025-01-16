@@ -91,7 +91,7 @@ include('../function/connection.php');  # Sambung Ke database
 
     <div class="flex h-screen flex-col">
         <!-- Header -->
-        <header class="bg-[#588157] text-white p-4 flex justify-between items-center fixed w-full z-10">
+        <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
@@ -102,7 +102,7 @@ include('../function/connection.php');  # Sambung Ke database
         <div class="flex flex-1 pt-16">
             <!-- Sidebar -->
             <div id="drawer"
-                class="w-64 bg-[#588157] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
+                class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto">
                     <ul>
                         <li class="mb-4">
@@ -196,7 +196,7 @@ include('../function/connection.php');  # Sambung Ke database
                                     ?>
                                 </select>
                             </div>
-                            <button type="submit" class="bg-[#588157] hover:bg-[#68B0AB] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit" class="bg-[#428D41] hover:bg-[#68B0AB] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Tunjuk Statistik
                             </button>
                         </form>
@@ -219,7 +219,7 @@ include('../function/connection.php');  # Sambung Ke database
         </div>
 
         <!-- Footer -->
-        <footer class="bg-[#588157] text-white p-4 text-center w-full">
+        <footer class="bg-[#428D41] text-white p-4 text-center w-full">
         &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>

@@ -127,7 +127,7 @@ include('../function/connection.php');  # Sambung Ke database
 <bod class="font-roboto bg-gray-100">
     <div class="flex h-screen flex-col">
         <!-- Header -->
-        <header class="bg-[#588157] text-white p-4 flex justify-between items-center fixed w-full z-10">
+        <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
@@ -138,7 +138,7 @@ include('../function/connection.php');  # Sambung Ke database
         <div class="flex flex-1 pt-16">
             <!-- Sidebar -->
             <div id="drawer"
-                class="w-64 bg-[#588157] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
+                class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto">
                     <ul>
                         <li class="mb-4">
@@ -185,42 +185,42 @@ include('../function/connection.php');  # Sambung Ke database
             <div id="mainContent" class="flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <div class="bg-white p-4 rounded shadow flex items-center">
-                        <i class="fas fa-calendar-day text-[#588157] text-3xl mr-4"></i>
+                        <i class="fas fa-calendar-day text-[#428D41] text-3xl mr-4"></i>
                         <div>
                             <div class="text-gray-600">Jumlah Tempah Hari Ini</div>
                             <div class="TempahHari text-2xl font-bold">0</div>
                         </div>
                     </div>
                     <div class="bg-white p-4 rounded shadow flex items-center">
-                        <i class="fas fa-calendar-alt text-[#588157] text-3xl mr-4"></i>
+                        <i class="fas fa-calendar-alt text-[#428D41] text-3xl mr-4"></i>
                         <div>
                             <div class="text-gray-600">Jumlah Tempah Bulan Ini</div>
                             <div class="TempahBulan text-2xl font-bold">0</div>
                         </div>
                     </div>
                     <div class="bg-white p-4 rounded shadow flex items-center">
-                        <i class="fas fa-dollar-sign text-[#588157] text-3xl mr-4"></i>
+                        <i class="fas fa-dollar-sign text-[#428D41] text-3xl mr-4"></i>
                         <div>
                             <div class="text-gray-600">Jumlah Keuntungan Hari Ini</div>
                             <div class="UntungHari text-2xl font-bold">0</div>
                         </div>
                     </div>
                     <div class="bg-white p-4 rounded shadow flex items-center">
-                        <i class="fas fa-coins text-[#588157] text-3xl mr-4"></i>
+                        <i class="fas fa-coins text-[#428D41] text-3xl mr-4"></i>
                         <div>
                             <div class="text-gray-600">Jumlah Keuntungan Bulan Ini</div>
                             <div class="UntungBulan text-2xl font-bold">0</div>
                         </div>
                     </div>
                     <div class="bg-white p-4 rounded shadow flex items-center">
-                        <i class="fas fa-user-friends text-[#588157] text-3xl mr-4"></i>
+                        <i class="fas fa-user-friends text-[#428D41] text-3xl mr-4"></i>
                         <div>
                             <div class="text-gray-600">Jumlah Pelanggan</div>
                             <div class="Pelanggan text-2xl font-bold">0</div>
                         </div>
                     </div>
                     <div class="bg-white p-4 rounded shadow flex items-center">
-                        <i class="fas fa-user-tie text-[#588157] text-3xl mr-4"></i>
+                        <i class="fas fa-user-tie text-[#428D41] text-3xl mr-4"></i>
                         <div>
                             <div class="text-gray-600">Jumlah Pekerja</div>
                             <div class="Pekerja text-2xl font-bold">0</div>
@@ -233,11 +233,11 @@ include('../function/connection.php');  # Sambung Ke database
                         <span>Laporan Langsung Hari ini</span>
                         <div class="flex items-center space-x-4">
                             <button id="fullscreenToggle"
-                                class="text-xl bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded">
+                                class="text-xl bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded">
                                 <i class="fas fa-expand"></i> Full Screen
                             </button>
                             <button onclick="playNotificationSound()"
-                                class="text-xl bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                                class="text-xl bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                 <i class="fas fa-volume-up"></i>
                                 <span class="ml-2">Sound</span>
                             </button>
@@ -256,7 +256,7 @@ include('../function/connection.php');  # Sambung Ke database
                     <div class="table-container">
                         <table class="w-full table-auto rounded-lg overflow-hidden">
                             <thead>
-                                <tr class="bg-[#a3b18a] text-black font-bold">
+                                <tr class="bg-[#A4D153] text-black font-bold">
                                     <th width='30%' class="text-black px-[47px] py-2">Nama Pelanggan</th>
                                     <th width='30%' class="text-black px-[47px] py-2">Pesanan</th>
                                     <th width='20%' class="text-black px-[47px] py-2">Jumlah Harga (RM)</th>
@@ -276,7 +276,7 @@ include('../function/connection.php');  # Sambung Ke database
         </div>
 
         <!-- Footer -->
-        <footer class="bg-[#588157] text-white p-4 text-center bottom-0 w-full">
+        <footer class="bg-[#428D41] text-white p-4 text-center bottom-0 w-full">
             &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>

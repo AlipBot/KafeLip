@@ -269,7 +269,7 @@ if (isset($_POST['upload'])) {
 
     <div class="flex h-screen flex-col">
         <!-- Header -->
-        <header class="bg-[#588157] text-white p-4 flex justify-between items-center fixed w-full z-10">
+        <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
@@ -280,7 +280,7 @@ if (isset($_POST['upload'])) {
         <div class="flex flex-1 pt-16">
             <!-- Sidebar -->
             <div id="drawer"
-                class="w-64 bg-[#588157] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
+                class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto">
                     <ul>
                         <li class="mb-4">
@@ -341,7 +341,7 @@ if (isset($_POST['upload'])) {
                                     <option value="PELANGGAN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'PELANGGAN')
                                                                     echo 'selected'; ?>>Pelanggan</option>
                                 </select>
-                                <button type="submit" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                                <button type="submit" class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
                                 <button type="button" onclick="window.location.href='list-user.php';"
@@ -351,7 +351,7 @@ if (isset($_POST['upload'])) {
                             </form>
                             <div class="flex space-x-2">
                                 <button id="uploadButton"
-                                    class="bg-[#588157] text-white p-2 hover:bg-[#68B0AB] rounded flex items-center whitespace-nowrap">
+                                    class="bg-[#428D41] text-white p-2 hover:bg-[#68B0AB] rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Muat Naik Pekerja
                                 </button>
                             </div>
@@ -360,7 +360,7 @@ if (isset($_POST['upload'])) {
                     <div class="table-container">
                         <table class="w-full table-auto rounded-lg overflow-hidden">
                             <thead>
-                                <tr class="bg-[#a3b18a] font-bold text-black">
+                                <tr class="bg-[#A4D153] font-bold text-black">
                                     <td width='30%' class="px-[70px] py-2">Nama</td>
                                     <td width='15%' class="text-center py-2">Email</td>
                                     <td width='15%' class="text-center  py-2">Nombor Telefon</td>
@@ -390,11 +390,11 @@ if (isset($_POST['upload'])) {
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
                                                     <button onclick="SemakProfil('<?= $m['email'] ?>')"
-                                                        class="bg-[#588157] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
+                                                        class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
                                                         <i class="fas fa-user mr-1"></i> Profil
                                                     </button>
                                                     <button onclick="updateUser('<?= $m['notel'] ?>')"
-                                                        class="bg-[#588157] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
+                                                        class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
                                                     <button data-namauser="<?= $m['nama'] ?>" data-id="<?php echo urlencode($m['notel']); ?>"
@@ -422,7 +422,7 @@ if (isset($_POST['upload'])) {
                             <!-- First Page -->
                             <?php if ($halaman > 1): ?>
                                 <a href="?halaman=1<?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
-                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-double-left"></i>
                                 </a>
                             <?php endif; ?>
@@ -430,7 +430,7 @@ if (isset($_POST['upload'])) {
                             <!-- Previous Page -->
                             <?php if ($halaman > 1): ?>
                                 <a href="?halaman=<?= $halaman - 1 ?><?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
-                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-left"></i>
                                 </a>
                             <?php endif; ?>
@@ -442,7 +442,7 @@ if (isset($_POST['upload'])) {
 
                             for ($i = $start; $i <= $end; $i++): ?>
                                 <a href="?halaman=<?= $i ?><?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
-                                    class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#588157] text-white hover:bg-[#68B0AB]' ?> rounded">
+                                    class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#428D41] text-white hover:bg-[#68B0AB]' ?> rounded">
                                     <?= $i ?>
                                 </a>
                             <?php endfor; ?>
@@ -450,7 +450,7 @@ if (isset($_POST['upload'])) {
                             <!-- Next Page -->
                             <?php if ($halaman < $jumlahHalaman): ?>
                                 <a href="?halaman=<?= $halaman + 1 ?><?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
-                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-right"></i>
                                 </a>
                             <?php endif; ?>
@@ -458,7 +458,7 @@ if (isset($_POST['upload'])) {
                             <!-- Last Page -->
                             <?php if ($halaman < $jumlahHalaman): ?>
                                 <a href="?halaman=<?= $jumlahHalaman ?><?= isset($_GET['nama']) ? '&nama=' . $_GET['nama'] : '' ?><?= isset($_GET['tapis_tahap']) ? '&tapis_tahap=' . $_GET['tapis_tahap'] : '' ?>"
-                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-double-right"></i>
                                 </a>
                             <?php endif; ?>
@@ -475,7 +475,7 @@ if (isset($_POST['upload'])) {
         </div>
 
         <!-- Footer -->
-        <footer class="bg-[#588157] text-white p-4 text-center bottom-0 w-full">
+        <footer class="bg-[#428D41] text-white p-4 text-center bottom-0 w-full">
         &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
@@ -501,7 +501,7 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='upload' class="bg-[#588157] text-white p-2 rounded">Submit</button>
+                    <button type="submit" name='upload' class="bg-[#428D41] text-white p-2 rounded">Submit</button>
                 </div>
             </form>
         </div>
@@ -532,7 +532,7 @@ if (isset($_POST['upload'])) {
 
                 <div class="flex mt-[20px] justify-center">
                     <button type="submit" name="KemaskiniDataPengguna"
-                        class="bg-[#588157] text-white p-2 rounded">Kemaskini</button>
+                        class="bg-[#428D41] text-white p-2 rounded">Kemaskini</button>
                 </div>
             </form>
         </div>

@@ -392,7 +392,7 @@ if (isset($_POST['upload'])) {
 
     <div class="flex h-screen flex-col">
         <!-- Header -->
-        <header class="bg-[#588157] text-white p-4 flex justify-between items-center fixed w-full z-10">
+        <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
@@ -403,7 +403,7 @@ if (isset($_POST['upload'])) {
         <div class="flex flex-1 pt-16">
             <!-- Sidebar -->
             <div id="drawer"
-                class="w-64 bg-[#588157] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
+                class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto">
                     <ul>
                         <li class="mb-4">
@@ -459,7 +459,7 @@ if (isset($_POST['upload'])) {
                                     value="<?php echo htmlspecialchars($_GET['nama_makanan'] ?? ''); ?>"
                                     class="border rounded p-2 w-2/5">
                                 <button type="submit"
-                                    class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
                                 <button type="button" onclick="window.location.href='list-menu.php';"
@@ -469,11 +469,11 @@ if (isset($_POST['upload'])) {
                             </form>
                             <div class="flex space-x-2">
                                 <button id="DaftarMenuButton"
-                                    class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
+                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Daftar Menu
                                 </button>
                                 <button id="uploadButton"
-                                    class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
+                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Muat Naik Menu
                                 </button>
                             </div>
@@ -482,7 +482,7 @@ if (isset($_POST['upload'])) {
                     <div class="table-container">
                         <table class="w-full table-auto rounded-lg overflow-hidden">
                             <thead>
-                                <tr class="bg-[#a3b18a] font-bold text-black">
+                                <tr class="bg-[#A4D153] font-bold text-black">
                                     <th width='20%' class="px-[47px] py-2">
                                         <div class="flex items-center justify-between">
                                             <span>Kod Menu</span>
@@ -531,7 +531,7 @@ if (isset($_POST['upload'])) {
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
                                                     <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')"
-                                                        class="bg-[#588157] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
+                                                        class="bg-[#428D41] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
                                                     <button data-id="<?php echo urlencode($m['kod_makanan']); ?>"
@@ -560,7 +560,7 @@ if (isset($_POST['upload'])) {
                             <!-- First Page -->
                             <?php if ($halaman > 1): ?>
                                 <a href="?halaman=1<?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
-                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-double-left"></i>
                                 </a>
                             <?php endif; ?>
@@ -568,7 +568,7 @@ if (isset($_POST['upload'])) {
                             <!-- Previous Page -->
                             <?php if ($halaman > 1): ?>
                                 <a href="?halaman=<?= $halaman - 1 ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
-                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-left"></i>
                                 </a>
                             <?php endif; ?>
@@ -580,7 +580,7 @@ if (isset($_POST['upload'])) {
 
                             for ($i = $start; $i <= $end; $i++): ?>
                                 <a href="?halaman=<?= $i ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
-                                    class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#588157] text-white hover:bg-[#68B0AB]' ?> rounded">
+                                    class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#428D41] text-white hover:bg-[#68B0AB]' ?> rounded">
                                     <?= $i ?>
                                 </a>
                             <?php endfor; ?>
@@ -588,7 +588,7 @@ if (isset($_POST['upload'])) {
                             <!-- Next Page -->
                             <?php if ($halaman < $jumlahHalaman): ?>
                                 <a href="?halaman=<?= $halaman + 1 ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
-                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-right"></i>
                                 </a>
                             <?php endif; ?>
@@ -596,7 +596,7 @@ if (isset($_POST['upload'])) {
                             <!-- Last Page -->
                             <?php if ($halaman < $jumlahHalaman): ?>
                                 <a href="?halaman=<?= $jumlahHalaman ?><?= isset($_GET['nama_makanan']) ? '&nama_makanan=' . $_GET['nama_makanan'] : '' ?><?= isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '' ?>"
-                                    class="px-3 py-1 bg-[#588157] text-white rounded hover:bg-[#68B0AB]">
+                                    class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                     <i class="fas fa-angle-double-right"></i>
                                 </a>
                             <?php endif; ?>
@@ -612,7 +612,7 @@ if (isset($_POST['upload'])) {
         </div>
 
         <!-- Footer -->
-        <footer class="bg-[#588157] text-white p-4 text-center w-full">
+        <footer class="bg-[#428D41] text-white p-4 text-center w-full">
             &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
@@ -741,7 +741,7 @@ if (isset($_POST['upload'])) {
         <div class="crop-container">
             <img id="cropImage" class="crop-preview">
             <div class="crop-buttons">
-                <button type="button" id="cropDone" class="bg-[#588157] text-white p-2 rounded mr-2">
+                <button type="button" id="cropDone" class="bg-[#428D41] text-white p-2 rounded mr-2">
                     <i class="fas fa-check mr-1"></i> Selesai
                 </button>
                 <button type="button" id="cropCancel" class="bg-red-500 text-white p-2 rounded">
@@ -1228,11 +1228,11 @@ if (isset($_POST['upload'])) {
                 // Aktifkan butang dan tukar style
                 daftarBtn.disabled = false;
                 daftarBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                daftarBtn.classList.add('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                daftarBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
             } else {
                 // Nyahaktifkan butang dan tukar style
                 daftarBtn.disabled = true;
-                daftarBtn.classList.remove('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                daftarBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
                 daftarBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
             }
         }
@@ -1259,10 +1259,10 @@ if (isset($_POST['upload'])) {
             if (fileInput && fileInput.files.length > 0) {
                 uploadBtn.disabled = false;
                 uploadBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                uploadBtn.classList.add('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                uploadBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
             } else {
                 uploadBtn.disabled = true;
-                uploadBtn.classList.remove('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                uploadBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
                 uploadBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
             }
         }
@@ -1288,10 +1288,10 @@ if (isset($_POST['upload'])) {
 
                 kemaskiniBtn.disabled = false;
                 kemaskiniBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                kemaskiniBtn.classList.add('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                kemaskiniBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
             } else {
                 kemaskiniBtn.disabled = true;
-                kemaskiniBtn.classList.remove('bg-[#588157]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                kemaskiniBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
                 kemaskiniBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
             }
         }

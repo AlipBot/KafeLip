@@ -114,7 +114,7 @@ $laksql = mysqli_query($condb, $sql);
 <body class="font-roboto bg-gray-100 ">
     <div class="flex min-h-screen flex-col">
         <!-- Header -->
-        <header class="bg-[#588157] text-white p-4 flex justify-between items-center fixed w-full z-10">
+        <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
@@ -126,7 +126,7 @@ $laksql = mysqli_query($condb, $sql);
         <div class="flex flex-1 pt-16">
             <!-- Sidebar -->
             <div id="drawer"
-                class="w-64 bg-[#588157] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
+                class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto">
                     <ul>
                         <li class="mb-4">
@@ -196,7 +196,7 @@ $laksql = mysqli_query($condb, $sql);
                                     </option>
                                 <?php endwhile; ?>
                             </select>
-                            <button type="submit" class="bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                            <button type="submit" class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                 <i class="fas fa-search mr-1"></i> Cari
                             </button>
                             <button type="button" onclick="window.location.href='laporan.php'" class="bg-red-800 hover:bg-red-600 text-white p-2 rounded flex items-center">
@@ -227,7 +227,7 @@ $laksql = mysqli_query($condb, $sql);
                         <div class="table-container">
                             <table class="w-full table-auto rounded-lg overflow-hidden">
                                 <thead>
-                                    <tr class="bg-[#a3b18a] font-bold text-black">
+                                    <tr class="bg-[#A4D153] font-bold text-black">
                                         <th width='30%' class="px-[47px] py-2">Pelanggan</th>
                                         <th width='35%' class="px-[47px] py-2">Pesanan</th>
                                         <th width='20%' class="px-[47px] py-2">Jumlah Harga (RM)</th>
@@ -265,7 +265,7 @@ $laksql = mysqli_query($condb, $sql);
                                                 <td class='px-4 py-2 text-center'>
                                                     <div class="flex flex-col items-center space-y-4">
                                                         <button onclick="bukaResit('<?= $m['email'] ?>', '<?= $m['tarikh'] ?>')"
-                                                            class="bg-[#588157] text-white hover:bg-[#68B0AB] py-2 px-4 rounded flex items-center justify-center">
+                                                            class="bg-[#428D41] text-white hover:bg-[#68B0AB] py-2 px-4 rounded flex items-center justify-center">
                                                             <i class="fas fa-search mr-1"></i> Semak
                                                         </button>
                                                     </div>
@@ -290,7 +290,7 @@ $laksql = mysqli_query($condb, $sql);
             </div>
         </div>
         <!-- Footer -->
-        <footer class="bg-[#588157] text-white p-4 text-center bottom-0 w-full">
+        <footer class="bg-[#428D41] text-white p-4 text-center bottom-0 w-full">
             &copy; © 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
