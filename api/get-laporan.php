@@ -1,6 +1,8 @@
 <?php
-include('../function/connection.php');
-include('../function/autoKeluarAdmin.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include("../function/autoKeluar.php");  # fail function auto logout jika pengguna belum login
+include("../function/connection.php"); # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
 
 // Jumlah Tempah Hari Ini
@@ -87,6 +89,7 @@ while ($row = mysqli_fetch_assoc($laptoday)) {
 // Return JSON
 header('Content-Type: application/json');
 echo json_encode([
+    'Owner' => 'Alipje29',
     'jumlahHarini' => $kira_harini['jumlah_pelanggan_harini'],
     'jumlahSebulan' => $kira_bulanini['jumlahSebulan'],
     'total_harian' => $untung_hari['total_harian'] ?? 0,

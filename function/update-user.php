@@ -1,17 +1,29 @@
 <?php
-include('autoKeluarAdmin.php');
-
+include('autoKeluarAdmin.php'); # kawalan admin
 
 # menyemak kewujudan data POST
 if (isset($_POST['KemaskiniDataPengguna'])) {
-    # memanggil fail connection.php
-    include('connection.php');
+
+    include('connection.php');    # memanggil fail connection.php
 
     # pengesahan data (validation) notel pengguna
     if (strlen($_POST['notel']) < 10 or strlen($_POST['notel']) > 15) {
-        die("<script>alert('Ralat notel');
-        window.history.back();</script>");
+        $_SESSION['error'] = "Ralat Nombor Telefon mesti 10>No.Tel<15 nombor";
+        header("Location: ../admin/list-user.php");
+        exit();
     }
+    $pilih = mysqli_query($condb, "select* from pelanggan where notel = '" . $_POST['notel'] . "'");
+    $pilih2 = mysqli_query($condb, "select* from pelanggan where email = '" . $_POST['email'] . "'");
+
+    if (mysqli_num_rows($pilih) == 1 ) {
+        $_SESSION['error'] = "No.Tel $notel teleh digunakan. Sila Tukar No.Tel Lain";
+        header("Location:  ../admin/list-user.php");
+        exit();
+    }elseif(mysqli_num_rows($pilih2) == 1){
+        $_SESSION['error'] = "email $email telah digunakan. Sila Tukar Email Lain";
+        header("Location: ../admin/list-user.php");
+        exit();
+    } 
 
     # arahan SQL (query) untuk kemaskini maklumat pelanggan
     $arahan         =   "update pelanggan set

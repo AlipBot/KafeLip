@@ -1,6 +1,8 @@
 <?php
-include('../function/connection.php');
-include('../function/autoKeluarAdmin.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include("../function/autoKeluar.php");  # fail function auto logout jika pengguna belum login
+include("../function/connection.php"); # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
 // Dapatkan bulan dan tahun semasa
 $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('m');
@@ -24,7 +26,7 @@ mysqli_stmt_bind_param($stmt, "ss", $bulan, $tahun);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
-// Dapatkan jumlah hari dalam bulan tersebut
+// Dapatkan jumlah hari dalam bulan tersebut seperti hari 30 31 29 tahun lompat
 $jumlah_hari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
 
 // Sediakan array untuk simpan data
@@ -55,6 +57,7 @@ $laporan_bulanan = array_values($laporan_bulanan);
 // Return JSON response
 header('Content-Type: application/json');
 echo json_encode([
+    'Owner' => 'Alipje29',
     'bulan' => $bulan,
     'tahun' => $tahun,
     'jumlah_hari' => $jumlah_hari,

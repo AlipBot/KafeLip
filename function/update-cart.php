@@ -1,15 +1,15 @@
 <?php
-session_start();
+session_start(); # mula session
 
 // Terima data JSON dari request
 $data = json_decode(file_get_contents('php://input'), true);
 $response = ['success' => false];
-
+# semak ada data ke tak parameter post
 if (!empty($data)) {
     // Kosongkan cart sedia ada
     $_SESSION['orders'] = array();
 
-    // Kemas kini cart dengan kuantiti baru
+    // Kemaskini cart dengan kuantiti baru
     foreach ($data as $menuId => $quantity) {
         for ($i = 0; $i < $quantity; $i++) {
             array_push($_SESSION['orders'], $menuId);

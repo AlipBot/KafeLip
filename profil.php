@@ -11,10 +11,9 @@ if (isset($_SESSION['orders'])) {
     $bil = "";
 }
 
-#set email berdasakan di dalama data di session yang sudah disetkan di login
+# set email berdasakan di dalama data di session yang sudah disetkan di login
 $email = $_SESSION['email'];
 # query untuk dapatkan maklumat pelanggan
-
 $sql = "SELECT p.*, 
        (SELECT COUNT(DISTINCT CONCAT(t.email, '-', t.tarikh)) 
         FROM tempahan t 

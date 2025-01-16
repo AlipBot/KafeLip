@@ -226,7 +226,7 @@ include('../function/connection.php');  # Sambung Ke database
 
                 <div class="laporan-pelanggan bg-white p-6 rounded-lg shadow relative">
                     <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
-                        <span>Laporan Tempahan Pelanggan Hari ini</span>
+                        <span>Laporan Langsung Hari ini</span>
                         <div class="flex items-center space-x-4">
                             <button id="fullscreenToggle"
                                 class="text-xl bg-[#588157] hover:bg-[#68B0AB] text-white p-2 rounded">

@@ -1,10 +1,8 @@
 <?php
-include('autoKeluarAdmin.php');
-
+include('autoKeluarAdmin.php'); # kawalan admin 
 
 # menyemak kewujudan data GET id_menu
-if(!empty($_GET))
-{
+if(!empty($_GET)){
     # memanggil fail connection
     include('connection.php');
 
@@ -31,16 +29,12 @@ if(!empty($_GET))
         $_SESSION['success'] = "Berjaya padam data";
         header("Location: ../admin/list-menu.php");
         exit();
-    }
-    else
-    {
+    } else {
       $_SESSION['error'] = "Kemaskini Gagal: " . mysqli_error($condb);
       header("Location: ../admin/list-menu.php");
       exit();
     }
-}
-else
-{
+} else{
     #jika gagal papar punca error
     $_SESSION['error'] = "Ralat! akses secara terus";
     header("Location: ../admin/list-menu.php");

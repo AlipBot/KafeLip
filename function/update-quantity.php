@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();# mula session 
 
 // Terima data JSON
 $data = json_decode(file_get_contents('php://input'), true);
@@ -22,5 +22,5 @@ if (empty($_SESSION['orders'])) {
     echo json_encode(['success' => true, 'empty' => true]);
     exit;
 }
-
+# hantar data format json
 echo json_encode(['success' => true]); 

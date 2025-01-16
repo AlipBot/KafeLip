@@ -1,9 +1,7 @@
 <?php
 //―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
-
 include("function/autoKeluar.php");  # fail function auto logout jika pengguna belum login
 include("function/connection.php"); # Sambung Ke database
-
 //――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
 # Mempaparkan bilangan senarai tempahan

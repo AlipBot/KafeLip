@@ -1,6 +1,6 @@
 <?php
-session_start();
-
+session_start(); # mula session
+# semak pengguna dah login ke belum
 if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
     echo " <script> window.location.href = '../index.php'; </script>";
 }

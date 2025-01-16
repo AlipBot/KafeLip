@@ -1,6 +1,6 @@
 <?php
-include('autoKeluarAdmin.php');
-include('connection.php');
+include('autoKeluarAdmin.php'); # kawalan admin 
+include('connection.php'); # sambung ke database
 
 # Menyemak kewujudan data POST
 if(!empty($_POST)){
@@ -14,6 +14,13 @@ if(!empty($_POST)){
     if(!is_numeric($harga) or $harga <= 0){
         $_SESSION['error'] = "Ralat: Sila masukkan harga yang sah";
         header("Location: ../admin/list-menu.php");
+        exit();
+    }
+
+    $pilih = mysqli_query($condb, "select* from makanan where kod_makanan='" . $id_menu . "'");
+    if (mysqli_num_rows($pilih) == 1) {
+        $_SESSION['error'] = "kod_makanan $id_menu Telah Digunakan. Sila Tukar Lain";
+        header("Location: list-menu.php");
         exit();
     }
 
@@ -35,14 +42,14 @@ if(!empty($_POST)){
         if ($row = mysqli_fetch_assoc($result)) {
             $filename = $row['gambar'];
             $filepath = "../menu-images/" . $filename;
-    
+            # auto delete files gambar lama dan tukar gambar baru
             // Check if the file exists and delete it
             if (file_exists($filepath)) {
                 unlink($filepath);  // Delete the file
             }
         }
         
-        // Move the uploaded file
+        // Copy file gambar ke folder gmenu-images jika gagal hantar toast error
         if (!copy($lokasi, "../menu-images/" . $nama_fail_baru)) {
             $_SESSION['error'] = "Gagal memuat naik gambar";
             header("Location: ../admin/list-menu.php");
@@ -50,7 +57,7 @@ if(!empty($_POST)){
         }
     } 
     
-    # proses kemaskini data
+    # Query proses kemaskini data
     $sql_kemaskini = "UPDATE makanan SET 
                       $tambahan
                       nama_makanan = '$nama_menu',
@@ -61,6 +68,7 @@ if(!empty($_POST)){
 
     # Pengujian proses menyimpan data 
     if($laksana){
+        # berjaya menjalankan query 
         $_SESSION['success'] = "Kemaskini Berjaya";
         header("Location: ../admin/list-menu.php");
         exit();

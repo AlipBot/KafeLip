@@ -1,7 +1,9 @@
 <?php
-include('../function/autoKeluarAdmin.php');
-# Memanggil fail header dan fail kawalan-admin.php
-include('../function/connection.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include("../function/autoKeluar.php");  # fail function auto logout jika pengguna belum login
+include("../function/connection.php"); # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
+
 
 # Menyemak kewujudan data GET. Jika data GET empty, buka fail pengguna-senarai.php
 if (empty($_GET)) {
@@ -15,6 +17,7 @@ $m              =   mysqli_fetch_array($lak_menu);
 
 header('Content-Type: application/json');
 echo json_encode([
+    'Owner' => 'Alipje29',
     'nama_makanan' => $m['nama_makanan'],
     'harga' => $m['harga']
 ]);

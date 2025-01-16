@@ -1,7 +1,10 @@
 <?php
-include('../function/connection.php');
-include('../function/autoKeluarAdmin.php');
+//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+include("../function/autoKeluar.php");  # fail function auto logout jika pengguna belum login
+include("../function/connection.php"); # Sambung Ke database
+//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
+# dapatkan tahun dan bulan semasa
 $bulan = $_GET['bulan'] ?? date('m');
 $tahun = $_GET['tahun'] ?? date('Y');
 
@@ -24,6 +27,7 @@ while ($row = $result->fetch_assoc()) {
 }
 header('Content-Type: application/json');
 echo json_encode([
+    'Owner' => 'Alipje29',
     'menu' => $data,
     'bulan' => $bulan,
     'tahun' => $tahun

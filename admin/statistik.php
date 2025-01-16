@@ -266,7 +266,7 @@ include('../function/connection.php');  # Sambung Ke database
             // Fungsi untuk muat dan papar graf
             function loadChart(bulan, tahun, isRealtime = false) {
                 // Buat URL dengan parameter
-                const url = `../api/get-laporan-bulanan.php?bulan=${bulan}&tahun=${tahun}`;
+                const url = `../api/get-statistik-laporan.php?bulan=${bulan}&tahun=${tahun}`;
 
                 fetch(url)
                     .then(response => response.json())
@@ -372,7 +372,7 @@ include('../function/connection.php');  # Sambung Ke database
 
             // Fungsi untuk muat dan papar graf menu
             function loadMenuChart(bulan, tahun, isRealtime = false) {
-                const url = `../api/get-mod-menu.php?bulan=${bulan}&tahun=${tahun}`;
+                const url = `../api/get-statistik-menu.php?bulan=${bulan}&tahun=${tahun}`;
 
                 fetch(url)
                     .then(response => response.json())
