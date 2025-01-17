@@ -602,25 +602,32 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
             function removeItem(menuId) {
                 fetch('function/del-item.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            menuId: menuId
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        menuId: menuId
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            location.reload(); // Reload halaman selepas item dibuang
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (data.isEmpty) {
+                            // Jika cart kosong, pergi ke menu.php
+                            window.location.href = 'menu.php';
                         } else {
-                            Toast.fire({
-                                icon: "error",
-                                title: "Ralat semasa membuang item"
-                            });
+                            // Jika masih ada item lain, reload halaman cart
+                            window.location.href = 'cart.php';
                         }
-                    });
+                    } else {
+                        notiferror.play();
+                        Toast.fire({
+                            icon: "error",
+                            title: "Ralat semasa membuang item"
+                        });
+                    }
+                });
             }
 
             function updateItemTotal(menuId, quantity, hargaSeunit) {
