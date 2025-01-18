@@ -68,6 +68,4 @@ ERD
 
 [`AlipBot`](https://github.com/AlipBot)<br>
 
-<img src="https://telegra.ph/file/1cbc7e659b35a053bf25f.png" width="150" height="150">
 
-``Halal Rest API``
