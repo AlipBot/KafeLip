@@ -632,10 +632,10 @@ if (isset($_POST['upload'])) {
             }
         }
 
-        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
-        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
-        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
-        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
+        const notifsuccess = new Audio('../lib/audio/notif.mp3'); // Path fail audio success
+        const notiferror = new Audio('../lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('../lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('../lib/audio/warning.mp3'); // Path fail audio amaran
 
 
         document.addEventListener('DOMContentLoaded', function() {
