@@ -101,6 +101,8 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             backdrop-filter: blur(10px);
             border-radius: 0.5rem;
             padding: 1rem;
+            margin-right: 20;
+            margin-left: 20;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -243,7 +245,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                     <p class="text-lg"><i class="fas fa-medal mr-2"></i><?= $user_data['tahap'] ?></p>
                 </div>
                 <div class="w-full">
-                    <h3 class="text-xl font-semibold mb-4">Statistik</h3>
+                    <h3 class="text-xl font-semibold mb-4 ml-5">Statistik</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div class="stat-box text-center">
                             <h4 class="text-lg font-semibold mb-2"><i class="fas fa-calendar-day mr-2"></i>Jumlah Tempahan Hari Ini</h4>
@@ -271,7 +273,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                         </div>
                     </div>
                     <div class="mt-8">
-                        <h3 class="text-xl font-semibold mb-4">Top 3 Menu Paling Banyak Dibeli</h3>
+                        <h3 class="text-xl font-semibold mb-4 ml-5">Top 3 Menu Paling Banyak Dibeli</h3>
                         <div class="flex justify-center">
                             <?php foreach ($top_menus as $index => $menu): ?>
                                 <div class="menu-box">

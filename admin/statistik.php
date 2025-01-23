@@ -220,7 +220,7 @@ include('../function/connection.php');  # Sambung Ke database
 
         <!-- Footer -->
         <footer class="bg-[#428D41] text-white p-4 text-center w-full">
-        &copy; © 2025 KAFELIP. Semua hak terpelihara.
+        &copy; 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 

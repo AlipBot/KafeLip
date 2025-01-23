@@ -277,7 +277,7 @@ include('../function/connection.php');  # Sambung Ke database
 
         <!-- Footer -->
         <footer class="bg-[#428D41] text-white p-4 text-center bottom-0 w-full">
-            &copy; © 2025 KAFELIP. Semua hak terpelihara.
+            &copy; 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 
@@ -358,7 +358,7 @@ include('../function/connection.php');  # Sambung Ke database
             }
             return `${days} hari yang lalu`;
         }
-       
+
         // gunakan fecth data tempahan daripada api untuk mendapatkan data secara realtime
         function updateRealtimeData() {
             fetch('../api/get-laporan.php')
@@ -405,7 +405,7 @@ include('../function/connection.php');  # Sambung Ke database
                     document.querySelector('.laporan-pelanggan tbody').innerHTML = `<tr><td colspan="4" class="text-center text-xl text-red-500 py-4 no-data">TIADA PELANGGAN SEKARANG</td></tr>`;
                 });
         }
-        
+
         // function memamparkan masa , tarikh dan hari
         function updateDateTime() {
             const now = new Date();

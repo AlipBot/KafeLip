@@ -37,6 +37,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
     <head>
         <title>CART</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="apple-touch-icon" sizes="180x180" href="lib/icon/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="lib/icon/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="lib/icon/favicon-16x16.png">
@@ -269,7 +270,8 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         class="border-2 border-[#4A7C59] table-auto  min-w-ful border-separate shadow-lg  rounded-lg bg-[#4A7C59]">
                         <thead>
                             <tr class="text-white">
-                                <th width="30%" class="bg-[#4A7C59] px-4 py-2">Menu</th>
+                                <th width="20%" class="bg-[#4A7C59] px-4 py-2">Menu</th>
+                                <th width="10%" class="bg-[#4A7C59] px-4 py-2">Gambar</th>
                                 <th width="15%" class="bg-[#4A7C59] px-4 py-2">Kuantiti</th>
                                 <th width="15%" class="bg-[#4A7C59] px-4 py-2">Harga seunit (RM)</th>
                                 <th width="15%" class="bg-[#4A7C59] px-4 py-2">Harga (RM)</th>
@@ -284,14 +286,30 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                             ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-white">
                                     <td class="shadow-lg px-4 py-2 font-semibold custom-font"><?= $m['nama_makanan'] ?></td>
-                                    <td class="shadow-lg px-4 py-2 flex justify-center font-semibold items-center space-x-2">
-                                        <div class="quantity-controls">
-                                            <button class="quantity-btn minus bg-[#CA0000D9] hover:bg-[#d33]"
-                                                onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'decrease', <?= $m['harga'] ?>)">-</button>
-                                            <span id="quantity-<?= $m['kod_makanan'] ?>"
-                                                class="quantity-value"><?= $bil ?></span>
-                                            <button class="quantity-btn plus"
-                                                onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'increase', <?= $m['harga'] ?>)">+</button>
+                                    <td class='px-8 py-4 flex justify-center items-center'>
+                                        <div class="relative group">
+                                            <div class="w-32 h-32 overflow-hidden">
+                                                <img src='menu-images/<?php echo htmlspecialchars($m['gambar']); ?>'
+                                                    alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>'
+                                                    class="w-full h-full object-cover rounded-md cursor-pointer transition-opacity group-hover:opacity-50">
+                                            </div>
+                                            <div
+                                                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <i onclick="showImagePopup('menu-images/<?php echo htmlspecialchars($m['gambar']); ?>', '<?php echo htmlspecialchars($m['nama_makanan']); ?>')"
+                                                    class="fas fa-eye text-3xl text-white bg-black bg-opacity-50 p-3 rounded-full"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-2 h-full">
+                                        <div class="flex items-center justify-center h-full min-h-[160px]">
+                                            <div class="quantity-controls">
+                                                <button class="quantity-btn minus bg-[#CA0000D9] hover:bg-[#d33]"
+                                                    onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'decrease', <?= $m['harga'] ?>)"><i class="fas fa-minus"></i></button>
+                                                <span id="quantity-<?= $m['kod_makanan'] ?>"
+                                                    class="quantity-value"><?= $bil ?></span>
+                                                <button class="quantity-btn plus"
+                                                    onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'increase', <?= $m['harga'] ?>)"><i class="fas fa-plus"></i></button>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font"><?= $m['harga'] ?>
@@ -308,7 +326,8 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 </tr>
                             <?php } ?>
                             <tr class="bg-[#FAF3DD] hover:bg-white">
-                                <td class="shadow-lg px-4 py-2 text-right font-semibold custom-font" colspan="3">Jumlah Bayaran (RM)</td>
+                                <td class="shadow-lg px-4 py-2 text-right font-semibold custom-font" colspan="4">Jumlah
+                                    Bayaran (RM)</td>
                                 <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font">
                                     <span id="grand-total"><?php echo number_format($jumlah_bayaran, 2) ?></span>
                                 </td>
@@ -354,6 +373,18 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         <button id="scrollToTopBtn" onclick="scrollToTop()">
             <i class="fas fa-arrow-up"></i>
         </button>
+
+        <!-- Image Popup Modal -->
+        <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+            <div class="relative max-w-2xl mx-auto p-4">
+                <button onclick="closeImagePopup()"
+                    class="absolute top-0 right-0 -mt-[14.5px] -mr-[14px] text-white text-3xl font-bold hover:text-gray-300">&times;</button>
+                <div class="max-h-[70vh] max-w-[600px]">
+                    <img id="popupImage" src="" alt="" class="w-full h-[70%] rounded-md object-contain">
+                </div>
+                <p id="imageCaption" class="text-white text-center mt-4 text-lg"></p>
+            </div>
+        </div>
 
         <script>
             // function butang scroll keatas dan auto ajdust kedudukan footer
@@ -542,6 +573,39 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             });
         </script>
         <script>
+            function showImagePopup(imageSrc, caption) {
+                const modal = document.getElementById('imageModal');
+                const popupImage = document.getElementById('popupImage');
+                const imageCaption = document.getElementById('imageCaption');
+
+                popupImage.src = imageSrc;
+                imageCaption.textContent = caption;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+
+                // Tutup modal bila klik di luar gambar
+                modal.onclick = function(e) {
+                    if (e.target === modal) {
+                        closeImagePopup();
+                    }
+                }
+            }
+
+            function closeImagePopup() {
+                const modal = document.getElementById('imageModal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            // Tutup modal dengan kekunci ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeImagePopup();
+                }
+            });
+        </script>
+
+        <script>
             // function butang + dan  -  untuk kuantii makanan
             function updateCartQuantity(menuId, action, hargaSeunit) {
                 const quantityElement = document.getElementById(`quantity-${menuId}`);
@@ -602,32 +666,32 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
             function removeItem(menuId) {
                 fetch('function/del-item.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        menuId: menuId
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            menuId: menuId
+                        })
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        if (data.isEmpty) {
-                            // Jika cart kosong, pergi ke menu.php
-                            window.location.href = 'menu.php';
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (data.isEmpty) {
+                                // Jika cart kosong, pergi ke menu.php
+                                window.location.href = 'menu.php';
+                            } else {
+                                // Jika masih ada item lain, reload halaman cart
+                                window.location.href = 'cart.php';
+                            }
                         } else {
-                            // Jika masih ada item lain, reload halaman cart
-                            window.location.href = 'cart.php';
+                            notiferror.play();
+                            Toast.fire({
+                                icon: "error",
+                                title: "Ralat semasa membuang item"
+                            });
                         }
-                    } else {
-                        notiferror.play();
-                        Toast.fire({
-                            icon: "error",
-                            title: "Ralat semasa membuang item"
-                        });
-                    }
-                });
+                    });
             }
 
             function updateItemTotal(menuId, quantity, hargaSeunit) {

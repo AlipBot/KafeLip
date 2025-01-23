@@ -41,6 +41,7 @@ function semakKuantitiOrders($kod_makanan)
 
 <head>
     <title>KAFELIP | MENU</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="apple-touch-icon" sizes="180x180" href="lib/icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="lib/icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="lib/icon/favicon-16x16.png">
@@ -527,9 +528,18 @@ function semakKuantitiOrders($kod_makanan)
                     <div class="menu-item">
                         <?php $cartQty = semakKuantitiOrders($m['kod_makanan']); ?>
                         <div class="w-32 h-32 overflow-hidden rounded-lg mb-4">
-                            <img src='menu-images/<?php echo htmlspecialchars($m['gambar']); ?>'
-                                alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>'
-                                class="w-full h-full object-cover">
+                            <div class="relative group">
+                                <div class="w-32 h-32 overflow-hidden">
+                                    <img src='menu-images/<?php echo htmlspecialchars($m['gambar']); ?>'
+                                        alt='Gambar menu <?php echo htmlspecialchars($m['nama_makanan']); ?>'
+                                        class="w-full h-full object-cover rounded-md cursor-pointer transition-opacity group-hover:opacity-50">
+                                </div>
+                                <div
+                                    class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i onclick="showImagePopup('menu-images/<?php echo htmlspecialchars($m['gambar']); ?>', '<?php echo htmlspecialchars($m['nama_makanan']); ?>')"
+                                        class="fas fa-eye text-3xl text-white bg-black bg-opacity-50 p-3 rounded-full"></i>
+                                </div>
+                            </div>
                         </div>
                         <div class="flex flex-col items-center">
                             <h2 class="text-lg font-semibold mb-2"><?= htmlspecialchars($m['nama_makanan']) ?></h2>
@@ -590,6 +600,18 @@ function semakKuantitiOrders($kod_makanan)
         <i class="fas fa-arrow-up">
         </i>
     </button>
+
+        <!-- Image Popup Modal -->
+        <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="relative max-w-2xl mx-auto p-4">
+            <button onclick="closeImagePopup()"
+                class="absolute top-0 right-0 -mt-[14.5px] -mr-[14px] text-white text-3xl font-bold hover:text-gray-300">&times;</button>
+            <div class="max-h-[70vh] max-w-[600px]">
+                <img id="popupImage" src="" alt="" class="w-full h-[70%] rounded-md object-contain">
+            </div>
+            <p id="imageCaption" class="text-white text-center mt-4 text-lg"></p>
+        </div>
+    </div>
 
     <script>
         // script untuk butang scroll ke atas
@@ -793,6 +815,38 @@ function semakKuantitiOrders($kod_makanan)
         })
     </script>
     <script>
+        function showImagePopup(imageSrc, caption) {
+            const modal = document.getElementById('imageModal');
+            const popupImage = document.getElementById('popupImage');
+            const imageCaption = document.getElementById('imageCaption');
+
+            popupImage.src = imageSrc;
+            imageCaption.textContent = caption;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // Tutup modal bila klik di luar gambar
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeImagePopup();
+                }
+            }
+        }
+
+        function closeImagePopup() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Tutup modal dengan kekunci ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImagePopup();
+            }
+        });
+    </script>
+    <script>
         // script untuk tambah kuantiti tempahan ke dalam file session
         function updateQuantity(menuId, action) {
             const quantityElement = document.getElementById(`quantity-${menuId}`);
@@ -803,7 +857,7 @@ function semakKuantitiOrders($kod_makanan)
             } else if (action === 'decrease' && quantity > 1) {
                 quantity--;
             }
-            quantityElement.textContent = quantity;  // set nombor kuantiti baru ke text
+            quantityElement.textContent = quantity; // set nombor kuantiti baru ke text
         }
 
         function addToCartWithQuantity(menuId) {
