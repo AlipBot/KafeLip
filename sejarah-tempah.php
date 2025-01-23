@@ -354,8 +354,8 @@ $laksql = mysqli_query($condb, $sql);
                     <i class="fab fa-twitter">
                     </i>
                 </a>
-                <a class="text-[#4A7C59]" href="#">
-                    <i class="fab fa-instagram">
+                <a class="text-[#4A7C59]" href="https://www.instagram.com/alipje29/#">
+                <i class="fab fa-instagram">
                     </i>
                 </a>
             </div>

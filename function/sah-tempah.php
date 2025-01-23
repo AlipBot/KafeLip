@@ -1,12 +1,12 @@
 <?php
 //―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
-include("function/autoKeluar.php");
-include('function/connection.php');
+include("autoKeluar.php");
+include('connection.php');
 //―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
 #  semak ada session orders 
 if (!isset($_SESSION['orders'])) {
     $_SESSION['info'] = "Cart Anda Kosong";
-    header("Location: menu.php");
+    header("Location: ../menu.php");
     exit();
 } else {
     # dapatkan bilangan setiap elemen
@@ -42,6 +42,6 @@ if (!isset($_SESSION['orders'])) {
     }
     # Memadam nilai pembolehubah session
     unset($_SESSION['orders']);
-    header("Location: resit.php?tarikh=$tarikh");
+    header("Location: ../resit.php?tarikh=$tarikh");
     exit();
 }

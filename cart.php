@@ -361,7 +361,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         <i class="fab fa-twitter">
                         </i>
                     </a>
-                    <a class="text-[#4A7C59]" href="#">
+                    <a class="text-[#4A7C59]" href="https://www.instagram.com/alipje29/#">
                         <i class="fab fa-instagram">
                         </i>
                     </a>
@@ -520,7 +520,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.success) {
-                                        window.location.href = 'sah-tempah.php';
+                                        window.location.href = 'function/sah-tempah.php';
                                     } else {
                                         notiferror.play();
                                         Toast.fire({
