@@ -19,11 +19,31 @@
 <a href="https://github.com/AlipBot/KafeLip/graphs/commit-activity"><img height="20" src="https://img.shields.io/badge/Maintained-No-red.svg"></a>&nbsp;&nbsp;
 </p>
 
+* ## Version ⚙️
+AppServ Open Project - 9.3.0 for Windows
+
+PHP 7.3.10
+
+phpMyAdmin Database Manager Version 4.9.1
+
+Apache Web Server Version 2.4.41
+
+PHP Script Language Version 7.3.10
+
+MySQL Database Version 8.0.17
 
 * ## SETUP DATABASE ⚙️
  Edit user and password database kat fail <a href="https://github.com/AlipBot/KafeLip/blob/main/function/connection.php">connection.php</a>
  ### JADUAL ERD
-[![Product Name Screen Shot][]](https://example.com)
+[![ERD](lib/readme/ERD.png)](lib/readme/kafelip.sql)
+
+import sql <a href="lib/readme/kafelip.sql">kafelip.sql</a>
+
+* ## Screenshot
+  [![HOME](lib/readme/home.png)](lib/readme/home.png)
+  [![MENU](lib/readme/menu.png)](lib/readme/menu.png)
+  [![PANEL](lib/readme/panel.png)](lib/readme/panel.png)
+
 
 
 * ## Senarai Ciri - Ciri 💡
