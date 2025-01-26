@@ -21,60 +21,51 @@
 
 
 * ## SETUP DATABASE ⚙️
- Edit user and password database kat fail <a href="https://github.com/AlipBot/KafeLip/blob/main/function/connection.php">connection.php</a>
- ### JADUAL ERD
-[![Product Name Screen Shot][]](https://example.com)
+file connect to db``connection.js``
+ERD 
 
-
-* ## Senarai Ciri - Ciri 💡
-
-| Ciri - Ciri Sistem Umum |🌱|
-| ------------- | ------------- |
-| SweetAlert2  |✔️|
-| Sound Alert |✔️|
-| Auto Padam Fail Gambar Menu |✔️|
-| Auto Log Out Sistem Admin or User |✔️|
+* ## FEATURE LIST 💡
   
-| Ciri - Ciri Sistem Akaun |🌱|
+  
+| FEATURE MY SCRIPT |🌱|
 | ------------- | ------------- |
-| Log Masuk |✔️|
-| Daftar Masuk |✔️|
-| Email dan No.Tel Log Masuk |✔️|
-| Simpan Data Login  |✔️|
-| Tukar Kata Laluan |✔️|
-| Tukar Email  |✔️|
-| Tukar Nama |✔️|
-| Tukar No.Tel |✔️|
-| Padam Akaun |✔️|
+| Login |✔️|
+| Sing Up  |✔️|
+| NO TEMP Email |✔️|
+| Anti Spam Email  |✔️|
+| Verification Email |✔️|
+| Change Password  |✔️|
+| DATABASE |✔️|
+| Limit Apikey And Auto Reset |✔️|
+| Anti Error |✔️|
 
   
-
-| Ciri - Ciri Sistem Tempahan Pengguna |🌱|
-| ------------- | ------------- |
-| Cart |✔️|
-| Menu |✔️|
-| Sejarah Tempahan  |✔️|
-| Batal Tempahan |✔️|
-| Resit  |✔️|
-| Semak Resit |✔️|
-| Kuantiti Makanan  |✔️|
-| Profil |✔️|
-| Akaun  |✔️|
-
 
 | Ciri - Ciri Sistem Tempahan Admin |🌱|
 | ------------- | ------------- |
-| Panel Admin |✔️|
-| Laporan Tempahan Makanan Secara Langsung |✔️|
-| Sound Alert  |✔️|
-| Senarai Pengguna |✔️|
-| Senarai Makanan  |✔️|
-| Sejarah Laporan |✔️|
-| Statistik  |✔️|
-| Langsung Data Kemaskini Graf |✔️|
+| Dowloader |✔️|
+| Text Pro  |✔️|
+| Photooxy  |✔️|
+| Sound Of Text  |✔️|
+| Search  |✔️|
+| Random Gambar  |✔️|
+| Game  |✔️|
+| Maker |✔️|
+| Link Short  |✔️|
+| Information |✔️|
+| Tools  |✔️|
+| Islamic  |✔️|
 
 
 
 
+
+
+
+## ``Credit 💳 Script``
+
+<img src="https://avatars.githubusercontent.com/AlipBot" width="200" height="200">
+
+[`AlipBot`](https://github.com/AlipBot)<br>
 
 
