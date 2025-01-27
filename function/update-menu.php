@@ -17,13 +17,6 @@ if(!empty($_POST)){
         exit();
     }
 
-    $pilih = mysqli_query($condb, "select* from makanan where kod_makanan='" . $id_menu . "'");
-    if (mysqli_num_rows($pilih) == 1) {
-        $_SESSION['error'] = "kod_makanan $id_menu Telah Digunakan. Sila Tukar Lain";
-        header("Location: list-menu.php");
-        exit();
-    }
-
     # Dapatkan data gambar
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === 0) {
         # Mengambil data gambar
