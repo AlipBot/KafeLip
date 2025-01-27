@@ -3,12 +3,19 @@
 include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
 include('../function/connection.php');  # Sambung Ke database
 //――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
+$rekodSehalaman = 10; # Tetapkan bilangan rekod per halaman
 # setkan tarikh harini jika tiada data get parameter 
 if (isset($_GET['tarikh_semasa'])) {
     $tarikhsemasa = $_GET['tarikh_semasa'];
 } else {
     $tarikhsemasa = date("Y-m-d");
 }
+
+# Dapatkan halaman semasa
+$halaman = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
+
+# Kira offset untuk query (formula kira untuk data pertama di halaman data ke berapa perlu bermula)
+$offset = ($halaman - 1) * $rekodSehalaman;
 
 # Query Dapatkan Senarai tarikh yang ada pelanggan buat tempahan
 $sqltarikh = "SELECT DATE(tarikh) AS tarikh, count(*) as bilangan
@@ -26,6 +33,15 @@ $sql = "SELECT t.email,
         WHERE t.tarikh LIKE '%$tarikhsemasa%'
         GROUP BY t.email, t.tarikh
         ORDER BY t.tarikh DESC";
+$laksqltotal = mysqli_query($condb, $sql);
+$jumlahRekod = mysqli_num_rows($laksqltotal);
+
+# Kira jumlah halaman 
+$jumlahHalaman = ceil($jumlahRekod / $rekodSehalaman);
+
+# Tambah LIMIT dan OFFSET pada query utama 
+# limit untuk berapa data je keluar dalam satu halaman dan  offset untuk data ke berapa yang perlu dimula di halaman tersebut
+$sql .= " LIMIT $rekodSehalaman OFFSET $offset";
 $laksql = mysqli_query($condb, $sql);
 
 ?>
@@ -284,6 +300,58 @@ $laksql = mysqli_query($condb, $sql);
                                     <?php } ?>
                                 </tbody>
                             </table>
+                            <div class="pagination-container flex justify-center items-center space-x-2 mt-4">
+                                <?php if ($jumlahHalaman > 1): ?>
+                                    <!-- First Page -->
+                                    <?php if ($halaman > 1): ?>
+                                        <a href="?halaman=1"
+                                            class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <!-- Previous Page -->
+                                    <?php if ($halaman > 1): ?>
+                                        <a href="?halaman=<?= $halaman - 1 ?>"
+                                            class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <!-- Page Numbers -->
+                                    <?php
+                                    $start = max(1, $halaman - 2);
+                                    $end = min($jumlahHalaman, $halaman + 2);
+
+                                    for ($i = $start; $i <= $end; $i++): ?>
+                                        <a href="?halaman=<?= $i ?>"
+                                            class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#428D41] text-white hover:bg-[#68B0AB]' ?> rounded">
+                                            <?= $i ?>
+                                        </a>
+                                    <?php endfor; ?>
+
+                                    <!-- Next Page -->
+                                    <?php if ($halaman < $jumlahHalaman): ?>
+                                        <a href="?halaman=<?= $halaman + 1 ?>"
+                                            class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <!-- Last Page -->
+                                    <?php if ($halaman < $jumlahHalaman): ?>
+                                        <a href="?halaman=<?= $jumlahHalaman ?>"
+                                            class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+
+                            </div>
+                            <!-- Page Info -->
+                            <span class="flex mt-5 justify-center text-gray-600">
+                                Halaman <?= $halaman ?> dari <?= $jumlahHalaman ?> (<?= $jumlahRekod ?> rekod)
+                            </span>
                         </div>
                     </div>
                 </div>

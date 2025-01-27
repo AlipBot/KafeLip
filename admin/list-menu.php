@@ -45,7 +45,7 @@ if (isset($_GET['sort']) && $_GET['sort'] == 'desc') {
 }
 
 # Query untuk kira jumlah rekod
-$sql_total = $sql; #gambung semua sql keapda sql_total
+$sql_total = $sql; # umpukkan nama varible baru sql kepada sql_total
 $result_total = mysqli_query($condb, $sql_total);
 $jumlahRekod = mysqli_num_rows($result_total);
 
@@ -104,11 +104,11 @@ if (isset($_POST['DaftarMenu'])) {
                     harga       = '$harga',
                     gambar      = '$nama_fail_baru'
                 ";
-    $laksana = mysqli_query($condb, $sql_simpan);
+    $laksanamenu = mysqli_query($condb, $sql_simpan);
 
 
     # Pengujian proses menyimpan data 
-    if ($laksana) {
+    if ($laksanamenu) {
         // Copy files gambar ke folder menu-images
         if (!copy($lokasi, "../menu-images/" . $nama_fail_baru)) {
             #jika gagal
