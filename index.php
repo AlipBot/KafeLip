@@ -328,7 +328,7 @@ session_start();
     <footer class="w-full bg-[#FAF3DD] text-black py-6 px-10">
         <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center">
             <div class="mb-4 lg:mb-0">
-                © 2023 KAFELIP. All rights reserved.
+                © 2025 KAFELIP. Semua hak terpelihara.
             </div>
             <div class="flex gap-6">
                 <a class="text-[#4A7C59]" href="#">
@@ -340,7 +340,7 @@ session_start();
                     </i>
                 </a>
                 <a class="text-[#4A7C59]" href="https://www.instagram.com/alipje29/#">
-                <i class="fab fa-instagram">
+                    <i class="fab fa-instagram">
                     </i>
                 </a>
             </div>
