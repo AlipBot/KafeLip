@@ -12,19 +12,24 @@ if (isset($_POST['KemaskiniDataPengguna'])) {
         header("Location: ../admin/list-user.php");
         exit();
     }
-    $pilih = mysqli_query($condb, "select* from pelanggan where notel = '" . $_POST['notel'] . "'");
-    $pilih2 = mysqli_query($condb, "select* from pelanggan where email = '" . $_POST['email'] . "'");
+    if ($_POST['notel'] != $_POST['notel_lama']) {
+        $pilih = mysqli_query($condb, "select* from pelanggan where notel = '" . $_POST['notel'] . "'");
 
-    if (mysqli_num_rows($pilih) == 1 ) {
-        $_SESSION['error'] = "No.Tel $notel teleh digunakan. Sila Tukar No.Tel Lain";
-        header("Location:  ../admin/list-user.php");
-        exit();
-    }elseif(mysqli_num_rows($pilih2) == 1){
-        $_SESSION['error'] = "email $email telah digunakan. Sila Tukar Email Lain";
-        header("Location: ../admin/list-user.php");
-        exit();
-    } 
+        if (mysqli_num_rows($pilih) == 1) {
+            $_SESSION['error'] = "No.Tel " . $_POST['notel'] . " telah digunakan. Sila Tukar No.Tel Lain";
+            header("Location:  ../admin/list-user.php");
+            exit();
+        }
+    }
 
+    if ($_POST['email'] != $_POST['email_lama']) {
+        $pilih2 = mysqli_query($condb, "select* from pelanggan where email = '" . $_POST['email'] . "'");
+        if (mysqli_num_rows($pilih2) == 1) {
+            $_SESSION['error'] = "email " . $_POST['email'] . " telah digunakan. Sila Tukar Email Lain";
+            header("Location: ../admin/list-user.php");
+            exit();
+        }
+    }
     # arahan SQL (query) untuk kemaskini maklumat pelanggan
     $arahan         =   "update pelanggan set
     nama            =   '" . $_POST['nama'] . "' ,

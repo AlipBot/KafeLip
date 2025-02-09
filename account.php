@@ -424,14 +424,14 @@ $m          =   mysqli_fetch_array($laksana);
           </p>
           <div class="space-y-4">
             <div class="flex items-center relative">
-              <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="password" placeholder="Min 8 characters" required type="password" name="password" />
+              <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="password" placeholder="Minimum 8 Askara" required type="password" name="password" />
               <i class="fas fa-eye ml-4 text-gray-500 absolute right-3 cursor-pointer" id="password-icon" onclick="togglePasswordVisibility('password')">
               </i>
             </div>
             <p class="text-red-500 text-sm mt-1 hidden" id="passwordError">
               Kata laluan mestilah 8-12 aksara panjang, mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil dan satu nombor. </p>
             <div class="flex items-center relative">
-              <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="repeat-password" placeholder="Repeat password" required type="password" name="password2" />
+              <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="repeat-password" placeholder="Ulang Kata Laluan Semula" required type="password" name="password2" />
               <i class="fas fa-eye ml-4 text-gray-500 absolute right-3 cursor-pointer" id="repeat-password-icon" onclick="togglePasswordVisibility('repeat-password')">
               </i>
             </div>

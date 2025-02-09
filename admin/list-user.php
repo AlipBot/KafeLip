@@ -63,11 +63,11 @@ if (isset($_POST['upload'])) {
             $pilih = mysqli_query($condb, "select* from pelanggan where notel = '" . $notel . "'");
             $pilih2 = mysqli_query($condb, "select* from pelanggan where email = '" . $email . "'");
 
-            if (mysqli_num_rows($pilih) == 1 ) {
+            if (mysqli_num_rows($pilih) == 1) {
                 $_SESSION['error'] = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
                 header("Location: list-user.php");
                 exit();
-            }elseif(mysqli_num_rows($pilih2) == 1){
+            } elseif (mysqli_num_rows($pilih2) == 1) {
                 $_SESSION['error'] = "email $email di fail txt telah ada di pangkalan data. TUKAR EMAIL DALAM FAIL TXT";
                 header("Location: list-user.php");
                 exit();
@@ -83,7 +83,7 @@ if (isset($_POST['upload'])) {
             $_SESSION['error'] = "notel $notel di fail txt telah ada di pangkalan data. TUKAR NOTEL DALAM FAIL TXT";
             header("Location: list-user.php");
             exit();
-        } elseif(mysqli_num_rows($pilih2) == 1){
+        } elseif (mysqli_num_rows($pilih2) == 1) {
             $_SESSION['error'] = "email $email di fail txt telah ada di pangkalan data. TUKAR EMAIL DALAM FAIL TXT";
             header("Location: list-user.php");
             exit();
@@ -393,7 +393,7 @@ if (isset($_POST['upload'])) {
                                                         class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
                                                         <i class="fas fa-user mr-1"></i> Profil
                                                     </button>
-                                                    <button onclick="updateUser('<?= $m['notel'] ?>')"
+                                                    <button onclick="updateUser('<?= $m['notel'] ?>', '<?= $m['email'] ?>')"
                                                         class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
@@ -476,7 +476,7 @@ if (isset($_POST['upload'])) {
 
         <!-- Footer -->
         <footer class="bg-[#428D41] text-white p-4 text-center bottom-0 w-full">
-        &copy; 2025 KAFELIP. Semua hak terpelihara.
+            &copy; 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 
@@ -501,7 +501,7 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='upload' class="bg-[#428D41] text-white p-2 rounded">Submit</button>
+                    <button type="submit" name='upload' id="uploadMenuBtn" class="bg-[#428D41] text-white p-2 rounded">Submit</button>
                 </div>
             </form>
         </div>
@@ -513,17 +513,20 @@ if (isset($_POST['upload'])) {
             <span onclick="kemaskiniPengguna.style.display = 'none' " class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Kemaskini Pengguna</h2>
             <form id="updateForm" action="../function/update-user.php" method="POST">
+                <input type="hidden" name="nama_lama" id="nama_lama">
                 <input type="hidden" name="notel_lama" id="notel_lama">
+                <input type="hidden" name="email_lama" id="email_lama">
+                <input type="hidden" name="katalaluan_lama" id="katalaluan_lama">
+                <input type="hidden" name="tahap_lama" id="tahap_lama">
+
                 Nama :
                 <input type="text" name="nama" id="nama" class="w-full border p-2 mb-3" required>
                 Email :
                 <input type="text" name="email" id="email" class="w-full border p-2 mb-3" required>
                 Nombor Telefon :
                 <input type="text" name="notel" id="notel" class="w-full border p-2 mb-3" required>
-
                 Kata Laluan :
                 <input type="text" name="katalaluan" id="katalaluan" class="w-full border p-2 mb-3" required>
-
                 Tahap :
                 <select name="tahap" id="tahap" class="w-full border p-2 mb-3">
                     <option value="ADMIN">ADMIN</option>
@@ -531,7 +534,7 @@ if (isset($_POST['upload'])) {
                 </select>
 
                 <div class="flex mt-[20px] justify-center">
-                    <button type="submit" name="KemaskiniDataPengguna"
+                    <button type="submit" name="KemaskiniDataPengguna" id="kemaskiniMenuBtn"
                         class="bg-[#428D41] text-white p-2 rounded">Kemaskini</button>
                 </div>
             </form>
@@ -543,7 +546,71 @@ if (isset($_POST['upload'])) {
         <i class="fas fa-arrow-up">
         </i>
     </button>
-    
+    <script>
+        function semakdataUpload() {
+            const fileInput = document.getElementById('file');
+            const uploadBtn = document.getElementById('uploadMenuBtn');
+
+            if (fileInput && fileInput.files.length > 0) {
+                uploadBtn.disabled = false;
+                uploadBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                uploadBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+            } else {
+                uploadBtn.disabled = true;
+                uploadBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                uploadBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            }
+        }
+
+        document.getElementById('file').addEventListener('change', semakdataUpload);
+
+
+        function semakdataKemaskini() {
+            const namaInput = document.getElementById('nama');
+            const notelInput = document.getElementById('notel');
+            const emailInput = document.getElementById('email');
+            const passInput = document.getElementById('katalaluan');
+            const tahapInput = document.getElementById('tahap');
+            const kemaskiniBtn = document.getElementById('kemaskiniMenuBtn');
+
+            const namaSebelum = document.getElementById('nama_lama').value;
+            const notelSebelum = document.getElementById('notel_lama').value;
+            const emailSebelum = document.getElementById('email_lama').value;
+            const passSebelum = document.getElementById('katalaluan_lama').value;
+            const tahapSebelum = document.getElementById('tahap_lama').value;
+
+            const namaDahTukar = namaInput.value !== namaSebelum;
+            const emailDahTukar = emailInput.value !== emailSebelum;
+            const notelDahTukar = notelInput.value !== notelSebelum;
+            const passDahTukar = passInput.value !== passSebelum;
+            const tahapDahTukar = tahapInput.value !== tahapSebelum;
+
+
+            if ((namaDahTukar || emailDahTukar || notelDahTukar || passDahTukar || tahapDahTukar) &&
+                namaInput.value.trim() !== '' &&
+                notelInput.value.trim() !== '' &&
+                emailInput.value.trim() !== '' &&
+                passInput.value.trim() !== '' &&
+                tahapInput.value.trim() !== '') {
+
+                kemaskiniBtn.disabled = false;
+                kemaskiniBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                kemaskiniBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+            } else {
+                kemaskiniBtn.disabled = true;
+                kemaskiniBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                kemaskiniBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            }
+
+        }
+
+        document.getElementById('nama').addEventListener('input', semakdataKemaskini);
+        document.getElementById('notel').addEventListener('input', semakdataKemaskini);
+        document.getElementById('email').addEventListener('input', semakdataKemaskini);
+        document.getElementById('katalaluan').addEventListener('input', semakdataKemaskini);
+        document.getElementById('tahap').addEventListener('input', semakdataKemaskini);
+    </script>
+
     <script>
         // Show or hide the scroll to top button
         window.onscroll = function() {
@@ -564,7 +631,7 @@ if (isset($_POST['upload'])) {
     <script>
         const kemaskiniPengguna = document.getElementById("kemaskiniPengguna");
 
-        function updateUser(notel) {
+        function updateUser(notel, email) {
             fetch(`../api/get-user.php?notel=${notel}`)
                 .then(response => response.json())
                 .then(data => {
@@ -573,8 +640,15 @@ if (isset($_POST['upload'])) {
                     document.getElementById('notel').value = data.notel;
                     document.getElementById('katalaluan').value = data.password;
                     document.getElementById('tahap').value = data.tahap;
+
                     document.getElementById('notel_lama').value = notel;
+                    document.getElementById('email_lama').value = email;
+                    document.getElementById('nama_lama').value = data.nama;;
+                    document.getElementById('tahap_lama').value = data.tahap;
+                    document.getElementById('katalaluan_lama').value = data.password;
+
                     kemaskiniPengguna.style.display = "block";
+                    semakdataKemaskini()
                 });
         }
 
@@ -618,17 +692,19 @@ if (isset($_POST['upload'])) {
 
         btn.onclick = function() {
             pekerja.style.display = "block";
+            semakdataUpload()
         }
 
         span.onclick = function() {
-            window.location.href = window.location.href;
             pekerja.style.display = "none";
         }
 
         window.onclick = function(event) {
             if (event.target == pekerja) {
-                window.location.href = window.location.href;
                 pekerja.style.display = "none";
+            }
+            if (event.target == kemaskiniPengguna) {
+                kemaskiniPengguna.style.display = "none";
             }
         }
 
@@ -762,14 +838,14 @@ if (isset($_POST['upload'])) {
                     }
                     reader.readAsDataURL(file);
                 } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
-                    // Logik untuk fail txt
-                    dropzone.style.display = 'none';
-                    if (previewContainer) {
-                        previewContainer.style.display = 'flex';
-                        const fileName = document.getElementById('fileName');
-                        if (fileName) {
-                            fileName.textContent = file.name;
-                        }
+                    const fileDisplay = document.getElementById('fileDisplay');
+                    const fileName = document.getElementById('fileName');
+
+                    if (fileDisplay && fileName) {
+                        fileDisplay.classList.remove('hidden');
+                        fileName.textContent = file.name;
+                        dropzone.style.display = 'none';
+                        semakdataUpload();
                     }
                 }
             }
@@ -829,6 +905,9 @@ if (isset($_POST['upload'])) {
                     previewContainer.style.display = 'none';
                     dropzone.style.display = 'block';
                     input.value = ''; // Reset input file
+                    if (inputId === 'file') {
+                            semakdataUpload();
+                        }
                 });
             }
         }

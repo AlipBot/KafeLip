@@ -758,6 +758,7 @@ if (isset($_POST['upload'])) {
 
     <!-- script Cropper.js  -->
     <script src="../lib/js/cropper.min.js"></script>
+    
     <script>
         // Show or hide the scroll to top button
         window.onscroll = function() {
@@ -823,24 +824,9 @@ if (isset($_POST['upload'])) {
         const btnDaftarmenu = document.getElementById("DaftarMenuButton");
         const btn = document.getElementById("uploadButton");
 
-        function updateMenu(kod_menu) {
-            fetch(`../api/get-menu.php?kod_menu=${kod_menu}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('id_menu').value = kod_menu;
-                    document.getElementById('nama_makanan').value = data.nama_makanan;
-                    document.getElementById('harga_makanan').value = data.harga;
-                    // Set original values
-                    document.getElementById('original_nama_makanan').value = data.nama_makanan;
-                    document.getElementById('original_harga_makanan').value = data.harga;
-                    Kemaskinimenu.style.display = "block";
-                    checkUpdateFormCompletion(); // Check initial state
-                });
-        }
-
+       
         btn.onclick = function() {
             menu.style.display = "block";
-
         }
 
         btnDaftarmenu.onclick = function() {
@@ -850,15 +836,12 @@ if (isset($_POST['upload'])) {
 
         window.onclick = function(event) {
             if (event.target == Kemaskinimenu) {
-                window.location.href = window.location.href;
                 Kemaskinimenu.style.display = "none";
             }
             if (event.target == Daftarmenu) {
-                window.location.href = window.location.href;
                 Daftarmenu.style.display = "none";
             }
             if (event.target == menu) {
-                window.location.href = window.location.href;
                 menu.style.display = "none";
             }
 
@@ -1322,143 +1305,7 @@ if (isset($_POST['upload'])) {
         document.getElementById('harga_makanan').addEventListener('input', checkUpdateFormCompletion);
         document.getElementById('gambar').addEventListener('change', checkUpdateFormCompletion);
 
-        // Update dropzone setup to trigger form checks
-        function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
-            const dropzone = document.getElementById(dropzoneId);
-            const input = document.getElementById(inputId);
-            const preview = previewId ? document.getElementById(previewId) : null;
-            const previewContainer = previewContainerId ? document.getElementById(previewContainerId) : null;
-            const closePreview = closePreviewId ? document.getElementById(closePreviewId) : null;
-
-            function showPreview(file) {
-                if (acceptType === 'image/*' && file.type.startsWith('image/')) {
-                    originalFile = file;
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const cropModal = document.getElementById('cropModal');
-                        const cropImage = document.getElementById('cropImage');
-
-                        cropModal.dataset.previewId = previewId;
-                        cropModal.dataset.previewContainerId = previewContainerId;
-                        cropModal.dataset.dropzoneId = dropzoneId;
-                        cropModal.dataset.inputId = inputId;
-
-                        cropModal.style.display = 'block';
-                        cropImage.src = e.target.result;
-
-                        if (cropper) {
-                            cropper.destroy();
-                        }
-
-                        cropper = new Cropper(cropImage, {
-                            aspectRatio: 1,
-                            viewMode: 1,
-                            autoCropArea: 1,
-                            background: false
-                        });
-
-                        if (inputId === 'gambarDaftar') {
-                            checkFormCompletion();
-                        } else if (inputId === 'gambar') {
-                            checkUpdateFormCompletion();
-                        }
-                    }
-                    reader.readAsDataURL(file);
-                } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
-                    const fileDisplay = document.getElementById('fileDisplay');
-                    const fileName = document.getElementById('fileName');
-
-                    if (fileDisplay && fileName) {
-                        fileDisplay.classList.remove('hidden');
-                        fileName.textContent = file.name;
-                        dropzone.style.display = 'none';
-                        checkUploadFormCompletion();
-                    }
-                }
-            }
-
-            // Handle file input change
-            input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
-                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
-                        showPreview(file);
-                    } else {
-                        handleDropzoneError(`Sila pilih fail yang betul: ${acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'}`);
-                        input.value = '';
-                    }
-                }
-            });
-
-            // Prevent default drag behaviors
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, preventDefaults, false);
-                document.body.addEventListener(eventName, preventDefaults, false);
-            });
-
-            // Highlight drop zone when item is dragged over it
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropzone.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, unhighlight, false);
-            });
-
-            function highlight(e) {
-                dropzone.classList.add('dragover');
-            }
-
-            function unhighlight(e) {
-                dropzone.classList.remove('dragover');
-            }
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            // Handle dropped files
-            dropzone.addEventListener('drop', (e) => {
-                const file = e.dataTransfer.files[0];
-                if (file) {
-                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
-                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
-                        // Create a new FileList object
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(file);
-                        input.files = dataTransfer.files;
-                        showPreview(file);
-                    } else {
-                        handleDropzoneError(`Sila pilih fail yang betul: ${acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'}`);
-                    }
-                }
-            });
-
-            // Handle click on dropzone
-            dropzone.addEventListener('click', () => input.click());
-
-            // Handle close preview if exists
-            if (closePreview) {
-                closePreview.addEventListener('click', () => {
-                    if (previewContainer) {
-                        previewContainer.style.display = 'none';
-                        dropzone.style.display = 'block';
-                        input.value = '';
-
-                        // Reset form validation based on input type
-                        if (inputId === 'gambarDaftar') {
-                            checkFormCompletion();
-                        } else if (inputId === 'gambar') {
-                            checkUpdateFormCompletion();
-                        } else if (inputId === 'file') {
-                            checkUploadFormCompletion();
-                        }
-                    }
-                });
-            }
-        }
+        
     </script>
 
 </body>
