@@ -620,11 +620,11 @@ if (isset($_POST['upload'])) {
     <!-- menu -->
     <div id="uploadmenu" class="menu">
         <div class="menu-content">
-            <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
+            <span onclick="uploadmenu.style.display = 'none';" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Muat Naik Menu</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label for="file" class="block text-gray-700">Pilih fail txt :</label>
+                    <label  class="block text-gray-700">Pilih fail txt :</label>
                     <div class="dropzone" id="uploadDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
@@ -651,7 +651,7 @@ if (isset($_POST['upload'])) {
     <!-- Daftar Menu -->
     <div id="DaftarMenu" class="DaftarMenu">
         <div class="DaftarMenu-content">
-            <span onclick="window.location.href = window.location.href;" class="close">&times;</span>
+            <span onclick="DaftarMenu.style.display = 'none';" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Pendaftaran Menu Baru</h2>
             <form action="" method="POST" enctype="multipart/form-data" id="daftarMenuForm">
                 <div class="mb-4">
