@@ -192,9 +192,16 @@ if (isset($_POST['upload'])) {
             transition: all 0.3s ease;
         }
 
-        .dropzone.dragover {
-            background: #e1f5fe;
-            border-color: #2196f3;
+        .dropzone:hover {
+            border-color: #428D41;
+            background: #f0f9f0;
+        }
+
+        .dropzone i {
+            font-size: 2em;
+            color: #666;
+            margin-bottom: 10px;
+            display: block;
         }
 
         .dropzone p {
@@ -202,10 +209,9 @@ if (isset($_POST['upload'])) {
             color: #666;
         }
 
-        .dropzone i {
-            font-size: 2em;
-            color: #666;
-            margin-bottom: 10px;
+        .dropzone.dragover {
+            background: #e1f5fe;
+            border-color: #428D41;
         }
 
         .hidden {
@@ -337,11 +343,12 @@ if (isset($_POST['upload'])) {
                                 <select name="tapis_tahap" class="border p-2 rounded ">
                                     <option value="">Semua</option>
                                     <option value="ADMIN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'ADMIN')
-                                                                echo 'selected'; ?>>Admin</option>
+                                        echo 'selected'; ?>>Admin</option>
                                     <option value="PELANGGAN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'PELANGGAN')
-                                                                    echo 'selected'; ?>>Pelanggan</option>
+                                        echo 'selected'; ?>>Pelanggan</option>
                                 </select>
-                                <button type="submit" class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                                <button type="submit"
+                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
                                 <button type="button" onclick="window.location.href='list-user.php';"
@@ -397,7 +404,8 @@ if (isset($_POST['upload'])) {
                                                         class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
-                                                    <button data-namauser="<?= $m['nama'] ?>" data-id="<?php echo urlencode($m['notel']); ?>"
+                                                    <button data-namauser="<?= $m['nama'] ?>"
+                                                        data-id="<?php echo urlencode($m['notel']); ?>"
                                                         class="delete-btn bg-red-800 text-white py-2 px-6 w-32 rounded  flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
@@ -487,13 +495,17 @@ if (isset($_POST['upload'])) {
             <h2 class="text-2xl font-bold mb-4">Muat Naik Pekerja</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label for="file" class="block text-gray-700">Pilih fail txt :</label>
+                    <label class="block text-gray-700 mb-2">Pilih fail txt :</label>
                     <div class="dropzone" id="uploadDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
-                        <input type="file" id="file" name='data_pengguna' accept=".txt" class="hidden">
+                        <input type="file" 
+                               id="file" 
+                               name="data_pengguna" 
+                               accept=".txt"
+                               class="hidden">
                     </div>
-                    <div id="fileDisplay" class="hidden p-3 bg-gray-100 rounded flex justify-between items-center">
+                    <div id="fileDisplay" class="hidden p-3 bg-gray-100 rounded flex justify-between items-center mt-2">
                         <span id="fileName" class="text-gray-700"></span>
                         <button type="button" id="removeFile" class="text-red-500 hover:text-red-700">
                             <i class="fas fa-times"></i>
@@ -501,7 +513,13 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='upload' id="uploadMenuBtn" class="bg-[#428D41] text-white p-2 rounded">Submit</button>
+                    <button type="submit" 
+                            name="upload" 
+                            id="uploadMenuBtn"
+                            class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" 
+                            disabled>
+                        Submit
+                    </button>
                 </div>
             </form>
         </div>
@@ -547,73 +565,78 @@ if (isset($_POST['upload'])) {
         </i>
     </button>
     <script>
-        function semakdataUpload() {
-            const fileInput = document.getElementById('file');
-            const uploadBtn = document.getElementById('uploadMenuBtn');
+        function setupDropzone() {
+            const dropzone = document.getElementById('uploadDropzone');
+            const input = document.getElementById('file');
+            const fileDisplay = document.getElementById('fileDisplay');
+            const fileName = document.getElementById('fileName');
+            const removeFile = document.getElementById('removeFile');
+            const submitBtn = document.getElementById('uploadMenuBtn');
 
-            if (fileInput && fileInput.files.length > 0) {
-                uploadBtn.disabled = false;
-                uploadBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                uploadBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
-            } else {
-                uploadBtn.disabled = true;
-                uploadBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
-                uploadBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            dropzone.addEventListener('click', () => input.click());
+
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            });
+
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('dragover');
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+                
+                const file = e.dataTransfer.files[0];
+                handleFile(file);
+            });
+
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                handleFile(file);
+            });
+
+            removeFile.addEventListener('click', () => {
+                input.value = '';
+                fileDisplay.classList.add('hidden');
+                dropzone.classList.remove('hidden');
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            });
+
+            function handleFile(file) {
+                if (file) {
+                    if (!file.name.toLowerCase().endsWith('.txt')) {
+                        notiferror.play();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ralat',
+                            text: 'Sila pilih fail .txt sahaja',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Faham'
+                        });
+                        input.value = '';
+                        return;
+                    }
+
+                    fileName.textContent = file.name;
+                    fileDisplay.classList.remove('hidden');
+                    dropzone.classList.add('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                    submitBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                }
             }
         }
 
-        document.getElementById('file').addEventListener('change', semakdataUpload);
-
-
-        function semakdataKemaskini() {
-            const namaInput = document.getElementById('nama');
-            const notelInput = document.getElementById('notel');
-            const emailInput = document.getElementById('email');
-            const passInput = document.getElementById('katalaluan');
-            const tahapInput = document.getElementById('tahap');
-            const kemaskiniBtn = document.getElementById('kemaskiniMenuBtn');
-
-            const namaSebelum = document.getElementById('nama_lama').value;
-            const notelSebelum = document.getElementById('notel_lama').value;
-            const emailSebelum = document.getElementById('email_lama').value;
-            const passSebelum = document.getElementById('katalaluan_lama').value;
-            const tahapSebelum = document.getElementById('tahap_lama').value;
-
-            const namaDahTukar = namaInput.value !== namaSebelum;
-            const emailDahTukar = emailInput.value !== emailSebelum;
-            const notelDahTukar = notelInput.value !== notelSebelum;
-            const passDahTukar = passInput.value !== passSebelum;
-            const tahapDahTukar = tahapInput.value !== tahapSebelum;
-
-
-            if ((namaDahTukar || emailDahTukar || notelDahTukar || passDahTukar || tahapDahTukar) &&
-                namaInput.value.trim() !== '' &&
-                notelInput.value.trim() !== '' &&
-                emailInput.value.trim() !== '' &&
-                passInput.value.trim() !== '' &&
-                tahapInput.value.trim() !== '') {
-
-                kemaskiniBtn.disabled = false;
-                kemaskiniBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                kemaskiniBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
-            } else {
-                kemaskiniBtn.disabled = true;
-                kemaskiniBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
-                kemaskiniBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
-            }
-
-        }
-
-        document.getElementById('nama').addEventListener('input', semakdataKemaskini);
-        document.getElementById('notel').addEventListener('input', semakdataKemaskini);
-        document.getElementById('email').addEventListener('input', semakdataKemaskini);
-        document.getElementById('katalaluan').addEventListener('input', semakdataKemaskini);
-        document.getElementById('tahap').addEventListener('input', semakdataKemaskini);
+        document.addEventListener('DOMContentLoaded', setupDropzone);
     </script>
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -690,16 +713,15 @@ if (isset($_POST['upload'])) {
         const btn = document.getElementById("uploadButton");
         const span = document.getElementsByClassName("close")[0];
 
-        btn.onclick = function() {
+        btn.onclick = function () {
             pekerja.style.display = "block";
-            semakdataUpload()
         }
 
-        span.onclick = function() {
+        span.onclick = function () {
             pekerja.style.display = "none";
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == pekerja) {
                 pekerja.style.display = "none";
             }
@@ -714,7 +736,7 @@ if (isset($_POST['upload'])) {
         const notifwarning = new Audio('../lib/audio/warning.mp3'); // Path fail audio amaran
 
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
                 notifsuccess.play();
@@ -723,7 +745,7 @@ if (isset($_POST['upload'])) {
                     title: '<?php echo $_SESSION['success']; ?>',
                     showConfirmButton: false,
                     timer: 1500
-                }).then(() => {});
+                }).then(() => { });
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
@@ -735,7 +757,7 @@ if (isset($_POST['upload'])) {
                     title: '<?php echo $_SESSION['error']; ?>',
                     showConfirmButton: false,
                     timer: 1500
-                }).then(() => {});
+                }).then(() => { });
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
 
@@ -743,7 +765,7 @@ if (isset($_POST['upload'])) {
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const id = this.dataset.id;
                     const nama = this.dataset.namauser;
@@ -780,7 +802,7 @@ if (isset($_POST['upload'])) {
 
             // Form validation dengan SweetAlert
             document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function (e) {
                     // Contoh validasi untuk fail
                     const fileInput = this.querySelector('input[type="file"]');
                     if (fileInput && fileInput.files.length > 0) {
@@ -816,106 +838,6 @@ if (isset($_POST['upload'])) {
                 confirmButtonText: 'Faham',
             });
         }
-
-        // Update dropzone error handling
-        function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
-            const dropzone = document.getElementById(dropzoneId);
-            const input = document.getElementById(inputId);
-            const previewContainer = previewContainerId ? document.getElementById(previewContainerId) : null;
-            const closePreview = closePreviewId ? document.getElementById(closePreviewId) : null;
-
-            function showPreview(file) {
-                if (acceptType === 'image/*' && file.type.startsWith('image/')) {
-                    // Logik untuk preview gambar
-                    const reader = new FileReader();
-                    reader.onload = function() {
-                        const preview = document.getElementById(previewId);
-                        if (previewContainer) {
-                            previewContainer.style.display = 'flex';
-                        }
-                        preview.src = reader.result;
-                        dropzone.style.display = 'none';
-                    }
-                    reader.readAsDataURL(file);
-                } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
-                    const fileDisplay = document.getElementById('fileDisplay');
-                    const fileName = document.getElementById('fileName');
-
-                    if (fileDisplay && fileName) {
-                        fileDisplay.classList.remove('hidden');
-                        fileName.textContent = file.name;
-                        dropzone.style.display = 'none';
-                        semakdataUpload();
-                    }
-                }
-            }
-
-            // Handle file input change
-            input.addEventListener('change', (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    const file = e.target.files[0];
-                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
-                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
-                        showPreview(file);
-                    } else {
-                        handleDropzoneError('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
-                        input.value = '';
-                    }
-                }
-            });
-
-            // Handle drag and drop
-            dropzone.addEventListener('click', () => input.click());
-
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, preventDefaults, false);
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropzone.addEventListener(eventName, () => {
-                    dropzone.classList.add('dragover');
-                });
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, () => {
-                    dropzone.classList.remove('dragover');
-                });
-            });
-
-            dropzone.addEventListener('drop', (e) => {
-                const file = e.dataTransfer.files[0];
-                if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
-                    (acceptType === 'image/*' && file.type.startsWith('image/'))) {
-                    input.files = e.dataTransfer.files;
-                    showPreview(file);
-                } else {
-                    handleDropzoneError('Sila pilih fail yang betul: ' + (acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'));
-                }
-            });
-
-            // Handle close preview button
-            if (closePreview) {
-                closePreview.addEventListener('click', () => {
-                    previewContainer.style.display = 'none';
-                    dropzone.style.display = 'block';
-                    input.value = ''; // Reset input file
-                    if (inputId === 'file') {
-                            semakdataUpload();
-                        }
-                });
-            }
-        }
-
-        // Setup semua dropzone apabila dokumen siap
-        document.addEventListener('DOMContentLoaded', () => {
-            setupDropzone('uploadDropzone', 'file', null, 'fileDisplay', 'removeFile', '.txt');
-        });
 
         function SemakProfil(email) {
             let popupWindow = window.open(`semak-profil.php?email=${email}`, 'Profil',
