@@ -575,8 +575,17 @@ if (isset($_POST['upload'])) {
 
             dropzone.addEventListener('click', () => input.click());
 
-            dropzone.addEventListener('dragover', (e) => {
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
                 e.preventDefault();
+                e.stopPropagation();
+            }
+
+            dropzone.addEventListener('dragover', () => {
                 dropzone.classList.add('dragover');
             });
 
@@ -585,11 +594,15 @@ if (isset($_POST['upload'])) {
             });
 
             dropzone.addEventListener('drop', (e) => {
-                e.preventDefault();
                 dropzone.classList.remove('dragover');
-                
                 const file = e.dataTransfer.files[0];
-                handleFile(file);
+                if (file) {
+                    // Buat FileList baru untuk input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    input.files = dataTransfer.files;
+                    handleFile(file);
+                }
             });
 
             input.addEventListener('change', (e) => {
@@ -608,7 +621,9 @@ if (isset($_POST['upload'])) {
 
             function handleFile(file) {
                 if (file) {
-                    if (!file.name.toLowerCase().endsWith('.txt')) {
+                    // Periksa extension fail
+                    const fileName = file.name.toLowerCase();
+                    if (!fileName.endsWith('.txt')) {
                         notiferror.play();
                         Swal.fire({
                             icon: 'error',
@@ -621,7 +636,8 @@ if (isset($_POST['upload'])) {
                         return;
                     }
 
-                    fileName.textContent = file.name;
+                    // Update UI
+                    document.getElementById('fileName').textContent = file.name;
                     fileDisplay.classList.remove('hidden');
                     dropzone.classList.add('hidden');
                     submitBtn.disabled = false;

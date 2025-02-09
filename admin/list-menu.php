@@ -134,10 +134,10 @@ if (isset($_POST['upload'])) {
     # mengambil nama sementara fail
     $namafailsementara = $_FILES['data']['tmp_name'];
     $namafail = $_FILES['data']['name'];
-    $jenisfail = $_FILES['data']['type'];
+    $jenisfail = pathinfo($namafail, PATHINFO_EXTENSION);
 
     # menguji jenis fail dan sail fail 
-    if ($_FILES["data"]["size"] > 0 and $jenisfail == "text/plain") {
+    if ($_FILES["data"]["size"] > 0 and $jenisfail == "txt") {
         # membuka fail yang diambil
         $fail_data = fopen($namafailsementara, "r");
 
