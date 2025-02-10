@@ -2,7 +2,7 @@
 //―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
 include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
 include('../function/connection.php');  # Sambung Ke database
-//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
+//―――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
 # umpukan nilai pemboleh ubah
 $tambahan = ""; # Query untuk pencarian makanan
@@ -284,9 +284,20 @@ if (isset($_POST['upload'])) {
             transition: all 0.3s ease;
         }
 
+        .dropzone:hover {
+            border-color: #428D41;
+            background: #f0f9f0;
+        }
+
         .dropzone.dragover {
             background: #e1f5fe;
-            border-color: #2196f3;
+            border-color: #428D41;
+        }
+
+        /* Tambah style untuk keadaan normal selepas drop */
+        .dropzone:not(.dragover) {
+            border-color: #ccc;
+            background: #f9f9f9;
         }
 
         .dropzone p {
@@ -511,7 +522,8 @@ if (isset($_POST['upload'])) {
                                 <?php if (mysqli_num_rows($laksana) > 0) { ?>
                                     <?php while ($m = mysqli_fetch_assoc($laksana)) { ?>
                                         <tr class='bg-white border-b hover:bg-blue-50'>
-                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['kod_makanan']); ?></td>
+                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['kod_makanan']); ?>
+                                            </td>
                                             <td class='px-8 py-4 flex justify-center items-center'>
                                                 <div class="relative group">
                                                     <div class="w-32 h-32 overflow-hidden">
@@ -526,8 +538,10 @@ if (isset($_POST['upload'])) {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['nama_makanan']); ?></td>
-                                            <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?></td>
+                                            <td class='px-4 py-2 text-center'>
+                                                <?php echo htmlspecialchars($m['nama_makanan']); ?></td>
+                                            <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?>
+                                            </td>
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
                                                     <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')"
@@ -624,7 +638,7 @@ if (isset($_POST['upload'])) {
             <h2 class="text-2xl font-bold mb-4">Muat Naik Menu</h2>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
-                    <label  class="block text-gray-700">Pilih fail txt :</label>
+                    <label class="block text-gray-700">Pilih fail txt :</label>
                     <div class="dropzone" id="uploadDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
@@ -656,9 +670,12 @@ if (isset($_POST['upload'])) {
             <form action="" method="POST" enctype="multipart/form-data" id="daftarMenuForm">
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
-                    ID Menu :<input type="text" name='kod_makanan' id="kod_makanan" class="w-full border p-2 mb-3" required>
-                    Nama Menu : <input type="text" name='nama_makanan' id="nama_makanan_daftar" class="w-full border p-2 mb-3" required>
-                    Harga : <input type='number' name='harga' id="harga_daftar" step='0.01' class="w-full border p-2 mb-3" required>
+                    ID Menu :<input type="text" name='kod_makanan' id="kod_makanan" class="w-full border p-2 mb-3"
+                        required>
+                    Nama Menu : <input type="text" name='nama_makanan' id="nama_makanan_daftar"
+                        class="w-full border p-2 mb-3" required>
+                    Harga : <input type='number' name='harga' id="harga_daftar" step='0.01'
+                        class="w-full border p-2 mb-3" required>
                     <label class="block text-black">Sila Pilih Gambar Menu : </label>
 
                     <!-- Container untuk preview gambar -->
@@ -677,7 +694,8 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" name='DaftarMenu' id="daftarMenuBtn" class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>Daftar</button>
+                    <button type="submit" name='DaftarMenu' id="daftarMenuBtn"
+                        class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>Daftar</button>
                 </div>
             </form>
         </div>
@@ -758,10 +776,10 @@ if (isset($_POST['upload'])) {
 
     <!-- script Cropper.js  -->
     <script src="../lib/js/cropper.min.js"></script>
-    
+
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -795,7 +813,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function() {
+            reader.onload = function () {
                 var imgElement = document.getElementById('preview');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -808,7 +826,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function() {
+            reader.onload = function () {
                 var imgElement = document.getElementById('preview_kemas');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -824,17 +842,17 @@ if (isset($_POST['upload'])) {
         const btnDaftarmenu = document.getElementById("DaftarMenuButton");
         const btn = document.getElementById("uploadButton");
 
-       
-        btn.onclick = function() {
+
+        btn.onclick = function () {
             menu.style.display = "block";
         }
 
-        btnDaftarmenu.onclick = function() {
+        btnDaftarmenu.onclick = function () {
             Daftarmenu.style.display = "block";
         }
 
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == Kemaskinimenu) {
                 Kemaskinimenu.style.display = "none";
             }
@@ -852,7 +870,7 @@ if (isset($_POST['upload'])) {
         const notifinfo = new Audio('../lib/audio/info.mp3'); //  Path fail audio info
         const notifwarning = new Audio('../lib/audio/warning.mp3'); // Path fail audio amaran
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
                 notifsuccess.play();
@@ -883,7 +901,7 @@ if (isset($_POST['upload'])) {
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const id = this.dataset.id;
                     const nama_makanan = this.dataset.nama_makanan;
@@ -920,7 +938,7 @@ if (isset($_POST['upload'])) {
 
             // Form validation dengan SweetAlert
             document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function (e) {
                     // Contoh validasi untuk fail
                     const fileInput = this.querySelector('input[type="file"]');
                     if (fileInput && fileInput.files.length > 0) {
@@ -957,149 +975,213 @@ if (isset($_POST['upload'])) {
             });
         }
 
-        // Update dropzone error handling
-        function setupDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null, acceptType = null) {
+        // Fungsi untuk upload gambar
+        function setupImageDropzone(dropzoneId, inputId, previewId = null, previewContainerId = null, closePreviewId = null) {
             const dropzone = document.getElementById(dropzoneId);
             const input = document.getElementById(inputId);
             const preview = previewId ? document.getElementById(previewId) : null;
             const previewContainer = previewContainerId ? document.getElementById(previewContainerId) : null;
             const closePreview = closePreviewId ? document.getElementById(closePreviewId) : null;
+            const submitBtn = document.getElementById(inputId === 'gambarDaftar' ? 'daftarMenuBtn' : 'kemaskiniMenuBtn');
 
-            function showPreview(file) {
-                if (acceptType === 'image/*' && file.type.startsWith('image/')) {
-                    originalFile = file;
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const cropModal = document.getElementById('cropModal');
-                        const cropImage = document.getElementById('cropImage');
-
-                        cropModal.dataset.previewId = previewId;
-                        cropModal.dataset.previewContainerId = previewContainerId;
-                        cropModal.dataset.dropzoneId = dropzoneId;
-                        cropModal.dataset.inputId = inputId;
-
-                        cropModal.style.display = 'block';
-                        cropImage.src = e.target.result;
-
-                        if (cropper) {
-                            cropper.destroy();
-                        }
-
-                        cropper = new Cropper(cropImage, {
-                            aspectRatio: 1,
-                            viewMode: 1,
-                            autoCropArea: 1,
-                            background: false
-                        });
-
-                        if (inputId === 'gambarDaftar') {
-                            checkFormCompletion();
-                        } else if (inputId === 'gambar') {
-                            checkUpdateFormCompletion();
-                        }
-                    }
-                    reader.readAsDataURL(file);
-                } else if (acceptType === '.txt' && file.name.endsWith('.txt')) {
-                    const fileDisplay = document.getElementById('fileDisplay');
-                    const fileName = document.getElementById('fileName');
-
-                    if (fileDisplay && fileName) {
-                        fileDisplay.classList.remove('hidden');
-                        fileName.textContent = file.name;
-                        dropzone.style.display = 'none';
-                        checkUploadFormCompletion();
-                    }
+            function resetDropzone() {
+                if (previewContainer) {
+                    previewContainer.style.display = 'none';
                 }
+                dropzone.style.display = 'block';
+                input.value = '';
+                
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
             }
 
-            // Handle file input change
-            input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
-                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
-                        showPreview(file);
-                    } else {
-                        handleDropzoneError(`Sila pilih fail yang betul: ${acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'}`);
-                        input.value = '';
-                    }
+            function handleImage(file) {
+                if (!file.type.startsWith('image/')) {
+                    notiferror.play();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ralat',
+                        text: 'Sila pilih fail gambar sahaja',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Faham'
+                    });
+                    resetDropzone();
+                    return;
                 }
-            });
 
-            // Prevent default drag behaviors
+                originalFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const cropModal = document.getElementById('cropModal');
+                    const cropImage = document.getElementById('cropImage');
+
+                    cropModal.dataset.previewId = previewId;
+                    cropModal.dataset.previewContainerId = previewContainerId;
+                    cropModal.dataset.dropzoneId = dropzoneId;
+                    cropModal.dataset.inputId = inputId;
+
+                    cropModal.style.display = 'block';
+                    cropImage.src = e.target.result;
+
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
+                    cropper = new Cropper(cropImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                        background: false
+                    });
+                }
+                reader.readAsDataURL(file);
+            }
+
+            // Event listeners untuk image dropzone
+            dropzone.addEventListener('click', () => input.click());
+            
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropzone.addEventListener(eventName, preventDefaults, false);
-                document.body.addEventListener(eventName, preventDefaults, false);
             });
 
-            // Highlight drop zone when item is dragged over it
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropzone.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, unhighlight, false);
-            });
-
-            function highlight(e) {
+            dropzone.addEventListener('dragover', (e) => {
+                preventDefaults(e);
                 dropzone.classList.add('dragover');
-            }
+            });
 
-            function unhighlight(e) {
+            dropzone.addEventListener('dragleave', (e) => {
+                preventDefaults(e);
                 dropzone.classList.remove('dragover');
-            }
+            });
 
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            // Handle dropped files
             dropzone.addEventListener('drop', (e) => {
+                preventDefaults(e);
+                dropzone.classList.remove('dragover'); // Pastikan class dragover dibuang selepas drop
                 const file = e.dataTransfer.files[0];
                 if (file) {
-                    if ((acceptType === '.txt' && file.name.endsWith('.txt')) ||
-                        (acceptType === 'image/*' && file.type.startsWith('image/'))) {
-                        // Create a new FileList object
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(file);
-                        input.files = dataTransfer.files;
-                        showPreview(file);
-                    } else {
-                        handleDropzoneError(`Sila pilih fail yang betul: ${acceptType === '.txt' ? '.txt sahaja' : 'gambar sahaja'}`);
-                    }
+                    handleImage(file);
                 }
             });
 
-            // Handle click on dropzone
-            dropzone.addEventListener('click', () => input.click());
+            // Tambah event listener untuk mouse keluar dari dropzone
+            dropzone.addEventListener('mouseleave', () => {
+                dropzone.classList.remove('dragover');
+            });
 
-            // Handle close preview if exists
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                handleImage(file);
+            });
+
             if (closePreview) {
-                closePreview.addEventListener('click', () => {
-                    if (previewContainer) {
-                        previewContainer.style.display = 'none';
-                        dropzone.style.display = 'block';
-                        input.value = '';
-
-                        // Reset form validation based on input type
-                        if (inputId === 'gambarDaftar') {
-                            checkFormCompletion();
-                        } else if (inputId === 'gambar') {
-                            checkUpdateFormCompletion();
-                        } else if (inputId === 'file') {
-                            checkUploadFormCompletion();
-                        }
-                    }
-                });
+                closePreview.addEventListener('click', resetDropzone);
             }
         }
 
-        // Setup semua dropzone apabila dokumen siap
+        // Fungsi untuk upload fail txt
+        function setupMenuUploadDropzone() {
+            const dropzone = document.getElementById('uploadDropzone');
+            const input = document.getElementById('file');
+            const fileDisplay = document.getElementById('fileDisplay');
+            const fileName = document.getElementById('fileName');
+            const removeFile = document.getElementById('removeFile');
+            const submitBtn = document.getElementById('uploadMenuBtn');
+
+            function resetDropzone() {
+                input.value = '';
+                fileDisplay.classList.add('hidden');
+                dropzone.style.display = 'block';
+                fileName.textContent = '';
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            }
+
+            function handleFile(file) {
+                if (file) {
+                    if (!file.name.endsWith('.txt')) {
+                        notiferror.play();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ralat',
+                            text: 'Sila pilih fail .txt sahaja',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Faham'
+                        });
+                        resetDropzone();
+                        return;
+                    }
+
+                    fileName.textContent = file.name;
+                    fileDisplay.classList.remove('hidden');
+                    dropzone.style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                    submitBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                }
+            }
+
+            // Event listeners untuk txt dropzone
+            dropzone.addEventListener('click', () => input.click());
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            dropzone.addEventListener('dragover', (e) => {
+                preventDefaults(e);
+                dropzone.classList.add('dragover');
+            });
+
+            dropzone.addEventListener('dragleave', (e) => {
+                preventDefaults(e);
+                dropzone.classList.remove('dragover');
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                preventDefaults(e);
+                dropzone.classList.remove('dragover'); // Pastikan class dragover dibuang selepas drop
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    input.files = dataTransfer.files;
+                    handleFile(file);
+                }
+            });
+
+            // Tambah event listener untuk mouse keluar dari dropzone
+            dropzone.addEventListener('mouseleave', () => {
+                dropzone.classList.remove('dragover');
+            });
+
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                handleFile(file);
+            });
+
+            removeFile.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                resetDropzone();
+            });
+        }
+
+        // Helper function untuk kedua-dua dropzone
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Initialize dropzones
         document.addEventListener('DOMContentLoaded', () => {
-            setupDropzone('uploadDropzone', 'file', null, 'fileDisplay', 'removeFile', '.txt');
-            setupDropzone('daftarDropzone', 'gambarDaftar', 'preview', 'daftarPreviewContainer', 'closeDaftarPreview', 'image/*');
-            setupDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas', 'previewContainer', 'closePreview', 'image/*');
+            // Setup untuk upload gambar
+            setupImageDropzone('daftarDropzone', 'gambarDaftar', 'preview', 'daftarPreviewContainer', 'closeDaftarPreview');
+            setupImageDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas', 'previewContainer', 'closePreview');
+            
+            // Setup untuk upload menu
+            setupMenuUploadDropzone();
         });
     </script>
 
@@ -1115,7 +1197,7 @@ if (isset($_POST['upload'])) {
             modal.classList.add('flex');
 
             // Tutup modal bila klik di luar gambar
-            modal.onclick = function(e) {
+            modal.onclick = function (e) {
                 if (e.target === modal) {
                     closeImagePopup();
                 }
@@ -1129,7 +1211,7 @@ if (isset($_POST['upload'])) {
         }
 
         // Tutup modal dengan kekunci ESC
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeImagePopup();
             }
@@ -1141,7 +1223,7 @@ if (isset($_POST['upload'])) {
         let originalFile = null;
 
         // Add crop modal handlers
-        document.getElementById('cropDone').addEventListener('click', function() {
+        document.getElementById('cropDone').addEventListener('click', function () {
             if (!cropper) return;
 
             const cropModal = document.getElementById('cropModal');
@@ -1185,7 +1267,7 @@ if (isset($_POST['upload'])) {
             }, 'image/jpeg', 0.8); // Specify JPEG format and quality
         });
 
-        document.getElementById('cropCancel').addEventListener('click', function() {
+        document.getElementById('cropCancel').addEventListener('click', function () {
             const cropModal = document.getElementById('cropModal');
             const inputId = cropModal.dataset.inputId;
 
@@ -1227,7 +1309,7 @@ if (isset($_POST['upload'])) {
         document.getElementById('gambarDaftar').addEventListener('change', checkFormCompletion);
 
         // Tambah event listener untuk reset form
-        document.getElementById('closeDaftarPreview').addEventListener('click', function() {
+        document.getElementById('closeDaftarPreview').addEventListener('click', function () {
             document.getElementById('gambarDaftar').value = '';
             checkFormCompletion();
         });
@@ -1304,8 +1386,6 @@ if (isset($_POST['upload'])) {
         document.getElementById('nama_makanan').addEventListener('input', checkUpdateFormCompletion);
         document.getElementById('harga_makanan').addEventListener('input', checkUpdateFormCompletion);
         document.getElementById('gambar').addEventListener('change', checkUpdateFormCompletion);
-
-        
     </script>
 
 </body>
