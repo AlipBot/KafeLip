@@ -539,7 +539,8 @@ if (isset($_POST['upload'])) {
                                                 </div>
                                             </td>
                                             <td class='px-4 py-2 text-center'>
-                                                <?php echo htmlspecialchars($m['nama_makanan']); ?></td>
+                                                <?php echo htmlspecialchars($m['nama_makanan']); ?>
+                                            </td>
                                             <td class='px-4 py-2 text-center'>RM <?php echo number_format($m['harga'], 2); ?>
                                             </td>
                                             <td class='px-4 py-2 text-center'>
@@ -729,7 +730,6 @@ if (isset($_POST['upload'])) {
                         <p>Seret gambar ke sini atau klik untuk memilih</p>
                         <input type="file" id="gambar" name="gambar" class="hidden" accept="image/*">
                     </div>
-
                 </div>
                 <div class="flex justify-center">
                     <button type="submit" name='DaftarMenu' id="kemaskiniMenuBtn"
@@ -990,7 +990,7 @@ if (isset($_POST['upload'])) {
                 }
                 dropzone.style.display = 'block';
                 input.value = '';
-                
+
                 submitBtn.disabled = true;
                 submitBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
                 submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
@@ -1010,9 +1010,14 @@ if (isset($_POST['upload'])) {
                     return;
                 }
 
+                // Nyahaktifkan butang submit semasa proses crop
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+
                 originalFile = file;
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const cropModal = document.getElementById('cropModal');
                     const cropImage = document.getElementById('cropImage');
 
@@ -1040,7 +1045,7 @@ if (isset($_POST['upload'])) {
 
             // Event listeners untuk image dropzone
             dropzone.addEventListener('click', () => input.click());
-            
+
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropzone.addEventListener(eventName, preventDefaults, false);
             });
@@ -1124,7 +1129,7 @@ if (isset($_POST['upload'])) {
 
             // Event listeners untuk txt dropzone
             dropzone.addEventListener('click', () => input.click());
-            
+
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropzone.addEventListener(eventName, preventDefaults, false);
             });
@@ -1179,7 +1184,7 @@ if (isset($_POST['upload'])) {
             // Setup untuk upload gambar
             setupImageDropzone('daftarDropzone', 'gambarDaftar', 'preview', 'daftarPreviewContainer', 'closeDaftarPreview');
             setupImageDropzone('kemaskiniDropzone', 'gambar', 'preview_kemas', 'previewContainer', 'closePreview');
-            
+
             // Setup untuk upload menu
             setupMenuUploadDropzone();
         });
@@ -1263,9 +1268,12 @@ if (isset($_POST['upload'])) {
                 // Tambah: Panggil checkFormCompletion selepas crop selesai
                 if (inputId === 'gambarDaftar') {
                     setTimeout(checkFormCompletion, 100); // Slight delay to ensure file is properly set
+                } else if (inputId === 'gambar') {
+                    setTimeout(checkUpdateFormCompletion, 100);
                 }
             }, 'image/jpeg', 0.8); // Specify JPEG format and quality
         });
+
 
         document.getElementById('cropCancel').addEventListener('click', function () {
             const cropModal = document.getElementById('cropModal');
@@ -1313,6 +1321,7 @@ if (isset($_POST['upload'])) {
             document.getElementById('gambarDaftar').value = '';
             checkFormCompletion();
         });
+
     </script>
 
     <script>
@@ -1332,6 +1341,11 @@ if (isset($_POST['upload'])) {
             }
         }
 
+        // Add event listeners for upload menu form
+        document.getElementById('file').addEventListener('change', checkUploadFormCompletion);
+    </script>
+
+    <script>
         // Fungsi untuk memeriksa borang kemaskini menu
         function checkUpdateFormCompletion() {
             const namaInput = document.getElementById('nama_makanan');
@@ -1344,7 +1358,7 @@ if (isset($_POST['upload'])) {
 
             const hasNameChanged = namaInput.value !== originalNama;
             const hasPriceChanged = hargaInput.value !== originalHarga;
-            const hasImageChanged = gambarInput.files.length > 0;
+            const hasImageChanged = gambarInput.files[0];
 
             if ((hasNameChanged || hasPriceChanged || hasImageChanged) &&
                 namaInput.value.trim() !== '' &&
@@ -1360,6 +1374,11 @@ if (isset($_POST['upload'])) {
                 kemaskiniBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
             }
         }
+
+        document.getElementById('closePreview').addEventListener('click', function () {
+            document.getElementById('gambar').value = '';
+            checkUpdateFormCompletion()
+        });
 
         // Modify updateMenu function to set original values
         function updateMenu(kod_menu) {
@@ -1379,8 +1398,7 @@ if (isset($_POST['upload'])) {
                 });
         }
 
-        // Add event listeners for upload menu form
-        document.getElementById('file').addEventListener('change', checkUploadFormCompletion);
+        document.getElementById('gambar').addEventListener('change', checkUpdateFormCompletion);
 
         // Add event listeners for update menu form
         document.getElementById('nama_makanan').addEventListener('input', checkUpdateFormCompletion);
