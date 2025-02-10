@@ -667,6 +667,55 @@ if (isset($_POST['upload'])) {
             document.documentElement.scrollTop = 0;
         }
     </script>
+     <script>
+
+
+        function semakdataKemaskini() {
+            const namaInput = document.getElementById('nama');
+            const notelInput = document.getElementById('notel');
+            const emailInput = document.getElementById('email');
+            const passInput = document.getElementById('katalaluan');
+            const tahapInput = document.getElementById('tahap');
+            const kemaskiniBtn = document.getElementById('kemaskiniMenuBtn');
+
+            const namaSebelum = document.getElementById('nama_lama').value;
+            const notelSebelum = document.getElementById('notel_lama').value;
+            const emailSebelum = document.getElementById('email_lama').value;
+            const passSebelum = document.getElementById('katalaluan_lama').value;
+            const tahapSebelum = document.getElementById('tahap_lama').value;
+
+            const namaDahTukar = namaInput.value !== namaSebelum;
+            const emailDahTukar = emailInput.value !== emailSebelum;
+            const notelDahTukar = notelInput.value !== notelSebelum;
+            const passDahTukar = passInput.value !== passSebelum;
+            const tahapDahTukar = tahapInput.value !== tahapSebelum;
+
+
+            if ((namaDahTukar || emailDahTukar || notelDahTukar || passDahTukar || tahapDahTukar) &&
+                namaInput.value.trim() !== '' &&
+                notelInput.value.trim() !== '' &&
+                emailInput.value.trim() !== '' &&
+                passInput.value.trim() !== '' &&
+                tahapInput.value.trim() !== '') {
+
+                kemaskiniBtn.disabled = false;
+                kemaskiniBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                kemaskiniBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+            } else {
+                kemaskiniBtn.disabled = true;
+                kemaskiniBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                kemaskiniBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            }
+
+        }
+
+        document.getElementById('nama').addEventListener('input', semakdataKemaskini);
+        document.getElementById('notel').addEventListener('input', semakdataKemaskini);
+        document.getElementById('email').addEventListener('input', semakdataKemaskini);
+        document.getElementById('katalaluan').addEventListener('input', semakdataKemaskini);
+        document.getElementById('tahap').addEventListener('input', semakdataKemaskini);
+    </script>
+
     <script>
         const kemaskiniPengguna = document.getElementById("kemaskiniPengguna");
 

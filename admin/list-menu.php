@@ -57,6 +57,12 @@ $jumlahHalaman = ceil($jumlahRekod / $rekodSehalaman);
 $sql .= " LIMIT $rekodSehalaman OFFSET $offset";
 $laksana = mysqli_query($condb, $sql);
 
+// Ubah query untuk dapatkan kod_makanan tertinggi
+$sql_latest = "SELECT MAX(CAST(SUBSTRING(kod_makanan, 3) AS UNSIGNED)) as max_id FROM makanan";
+$result_latest = mysqli_query($condb, $sql_latest);
+$row = mysqli_fetch_assoc($result_latest);
+$next_id = 'R-' . str_pad(($row['max_id'] + 1), 3, '0', STR_PAD_LEFT);
+
 //――――――――――――――――――――――――――――――――――――――― ┏  KAWALAN POST  ┓ ――――――――――――――――――――――――――――――――――――――― \\
 #jika post daftarmenu wujud atau button daftar menu ditekan
 if (isset($_POST['DaftarMenu'])) {
@@ -395,6 +401,18 @@ if (isset($_POST['upload'])) {
             margin-top: 1rem;
             text-align: center;
         }
+
+        .error-input {
+            border-color: red !important;
+            background-color: #fff2f2 !important;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.8rem;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+        }
     </style>
 
 </head>
@@ -671,8 +689,11 @@ if (isset($_POST['upload'])) {
             <form action="" method="POST" enctype="multipart/form-data" id="daftarMenuForm">
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
-                    ID Menu :<input type="text" name='kod_makanan' id="kod_makanan" class="w-full border p-2 mb-3"
-                        required>
+                    ID Menu :
+                    <input type="text" name='kod_makanan' id="kod_makanan" class="w-full border p-2 mb-3"
+                        value="<?php echo $next_id; ?>" required>
+                    <span id="kod_makanan_error" class="error-message hidden">ID Menu telah digunakan. Sila guna kod
+                        menu yang lain</span><br>
                     Nama Menu : <input type="text" name='nama_makanan' id="nama_makanan_daftar"
                         class="w-full border p-2 mb-3" required>
                     Harga : <input type='number' name='harga' id="harga_daftar" step='0.01'
@@ -1404,6 +1425,28 @@ if (isset($_POST['upload'])) {
         document.getElementById('nama_makanan').addEventListener('input', checkUpdateFormCompletion);
         document.getElementById('harga_makanan').addEventListener('input', checkUpdateFormCompletion);
         document.getElementById('gambar').addEventListener('change', checkUpdateFormCompletion);
+    </script>
+
+    <script>
+        document.getElementById('kod_makanan').addEventListener('input', function () {
+            const kodMakanan = this.value;
+            const errorSpan = document.getElementById('kod_makanan_error');
+
+            // Reset style
+            this.classList.remove('error-input');
+            errorSpan.classList.add('hidden');
+
+            // Check kod_makanan in database
+            fetch(`../api/check-kod-makanan.php?kod_makanan=${kodMakanan}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.wujud) {
+                        this.classList.add('error-input');
+                        errorSpan.classList.remove('hidden');
+                    }
+                    checkFormCompletion(); // Recheck form completion
+                });
+        });
     </script>
 
 </body>
