@@ -499,11 +499,7 @@ if (isset($_POST['upload'])) {
                     <div class="dropzone" id="uploadDropzone">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
-                        <input type="file" 
-                               id="file" 
-                               name="data_pengguna" 
-                               accept=".txt"
-                               class="hidden">
+                        <input type="file" id="file" name="data_pengguna" accept=".txt" class="hidden">
                     </div>
                     <div id="fileDisplay" class="hidden p-3 bg-gray-100 rounded flex justify-between items-center mt-2">
                         <span id="fileName" class="text-gray-700"></span>
@@ -513,11 +509,8 @@ if (isset($_POST['upload'])) {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button type="submit" 
-                            name="upload" 
-                            id="uploadMenuBtn"
-                            class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" 
-                            disabled>
+                    <button type="submit" name="upload" id="uploadMenuBtn"
+                        class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>
                         Submit
                     </button>
                 </div>
@@ -538,22 +531,48 @@ if (isset($_POST['upload'])) {
                 <input type="hidden" name="tahap_lama" id="tahap_lama">
 
                 Nama :
-                <input type="text" name="nama" id="nama" class="w-full border p-2 mb-3" required>
+                <input type="text" name="nama" id="nama" class="w-full border p-2 mb-1" minlength="3" maxlength="50"
+                    oninput="validateForm()" required>
+                <p class="text-red-500 text-sm mb-3 hidden" id="namaError">
+                    Nama mestilah antara 3 hingga 50 aksara
+                </p>
+
                 Email :
-                <input type="text" name="email" id="email" class="w-full border p-2 mb-3" required>
+                <input type="email" name="email" id="email" class="w-full border p-2 mb-1"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" maxlength="50" 
+                    oninput="validateForm()" required>
+                <p class="text-red-500 text-sm mb-3 hidden" id="emailError">
+                    Sila masukkan format email yang sah (contoh: nama@domain.com)
+                </p>
+
                 Nombor Telefon :
-                <input type="text" name="notel" id="notel" class="w-full border p-2 mb-3" required>
+                <input type="tel" name="notel" id="notel" class="w-full border p-2 mb-1"
+                    pattern="^(01)[0-46-9][0-9]{7,8}$" 
+                    oninput="validateForm()" maxlength="11" 
+                    placeholder="Contoh: 0123456789" required>
+                <p class="text-red-500 text-sm mb-3 hidden" id="notelError">
+                    Sila masukkan nombor telefon Malaysia yang sah (10-11 digit)
+                </p>
+
                 Kata Laluan :
-                <input type="text" name="katalaluan" id="katalaluan" class="w-full border p-2 mb-3" required>
+                <input type="text" name="katalaluan" id="katalaluan" class="w-full border p-2 mb-1" 
+                    minlength="8" maxlength="12" oninput="validateForm()" 
+                    placeholder="8-12 aksara" required>
+                <p class="text-red-500 text-sm mb-3 hidden" id="passwordError">
+                    Kata laluan mestilah antara 8 hingga 12 aksara
+                </p>
+
                 Tahap :
-                <select name="tahap" id="tahap" class="w-full border p-2 mb-3">
+                <select name="tahap" id="tahap" class="w-full border p-2 mb-3" onchange="validateForm()">
                     <option value="ADMIN">ADMIN</option>
                     <option value="PELANGGAN">PELANGGAN</option>
                 </select>
 
                 <div class="flex mt-[20px] justify-center">
                     <button type="submit" name="KemaskiniDataPengguna" id="kemaskiniMenuBtn"
-                        class="bg-[#428D41] text-white p-2 rounded">Kemaskini</button>
+                        class="bg-gray-400 text-white p-2 rounded cursor-not-allowed" disabled>
+                        Kemaskini
+                    </button>
                 </div>
             </form>
         </div>
@@ -667,53 +686,87 @@ if (isset($_POST['upload'])) {
             document.documentElement.scrollTop = 0;
         }
     </script>
-     <script>
-
-
-        function semakdataKemaskini() {
-            const namaInput = document.getElementById('nama');
-            const notelInput = document.getElementById('notel');
-            const emailInput = document.getElementById('email');
-            const passInput = document.getElementById('katalaluan');
-            const tahapInput = document.getElementById('tahap');
-            const kemaskiniBtn = document.getElementById('kemaskiniMenuBtn');
-
-            const namaSebelum = document.getElementById('nama_lama').value;
-            const notelSebelum = document.getElementById('notel_lama').value;
-            const emailSebelum = document.getElementById('email_lama').value;
-            const passSebelum = document.getElementById('katalaluan_lama').value;
-            const tahapSebelum = document.getElementById('tahap_lama').value;
-
-            const namaDahTukar = namaInput.value !== namaSebelum;
-            const emailDahTukar = emailInput.value !== emailSebelum;
-            const notelDahTukar = notelInput.value !== notelSebelum;
-            const passDahTukar = passInput.value !== passSebelum;
-            const tahapDahTukar = tahapInput.value !== tahapSebelum;
-
-
-            if ((namaDahTukar || emailDahTukar || notelDahTukar || passDahTukar || tahapDahTukar) &&
-                namaInput.value.trim() !== '' &&
-                notelInput.value.trim() !== '' &&
-                emailInput.value.trim() !== '' &&
-                passInput.value.trim() !== '' &&
-                tahapInput.value.trim() !== '') {
-
-                kemaskiniBtn.disabled = false;
-                kemaskiniBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                kemaskiniBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+    <script>
+        function validateForm() {
+            const nama = document.getElementById('nama');
+            const email = document.getElementById('email');
+            const notel = document.getElementById('notel');
+            const password = document.getElementById('katalaluan');
+            const submitBtn = document.getElementById('kemaskiniMenuBtn');
+            
+            // Get original values for comparison
+            const namaLama = document.getElementById('nama_lama').value;
+            const emailLama = document.getElementById('email_lama').value;
+            const notelLama = document.getElementById('notel_lama').value;
+            const passwordLama = document.getElementById('katalaluan_lama').value;
+            const tahapLama = document.getElementById('tahap_lama').value;
+            
+            // Validation patterns
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+            const phonePattern = /^(01)[0-46-9][0-9]{7,8}$/;
+            
+            // Check each field and show/hide error messages
+            let isValid = true;
+            
+            // Validate nama
+            if (nama.value.length < 3 || nama.value.length > 50) {
+                nama.classList.add('border-red-500');
+                document.getElementById('namaError').classList.remove('hidden');
+                isValid = false;
             } else {
-                kemaskiniBtn.disabled = true;
-                kemaskiniBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
-                kemaskiniBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                nama.classList.remove('border-red-500');
+                document.getElementById('namaError').classList.add('hidden');
             }
-
+            
+            // Validate email
+            if (!emailPattern.test(email.value)) {
+                email.classList.add('border-red-500');
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                email.classList.remove('border-red-500');
+                document.getElementById('emailError').classList.add('hidden');
+            }
+            
+            // Validate phone
+            if (!phonePattern.test(notel.value)) {
+                notel.classList.add('border-red-500');
+                document.getElementById('notelError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                notel.classList.remove('border-red-500');
+                document.getElementById('notelError').classList.add('hidden');
+            }
+            
+            // Validate password
+            if (password.value.length < 8 || password.value.length > 12) {
+                password.classList.add('border-red-500');
+                document.getElementById('passwordError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                password.classList.remove('border-red-500');
+                document.getElementById('passwordError').classList.add('hidden');
+            }
+            
+            // Check if any changes were made
+            const hasChanges = 
+                nama.value !== namaLama ||
+                email.value !== emailLama ||
+                notel.value !== notelLama ||
+                password.value !== passwordLama ||
+                document.getElementById('tahap').value !== tahapLama;
+            
+            // Enable/disable submit button based on validation and changes
+            if (isValid && hasChanges) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                submitBtn.classList.add('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            }
         }
-
-        document.getElementById('nama').addEventListener('input', semakdataKemaskini);
-        document.getElementById('notel').addEventListener('input', semakdataKemaskini);
-        document.getElementById('email').addEventListener('input', semakdataKemaskini);
-        document.getElementById('katalaluan').addEventListener('input', semakdataKemaskini);
-        document.getElementById('tahap').addEventListener('input', semakdataKemaskini);
     </script>
 
     <script>
@@ -736,7 +789,7 @@ if (isset($_POST['upload'])) {
                     document.getElementById('katalaluan_lama').value = data.password;
 
                     kemaskiniPengguna.style.display = "block";
-                    semakdataKemaskini()
+                    validateForm()
                 });
         }
 
@@ -907,6 +960,100 @@ if (isset($_POST['upload'])) {
         function SemakProfil(email) {
             let popupWindow = window.open(`semak-profil.php?email=${email}`, 'Profil',
                 'width=800,height=600,resizable=yes,scrollbars=yes');
+        }
+    </script>
+
+    <script>
+        document.getElementById('notel').addEventListener('input', function () {
+            const phonePattern = /^(01)[0-46-9][0-9]{7,8}$/;
+            const phoneError = document.getElementById('notelError');
+            const phone = this.value;
+
+            if (!phonePattern.test(phone) || phone.length < 10 || phone.length > 11) {
+                this.classList.add('border-red-500');
+                phoneError.classList.remove('hidden');
+
+                // Disable submit button if phone number is invalid
+                document.getElementById('kemaskiniMenuBtn').disabled = true;
+                document.getElementById('kemaskiniMenuBtn').classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+                document.getElementById('kemaskiniMenuBtn').classList.add('bg-gray-400', 'cursor-not-allowed');
+            } else {
+                this.classList.remove('border-red-500');
+                phoneError.classList.add('hidden');
+
+                // Re-enable submit button if phone number is valid
+                validateForm();
+            }
+        });
+    </script>
+
+    <script>
+        function checkNama(input) {
+            const namaError = document.getElementById('namaError');
+            if (input.value.length < 3 || input.value.length > 50) {
+                input.classList.add('border-red-500');
+                namaError.classList.remove('hidden');
+                disableSubmitButton();
+            } else {
+                input.classList.remove('border-red-500');
+                namaError.classList.add('hidden');
+                enableSubmitIfValid();
+            }
+        }
+
+        function checkEmail(input) {
+            const emailError = document.getElementById('emailError');
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!emailPattern.test(input.value) || input.value.length > 50) {
+                input.classList.add('border-red-500');
+                emailError.classList.remove('hidden');
+                disableSubmitButton();
+            } else {
+                input.classList.remove('border-red-500');
+                emailError.classList.add('hidden');
+                enableSubmitIfValid();
+            }
+        }
+
+        function checkPassword(input) {
+            const passwordError = document.getElementById('passwordError');
+            if (input.value.length < 8 || input.value.length > 12) {
+                input.classList.add('border-red-500');
+                passwordError.classList.remove('hidden');
+                disableSubmitButton();
+            } else {
+                input.classList.remove('border-red-500');
+                passwordError.classList.add('hidden');
+                enableSubmitIfValid();
+            }
+        }
+
+        function disableSubmitButton() {
+            const btn = document.getElementById('kemaskiniMenuBtn');
+            btn.disabled = true;
+            btn.classList.remove('bg-[#428D41]', 'hover:bg-[#68B0AB]', 'cursor-pointer');
+            btn.classList.add('bg-gray-400', 'cursor-not-allowed');
+        }
+
+        function enableSubmitIfValid() {
+            const nama = document.getElementById('nama');
+            const email = document.getElementById('email');
+            const notel = document.getElementById('notel');
+            const password = document.getElementById('katalaluan');
+
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const phonePattern = /^(01)[0-46-9][0-9]{7,8}$/;
+
+            if (nama.value.length >= 3 &&
+                nama.value.length <= 50 &&
+                emailPattern.test(email.value) &&
+                email.value.length <= 50 &&
+                phonePattern.test(notel.value) &&
+                password.value.length >= 8 &&
+                password.value.length <= 12) {
+                validateForm();
+            }
         }
     </script>
 

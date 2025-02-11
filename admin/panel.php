@@ -236,11 +236,6 @@ include('../function/connection.php');  # Sambung Ke database
                                 class="text-xl bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded">
                                 <i class="fas fa-expand"></i> Full Screen
                             </button>
-                            <button onclick="playNotificationSound()"
-                                class="text-xl bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
-                                <i class="fas fa-volume-up"></i>
-                                <span class="ml-2">Sound</span>
-                            </button>
                         </div>
                     </div>
                     <div class="text-center text-gray-600 mb-4">
@@ -288,7 +283,7 @@ include('../function/connection.php');  # Sambung Ke database
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -455,7 +450,7 @@ include('../function/connection.php');  # Sambung Ke database
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",

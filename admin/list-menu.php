@@ -57,7 +57,7 @@ $jumlahHalaman = ceil($jumlahRekod / $rekodSehalaman);
 $sql .= " LIMIT $rekodSehalaman OFFSET $offset";
 $laksana = mysqli_query($condb, $sql);
 
-// Ubah query untuk dapatkan kod_makanan tertinggi
+// Function untuk generate kod_makanan baru di borang daftar menu
 $sql_latest = "SELECT MAX(CAST(SUBSTRING(kod_makanan, 3) AS UNSIGNED)) as max_id FROM makanan";
 $result_latest = mysqli_query($condb, $sql_latest);
 $row = mysqli_fetch_assoc($result_latest);
@@ -696,7 +696,7 @@ if (isset($_POST['upload'])) {
                         menu yang lain</span><br>
                     Nama Menu : <input type="text" name='nama_makanan' id="nama_makanan_daftar"
                         class="w-full border p-2 mb-3" required>
-                    Harga : <input type='number' name='harga' id="harga_daftar" step='0.01'
+                    Harga (RM) : <input type='number' name='harga' id="harga_daftar" step='0.01'
                         class="w-full border p-2 mb-3" required>
                     <label class="block text-black">Sila Pilih Gambar Menu : </label>
 
@@ -736,7 +736,7 @@ if (isset($_POST['upload'])) {
                     <input type="hidden" id="original_harga_makanan" name="original_harga_makanan">
                     Nama Menu : <input id="nama_makanan" type="text" name='nama_menu' class="w-full border p-2 mb-3"
                         required>
-                    Harga : <input id="harga_makanan" type='number' name='harga' step='0.01'
+                    Harga (RM) : <input id="harga_makanan" type='number' name='harga' step='0.01'
                         class="w-full border p-2 mb-3" required>
                     <label class="block text-gray-700">Sila Pilih Gambar Menu (jika ingin diubah) : </label>
                     <div class="flex justify-center mb-4 relative" id="previewContainer" style="display: none;">

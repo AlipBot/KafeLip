@@ -138,12 +138,23 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
                         Kata Laluan
                     </label>
                     <div class="relative">
-                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="password" placeholder="Masukkan Kata Laluan Anda" type="password" name='pass' required />
-                        <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" id="togglePassword" type="button">
-                            <i class="fas fa-eye-slash">
-                            </i>
+                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" 
+                               id="password" 
+                               placeholder="Masukkan Kata Laluan Anda (Minimum 8 aksara)" 
+                               type="password" 
+                               name='pass' 
+                               minlength="8"
+                               oninput="checkPassword(this)"
+                               required />
+                        <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" 
+                                id="togglePassword" 
+                                type="button">
+                            <i class="fas fa-eye"></i>
                         </button>
                     </div>
+                    <p class="text-red-500 text-sm mt-1 hidden" id="passwordError">
+                        Kata laluan mestilah sekurang-kurangnya 8 aksara
+                    </p>
                 </div>
                 <div class="flex items-center justify-between mb-4">
                     <a class="text-blue-500 hover:underline" href="#">
@@ -231,6 +242,21 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         })
+
+        function checkPassword(input) {
+            const passwordError = document.getElementById('passwordError');
+            if (input.value.length < 8) {
+                input.classList.add('border-red-500');
+                passwordError.classList.remove('hidden');
+                document.getElementById('submit').disabled = true;
+                document.getElementById('submit').classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                input.classList.remove('border-red-500');
+                passwordError.classList.add('hidden');
+                document.getElementById('submit').disabled = false;
+                document.getElementById('submit').classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
     </script>
 </body>
 

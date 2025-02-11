@@ -39,14 +39,21 @@ if (isset($_POST['DaftarMasuk'])) {
         exit();
     }
 
-    if (strlen($notel) < 10) {
-        $_SESSION['error'] = "NOMBOR TELEFON MESTI 10 KE ATAS";
+    // Pengesahan format nombor telefon Malaysia
+    if (!preg_match("/^(01)[0-46-9][0-9]{7,8}$/", $notel)) {
+        $_SESSION['error'] = "SILA MASUKKAN NOMBOR TELEFON MALAYSIA YANG SAH";
         header("Location: signup.php");
         exit();
     }
 
-    if (strlen($notel) > 15) {
-        $_SESSION['error'] = "NOMBOR TELEFON MESTI TIDAK BOLEH LEBIH 14";
+    if (strlen($notel) < 10) {
+        $_SESSION['error'] = "NOMBOR TELEFON MESTILAH 10 DIGIT KE ATAS";
+        header("Location: signup.php");
+        exit();
+    }
+
+    if (strlen($notel) > 11) {
+        $_SESSION['error'] = "NOMBOR TELEFON TIDAK BOLEH MELEBIHI 11 DIGIT";
         header("Location: signup.php");
         exit();
     }
@@ -127,7 +134,18 @@ if (isset($_POST['DaftarMasuk'])) {
                     <label class="block text-gray-700" for="phone">
                         Nombor Telefon
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="phone" placeholder="Masukkan Nombor Telefon Anda" type="tel" name='notel' required />
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                           id="phone" 
+                           placeholder="Contoh: 0123456789" 
+                           type="tel" 
+                           name='notel' 
+                           pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                           maxlength="11"
+                           required />
+                    <p class="text-red-500 text-sm mt-1 hidden" id="phoneError">
+                        Sila masukkan nombor telefon Malaysia yang sah (Contoh: 0123456789)
+                    </p>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700" for="email">
@@ -145,7 +163,7 @@ if (isset($_POST['DaftarMasuk'])) {
                     <div class="relative">
                         <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="password" placeholder="Masukkan Kata Laluan Anda" type="password" name='pass' required />
                         <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" id="togglePassword" type="button">
-                            <i class="fas fa-eye-slash">
+                            <i class="fas fa-eye">
                             </i>
                         </button>
                     </div>
@@ -160,7 +178,7 @@ if (isset($_POST['DaftarMasuk'])) {
                     <div class="relative">
                         <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" id="confirm-password" placeholder="Sahkan Kata Laluan Anda" type="password" name="pass2" required />
                         <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" id="toggleConfirmPassword" type="button">
-                            <i class="fas fa-eye-slash">
+                            <i class="fas fa-eye">
                             </i>
                         </button>
                     </div>
@@ -241,6 +259,21 @@ if (isset($_POST['DaftarMasuk'])) {
                 this.classList.remove('border-red-500');
                 confirmPasswordError.classList.add('hidden');
                 passwordField.classList.remove('border-red-500');
+            }
+        });
+
+        // Tambah event listener untuk nombor telefon
+        document.getElementById('phone').addEventListener('input', function() {
+            const phonePattern = /^(01)[0-46-9][0-9]{7,8}$/;
+            const phoneError = document.getElementById('phoneError');
+            const phone = this.value;
+
+            if (!phonePattern.test(phone)) {
+                this.classList.add('border-red-500');
+                phoneError.classList.remove('hidden');
+            } else {
+                this.classList.remove('border-red-500');
+                phoneError.classList.add('hidden');
             }
         });
     </script>
