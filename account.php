@@ -138,14 +138,14 @@ if (isset($_POST['KemaskiniPassword'])) {
     exit();
   }
 
-  if (strlen($pass) < 7) {
-    $_SESSION['error'] = "KATA LAUAN MESTI 8 AKSARA KE ATAS";
+  if (strlen($pass) < 8) {
+    $_SESSION['error'] = "KATA LALUAN MESTI 8 AKSARA KE ATAS";
     header("Location: account.php");
     exit();
   }
 
-  if (strlen($pass) > 13) {
-    $_SESSION['error'] = "KATA LAUAN MESTI TIDAK BOLEH LEBIH 12 AKSARA";
+  if (strlen($pass) > 12) {
+    $_SESSION['error'] = "KATA LALUAN MESTI TIDAK BOLEH LEBIH 12 AKSARA";
     header("Location: account.php");
     exit();
   }
@@ -199,9 +199,9 @@ if (isset($_POST['HapusAkaun'])) {
 
 
 # Dapatkan maklumat pelanggan untuk isi kat value di borang kemaskini masing2
-$sql        =   "select* from pelanggan where notel = '" . $_SESSION['notel'] . "' AND email = '" . $_SESSION['email'] . "' LIMIT 1";
-$laksana    =   mysqli_query($condb, $sql);
-$m          =   mysqli_fetch_array($laksana);
+$sql = "select* from pelanggan where notel = '" . $_SESSION['notel'] . "' AND email = '" . $_SESSION['email'] . "' LIMIT 1";
+$laksana = mysqli_query($condb, $sql);
+$m = mysqli_fetch_array($laksana);
 
 
 ?>
@@ -363,10 +363,12 @@ $m          =   mysqli_fetch_array($laksana);
             Kemaskini Nama Baharu
           </p>
           <div class="flex items-center">
-            <input class="border border-gray-300 rounded-lg p-2 flex-grow" required type="text" name="nama" value="<?= $m['nama'] ?>" />
+            <input class="border border-gray-300 rounded-lg p-2 flex-grow" required type="text" name="nama"
+              value="<?= $m['nama'] ?>" />
           </div>
           <div class="flex justify-end">
-            <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg " type="button" name="KemaskiniNama" onclick="Kemaskini('KemaskiniNama')">
+            <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg " type="button" name="KemaskiniNama"
+              onclick="Kemaskini('KemaskiniNama')">
               Kemaskini
             </button>
           </div>
@@ -381,13 +383,15 @@ $m          =   mysqli_fetch_array($laksana);
             Kemaskini Email Baharu
           </p>
           <div class="flex items-center">
-            <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="email" required type="email" name="email" value="<?= $m['email'] ?>" />
+            <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="email" required type="email" name="email"
+              value="<?= $m['email'] ?>" />
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
-            Sila masukkan alamat email yang sah.
+            Sila masukkan alamat email yang sah dan berbeza dengan email sekarang.
           </p>
           <div class="flex justify-end">
-            <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniEmail" type="button" onclick="Kemaskini('KemaskiniEmail')">
+            <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniEmail" type="button"
+              onclick="Kemaskini('KemaskiniEmail')">
               Kemaskini
             </button>
           </div>
@@ -402,13 +406,16 @@ $m          =   mysqli_fetch_array($laksana);
             Kemaskini Nombor Telefon Baharu
           </p>
           <div class="flex items-center">
-            <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="notel" required type="tel" name="notel" value="<?= $m['notel'] ?>" />
+            <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="notel" required type="tel" name="notel"
+              value="<?= $m['notel'] ?>" minlength="10" maxlength="11"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="notelError">
-            Nombor telefon mesti 10-14 digit dan berbeza dari nombor sekarang.
+            Nombor telefon mesti 10-11 digit dan berbeza dari nombor sekarang.
           </p>
           <div class="flex justify-end">
-            <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg " name="KemaskiniNotel" type="button" onclick="Kemaskini('KemaskiniNotel')">
+            <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg " name="KemaskiniNotel" type="button"
+              onclick="Kemaskini('KemaskiniNotel')">
               Kemaskini
             </button>
           </div>
@@ -424,15 +431,21 @@ $m          =   mysqli_fetch_array($laksana);
           </p>
           <div class="space-y-4">
             <div class="flex items-center relative">
-              <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="password" placeholder="Minimum 8 Askara" required type="password" name="password" />
-              <i class="fas fa-eye ml-4 text-gray-500 absolute right-3 cursor-pointer" id="password-icon" onclick="togglePasswordVisibility('password')">
+              <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="password" placeholder="8-12 Aksara"
+                required type="password" name="password" minlength="8" maxlength="12" />
+              <i class="fas fa-eye ml-4 text-gray-500 absolute right-3 cursor-pointer" id="password-icon"
+                onclick="togglePasswordVisibility('password')">
               </i>
             </div>
             <p class="text-red-500 text-sm mt-1 hidden" id="passwordError">
-              Kata laluan mestilah 8-12 aksara panjang, mengandungi sekurang-kurangnya satu huruf besar, satu huruf kecil dan satu nombor. </p>
+              Kata laluan mestilah 8-12 aksara panjang, mengandungi sekurang-kurangnya satu huruf besar, satu huruf
+              kecil dan satu nombor. </p>
             <div class="flex items-center relative">
-              <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="repeat-password" placeholder="Ulang Kata Laluan Semula" required type="password" name="password2" />
-              <i class="fas fa-eye ml-4 text-gray-500 absolute right-3 cursor-pointer" id="repeat-password-icon" onclick="togglePasswordVisibility('repeat-password')">
+              <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="repeat-password"
+                placeholder="Ulang Kata Laluan Semula" required type="password" name="password2" minlength="8"
+                maxlength="12" />
+              <i class="fas fa-eye ml-4 text-gray-500 absolute right-3 cursor-pointer" id="repeat-password-icon"
+                onclick="togglePasswordVisibility('repeat-password')">
               </i>
             </div>
             <p class="text-red-500 text-sm mt-1 hidden" id="confirmPasswordError">
@@ -440,7 +453,8 @@ $m          =   mysqli_fetch_array($laksana);
             </p>
           </div>
           <div class="flex justify-end">
-            <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniPassword" type="button" onclick="Kemaskini('KemaskiniPassword')">
+            <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg" name="KemaskiniPassword" type="button"
+              onclick="Kemaskini('KemaskiniPassword')">
               Kemaskini
             </button>
           </div>
@@ -455,13 +469,15 @@ $m          =   mysqli_fetch_array($laksana);
             Masukkan Email Anda Untuk Memadam Akaun Anda
           </p>
           <div class="flex items-center">
-            <input id="deleteEmail" class="border border-gray-300 rounded-lg p-2 flex-grow" placeholder="Sila ketik <?= $m['email'] ?>" required type="email" name="email" />
+            <input id="deleteEmail" class="border border-gray-300 rounded-lg p-2 flex-grow"
+              placeholder="Sila ketik <?= $m['email'] ?>" required type="email" name="email" />
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="deleteEmailError">
             Sila Masukkan Alamat Email Yang Sah.
           </p>
           <div class="flex justify-end">
-            <button type="button" class="delete-email ml-4 my-5 bg-red-500 text-white px-4 py-2 rounded-lg" onclick="confirmDelete()">
+            <button type="button" class="delete-email ml-4 my-5 bg-red-500 text-white px-4 py-2 rounded-lg"
+              onclick="confirmDelete()">
               Padam
             </button>
           </div>
@@ -485,7 +501,7 @@ $m          =   mysqli_fetch_array($laksana);
           </i>
         </a>
         <a class="text-[#4A7C59]" href="https://www.instagram.com/alipje29/#">
-        <i class="fab fa-instagram">
+          <i class="fab fa-instagram">
           </i>
         </a>
       </div>
@@ -518,7 +534,7 @@ $m          =   mysqli_fetch_array($laksana);
 
   <script>
     // Tunjukan atau sorokkan butang scroll keatas
-    window.onscroll = function() {
+    window.onscroll = function () {
       var scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         scrollToTopBtn.style.display = "block";
@@ -535,7 +551,7 @@ $m          =   mysqli_fetch_array($laksana);
   </script>
   <script>
     //  Function Untuk memamparkan syarat untuk isi borang mengikut jenis data diperlukan 
-    document.getElementById('email').addEventListener('input', function() {
+    document.getElementById('email').addEventListener('input', function () {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const emailError = document.getElementById('emailError');
       if (!emailPattern.test(this.value) || this.value == "<?= $m['email'] ?>") {
@@ -547,7 +563,7 @@ $m          =   mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('deleteEmail').addEventListener('input', function() {
+    document.getElementById('deleteEmail').addEventListener('input', function () {
       const emailUser = "<?= $m['email'] ?>";
       const emailError = document.getElementById('deleteEmailError');
       if (this.value != emailUser) {
@@ -559,7 +575,7 @@ $m          =   mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('password').addEventListener('input', function() {
+    document.getElementById('password').addEventListener('input', function () {
       const confirmPasswordField = document.getElementById('confirm-password');
       const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,12}$/;
       const passwordError = document.getElementById('passwordError');
@@ -579,7 +595,7 @@ $m          =   mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('repeat-password').addEventListener('input', function() {
+    document.getElementById('repeat-password').addEventListener('input', function () {
       const passwordField = document.getElementById('password');
       const confirmPasswordError = document.getElementById('confirmPasswordError');
       if (this.value !== passwordField.value) {
@@ -593,7 +609,7 @@ $m          =   mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('notel').addEventListener('input', function() {
+    document.getElementById('notel').addEventListener('input', function () {
       const notelSekarang = "<?= $m['notel'] ?>";
       const notelError = document.getElementById('notelError');
       const notelValue = this.value.trim();
@@ -639,14 +655,14 @@ $m          =   mysqli_fetch_array($laksana);
     }
 
     // Tambah event listeners untuk setiap form
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       // Validasi nama
       const namaInput = document.querySelector('input[name="nama"]');
       const namaSaveBtn = document.querySelector('button[name="KemaskiniNama"]');
       namaSaveBtn.disabled = true;
       namaSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      namaInput.addEventListener('input', function() {
+      namaInput.addEventListener('input', function () {
         if (validateNama(this.value)) {
           namaSaveBtn.disabled = false;
           namaSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -662,7 +678,7 @@ $m          =   mysqli_fetch_array($laksana);
       emailSaveBtn.disabled = true;
       emailSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      emailInput.addEventListener('input', function() {
+      emailInput.addEventListener('input', function () {
         if (validateEmail(this.value)) {
           emailSaveBtn.disabled = false;
           emailSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -678,7 +694,7 @@ $m          =   mysqli_fetch_array($laksana);
       notelSaveBtn.disabled = true;
       notelSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      notelInput.addEventListener('input', function() {
+      notelInput.addEventListener('input', function () {
         if (validateNotel(this.value)) {
           notelSaveBtn.disabled = false;
           notelSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -746,7 +762,7 @@ $m          =   mysqli_fetch_array($laksana);
       }
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       <?php if (isset($_SESSION['success'])): ?>
         Toast.fire({
           icon: "success",

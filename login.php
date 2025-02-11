@@ -138,17 +138,17 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
                         Kata Laluan
                     </label>
                     <div class="relative">
-                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" 
-                               id="password" 
-                               placeholder="Masukkan Kata Laluan Anda (Minimum 8 aksara)" 
-                               type="password" 
-                               name='pass' 
-                               minlength="8"
-                               oninput="checkPassword(this)"
-                               required />
-                        <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none" 
-                                id="togglePassword" 
-                                type="button">
+                        <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                            id="password"
+                            placeholder="Masukkan Kata Laluan Anda (Minimum 8 aksara)"
+                            type="password"
+                            name='pass'
+                            minlength="8"
+                            oninput="checkPassword(this)"
+                            required />
+                        <button class="absolute inset-y-0 right-0 px-3 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                            id="togglePassword"
+                            type="button">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
@@ -174,7 +174,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
         </div>
     </div>
 
-    
+
     <script>
         // function sorokkan dan tunjukkan kata laluan
         document.getElementById('togglePassword').addEventListener('click', function() {
@@ -185,11 +185,11 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
             this.querySelector('i').classList.toggle('fa-eye-slash');
         });
 
-            // function toast dan popup
-            const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
-            const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
-            const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
-            const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
+        // function toast dan popup
+        const notifsuccess = new Audio('lib/audio/notif.mp3'); // Path fail audio success
+        const notiferror = new Audio('lib/audio/error.mp3'); // Path fail audio ralat
+        const notifinfo = new Audio('lib/audio/info.mp3'); //  Path fail audio info
+        const notifwarning = new Audio('lib/audio/warning.mp3'); // Path fail audio amaran
 
 
         const Toast = Swal.mixin({

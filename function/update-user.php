@@ -39,13 +39,13 @@ if (isset($_POST['KemaskiniDataPengguna'])) {
 
     $password = $_POST['katalaluan'];
 
-    if (strlen($password) < 7) {
+    if (strlen($password) < 8) {
         $_SESSION['error'] = "KATA LAUAN MESTI 8 AKSARA KE ATAS";
         header("Location: ../admin/list-user.php");
         exit();
     }
 
-    if (strlen($password) > 13) {
+    if (strlen($password) > 12) {
         $_SESSION['error'] = "KATA LAUAN MESTI TIDAK BOLEH LEBIH 12 AKSARA";
         header("Location: ../admin/list-user.php");
         exit();

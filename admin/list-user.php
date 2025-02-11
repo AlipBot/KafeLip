@@ -539,25 +539,22 @@ if (isset($_POST['upload'])) {
 
                 Email :
                 <input type="email" name="email" id="email" class="w-full border p-2 mb-1"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" maxlength="50" 
-                    oninput="validateForm()" required>
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" maxlength="50" oninput="validateForm()" required>
                 <p class="text-red-500 text-sm mb-3 hidden" id="emailError">
                     Sila masukkan format email yang sah (contoh: nama@domain.com)
                 </p>
 
                 Nombor Telefon :
                 <input type="tel" name="notel" id="notel" class="w-full border p-2 mb-1"
-                    pattern="^(01)[0-46-9][0-9]{7,8}$" 
-                    oninput="validateForm()" maxlength="11" 
+                    pattern="^(01)[0-46-9][0-9]{7,8}$" oninput="validateForm()" maxlength="11"
                     placeholder="Contoh: 0123456789" required>
                 <p class="text-red-500 text-sm mb-3 hidden" id="notelError">
                     Sila masukkan nombor telefon Malaysia yang sah (10-11 digit)
                 </p>
 
                 Kata Laluan :
-                <input type="text" name="katalaluan" id="katalaluan" class="w-full border p-2 mb-1" 
-                    minlength="8" maxlength="12" oninput="validateForm()" 
-                    placeholder="8-12 aksara" required>
+                <input type="text" name="katalaluan" id="katalaluan" class="w-full border p-2 mb-1" minlength="8"
+                    maxlength="12" oninput="validateForm()" placeholder="8-12 aksara" required>
                 <p class="text-red-500 text-sm mb-3 hidden" id="passwordError">
                     Kata laluan mestilah antara 8 hingga 12 aksara
                 </p>
@@ -693,21 +690,21 @@ if (isset($_POST['upload'])) {
             const notel = document.getElementById('notel');
             const password = document.getElementById('katalaluan');
             const submitBtn = document.getElementById('kemaskiniMenuBtn');
-            
+
             // Get original values for comparison
             const namaLama = document.getElementById('nama_lama').value;
             const emailLama = document.getElementById('email_lama').value;
             const notelLama = document.getElementById('notel_lama').value;
             const passwordLama = document.getElementById('katalaluan_lama').value;
             const tahapLama = document.getElementById('tahap_lama').value;
-            
+
             // Validation patterns
             const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
             const phonePattern = /^(01)[0-46-9][0-9]{7,8}$/;
-            
+
             // Check each field and show/hide error messages
             let isValid = true;
-            
+
             // Validate nama
             if (nama.value.length < 3 || nama.value.length > 50) {
                 nama.classList.add('border-red-500');
@@ -717,7 +714,7 @@ if (isset($_POST['upload'])) {
                 nama.classList.remove('border-red-500');
                 document.getElementById('namaError').classList.add('hidden');
             }
-            
+
             // Validate email
             if (!emailPattern.test(email.value)) {
                 email.classList.add('border-red-500');
@@ -727,7 +724,7 @@ if (isset($_POST['upload'])) {
                 email.classList.remove('border-red-500');
                 document.getElementById('emailError').classList.add('hidden');
             }
-            
+
             // Validate phone
             if (!phonePattern.test(notel.value)) {
                 notel.classList.add('border-red-500');
@@ -737,7 +734,7 @@ if (isset($_POST['upload'])) {
                 notel.classList.remove('border-red-500');
                 document.getElementById('notelError').classList.add('hidden');
             }
-            
+
             // Validate password
             if (password.value.length < 8 || password.value.length > 12) {
                 password.classList.add('border-red-500');
@@ -747,15 +744,15 @@ if (isset($_POST['upload'])) {
                 password.classList.remove('border-red-500');
                 document.getElementById('passwordError').classList.add('hidden');
             }
-            
+
             // Check if any changes were made
-            const hasChanges = 
+            const hasChanges =
                 nama.value !== namaLama ||
                 email.value !== emailLama ||
                 notel.value !== notelLama ||
                 password.value !== passwordLama ||
                 document.getElementById('tahap').value !== tahapLama;
-            
+
             // Enable/disable submit button based on validation and changes
             if (isValid && hasChanges) {
                 submitBtn.disabled = false;
