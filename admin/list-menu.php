@@ -799,6 +799,11 @@ if (isset($_POST['upload'])) {
             <span onclick="Kemaskinimenu.style.display = 'none';" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Kemaskini Menu Baru</h2>
             <form action="../function/update-menu.php" method="POST" enctype="multipart/form-data">
+                <!-- Input tersembunyi untuk parameter URL -->
+                <input type="hidden" name="current_page" value="<?php echo isset($_GET['halaman']) ? $_GET['halaman'] : '1'; ?>">
+                <input type="hidden" name="search_query" value="<?php echo isset($_GET['nama_makanan']) ? htmlspecialchars($_GET['nama_makanan']) : ''; ?>">
+                <input type="hidden" name="sort" value="<?php echo isset($_GET['sort']) ? htmlspecialchars($_GET['sort']) : ''; ?>">
+                
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     <input type="hidden" name="id_menu" id="id_menu">
@@ -994,11 +999,12 @@ if (isset($_POST['upload'])) {
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function (e) {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const id = this.dataset.id;
                     const nama_makanan = this.dataset.nama_makanan;
                     notifwarning.play();
+                    
                     Swal.fire({
                         title: 'Anda pasti?',
                         text: `Anda akan memadam ${nama_makanan} dan tidak dapat memulihkannya!`,
@@ -1010,7 +1016,18 @@ if (isset($_POST['upload'])) {
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = `../function/del-menu.php?id_menu=${id}`;
+                            // Dapatkan parameter URL semasa
+                            const currentPage = new URLSearchParams(window.location.search).get('halaman') || '1';
+                            const searchQuery = new URLSearchParams(window.location.search).get('nama_makanan') || '';
+                            const sort = new URLSearchParams(window.location.search).get('sort') || '';
+                            
+                            // Bina URL dengan parameter
+                            let deleteUrl = `../function/del-menu.php?id_menu=${id}`;
+                            if (currentPage) deleteUrl += `&current_page=${currentPage}`;
+                            if (searchQuery) deleteUrl += `&search_query=${encodeURIComponent(searchQuery)}`;
+                            if (sort) deleteUrl += `&sort=${sort}`;
+                            
+                            window.location.href = deleteUrl;
                         }
                     });
                 });

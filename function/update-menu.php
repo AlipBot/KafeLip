@@ -10,24 +10,41 @@ if (!empty($_POST)) {
     $harga = $_POST['harga'];
     $tambahan = '';
 
+    # Dapatkan parameter URL dari form tersembunyi
+    $redirect_params = [];
+    if (!empty($_POST['current_page'])) {
+        $redirect_params[] = "halaman=" . $_POST['current_page'];
+    }
+    if (!empty($_POST['search_query'])) {
+        $redirect_params[] = "nama_makanan=" . urlencode($_POST['search_query']);
+    }
+    if (!empty($_POST['sort'])) {
+        $redirect_params[] = "sort=" . $_POST['sort'];
+    }
+
+    $redirect_url = "../admin/list-menu.php";
+    if (!empty($redirect_params)) {
+        $redirect_url .= "?" . implode("&", $redirect_params);
+    }
+
     # Data validation : had atas
     if (!is_numeric($harga) or $harga <= 0) {
         $_SESSION['error'] = "Ralat: Sila masukkan harga yang sah";
-        header("Location: ../admin/list-menu.php");
+        header("Location: " . $redirect_url);
         exit();
     }
 
     # Data validation : had atas harga
     if ($harga > 9999.99) {
         $_SESSION['error'] = "Ralat: Harga maksimum adalah RM9999.99";
-        header("Location: ../admin/list-menu.php"); 
+        header("Location: " . $redirect_url); 
         exit();
     }
 
     # Data validation : had atas
     if (strlen($nama_menu) > 30 or strlen($nama_menu) < 3) {
         $_SESSION['error'] = "Maksimum pajang nama 30 sahaja dan minimum 3 aksara";
-        header("Location: ../admin/list-menu.php");
+        header("Location: " . $redirect_url);
         exit();
     }
 
@@ -59,7 +76,7 @@ if (!empty($_POST)) {
         // Copy file gambar ke folder gmenu-images jika gagal hantar toast error
         if (!copy($lokasi, "../menu-images/" . $nama_fail_baru)) {
             $_SESSION['error'] = "Gagal memuat naik gambar";
-            header("Location: ../admin/list-menu.php");
+            header("Location: " . $redirect_url);
             exit();
         }
     }
@@ -75,13 +92,12 @@ if (!empty($_POST)) {
 
     # Pengujian proses menyimpan data 
     if ($laksana) {
-        # berjaya menjalankan query 
         $_SESSION['success'] = "Kemaskini Berjaya";
-        header("Location: ../admin/list-menu.php");
+        header("Location: " . $redirect_url);
         exit();
     } else {
         $_SESSION['error'] = "Kemaskini Gagal: " . mysqli_error($condb);
-        header("Location: ../admin/list-menu.php");
+        header("Location: " . $redirect_url);
         exit();
     }
 }

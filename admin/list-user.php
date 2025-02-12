@@ -557,7 +557,12 @@ if (isset($_POST['upload'])) {
                 <input type="hidden" name="email_lama" id="email_lama">
                 <input type="hidden" name="katalaluan_lama" id="katalaluan_lama">
                 <input type="hidden" name="tahap_lama" id="tahap_lama">
-
+                
+                <!-- input tersembunyi untuk parameter URL -->
+                <input type="hidden" name="current_page" value="<?php echo isset($_GET['halaman']) ? $_GET['halaman'] : '1'; ?>">
+                <input type="hidden" name="search_query" value="<?php echo isset($_GET['nama']) ? htmlspecialchars($_GET['nama']) : ''; ?>">
+                <input type="hidden" name="filter_tahap" value="<?php echo isset($_GET['tapis_tahap']) ? htmlspecialchars($_GET['tapis_tahap']) : ''; ?>">
+                
                 Nama :
                 <input type="text" name="nama" id="nama" class="w-full border p-2 mb-1" minlength="3" maxlength="50"
                     oninput="validateForm()" required>
@@ -925,7 +930,18 @@ if (isset($_POST['upload'])) {
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = `../function/del-user.php?notel=${id}`;
+                            // Dapatkan parameter URL semasa
+                            const currentPage = new URLSearchParams(window.location.search).get('halaman') || '1';
+                            const searchQuery = new URLSearchParams(window.location.search).get('nama') || '';
+                            const filterTahap = new URLSearchParams(window.location.search).get('tapis_tahap') || '';
+                            
+                            // Bina URL dengan parameter
+                            let deleteUrl = `../function/del-user.php?notel=${id}`;
+                            if (currentPage) deleteUrl += `&current_page=${currentPage}`;
+                            if (searchQuery) deleteUrl += `&search_query=${encodeURIComponent(searchQuery)}`;
+                            if (filterTahap) deleteUrl += `&filter_tahap=${filterTahap}`;
+                            
+                            window.location.href = deleteUrl;
                         }
                     });
                 });

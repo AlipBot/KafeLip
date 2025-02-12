@@ -6,6 +6,23 @@ if(!empty($_GET)){
     # memanggil fail connection
     include('connection.php');
 
+    # Dapatkan parameter URL
+    $redirect_params = [];
+    if (!empty($_GET['current_page'])) {
+        $redirect_params[] = "halaman=" . $_GET['current_page'];
+    }
+    if (!empty($_GET['search_query'])) {
+        $redirect_params[] = "nama_makanan=" . urlencode($_GET['search_query']);
+    }
+    if (!empty($_GET['sort'])) {
+        $redirect_params[] = "sort=" . $_GET['sort'];
+    }
+
+    $redirect_url = "../admin/list-menu.php";
+    if (!empty($redirect_params)) {
+        $redirect_url .= "?" . implode("&", $redirect_params);
+    }
+
     # arahan SQL untuk memadam data pengguna berdasarkan id_menu yang dihantar
     $arahan     =   "delete from makanan where kod_makanan='".$_GET['id_menu']."'";
 
@@ -27,11 +44,11 @@ if(!empty($_GET)){
     {
         # jika data berjaya dipadam
         $_SESSION['success'] = "Berjaya padam data";
-        header("Location: ../admin/list-menu.php");
+        header("Location: " . $redirect_url);
         exit();
     } else {
       $_SESSION['error'] = "Kemaskini Gagal: " . mysqli_error($condb);
-      header("Location: ../admin/list-menu.php");
+      header("Location: " . $redirect_url);
       exit();
     }
 } else{

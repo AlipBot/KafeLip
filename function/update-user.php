@@ -68,14 +68,32 @@ if (isset($_POST['KemaskiniDataPengguna'])) {
     where       
     notel           =   '" . $_POST['notel_lama'] . "' ";
 
+    # Dapatkan parameter URL dari form tersembunyi
+    $redirect_params = [];
+
+    if (!empty($_POST['current_page'])) {
+        $redirect_params[] = "halaman=" . $_POST['current_page'];
+    }
+    if (!empty($_POST['search_query'])) {
+        $redirect_params[] = "nama=" . urlencode($_POST['search_query']);
+    }
+    if (!empty($_POST['filter_tahap'])) {
+        $redirect_params[] = "tapis_tahap=" . $_POST['filter_tahap'];
+    }
+
+    $redirect_url = "../admin/list-user.php";
+    if (!empty($redirect_params)) {
+        $redirect_url .= "?" . implode("&", $redirect_params);
+    }
+
     # melaksana dan menyemak proses kemaskini
     if (mysqli_query($condb, $arahan)) {
         $_SESSION['success'] = "Kemaskini Berjaya";
-        header("Location: ../admin/list-user.php");
+        header("Location: " . $redirect_url);
         exit();
     } else {
         $_SESSION['error'] = "Kemaskini Gagal";
-        header("Location: ../admin/list-user.php");
+        header("Location: " . $redirect_url);
         exit();
     }
 } else {
