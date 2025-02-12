@@ -66,6 +66,9 @@ $laksql = mysqli_query($condb, $sql);
     <script src="../lib/js/tailwind.js"></script>
     <link rel="stylesheet" href="../lib/css/sweetalert2.min.css">
     <script src="../lib/js/sweetalert2@11.js"></script>
+    <!-- Tambah CSS dan JS Flatpickr -->
+    <link rel="stylesheet" href="../lib/css/flatpickr.min.css">
+    <script src="../lib/js/flatpickr.js"></script>
     <style>
         .drawer-open {
             transform: translateX(0);
@@ -122,6 +125,84 @@ $laksql = mysqli_query($condb, $sql);
             background-color: #68B0AB;
             color: #fff;
             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Gaya untuk Flatpickr */
+        .flatpickr-calendar {
+            background: #FAF3DD;
+            border: 2px solid #428D41;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .flatpickr-day {
+            color: #333;
+            border-radius: 5px;
+        }
+
+        .flatpickr-day.selected {
+            background: #428D41 !important;
+            border-color: #428D41 !important;
+            color: white !important;
+        }
+
+        .flatpickr-day:hover {
+            background: #A4D153 !important;
+            border-color: #A4D153 !important;
+            color: black !important;
+        }
+
+        .flatpickr-day.disabled {
+            color: #ccc !important;
+            background: #f5f5f5 !important;
+            cursor: not-allowed;
+        }
+
+        .flatpickr-months .flatpickr-month {
+            background: #428D41;
+            color: white;
+        }
+
+        .flatpickr-months .flatpickr-prev-month,
+        .flatpickr-months .flatpickr-next-month {
+            color: white !important;
+            fill: white !important;
+        }
+
+        .flatpickr-months .flatpickr-prev-month:hover,
+        .flatpickr-months .flatpickr-next-month:hover {
+            color: #A4D153 !important;
+            fill: #A4D153 !important;
+        }
+
+        .flatpickr-weekdays {
+            background: #428D41;
+        }
+
+        .flatpickr-weekday {
+            color: white !important;
+            font-weight: bold;
+            background: #428D41;
+        }
+
+        .flatpickr-current-month {
+            color: white;
+            font-weight: bold;
+        }
+
+        .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
+            background-color: #428d41;
+            outline: none;
+            padding: 0
+        }
+
+        .flatpickr-day.today {
+            border: 2px solid #428D41 !important;
+            color: rgb(0, 0, 0) ;
+        }
+
+        .flatpickr-day.today:hover {
+            background: #A4D153 !important;
+            color: black !important;
         }
     </style>
 
@@ -201,21 +282,14 @@ $laksql = mysqli_query($condb, $sql);
                         <span class="font-bold text-lg">Hari: </span>
                         <span id="currentDay" class="font-bold text-lg"></span>
                         <form action="laporan.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
-                            <select name='tarikh_semasa'>
-                                <option value='<?= $tarikhsemasa ?>' class="border rounded p-2 w-2/5">
-                                    <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?>
-                                </option>
-                                <option disabled>Pilih Tarikh Lain Di bawah</option>
-                                <?php while ($mm = mysqli_fetch_array($laktarikh)): ?>
-                                    <option value='<?= $mm['tarikh'] ?>'>
-                                        <?= date_format(date_create($mm['tarikh']), "d/m/Y") ?>
-                                    </option>
-                                <?php endwhile; ?>
-                            </select>
-                            <button type="submit" class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                            <input type="text" id="tarikh_semasa" name="tarikh_semasa" value="<?= $tarikhsemasa ?>"
+                                class="border-2 rounded p-2" placeholder="Pilih Tarikh">
+                            <button type="submit"
+                                class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                 <i class="fas fa-search mr-1"></i> Cari
                             </button>
-                            <button type="button" onclick="window.location.href='laporan.php'" class="bg-red-800 hover:bg-red-600 text-white p-2 rounded flex items-center">
+                            <button type="button" onclick="window.location.href='laporan.php'"
+                                class="bg-red-800 hover:bg-red-600 text-white p-2 rounded flex items-center">
                                 <i class="fas fa-redo mr-1"></i> Reset
                             </button>
                         </form>
@@ -224,19 +298,19 @@ $laksql = mysqli_query($condb, $sql);
                                 Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>
                             <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">
                                 Hari : <?php
-                                        $tarikh = date_create($tarikhsemasa);
-                                        $hari = date_format($tarikh, "l");
-                                        $hari_melayu = [
-                                            'Sunday' => 'Ahad',
-                                            'Monday' => 'Isnin',
-                                            'Tuesday' => 'Selasa',
-                                            'Wednesday' => 'Rabu',
-                                            'Thursday' => 'Khamis',
-                                            'Friday' => 'Jumaat',
-                                            'Saturday' => 'Sabtu'
-                                        ];
-                                        echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
-                                        ?>
+                                $tarikh = date_create($tarikhsemasa);
+                                $hari = date_format($tarikh, "l");
+                                $hari_melayu = [
+                                    'Sunday' => 'Ahad',
+                                    'Monday' => 'Isnin',
+                                    'Tuesday' => 'Selasa',
+                                    'Wednesday' => 'Rabu',
+                                    'Thursday' => 'Khamis',
+                                    'Friday' => 'Jumaat',
+                                    'Saturday' => 'Sabtu'
+                                ];
+                                echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
+                                ?>
                             </span>
                         </div>
                         <!-- Jadual laporan tempahan -->
@@ -259,19 +333,20 @@ $laksql = mysqli_query($condb, $sql);
                                                 <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['email']); ?>
                                                 </td>
                                                 <td class='px-4 py-2 '><?php
-                                                                        $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
+                                                $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
                                               FROM tempahan t
                                               JOIN makanan m ON t.kod_makanan = m.kod_makanan
                                               WHERE t.email = '" . $m['email'] . "'
                                               AND t.tarikh = '" . $m['tarikh'] . "'";
-                                                                        $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
+                                                $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
 
-                                                                        while ($mm = mysqli_fetch_array($lakpaparmenu)) {
-                                                                            echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
-                                                                        }
-                                                                        ?></td>
+                                                while ($mm = mysqli_fetch_array($lakpaparmenu)) {
+                                                    echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
+                                                }
+                                                ?></td>
                                                 <td class='px-4 py-2 text-center'>RM
-                                                    <?php echo htmlspecialchars($m['jumlah_harga_semua']); ?></td>
+                                                    <?php echo htmlspecialchars($m['jumlah_harga_semua']); ?>
+                                                </td>
                                                 <td class='px-4 py-2 text-center'>
                                                     <?php
                                                     $tarikh = date_create($m['tarikh']);
@@ -370,7 +445,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -427,6 +502,45 @@ $laksql = mysqli_query($condb, $sql);
             let popupWindow = window.open(`semak-resit.php?email=${email}&tarikh=${tarikh}`, 'Resit',
                 'width=800,height=600,resizable=yes,scrollbars=yes');
         }
+    </script>
+    <!-- Tambah script untuk setup flatpickr -->
+    <script>
+        // Dapatkan array tarikh yang ada tempahan
+        <?php
+        mysqli_data_seek($laktarikh, 0); // Reset pointer result set
+        $tarikhAda = [];
+        while ($row = mysqli_fetch_array($laktarikh)) {
+            $tarikhAda[] = $row['tarikh'];
+        }
+        ?>
+
+        const tarikhAdaTempahan = <?= json_encode($tarikhAda) ?>;
+
+        // Setup flatpickr
+        flatpickr("#tarikh_semasa", {
+            dateFormat: "Y-m-d",
+            enable: tarikhAdaTempahan,
+            inline: false,
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ["Ahd", "Isn", "Sel", "Rab", "Kha", "Jum", "Sab"],
+                    longhand: ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"]
+                },
+                months: {
+                    shorthand: ["Jan", "Feb", "Mac", "Apr", "Mei", "Jun", "Jul", "Ogo", "Sep", "Okt", "Nov", "Dis"],
+                    longhand: ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"]
+                }
+            },
+            animate: true,
+            // Tambah animasi dan styling
+            onOpen: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add('open');
+            },
+            onClose: function (selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.remove('open');
+            }
+        });
     </script>
 
 </body>

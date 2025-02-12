@@ -59,6 +59,8 @@ $laksql = mysqli_query($condb, $sql);
     <script src="lib/js/tailwind.js"></script>
     <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
     <script src="lib/js/sweetalert2@11.js"></script>
+    <link rel="stylesheet" href="lib/css/flatpickr.min.css">
+    <script src="lib/js/flatpickr.js"></script>
     <style>
         .custom-font {
             font-family: 'Roboto', sans-serif;
@@ -142,6 +144,83 @@ $laksql = mysqli_query($condb, $sql);
             align-items: center;
             width: 100%;
         }
+ /* Gaya untuk Flatpickr */
+ .flatpickr-calendar {
+            background: #FAF3DD;
+            border: 2px solid #428D41;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .flatpickr-day {
+            color: #333;
+            border-radius: 5px;
+        }
+
+        .flatpickr-day.selected {
+            background: #428D41 !important;
+            border-color: #428D41 !important;
+            color: white !important;
+        }
+
+        .flatpickr-day:hover {
+            background: #A4D153 !important;
+            border-color: #A4D153 !important;
+            color: black !important;
+        }
+
+        .flatpickr-day.disabled {
+            color: #ccc !important;
+            background: #f5f5f5 !important;
+            cursor: not-allowed;
+        }
+
+        .flatpickr-months .flatpickr-month {
+            background: #428D41;
+            color: white;
+        }
+
+        .flatpickr-months .flatpickr-prev-month,
+        .flatpickr-months .flatpickr-next-month {
+            color: white !important;
+            fill: white !important;
+        }
+
+        .flatpickr-months .flatpickr-prev-month:hover,
+        .flatpickr-months .flatpickr-next-month:hover {
+            color: #A4D153 !important;
+            fill: #A4D153 !important;
+        }
+
+        .flatpickr-weekdays {
+            background: #428D41;
+        }
+
+        .flatpickr-weekday {
+            color: white !important;
+            font-weight: bold;
+            background: #428D41;
+        }
+
+        .flatpickr-current-month {
+            color: white;
+            font-weight: bold;
+        }
+
+        .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
+            background-color: #428d41;
+            outline: none;
+            padding: 0
+        }
+
+        .flatpickr-day.today {
+            border: 2px solid #428D41 !important;
+            color: rgb(0, 0, 0) ;
+        }
+
+        .flatpickr-day.today:hover {
+            background: #A4D153 !important;
+            color: black !important;
+        }
     </style>
 </head>
 
@@ -203,72 +282,9 @@ $laksql = mysqli_query($condb, $sql);
             </h2>
             <form action="sejarah-tempah.php" method="GET"
                 class="py-5 flex items-center space-x-2 w-full justify-center">
-                <select name='tarikh_semasa' class="border rounded p-2 w-1/4">
-                    <option value='<?= $tarikhsemasa ?>'>
-                        <?php
-                        $hstarikh = date_create($tarikhsemasa);
-                        $hhari = date_format($hstarikh, "l");
-                        switch ($hhari) {
-                            case 'Sunday':
-                                $hhari = "Ahad";
-                                break;
-                            case 'Monday':
-                                $hhari = "Isnin";
-                                break;
-                            case 'Tuesday':
-                                $hhari = "Selasa";
-                                break;
-                            case 'Wednesday':
-                                $hhari = "Rabu";
-                                break;
-                            case 'Thursday':
-                                $hhari = "Khamis";
-                                break;
-                            case 'Friday':
-                                $hhari = "Jumaat";
-                                break;
-                            case 'Saturday':
-                                $hhari = "Sabtu";
-                                break;
-                        }
-                        ?>
-                        <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> (<?= $hhari ?>)
-                    </option>
-                    <option disabled>Pilih Tarikh Lain Di bawah</option>
-                    <?php while ($mm = mysqli_fetch_array($laktarikh)): ?>
-                        <option value='<?= $mm['tarikh'] ?>'>
-                            <?php
-                            $htarikh = date_create($mm['tarikh']);
-                            $hari = date_format($htarikh, "l");
-                            switch ($hari) {
-                                case 'Sunday':
-                                    $hari = "Ahad";
-                                    break;
-                                case 'Monday':
-                                    $hari = "Isnin";
-                                    break;
-                                case 'Tuesday':
-                                    $hari = "Selasa";
-                                    break;
-                                case 'Wednesday':
-                                    $hari = "Rabu";
-                                    break;
-                                case 'Thursday':
-                                    $hari = "Khamis";
-                                    break;
-                                case 'Friday':
-                                    $hari = "Jumaat";
-                                    break;
-                                case 'Saturday':
-                                    $hari = "Sabtu";
-                                    break;
-                            }
-                            ?>
-                            <?= date_format(date_create($mm['tarikh']), "d/m/Y") ?> ( <?= $hari ?> )
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-                <button type="submit" class="bg-[#4A7C59] text-white p-2 rounded flex items-center hover:bg-[#68B0AB]">
+                <input type="text" id="tarikh_semasa" name="tarikh_semasa" value="<?= $tarikhsemasa ?>"
+                    class="border-2 rounded p-2 w-1/4" placeholder="Pilih Tarikh">
+                <button type="submit" class="bg-[#4A7C59] text-white p-2 rounded  flex items-center hover:bg-[#68B0AB]">
                     <i class="fas fa-search mr-1"></i> Cari
                 </button>
                 <a href="sejarah-tempah.php"
@@ -293,10 +309,11 @@ $laksql = mysqli_query($condb, $sql);
                         <tbody>
                             <?php while ($m = mysqli_fetch_array($laksql)):
                                 $tarikh = date_create($m['tarikh']);
-                                ?>
+                            ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
                                     <td class="border-0 shadow-lg px-4 py-2">
-                                        <i class="fas fa-clock text-[#4A7C59]"></i> Masa: <?php echo date_format($tarikh, "g:i:s A") ?> <br>
+                                        <i class="fas fa-clock text-[#4A7C59]"></i> Masa:
+                                        <?php echo date_format($tarikh, "g:i:s A") ?> <br>
                                         <i class="fas fa-clock text-[#4A7C59]"></i> <span class="time-ago"
                                             data-timestamp="<?= date_format($tarikh, 'Y-m-d H:i:s') ?>"></span>
                                     </td>
@@ -355,7 +372,7 @@ $laksql = mysqli_query($condb, $sql);
                     </i>
                 </a>
                 <a class="text-[#4A7C59]" href="https://www.instagram.com/alipje29/#">
-                <i class="fab fa-instagram">
+                    <i class="fab fa-instagram">
                     </i>
                 </a>
             </div>
@@ -369,7 +386,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Tunjukkan dan sorokkan butang scroll up
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -410,7 +427,7 @@ $laksql = mysqli_query($condb, $sql);
         window.onresize = adjustFooter;
 
         // Fungsi untuk mengira masa yang tinggal
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const countdowns = document.querySelectorAll('.countdown');
 
             countdowns.forEach(countdown => {
@@ -451,7 +468,7 @@ $laksql = mysqli_query($condb, $sql);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -492,7 +509,7 @@ $laksql = mysqli_query($condb, $sql);
 
 
         document.querySelectorAll('.batal-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
+            button.addEventListener('click', function(e) {
                 const tarikh = this.dataset.id;
                 e.preventDefault();
                 notifwarning.play();
@@ -534,7 +551,7 @@ $laksql = mysqli_query($condb, $sql);
                 const timestamp = new Date(element.dataset.timestamp);
                 const now = new Date();
                 const diffSeconds = Math.floor((now - timestamp) / 1000);
-                
+
                 let timeAgo;
                 if (diffSeconds < 60) {
                     const seconds = Math.floor((new Date() - new Date(timestamp)) / 1000);
@@ -556,7 +573,7 @@ $laksql = mysqli_query($condb, $sql);
                     const years = Math.floor(diffSeconds / 31536000);
                     timeAgo = years === 1 ? 'Setahun yang lalu' : `${years} tahun yang lalu`;
                 }
-                
+
                 element.textContent = timeAgo;
             });
         }
@@ -564,6 +581,43 @@ $laksql = mysqli_query($condb, $sql);
         // Kemas kini masa setiap saat
         updateTimesAgo();
         setInterval(updateTimesAgo, 1000);
+    </script>
+    <script>
+        // Dapatkan array tarikh yang ada tempahan
+        <?php
+        mysqli_data_seek($laktarikh, 0); // Reset pointer result set
+        $tarikhAda = [];
+        while ($row = mysqli_fetch_array($laktarikh)) {
+            $tarikhAda[] = $row['tarikh'];
+        }
+        ?>
+
+        const tarikhAdaTempahan = <?= json_encode($tarikhAda) ?>;
+
+        // Setup flatpickr
+        flatpickr("#tarikh_semasa", {
+            dateFormat: "Y-m-d",
+            enable: tarikhAdaTempahan,
+            inline: false,
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ["Ahd", "Isn", "Sel", "Rab", "Kha", "Jum", "Sab"],
+                    longhand: ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"]
+                },
+                months: {
+                    shorthand: ["Jan", "Feb", "Mac", "Apr", "Mei", "Jun", "Jul", "Ogo", "Sep", "Okt", "Nov", "Dis"],
+                    longhand: ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"]
+                }
+            },
+            animate: true,
+            onOpen: function(selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add('open');
+            },
+            onClose: function(selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.remove('open');
+            }
+        });
     </script>
 </body>
 
