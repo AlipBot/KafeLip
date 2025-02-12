@@ -18,6 +18,7 @@ if (isset($_POST['KemaskiniDataPengguna'])) {
         header("Location: ../admin/list-user.php");
         exit();
     }
+
     if ($_POST['notel'] != $_POST['notel_lama']) {
         $notel = mysqli_query($condb, "select* from pelanggan where notel = '" . $_POST['notel'] . "'");
         if (mysqli_num_rows($notel) == 1) {
@@ -35,7 +36,12 @@ if (isset($_POST['KemaskiniDataPengguna'])) {
         }
     }
 
-
+    #Jika email lebih daripada 50
+    if (strlen($_POST['email']) > 50) {
+        $_SESSION['error'] = "EMAIL tidak boleh lebih daripada 50 aksara";
+        header("Location: ../admin/list-user.php");
+        exit();
+    }
 
     $password = $_POST['katalaluan'];
 

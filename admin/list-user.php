@@ -268,6 +268,34 @@ if (isset($_POST['upload'])) {
             color: #fff;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        /* Tambah style untuk input */
+        input[type="text"],
+        input[type="number"],
+        input[type="file"] {
+            border-width: 2px;
+        }
+
+        /* Tambah style untuk input search */
+        input[type="text"][name="nama"] {
+            border-width: 2px;
+        }
+
+        /* Style untuk input focus */
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="file"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            border-width: 1px;
+            outline: none;
+            border-color: #3b82f6;
+            /* Warna biru */
+            box-shadow: 0 0 0 1px #3b82f6;
+            /* Tambah shadow untuk efek lebih jelas */
+        }
     </style>
 </head>
 
@@ -339,7 +367,7 @@ if (isset($_POST['upload'])) {
                         <div class="flex items-center justify-between space-x-5">
                             <form action="list-user.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama" placeholder="Carian Nama pengguna"
-                                    value="<?= $_GET['nama'] ?>" class="border rounded p-2 w-2/5">
+                                    value="<?= $_GET['nama'] ?>" class="border rounded-2xl p-2 w-2/5">
                                 <select name="tapis_tahap" class="border p-2 rounded ">
                                     <option value="">Semua</option>
                                     <option value="ADMIN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'ADMIN')

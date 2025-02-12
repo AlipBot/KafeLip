@@ -27,13 +27,13 @@ if (isset($_POST['DaftarMasuk'])) {
         exit();
     }
 
-    if (strlen($password) < 7) {
+    if (strlen($password) < 8) {
         $_SESSION['error'] = "KATA LAUAN MESTI 8 AKSARA KE ATAS";
         header("Location: signup.php");
         exit();
     }
 
-    if (strlen($password) > 13) {
+    if (strlen($password) > 12) {
         $_SESSION['error'] = "KATA LAUAN MESTI TIDAK BOLEH LEBIH 12 AKSARA";
         header("Location: signup.php");
         exit();
@@ -55,6 +55,13 @@ if (isset($_POST['DaftarMasuk'])) {
     if (strlen($notel) > 11) {
         $_SESSION['error'] = "NOMBOR TELEFON TIDAK BOLEH MELEBIHI 11 DIGIT";
         header("Location: signup.php");
+        exit();
+    }
+
+    #Jika email lebih daripada 50
+    if (strlen($email) > 50) {
+        $_SESSION['error'] = "EMAIL tidak boleh lebih daripada 50 aksara";
+        header("Location: account.php");
         exit();
     }
 
@@ -134,15 +141,15 @@ if (isset($_POST['DaftarMasuk'])) {
                     <label class="block text-gray-700" for="phone">
                         Nombor Telefon
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                           id="phone" 
-                           placeholder="Contoh: 0123456789" 
-                           type="tel" 
-                           name='notel' 
-                           pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$"
-                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                           maxlength="11"
-                           required />
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        id="phone"
+                        placeholder="Contoh: 0123456789"
+                        type="tel"
+                        name='notel'
+                        pattern="^(\+?6?01)[0-46-9]-*[0-9]{7,8}$"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        maxlength="11"
+                        required />
                     <p class="text-red-500 text-sm mt-1 hidden" id="phoneError">
                         Sila masukkan nombor telefon Malaysia yang sah (Contoh: 0123456789)
                     </p>
@@ -151,7 +158,7 @@ if (isset($_POST['DaftarMasuk'])) {
                     <label class="block text-gray-700" for="email">
                         Email
                     </label>
-                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Masukkan Email Anda" type="email" name='email' required />
+                    <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Masukkan Email Anda" type="email" name='email' minlength="4" maxlength="50" required />
                     <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
                         Please enter a valid email address.
                     </p>

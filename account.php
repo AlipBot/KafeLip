@@ -56,6 +56,7 @@ if (isset($_POST['KemaskiniEmail'])) {
   # semak email belum digunakan lagi
   $sql_semakemail = "select email from pelanggan where email = '$email' ";
   $check = mysqli_query($condb, $sql_semakemail);
+
   if (mysqli_num_rows($check) == 1) {
     $_SESSION['error'] = "EMAIL SUDAH DIGUNAKAN SILA GUNA EMAIL LAIN";
     header("Location: account.php");
@@ -64,6 +65,12 @@ if (isset($_POST['KemaskiniEmail'])) {
   #Jika email sama dengan email sekarang
   if ($email == $_SESSION['email']) {
     $_SESSION['error'] = "EMAIL SAMA DENGAN EMAIL SEMASA";
+    header("Location: account.php");
+    exit();
+  }
+  #Jika email lebih daripada 50
+  if (strlen($email) > 50) {
+    $_SESSION['error'] = "EMAIL tidak boleh lebih daripada 50 aksara";
     header("Location: account.php");
     exit();
   }
@@ -94,7 +101,7 @@ if (isset($_POST['KemaskiniNotel'])) {
     exit();
   }
   #    semak nombor telefon tidak sama dengan fail session
-  if ($notel == $_SESSION['notel']) {
+  if (strcmp($notel, $_SESSION['notel']) === 0) {
     $_SESSION['error'] = "NOMBOR TELEFON SAMA DENGAN NOMBOR TELEFON SEMASA";
     header("Location: account.php");
     exit();
@@ -106,8 +113,8 @@ if (isset($_POST['KemaskiniNotel'])) {
     exit();
   }
 
-  if (strlen($notel) > 15) {
-    $_SESSION['error'] = "NOMBOR TELEFON MESTI TIDAK BOLEH LEBIH 14";
+  if (strlen($notel) > 11) {
+    $_SESSION['error'] = "NOMBOR TELEFON MESTI TIDAK BOLEH LEBIH 11";
     header("Location: account.php");
     exit();
   }
@@ -364,7 +371,7 @@ $m = mysqli_fetch_array($laksana);
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" required type="text" name="nama"
-              value="<?= $m['nama'] ?>" />
+              minlength="3" maxlength="50" value="<?= $m['nama'] ?>" />
           </div>
           <div class="flex justify-end">
             <button class="ml-4 my-5 bg-blue-500 text-white px-4 py-2 rounded-lg " type="button" name="KemaskiniNama"
@@ -384,7 +391,7 @@ $m = mysqli_fetch_array($laksana);
           </p>
           <div class="flex items-center">
             <input class="border border-gray-300 rounded-lg p-2 flex-grow" id="email" required type="email" name="email"
-              value="<?= $m['email'] ?>" />
+              value="<?= $m['email'] ?>" minlength="4" maxlength="50" />
           </div>
           <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
             Sila masukkan alamat email yang sah dan berbeza dengan email sekarang.
@@ -534,7 +541,7 @@ $m = mysqli_fetch_array($laksana);
 
   <script>
     // Tunjukan atau sorokkan butang scroll keatas
-    window.onscroll = function () {
+    window.onscroll = function() {
       var scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         scrollToTopBtn.style.display = "block";
@@ -551,7 +558,7 @@ $m = mysqli_fetch_array($laksana);
   </script>
   <script>
     //  Function Untuk memamparkan syarat untuk isi borang mengikut jenis data diperlukan 
-    document.getElementById('email').addEventListener('input', function () {
+    document.getElementById('email').addEventListener('input', function() {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const emailError = document.getElementById('emailError');
       if (!emailPattern.test(this.value) || this.value == "<?= $m['email'] ?>") {
@@ -563,7 +570,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('deleteEmail').addEventListener('input', function () {
+    document.getElementById('deleteEmail').addEventListener('input', function() {
       const emailUser = "<?= $m['email'] ?>";
       const emailError = document.getElementById('deleteEmailError');
       if (this.value != emailUser) {
@@ -575,7 +582,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('password').addEventListener('input', function () {
+    document.getElementById('password').addEventListener('input', function() {
       const confirmPasswordField = document.getElementById('confirm-password');
       const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,12}$/;
       const passwordError = document.getElementById('passwordError');
@@ -595,7 +602,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('repeat-password').addEventListener('input', function () {
+    document.getElementById('repeat-password').addEventListener('input', function() {
       const passwordField = document.getElementById('password');
       const confirmPasswordError = document.getElementById('confirmPasswordError');
       if (this.value !== passwordField.value) {
@@ -609,7 +616,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('notel').addEventListener('input', function () {
+    document.getElementById('notel').addEventListener('input', function() {
       const notelSekarang = "<?= $m['notel'] ?>";
       const notelError = document.getElementById('notelError');
       const notelValue = this.value.trim();
@@ -655,14 +662,14 @@ $m = mysqli_fetch_array($laksana);
     }
 
     // Tambah event listeners untuk setiap form
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Validasi nama
       const namaInput = document.querySelector('input[name="nama"]');
       const namaSaveBtn = document.querySelector('button[name="KemaskiniNama"]');
       namaSaveBtn.disabled = true;
       namaSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      namaInput.addEventListener('input', function () {
+      namaInput.addEventListener('input', function() {
         if (validateNama(this.value)) {
           namaSaveBtn.disabled = false;
           namaSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -678,7 +685,7 @@ $m = mysqli_fetch_array($laksana);
       emailSaveBtn.disabled = true;
       emailSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      emailInput.addEventListener('input', function () {
+      emailInput.addEventListener('input', function() {
         if (validateEmail(this.value)) {
           emailSaveBtn.disabled = false;
           emailSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -694,7 +701,7 @@ $m = mysqli_fetch_array($laksana);
       notelSaveBtn.disabled = true;
       notelSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      notelInput.addEventListener('input', function () {
+      notelInput.addEventListener('input', function() {
         if (validateNotel(this.value)) {
           notelSaveBtn.disabled = false;
           notelSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -762,7 +769,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       <?php if (isset($_SESSION['success'])): ?>
         Toast.fire({
           icon: "success",

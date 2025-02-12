@@ -3,16 +3,30 @@ include('autoKeluarAdmin.php'); # kawalan admin
 include('connection.php'); # sambung ke database
 
 # Menyemak kewujudan data POST
-if(!empty($_POST)){
+if (!empty($_POST)) {
     # Mengambil data daripada borang (form)
-    $id_menu        =   $_POST['id_menu'];
-    $nama_menu      =   $_POST['nama_menu'];
-    $harga          =   $_POST['harga'];
-    $tambahan       =   '';
+    $id_menu = $_POST['id_menu'];
+    $nama_menu = $_POST['nama_menu'];
+    $harga = $_POST['harga'];
+    $tambahan = '';
 
     # Data validation : had atas
-    if(!is_numeric($harga) or $harga <= 0){
+    if (!is_numeric($harga) or $harga <= 0) {
         $_SESSION['error'] = "Ralat: Sila masukkan harga yang sah";
+        header("Location: ../admin/list-menu.php");
+        exit();
+    }
+
+    # Data validation : had atas harga
+    if ($harga > 9999.99) {
+        $_SESSION['error'] = "Ralat: Harga maksimum adalah RM9999.99";
+        header("Location: ../admin/list-menu.php"); 
+        exit();
+    }
+
+    # Data validation : had atas
+    if (strlen($nama_menu) > 30 or strlen($nama_menu) < 3) {
+        $_SESSION['error'] = "Maksimum pajang nama 30 sahaja dan minimum 3 aksara";
         header("Location: ../admin/list-menu.php");
         exit();
     }
@@ -24,14 +38,14 @@ if(!empty($_POST)){
         # Buang jarak dan tukar kepada huruf kecil
         $nama_fail_baru = strtolower(str_replace(' ', '', $nama_menu)) . '.' . $file_extension;
         $lokasi = $_FILES['gambar']['tmp_name'];
-        
+
         // Tambah gambar ke query update
         $tambahan = "gambar = '$nama_fail_baru',";
-        
+
         // Get the filename from the database
         $sql = "SELECT gambar FROM makanan WHERE kod_makanan = '$id_menu'";
         $result = mysqli_query($condb, $sql);
-    
+
         if ($row = mysqli_fetch_assoc($result)) {
             $filename = $row['gambar'];
             $filepath = "../menu-images/" . $filename;
@@ -41,34 +55,34 @@ if(!empty($_POST)){
                 unlink($filepath);  // Delete the file
             }
         }
-        
+
         // Copy file gambar ke folder gmenu-images jika gagal hantar toast error
         if (!copy($lokasi, "../menu-images/" . $nama_fail_baru)) {
             $_SESSION['error'] = "Gagal memuat naik gambar";
             header("Location: ../admin/list-menu.php");
             exit();
         }
-    } 
-    
+    }
+
     # Query proses kemaskini data
     $sql_kemaskini = "UPDATE makanan SET 
                       $tambahan
                       nama_makanan = '$nama_menu',
                       harga = '$harga'                
                       WHERE kod_makanan = '$id_menu'";
-                      
+
     $laksana = mysqli_query($condb, $sql_kemaskini);
 
     # Pengujian proses menyimpan data 
-    if($laksana){
+    if ($laksana) {
         # berjaya menjalankan query 
         $_SESSION['success'] = "Kemaskini Berjaya";
         header("Location: ../admin/list-menu.php");
         exit();
-    }else{
+    } else {
         $_SESSION['error'] = "Kemaskini Gagal: " . mysqli_error($condb);
         header("Location: ../admin/list-menu.php");
         exit();
     }
-} 
+}
 ?>

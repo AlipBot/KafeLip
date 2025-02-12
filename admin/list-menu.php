@@ -85,6 +85,20 @@ if (isset($_POST['DaftarMenu'])) {
         header("Location: list-menu.php");
         exit();
     }
+    # Data validation : had atas harga
+    if ($harga > 9999.99) {
+        $_SESSION['error'] = "Ralat: Harga maksimum adalah RM9999.99";
+        header("Location: ../admin/list-menu.php");
+        exit();
+    }
+
+    # Data validation : had atas
+    if (strlen($nama_makanan) > 30 or strlen($nama_makanan) < 3) {
+        $_SESSION['error'] = "Maksimum pajang nama 30 sahaja dan minimum 3 aksara";
+        header("Location: ../admin/list-menu.php");
+        exit();
+    }
+
     # Semak id_menu dah wujud atau belum
     $sql_semak = "select kod_makanan from makanan where kod_makanan = '$kod_makanan' ";
     $laksana_semak = mysqli_query($condb, $sql_semak);
@@ -161,10 +175,30 @@ if (isset($_POST['upload'])) {
             $id_menu = trim($data[0]);
             $nama_menu = trim($data[1]);
             $harga = trim($data[2]);
+            # Data validation : had atas
+            if (!is_numeric($harga) || $harga < 0) {
+                $_SESSION['error'] = "Ralat: Sila masukkan harga yang sah";
+                header("Location: list-menu.php");
+                exit();
+            }
+            # Data validation : had atas harga
+            if ($harga > 9999.99) {
+                $_SESSION['error'] = "Ralat: Harga maksimum adalah RM9999.99";
+                header("Location: ../admin/list-menu.php");
+                exit();
+            }
+
+            # Data validation : had atas
+            if (strlen($nama_menu) > 30 or strlen($nama_menu) < 3) {
+                $_SESSION['error'] = "Maksimum pajang nama 30 sahaja dan minimum 3 aksara";
+                header("Location: ../admin/list-menu.php");
+                exit();
+            }
+
             # semak jika id menu telah ada dalam  pangkalan data
             $pilih = mysqli_query($condb, "select* from makanan where kod_makanan='" . $id_menu . "'");
             if (mysqli_num_rows($pilih) == 1) {
-                $_SESSION['error'] = "kod_makanan $id_menu di fail txt telah ada di pangkalan data.TUKAR id_menu DALAM FAIL TXT";
+                $_SESSION['error'] = "ID menu $id_menu telah digunakan sila tukar lain";
                 header("Location: list-menu.php");
                 exit();
             } else {
@@ -184,7 +218,7 @@ if (isset($_POST['upload'])) {
         fclose($fail_data);
 
         if (mysqli_num_rows($pilih) == 1) {
-            $_SESSION['error'] = "kod_makanan $id_menu di fail txt telah ada di pangkalan data. TUKAR id_menu DALAM FAIL TXT";
+            $_SESSION['error'] = "ID menu $id_menu telah digunakan sila tukar lain";
             header("Location: list-menu.php");
             exit();
         } else {
@@ -403,6 +437,7 @@ if (isset($_POST['upload'])) {
         }
 
         .error-input {
+            border-width: 2px !important;
             border-color: red !important;
             background-color: #fff2f2 !important;
         }
@@ -412,6 +447,38 @@ if (isset($_POST['upload'])) {
             font-size: 0.8rem;
             margin-top: -0.5rem;
             margin-bottom: 0.5rem;
+        }
+
+        /* Tambah style untuk input */
+        input[type="text"],
+        input[type="number"],
+        input[type="file"] {
+            border-width: 2px;
+        }
+
+        /* Tambah style untuk input search */
+        input[type="text"][name="nama_makanan"] {
+            border-width: 2px;
+        }
+
+        /* Style untuk input focus */
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="file"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            border-width: 1px;
+            outline: none;
+            border-color: #3b82f6; /* Warna biru */
+            box-shadow: 0 0 0 1px #3b82f6; /* Tambah shadow untuk efek lebih jelas */
+        }
+
+        /* Pastikan style focus tidak terganggu dengan style error */
+        .error-input:focus {
+            border-color: red !important;
+            box-shadow: 0 0 0 1px red !important;
         }
     </style>
 
@@ -486,7 +553,7 @@ if (isset($_POST['upload'])) {
                             <form action="list-menu.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama_makanan" placeholder="Carian Menu"
                                     value="<?php echo htmlspecialchars($_GET['nama_makanan'] ?? ''); ?>"
-                                    class="border rounded p-2 w-2/5">
+                                    class="border rounded-2xl p-2 w-2/5">
                                 <button type="submit"
                                     class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
@@ -691,13 +758,16 @@ if (isset($_POST['upload'])) {
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     ID Menu :
                     <input type="text" name='kod_makanan' id="kod_makanan" class="w-full border p-2 mb-3"
-                        value="<?php echo $next_id; ?>" required>
+                        value="<?php echo $next_id; ?>" maxlength="5" required>
                     <span id="kod_makanan_error" class="error-message hidden">ID Menu telah digunakan. Sila guna kod
                         menu yang lain</span><br>
                     Nama Menu : <input type="text" name='nama_makanan' id="nama_makanan_daftar"
-                        class="w-full border p-2 mb-3" required>
+                        class="w-full border p-2 mb-3" required minlength="3" maxlength="30" pattern=".{3,30}"
+                        title="Nama menu mesti antara 3 hingga 30 aksara"
+                        oninput="this.value = this.value.slice(0, 30)">
                     Harga (RM) : <input type='number' name='harga' id="harga_daftar" step='0.01'
-                        class="w-full border p-2 mb-3" required>
+                        class="w-full border p-2 mb-3" required min="0" max="9999.99"
+                        oninput="if(this.value > 9999.99) this.value = 9999.99;">
                     <label class="block text-black">Sila Pilih Gambar Menu : </label>
 
                     <!-- Container untuk preview gambar -->
@@ -735,9 +805,11 @@ if (isset($_POST['upload'])) {
                     <input type="hidden" id="original_nama_makanan" name="original_nama_makanan">
                     <input type="hidden" id="original_harga_makanan" name="original_harga_makanan">
                     Nama Menu : <input id="nama_makanan" type="text" name='nama_menu' class="w-full border p-2 mb-3"
-                        required>
+                        minlength="3" maxlength="30" pattern=".{3,30}" title="Nama menu mesti antara 3 hingga 30 aksara"
+                        oninput="this.value = this.value.slice(0, 30)">
                     Harga (RM) : <input id="harga_makanan" type='number' name='harga' step='0.01'
-                        class="w-full border p-2 mb-3" required>
+                        class="w-full border p-2 mb-3" min="0" max="9999.99"
+                        oninput="if(this.value > 9999.99) this.value = 9999.99;" required>
                     <label class="block text-gray-700">Sila Pilih Gambar Menu (jika ingin diubah) : </label>
                     <div class="flex justify-center mb-4 relative" id="previewContainer" style="display: none;">
                         <img id="preview_kemas" style="max-width: 300px;">
