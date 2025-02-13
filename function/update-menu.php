@@ -52,8 +52,9 @@ if (!empty($_POST)) {
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === 0) {
         # Mengambil data gambar
         $file_extension = 'jpg'; // Set extension to jpg since we're converting all images to JPEG
-        # Buang jarak dan tukar kepada huruf kecil
-        $nama_fail_baru = strtolower(str_replace(' ', '', $nama_menu)) . '.' . $file_extension;
+        # Tambah timestamp pada nama fail
+        $timestamp = date('Ymd_His'); // Format: YYYYMMDD_HHMMSS
+        $nama_fail_baru = strtolower(str_replace(' ', '', $nama_menu)) . '_' . $timestamp . '.' . $file_extension;
         $lokasi = $_FILES['gambar']['tmp_name'];
 
         // Tambah gambar ke query update

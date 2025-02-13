@@ -267,7 +267,7 @@ $laksql = mysqli_query($condb, $sql);
             </div>
 
             <!-- Main Content -->
-            <div id="mainContent" class="flex-1 p-6 transition-all duration-300 content-expanded">
+            <div id="mainContent" class="bg-[#FAF3DD] flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="senarai-menu bg-white p-6 rounded-lg shadow relative">
                     <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
                         <span>Sejarah Laporan Tempahan</span>

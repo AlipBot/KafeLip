@@ -182,7 +182,7 @@ include('../function/connection.php');  # Sambung Ke database
             </div>
 
             <!-- Main Content -->
-            <div id="mainContent" class="flex-1 p-6 transition-all duration-300 content-expanded">
+            <div id="mainContent" class="bg-[#FAF3DD] flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <div class="bg-white p-4 rounded shadow flex items-center">
                         <i class="fas fa-calendar-day text-[#428D41] text-3xl mr-4"></i>

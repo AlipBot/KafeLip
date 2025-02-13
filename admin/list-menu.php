@@ -76,7 +76,8 @@ if (isset($_POST['DaftarMenu'])) {
     $file_extension = pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
     # Buang jarak dan tukar kepada huruf kecil
     #buat nama file gamabr berdasarkan nama makanan
-    $nama_fail_baru = strtolower(str_replace(' ', '', $nama_makanan)) . '.' . $file_extension;
+    $timestamp = date('Ymd_His'); // Format: YYYYMMDD_HHMMSS
+    $nama_fail_baru = strtolower(str_replace(' ', '', $nama_makanan)) . '_' . $timestamp . '.' . $file_extension;
     $lokasi = $_FILES['gambar']['tmp_name'];
 
     # Data validation : had atas
@@ -543,7 +544,7 @@ if (isset($_POST['upload'])) {
             </div>
 
             <!-- Main Content -->
-            <div id="mainContent" class="flex-1 p-6 transition-all duration-300 content-expanded">
+            <div id="mainContent" class="bg-[#FAF3DD] flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="senarai-menu bg-white p-6 rounded-lg shadow relative">
                     <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
                         <span>Senarai Makanan</span>
@@ -731,7 +732,7 @@ if (isset($_POST['upload'])) {
                         <input type="file" id="file" name='data' accept=".txt" class="hidden">
                     </div>
                     <!-- Tambah elemen baru untuk paparan nama fail -->
-                    <div id="fileDisplay" class="hidden p-3 bg-gray-100 rounded flex justify-between items-center">
+                    <div id="fileDisplay" class="hidden p-3 bg-gray-100 rounded md:flex justify-between items-center">
                         <span id="fileName" class="text-gray-700"></span>
                         <button type="button" id="removeFile" class="text-red-500 hover:text-red-700">
                             <i class="fas fa-times"></i>
