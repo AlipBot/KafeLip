@@ -732,7 +732,7 @@ if (isset($_POST['upload'])) {
                         <input type="file" id="file" name='data' accept=".txt" class="hidden">
                     </div>
                     <!-- Tambah elemen baru untuk paparan nama fail -->
-                    <div id="fileDisplay" class="hidden p-3 bg-gray-100 rounded md:flex justify-between items-center">
+                    <div id="fileDisplay" class="hidden p-3 bg-gray-100 rounded flex justify-between items-center">
                         <span id="fileName" class="text-gray-700"></span>
                         <button type="button" id="removeFile" class="text-red-500 hover:text-red-700">
                             <i class="fas fa-times"></i>

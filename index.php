@@ -101,7 +101,7 @@ session_start();
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
                 <span class="text-black">Kafe</span>
-                <span class="text-black">lip</span>
+                <span class="text-black">Lip</span>
             </div>
             <?php if (!empty($_SESSION['tahap'])) { ?>
                 <!-- Jika data tahap session pengguna dah ada -->
@@ -180,7 +180,7 @@ session_start();
                             Today at 12.00 PM
                         </div>
                         <div class="message mt-1">
-                            Harga yang berpatutan.
+                            Roti sedap dan lembut.
                         </div>
                     </div>
                 </div>

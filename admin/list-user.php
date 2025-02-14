@@ -529,7 +529,7 @@ if (isset($_POST['upload'])) {
                         <p>Seret fail txt ke sini atau klik untuk memilih</p>
                         <input type="file" id="file" name="data_pengguna" accept=".txt" class="hidden">
                     </div>
-                    <div id="fileDisplay" class="hidden md:flex p-3 bg-gray-100 rounded justify-between items-center mt-2">
+                    <div id="fileDisplay" class="hidden flex p-3 bg-gray-100 rounded justify-between items-center mt-2">
                         <span id="fileName" class="text-gray-700"></span>
                         <button type="button" id="removeFile" class="text-red-500 hover:text-red-700">
                             <i class="fas fa-times"></i>
