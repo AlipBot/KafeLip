@@ -294,32 +294,52 @@ session_start();
         </div>
     </div>
 
-    <!-- Muka depan 3 -->
+    <!-- Maklumat Kedai -->
     <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto py-12 px-10">
             <div class="bg-[#A1CCA5] p-8 rounded-lg">
                 <h2 class="text-4xl font-bold mb-6 relative inline-block text-center w-full text-[#151A00]">
-                    Fakta Menarik Tentang Roti Canai
+                    Maklumat Kedai KafeLip
                     <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-1 bg-[#4A7C59]">
                     </span>
                 </h2>
-                <ul class="list-disc list-inside text-lg text-[#151A00]">
-                    <li class="mb-4">
-                        Roti canai adalah sejenis roti leper yang berasal dari India dan popular di Malaysia.
-                    </li>
-                    <li class="mb-4">
-                        Ia biasanya dihidangkan dengan kuah kari atau dhal.
-                    </li>
-                    <li class="mb-4">
-                        Roti canai juga dikenali sebagai "roti prata" di Singapura.
-                    </li>
-                    <li class="mb-4">
-                        Terdapat pelbagai variasi roti canai seperti roti telur, roti tisu, dan roti bom.
-                    </li>
-                    <li class="mb-4">
-                        Proses membuat roti canai melibatkan menguli dan melipat doh berulang kali untuk mendapatkan tekstur yang lembut dan berlapis.
-                    </li>
-                </ul>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Maklumat Asas -->
+                    <div class="text-[#151A00]">
+                        <h3 class="text-2xl font-bold mb-4">Waktu Operasi</h3>
+                        <ul class="space-y-2">
+                            <li><i class="far fa-clock mr-2"></i>Isnin - Jumaat: 7:00 AM - 11:00 PM</li>
+                            <li><i class="far fa-clock mr-2"></i>Sabtu & Ahad: 8:00 AM - 12:00 AM</li>
+                        </ul>
+                        
+                        <h3 class="text-2xl font-bold mt-6 mb-4">Hubungi Kami</h3>
+                        <ul class="space-y-2">
+                            <li><i class="fas fa-phone-alt mr-2"></i>03-1234 5678</li>
+                            <li><i class="fas fa-map-marker-alt mr-2"></i>Jln Dahlia 4/2, Bandar Baru Salak Tinggi, 43900 Sepang, Selangor</li>
+                            <li class="flex gap-4 mt-4">
+                                <a href="https://wa.me/60123456789" target="_blank" class="bg-[#25D366] text-white px-4 py-2 rounded-lg inline-flex items-center">
+                                    <i class="fab fa-whatsapp mr-2"></i>WhatsApp Kami
+                                </a>
+                                <a href="https://maps.google.com/?q=2.827419065339865,101.71984258012314" target="_blank" class="bg-[#4285F4] text-white px-4 py-2 rounded-lg inline-flex items-center">
+                                    <i class="fas fa-map-marked-alt mr-2"></i>Google Maps
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Peta Google -->
+                    <div class="w-full h-[300px] rounded-lg overflow-hidden">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d996.2403459096192!2d101.72002796350226!3d2.8273941730754073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdc76fde59ba83%3A0xca347d0f20a49286!2sSMK%20Bandar%20Baru%20Salak%20Tinggi!5e0!3m2!1sen!2smy!4v1739517356157!5m2!1sen!2smy"
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

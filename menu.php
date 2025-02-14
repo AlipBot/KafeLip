@@ -861,12 +861,28 @@ function semakKuantitiOrders($kod_makanan)
         }
 
         function addToCartWithQuantity(menuId) {
-            // dapatkan nilai kuantiti di text quantiti-(kodmenu)
+            // Simpan posisi scroll semasa
+            sessionStorage.setItem('scrollPosition', window.pageYOffset);
+            
+            // Dapatkan nilai kuantiti
             const quantity = parseInt(document.getElementById(`quantity-${menuId}`).textContent);
-
-            // Hantar permintaan ke add-cart.php menggunakan format URL yang betul
+            
+            // Hantar permintaan ke add-cart.php
             window.location.href = `function/add-cart.php?id_menu=${menuId}&quantity=${quantity}&page=menu`;
         }
+
+        // Kembalikan posisi scroll selepas page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dapatkan posisi scroll yang disimpan
+            let scrollPosition = sessionStorage.getItem('scrollPosition');
+            
+            if (scrollPosition) {
+                // Scroll ke posisi yang disimpan
+                window.scrollTo(0, scrollPosition);
+                // Buang posisi scroll dari sessionStorage
+                sessionStorage.removeItem('scrollPosition');
+            }
+        });
     </script>
     <script>
         // function di header untuk untuk list selebihnya

@@ -128,39 +128,44 @@ $laksana = mysqli_query($condb, $sql_pilih);
             .print-area {
                 position: absolute;
                 left: 50%;
-                top: 70px;
-                transform: translate(-50%, 0) scale(1.1);
+                top: 10px;
+                transform: translate(-50%, 0) scale(0.95);
                 width: 100%;
-                max-width: 850px;
+                max-width: 900px;
                 padding: 0;
                 margin: 0;
             }
 
             table {
-                font-size: 15px;
+                font-size: 13px;
                 width: 100%;
-                margin-bottom: 12px;
+                margin-bottom: 6px;
             }
 
             h2 {
-                font-size: 22px;
-                margin-bottom: 15px;
+                font-size: 20px;
+                margin-bottom: 8px;
             }
 
             .text-sm {
-                font-size: 13px;
+                font-size: 12px;
             }
 
             .text-lg {
-                font-size: 17px;
+                font-size: 15px;
             }
 
             .p-6 {
-                padding: 1.3rem;
+                padding: 0.8rem;
             }
 
             .mb-4 {
-                margin-bottom: 1.2rem;
+                margin-bottom: 0.6rem;
+            }
+            
+            .text-left.mb-4.flex {
+                gap: 0.8rem;
+                margin-bottom: 0.4rem;
             }
         }
     </style>
