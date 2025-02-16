@@ -57,6 +57,33 @@ function semakKuantitiOrders($kod_makanan)
     <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
     <script src="lib/js/sweetalert2@11.js"></script>
     <style>
+        @font-face {
+            font-family: 'LilitiaOne';
+            src: url('lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LobsterTwo';
+            src: url('lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Merriweather';
+            src: url('lib/fonts/Merriweather-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-size: 60px;
+            font-style: normal;
+        }
+
+        .fontkafelip,
+        h2 {
+            font-family: 'LobsterTwo', sans-serif;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -426,8 +453,8 @@ function semakKuantitiOrders($kod_makanan)
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
-                <span class="text-black">Kafe</span>
-                <span class="text-black">Lip</span>
+                <span class="text-black fontkafelip">Kafe</span>
+                <span class="text-black fontkafelip">Lip</span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
                 <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -588,7 +615,7 @@ function semakKuantitiOrders($kod_makanan)
                     </i>
                 </a>
                 <a class="text-[#4A7C59]" href="https://www.instagram.com/alipje29/#">
-                <i class="fab fa-instagram">
+                    <i class="fab fa-instagram">
                     </i>
                 </a>
             </div>
@@ -601,8 +628,8 @@ function semakKuantitiOrders($kod_makanan)
         </i>
     </button>
 
-        <!-- Image Popup Modal -->
-        <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+    <!-- Image Popup Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
         <div class="relative max-w-2xl mx-auto p-4">
             <button onclick="closeImagePopup()"
                 class="absolute top-0 right-0 -mt-[14.5px] -mr-[14px] text-white text-3xl font-bold hover:text-gray-300">&times;</button>
@@ -863,10 +890,10 @@ function semakKuantitiOrders($kod_makanan)
         function addToCartWithQuantity(menuId) {
             // Simpan posisi scroll semasa
             sessionStorage.setItem('scrollPosition', window.pageYOffset);
-            
+
             // Dapatkan nilai kuantiti
             const quantity = parseInt(document.getElementById(`quantity-${menuId}`).textContent);
-            
+
             // Hantar permintaan ke add-cart.php
             window.location.href = `function/add-cart.php?id_menu=${menuId}&quantity=${quantity}&page=menu`;
         }
@@ -875,7 +902,7 @@ function semakKuantitiOrders($kod_makanan)
         document.addEventListener('DOMContentLoaded', function() {
             // Dapatkan posisi scroll yang disimpan
             let scrollPosition = sessionStorage.getItem('scrollPosition');
-            
+
             if (scrollPosition) {
                 // Scroll ke posisi yang disimpan
                 window.scrollTo(0, scrollPosition);

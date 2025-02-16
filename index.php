@@ -23,6 +23,38 @@ session_start();
     <link href="lib/css/css2.css" rel="stylesheet" />
     <script src="lib/js/tailwind.js"></script>
     <style>
+        @font-face {
+            font-family: 'LilitiaOne';
+            src: url('lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LobsterTwo';
+            src: url('lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Merriweather';
+            src: url('lib/fonts/Merriweather-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-size: 60px;
+            font-style: normal;
+        }
+
+        h1,
+        h2,
+        .fontkafelip {
+            font-family: 'LobsterTwo', sans-serif;
+        }
+
+        p {
+            font-family: 'Merriweather', sans-serif;
+        }
+
         .explore-menu:hover,
         .get-started:hover,
         #scrollToTopBtn:hover {
@@ -93,15 +125,15 @@ session_start();
     </style>
 </head>
 
-<body class="bg-[#FAF3DD] font-poppins">
+<body class="bg-[#FAF3DD] ">
     <!-- Header -->
     <div class="w-full bg-[#FAF3DD]">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
-                <span class="text-black">Kafe</span>
-                <span class="text-black">Lip</span>
+                <span class="text-black fontkafelip ">Kafe</span>
+                <span class="text-black fontkafelip ">Lip</span>
             </div>
             <?php if (!empty($_SESSION['tahap'])) { ?>
                 <!-- Jika data tahap session pengguna dah ada -->
@@ -311,7 +343,7 @@ session_start();
                             <li><i class="far fa-clock mr-2"></i>Isnin - Jumaat: 7:00 AM - 11:00 PM</li>
                             <li><i class="far fa-clock mr-2"></i>Sabtu & Ahad: 8:00 AM - 12:00 AM</li>
                         </ul>
-                        
+
                         <h3 class="text-2xl font-bold mt-6 mb-4">Hubungi Kami</h3>
                         <ul class="space-y-2">
                             <li><i class="fas fa-phone-alt mr-2"></i>03-1234 5678</li>
@@ -326,16 +358,16 @@ session_start();
                             </li>
                         </ul>
                     </div>
-                    
+
                     <!-- Peta Google -->
                     <div class="w-full h-[300px] rounded-lg overflow-hidden">
-                        <iframe 
+                        <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d996.2403459096192!2d101.72002796350226!3d2.8273941730754073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdc76fde59ba83%3A0xca347d0f20a49286!2sSMK%20Bandar%20Baru%20Salak%20Tinggi!5e0!3m2!1sen!2smy!4v1739517356157!5m2!1sen!2smy"
-                            width="100%" 
-                            height="100%" 
-                            style="border:0;" 
-                            allowfullscreen="" 
-                            loading="lazy" 
+                            width="100%"
+                            height="100%"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
                     </div>
