@@ -62,8 +62,51 @@ $laksql = mysqli_query($condb, $sql);
     <link rel="stylesheet" href="lib/css/flatpickr.min.css">
     <script src="lib/js/flatpickr.js"></script>
     <style>
-        .custom-font {
-            font-family: 'Roboto', sans-serif;
+        @font-face {
+            font-family: 'BebasNeue';
+            src: url('lib/fonts/BebasNeue-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LilitiaOne';
+            src: url('lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LobsterTwo';
+            src: url('lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Merriweather';
+            src: url('lib/fonts/Merriweather-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-size: 60px;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Teko';
+            src: url('lib/fonts/Teko-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fontkafelip,
+        h2 {
+            font-family: 'LobsterTwo', sans-serif;
+        }
+
+        .nav {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+
         }
 
         #scrollToTopBtn:hover {
@@ -144,8 +187,9 @@ $laksql = mysqli_query($condb, $sql);
             align-items: center;
             width: 100%;
         }
- /* Gaya untuk Flatpickr */
- .flatpickr-calendar {
+
+        /* Gaya untuk Flatpickr */
+        .flatpickr-calendar {
             background: #FAF3DD;
             border: 2px solid #428D41;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -214,7 +258,7 @@ $laksql = mysqli_query($condb, $sql);
 
         .flatpickr-day.today {
             border: 2px solid #428D41 !important;
-            color: rgb(0, 0, 0) ;
+            color: rgb(0, 0, 0);
         }
 
         .flatpickr-day.today:hover {
@@ -231,8 +275,8 @@ $laksql = mysqli_query($condb, $sql);
             <div class="logo text-2xl font-bold flex items-center mr-4">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
-                <span class="text-black">Kafe</span>
-                <span class="text-black">Lip</span>
+                <span class="text-black fontkafelip">Kafe</span>
+                <span class="text-black fontkafelip">Lip</span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
                 <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -295,7 +339,7 @@ $laksql = mysqli_query($condb, $sql);
             <div class="overflow-x-auto">
                 <?php if (mysqli_num_rows($laksql) > 0): ?>
                     <table
-                        class="table-auto mx-auto border-collapse border-2 border-[#4A7C59] border-separate shadow-lg w-full sm:w-auto rounded-lg">
+                        class="table-auto mx-auto  border-2 border-[#4A7C59] border-separate shadow-lg w-full sm:w-auto rounded-lg">
                         <thead>
                             <tr>
                                 <th class="px-4 py-2 bg-[#4A7C59] text-white rounded-tl-lg"><i

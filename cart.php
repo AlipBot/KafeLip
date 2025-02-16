@@ -53,6 +53,64 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
         <script src="lib/js/sweetalert2@11.js"></script>
         <style>
+            @font-face {
+                font-family: 'BebasNeue';
+                src: url('lib/fonts/BebasNeue-Regular.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: 'LilitiaOne';
+                src: url('lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: 'LobsterTwo';
+                src: url('lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: 'Merriweather';
+                src: url('lib/fonts/Merriweather-Regular.ttf') format('truetype');
+                font-weight: normal;
+                font-size: 60px;
+                font-style: normal;
+            }
+
+            @font-face {
+                font-family: 'Teko';
+                src: url('lib/fonts/Teko-Regular.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            .fontkafelip,
+            h2 {
+                font-family: 'LobsterTwo', sans-serif;
+            }
+
+            .text-table {
+                font-family: 'LobsterTwo', sans-serif;
+                font-size: 20px;
+            }
+
+            .nav {
+                font-family: 'Teko', sans-serif;
+                font-size: 20px;
+
+            }
+
+            .button {
+                font-family: 'BebasNeue', sans-serif;
+
+            }
+
+
             .content {
                 flex: 1;
                 display: flex;
@@ -95,10 +153,6 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 display: flex;
                 flex-direction: column;
                 min-height: 20vh;
-            }
-
-            .custom-font {
-                font-family: 'Roboto', sans-serif;
             }
 
             #scrollToTopBtn:hover {
@@ -214,8 +268,8 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             <div class="container mx-auto flex justify-between items-center py-6 px-4">
                 <div class="logo text-2xl font-bold flex items-center mr-4">
                     <i class="fas fa-coffee text-[#4A7C59] mr-2"></i>
-                    <span class="text-black">Kafe</span>
-                    <span class="text-black">lip</span>
+                    <span class="text-black fontkafelip">Kafe</span>
+                    <span class="text-black fontkafelip">Lip</span>
                 </div>
                 <div class="nav flex gap-6 -ml-10 mr-20">
                     <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
@@ -285,7 +339,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 $m = mysqli_fetch_array($lak);
                             ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-white">
-                                    <td class="shadow-lg px-4 py-2 font-semibold custom-font"><?= $m['nama_makanan'] ?></td>
+                                    <td class="shadow-lg px-4 py-2 font-semibold text-table"><?= $m['nama_makanan'] ?></td>
                                     <td class='px-8 py-4 flex justify-center items-center'>
                                         <div class="relative group">
                                             <div class="w-32 h-32 overflow-hidden">
@@ -312,9 +366,9 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font"><?= $m['harga'] ?>
+                                    <td class="shadow-lg text-center px-4 py-2 font-semibold text-table"><?= $m['harga'] ?>
                                     </td>
-                                    <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font">
+                                    <td class="shadow-lg text-center px-4 py-2 font-semibold text-table">
                                         <span id="total-<?= $m['kod_makanan'] ?>">
                                             <?php
                                             $harga = $bil * $m['harga'];
@@ -326,9 +380,9 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 </tr>
                             <?php } ?>
                             <tr class="bg-[#FAF3DD] hover:bg-white">
-                                <td class="shadow-lg px-4 py-2 text-right font-semibold custom-font" colspan="4">Jumlah
+                                <td class="shadow-lg px-4 py-2 text-right font-semibold text-table" colspan="4">Jumlah
                                     Bayaran (RM)</td>
-                                <td class="shadow-lg text-center px-4 py-2 font-semibold custom-font">
+                                <td class="shadow-lg text-center px-4 py-2 font-semibold text-table">
                                     <span id="grand-total"><?php echo number_format($jumlah_bayaran, 2) ?></span>
                                 </td>
                             </tr>
@@ -336,11 +390,11 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                     </table>
                 </div>
                 <div class="mt-5">
-                    <button class="buang-btn bg-[#CA0000D9] text-white px-4 py-2 rounded hover:bg-[#d33]">
-                        Kosongkan Senarai Tempahan
+                    <button class="buang-btn bg-[#CA0000D9] text-white px-4 py-2 rounded button hover:bg-[#d33]">
+                        Batal Tempahan
                     </button>
-                    <button class="Sahkan-btn bg-[#4A7C59] text-white px-4 py-2 rounded hover:bg-[#68B0AB]">
-                        Sahkan Tempahan
+                    <button class="Sahkan-btn bg-[#4A7C59] text-white px-4 py-2 rounded button hover:bg-[#68B0AB]">
+                        Tempah
                     </button>
                 </div>
             </div>

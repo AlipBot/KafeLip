@@ -58,6 +58,13 @@ function semakKuantitiOrders($kod_makanan)
     <script src="lib/js/sweetalert2@11.js"></script>
     <style>
         @font-face {
+            font-family: 'BebasNeue';
+            src: url('lib/fonts/BebasNeue-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
             font-family: 'LilitiaOne';
             src: url('lib/fonts/LilitaOne-Regular.ttf') format('truetype');
             font-weight: normal;
@@ -79,9 +86,22 @@ function semakKuantitiOrders($kod_makanan)
             font-style: normal;
         }
 
+        @font-face {
+            font-family: 'Teko';
+            src: url('lib/fonts/Teko-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         .fontkafelip,
         h2 {
             font-family: 'LobsterTwo', sans-serif;
+        }
+
+        .nav {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+
         }
 
         body {
@@ -151,13 +171,14 @@ function semakKuantitiOrders($kod_makanan)
         }
 
         .menu-item .add-to-cart {
+            font-family: 'BebasNeue', sans-serif;
+            font-size: 17px;
             background-color: #4A7C59;
             color: #fff;
             padding: 10px 20px;
             border: none;
             border-radius: 7px;
             cursor: pointer;
-            font-size: 16px;
             margin-top: 10%;
         }
 
@@ -212,7 +233,7 @@ function semakKuantitiOrders($kod_makanan)
 
 
         .slide h2 {
-            font-family: Acme;
+            font-family: 'LobsterTwo', sans-serif;
             font-size: 3rem;
             color: #fff;
             margin-bottom: 1rem;
@@ -501,18 +522,19 @@ function semakKuantitiOrders($kod_makanan)
         <div class="top-slider">
             <div class="slides">
                 <!-- Gambar 1 -->
-                <div style="background-image: url('lib/image/welcome.jpg');" class="slide iklan">
-                    <h2>SELAMAT KEMBALI, <br> <?= $_SESSION['nama'] ?> </h2>
+                <div style="background-image: url('lib/image/welcome.jpg');" class="slide ">
+                    <h2>SELAMAT KEMBALI, </h2>
+                    <p> <?= $_SESSION['nama'] ?> </p>
                     <p>Sudah lapar ke?</p>
                 </div>
                 <!-- Gambar 2 -->
-                <div style="background-image: url('lib/image/banner2.jpg');" class="slide iklan">
+                <div style="background-image: url('lib/image/banner2.jpg');" class="slide ">
                     <h2 id="tarikhSlide"></h2>
                     <p id="hariSlide"></p>
                     <p id="masaSlide"></p>
                 </div>
                 <!-- Gambar 3 -->
-                <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide iklan">
+                <div style="background-image: url('lib/image/rotitelur.jpg');" class="slide ">
                     <h2>BUKA KEDAI</h2>
                     <p>Pukul 8:00 AM - 10:00 PM</p>
                 </div>
