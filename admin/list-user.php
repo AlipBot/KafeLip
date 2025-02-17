@@ -123,6 +123,65 @@ if (isset($_POST['upload'])) {
     <link rel="stylesheet" href="../lib/css/sweetalert2.min.css">
     <script src="../lib/js/sweetalert2@11.js"></script>
     <style>
+        @font-face {
+            font-family: 'BebasNeue';
+            src: url('../lib/fonts/BebasNeue-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LilitiaOne';
+            src: url('../lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LobsterTwo';
+            src: url('../lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Merriweather';
+            src: url('../lib/fonts/Merriweather-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Teko';
+            src: url('../lib/fonts/Teko-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppin';
+            src: url('../lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fontkafelip {
+            font-family: 'LobsterTwo', sans-serif;
+        }
+
+        .fontnav {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+        }
+
+        .fonttext{
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
+        }
+        .fontbutton{
+            font-size: 19px;
+            font-family: 'BebasNeue', sans-serif;
+        }
         .drawer-open {
             transform: translateX(0);
         }
@@ -307,7 +366,7 @@ if (isset($_POST['upload'])) {
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
-            <div class="text-[150%] font-bold mx-auto">Senarai Pelanggan Dan Pekerja KafeLip</div>
+            <div class="text-[150%] font-bold mx-auto fontkafelip">Senarai Pelanggan Dan Pekerja KafeLip</div>
             <div class="w-12"></div>
         </header>
 
@@ -315,12 +374,12 @@ if (isset($_POST['upload'])) {
             <!-- Sidebar -->
             <div id="drawer"
                 class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
-                <nav class="flex-1 p-4 overflow-y-auto">
+                <nav class="flex-1 p-4 overflow-y-auto fontnav">
                     <ul>
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
+                            Admin
+                        </div>
                         <li class="mb-4">
-                            <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
-                                Admin
-                            </div>
                             <a href="panel.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
                             </a>
@@ -345,7 +404,7 @@ if (isset($_POST['upload'])) {
                                 <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
-                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
                             Pelanggan
                         </div>
                         <li class="mb-4">
@@ -360,7 +419,7 @@ if (isset($_POST['upload'])) {
             <!-- Main Content -->
             <div id="mainContent" class="bg-[#FAF3DD] flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="senarai-menu bg-white p-6 rounded-lg shadow relative">
-                    <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
+                    <div class="text-[30px] font-bold mb-4 flex justify-between items-center fontkafelip">
                         <span>Senarai Pelanggan Dan Pekerja</span>
                     </div>
                     <div class="text-center text-gray-600 mb-4">
@@ -371,22 +430,22 @@ if (isset($_POST['upload'])) {
                                 <select name="tapis_tahap" class="border p-2 rounded ">
                                     <option value="">Semua</option>
                                     <option value="ADMIN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'ADMIN')
-                                        echo 'selected'; ?>>Admin</option>
+                                                                echo 'selected'; ?>>Admin</option>
                                     <option value="PELANGGAN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'PELANGGAN')
-                                        echo 'selected'; ?>>Pelanggan</option>
+                                                                    echo 'selected'; ?>>Pelanggan</option>
                                 </select>
                                 <button type="submit"
-                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center fontbutton">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
                                 <button type="button" onclick="window.location.href='list-user.php';"
-                                    class="bg-red-800 text-white p-2 rounded flex items-center">
+                                    class="bg-red-800 text-white p-2 rounded flex items-center fontbutton">
                                     <i class="fas fa-redo mr-1"></i> Reset
                                 </button>
                             </form>
                             <div class="flex space-x-2">
                                 <button id="uploadButton"
-                                    class="bg-[#428D41] text-white p-2 hover:bg-[#68B0AB] rounded flex items-center whitespace-nowrap">
+                                    class="bg-[#428D41] text-white p-2 hover:bg-[#68B0AB] rounded fontbutton flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Muat Naik Pekerja
                                 </button>
                             </div>
@@ -404,7 +463,7 @@ if (isset($_POST['upload'])) {
                                     <td width='10%' class="text-center  py-2">Tindakan</td>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="fonttext">
                                 <?php if (mysqli_num_rows($laksana) > 0) { ?>
                                     <?php while ($m = mysqli_fetch_array($laksana)) { ?>
                                         <tr class='bg-white border-b hover:bg-blue-50'>
@@ -425,16 +484,16 @@ if (isset($_POST['upload'])) {
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
                                                     <button onclick="SemakProfil('<?= $m['email'] ?>')"
-                                                        class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
+                                                        class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] fontbutton flex items-center justify-center">
                                                         <i class="fas fa-user mr-1"></i> Profil
                                                     </button>
                                                     <button onclick="updateUser('<?= $m['notel'] ?>', '<?= $m['email'] ?>')"
-                                                        class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] flex items-center justify-center">
+                                                        class="bg-[#428D41] text-white py-2 px-6 w-32 rounded hover:bg-[#68B0AB] fontbutton flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
                                                     <button data-namauser="<?= $m['nama'] ?>"
                                                         data-id="<?php echo urlencode($m['notel']); ?>"
-                                                        class="delete-btn bg-red-800 text-white py-2 px-6 w-32 rounded  flex items-center justify-center">
+                                                        class="delete-btn bg-red-800 text-white py-2 px-6 w-32 rounded  fontbutton flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
                                                 </div>
@@ -557,12 +616,12 @@ if (isset($_POST['upload'])) {
                 <input type="hidden" name="email_lama" id="email_lama">
                 <input type="hidden" name="katalaluan_lama" id="katalaluan_lama">
                 <input type="hidden" name="tahap_lama" id="tahap_lama">
-                
+
                 <!-- input tersembunyi untuk parameter URL -->
                 <input type="hidden" name="current_page" value="<?php echo isset($_GET['halaman']) ? $_GET['halaman'] : '1'; ?>">
                 <input type="hidden" name="search_query" value="<?php echo isset($_GET['nama']) ? htmlspecialchars($_GET['nama']) : ''; ?>">
                 <input type="hidden" name="filter_tahap" value="<?php echo isset($_GET['tapis_tahap']) ? htmlspecialchars($_GET['tapis_tahap']) : ''; ?>">
-                
+
                 Nama :
                 <input type="text" name="nama" id="nama" class="w-full border p-2 mb-1" minlength="3" maxlength="50"
                     oninput="validateForm()" required>
@@ -701,7 +760,7 @@ if (isset($_POST['upload'])) {
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -861,15 +920,15 @@ if (isset($_POST['upload'])) {
         const btn = document.getElementById("uploadButton");
         const span = document.getElementsByClassName("close")[0];
 
-        btn.onclick = function () {
+        btn.onclick = function() {
             pekerja.style.display = "block";
         }
 
-        span.onclick = function () {
+        span.onclick = function() {
             pekerja.style.display = "none";
         }
 
-        window.onclick = function (event) {
+        window.onclick = function(event) {
             if (event.target == pekerja) {
                 pekerja.style.display = "none";
             }
@@ -884,7 +943,7 @@ if (isset($_POST['upload'])) {
         const notifwarning = new Audio('../lib/audio/warning.mp3'); // Path fail audio amaran
 
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
                 notifsuccess.play();
@@ -893,7 +952,7 @@ if (isset($_POST['upload'])) {
                     title: '<?php echo $_SESSION['success']; ?>',
                     showConfirmButton: false,
                     timer: 1500
-                }).then(() => { });
+                }).then(() => {});
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
@@ -905,7 +964,7 @@ if (isset($_POST['upload'])) {
                     title: '<?php echo $_SESSION['error']; ?>',
                     showConfirmButton: false,
                     timer: 1500
-                }).then(() => { });
+                }).then(() => {});
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
 
@@ -913,7 +972,7 @@ if (isset($_POST['upload'])) {
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function (e) {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const id = this.dataset.id;
                     const nama = this.dataset.namauser;
@@ -934,13 +993,13 @@ if (isset($_POST['upload'])) {
                             const currentPage = new URLSearchParams(window.location.search).get('halaman') || '1';
                             const searchQuery = new URLSearchParams(window.location.search).get('nama') || '';
                             const filterTahap = new URLSearchParams(window.location.search).get('tapis_tahap') || '';
-                            
+
                             // Bina URL dengan parameter
                             let deleteUrl = `../function/del-user.php?notel=${id}`;
                             if (currentPage) deleteUrl += `&current_page=${currentPage}`;
                             if (searchQuery) deleteUrl += `&search_query=${encodeURIComponent(searchQuery)}`;
                             if (filterTahap) deleteUrl += `&filter_tahap=${filterTahap}`;
-                            
+
                             window.location.href = deleteUrl;
                         }
                     });
@@ -961,7 +1020,7 @@ if (isset($_POST['upload'])) {
 
             // Form validation dengan SweetAlert
             document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function (e) {
+                form.addEventListener('submit', function(e) {
                     // Contoh validasi untuk fail
                     const fileInput = this.querySelector('input[type="file"]');
                     if (fileInput && fileInput.files.length > 0) {
@@ -1005,7 +1064,7 @@ if (isset($_POST['upload'])) {
     </script>
 
     <script>
-        document.getElementById('notel').addEventListener('input', function () {
+        document.getElementById('notel').addEventListener('input', function() {
             const phonePattern = /^(01)[0-46-9][0-9]{7,8}$/;
             const phoneError = document.getElementById('notelError');
             const phone = this.value;

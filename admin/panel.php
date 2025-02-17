@@ -25,6 +25,56 @@ include('../function/connection.php');  # Sambung Ke database
     <link rel="stylesheet" href="../lib/css/sweetalert2.min.css">
     <script src="../lib/js/sweetalert2@11.js"></script>
     <style>
+        @font-face {
+            font-family: 'BebasNeue';
+            src: url('../lib/fonts/BebasNeue-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LilitiaOne';
+            src: url('../lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LobsterTwo';
+            src: url('../lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Merriweather';
+            src: url('../lib/fonts/Merriweather-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Teko';
+            src: url('../lib/fonts/Teko-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fontkafelip {
+            font-family: 'LobsterTwo', sans-serif;
+        }
+
+        .fontnav {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+
+        }
+
+        .fontlaporan {
+            font-family: 'LilitiaOne', sans-serif;
+        }
+
+
         .drawer-open {
             transform: translateX(0);
         }
@@ -131,7 +181,7 @@ include('../function/connection.php');  # Sambung Ke database
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
-            <div class="text-[150%] font-bold mx-auto">Panel KafeLip</div>
+            <div class="text-[150%] font-bold mx-auto fontkafelip">Panel KafeLip</div>
             <div class="w-12"></div>
         </header>
 
@@ -139,12 +189,12 @@ include('../function/connection.php');  # Sambung Ke database
             <!-- Sidebar -->
             <div id="drawer"
                 class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
-                <nav class="flex-1 p-4 overflow-y-auto">
+                <nav class="flex-1 p-4 overflow-y-auto fontnav">
                     <ul>
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
+                            Admin
+                        </div>
                         <li class="mb-4">
-                            <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
-                                Admin
-                            </div>
                             <a href="panel.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
                             </a>
@@ -169,7 +219,7 @@ include('../function/connection.php');  # Sambung Ke database
                                 <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
-                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
                             Pelanggan
                         </div>
                         <li class="mb-4">
@@ -229,7 +279,7 @@ include('../function/connection.php');  # Sambung Ke database
                 </div>
 
                 <div class="laporan-pelanggan bg-white p-6 rounded-lg shadow relative">
-                    <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
+                    <div class="text-[30px] font-bold mb-4 flex justify-between items-center fontkafelip">
                         <span>Laporan Langsung Hari ini</span>
                         <div class="flex items-center space-x-4">
                             <button id="fullscreenToggle"
@@ -258,10 +308,9 @@ include('../function/connection.php');  # Sambung Ke database
                                     <th width='20%' class="text-black px-[47px] py-2">Masa</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="fontlaporan">
                                 <tr>
-                                    <td colspan="4" class="text-center text-xl text-red-500 py-4 no-data">TIADA
-                                        PELANGGAN SEKARANG</td>
+                                    <td colspan="4" class="text-center text-xl text-black py-4 no-data fontlaporan">Loading...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -283,7 +332,7 @@ include('../function/connection.php');  # Sambung Ke database
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -382,7 +431,7 @@ include('../function/connection.php');  # Sambung Ke database
                     laporanTable.innerHTML = ''; // Clear table
 
                     if (data.laporan_hari_ini.length === 0) {
-                        laporanTable.innerHTML = `<tr><td colspan="4" class="text-center text-xl text-red-500 py-4 no-data">TIADA PELANGGAN SEKARANG</td>`;
+                        laporanTable.innerHTML = `<tr><td colspan="4" class="text-center text-xl text-red-500 py-4 no-data fontlaporan">TIADA PELANGGAN</td>`;
                     } else {
                         data.laporan_hari_ini.forEach(tempahan => {
                             let masaLalu = timeSince(tempahan.timestap);
@@ -397,7 +446,7 @@ include('../function/connection.php');  # Sambung Ke database
                     }
                 })
                 .catch(error => {
-                    document.querySelector('.laporan-pelanggan tbody').innerHTML = `<tr><td colspan="4" class="text-center text-xl text-red-500 py-4 no-data">TIADA PELANGGAN SEKARANG</td></tr>`;
+                    document.querySelector('.laporan-pelanggan tbody').innerHTML = `<tr><td colspan="4" class="text-center text-xl text-red-500 py-4 no-data fontlaporan">Ralat fecth Api</td></tr>`;
                 });
         }
 
@@ -450,7 +499,7 @@ include('../function/connection.php');  # Sambung Ke database
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
