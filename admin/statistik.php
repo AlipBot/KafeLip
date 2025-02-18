@@ -4,6 +4,7 @@ include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pen
 include('../function/connection.php');  # Sambung Ke database
 ?>
 <html lang="ms">
+
 </html>
 
 <head>
@@ -26,6 +27,67 @@ include('../function/connection.php');  # Sambung Ke database
     <script src="../lib/js/sweetalert2@11.js"></script>
     <script src="../lib/js/chart.js"></script>
     <style>
+        @font-face {
+            font-family: 'BebasNeue';
+            src: url('../lib/fonts/BebasNeue-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LilitiaOne';
+            src: url('../lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LobsterTwo';
+            src: url('../lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Merriweather';
+            src: url('../lib/fonts/Merriweather-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Teko';
+            src: url('../lib/fonts/Teko-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppin';
+            src: url('../lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fontkafelip {
+            font-family: 'LobsterTwo', sans-serif;
+        }
+
+        .fontnav {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+        }
+
+        .fonttext {
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
+        }
+
+        .fontbutton {
+            font-size: 19px;
+            font-family: 'BebasNeue', sans-serif;
+        }
+
         .drawer-open {
             transform: translateX(0);
         }
@@ -95,7 +157,7 @@ include('../function/connection.php');  # Sambung Ke database
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
-            <div class="text-[150%] font-bold mx-auto">Statistik KafeLip</div>
+            <div class="text-[150%] font-bold mx-auto fontkafelip">Statistik KafeLip</div>
             <div class="w-12"></div>
         </header>
 
@@ -103,12 +165,12 @@ include('../function/connection.php');  # Sambung Ke database
             <!-- Sidebar -->
             <div id="drawer"
                 class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
-                <nav class="flex-1 p-4 overflow-y-auto">
+                <nav class="flex-1 p-4 overflow-y-auto fontnav">
                     <ul>
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
+                            Admin
+                        </div>
                         <li class="mb-4">
-                            <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
-                                Admin
-                            </div>
                             <a href="panel.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
                             </a>
@@ -133,7 +195,7 @@ include('../function/connection.php');  # Sambung Ke database
                                 <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
-                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
                             Pelanggan
                         </div>
                         <li class="mb-4">
@@ -145,15 +207,16 @@ include('../function/connection.php');  # Sambung Ke database
                 </nav>
             </div>
 
+
             <!-- Main Content -->
             <div id="mainContent" class="bg-[#FAF3DD] flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="senarai-menu bg-white p-6 rounded-lg shadow relative">
-                    <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
+                    <div class="text-[30px] fontkafelip font-bold mb-4 flex justify-between items-center">
                         <span>Statistik Langsung</span>
                     </div>
 
                     <!-- Tambah form pemilihan bulan -->
-                    <div class="mb-6">
+                    <div class="fonttext mb-6">
                         <form id="filterForm" class="flex gap-4 items-end">
                             <div class="flex-1">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="bulan">
@@ -209,7 +272,7 @@ include('../function/connection.php');  # Sambung Ke database
 
                     <!-- Tambah container baharu untuk graf kekerapan menu -->
                     <div class="mt-8">
-                        <h2 class="text-xl font-bold mb-4">Kekerapan Menu Dibeli</h2>
+                        <h2 class="text-[30px] font-bold mb-4 fontkafelip">Kekerapan Menu Dibeli</h2>
                         <div class="w-full h-[400px]">
                             <canvas id="menuChart"></canvas>
                         </div>
@@ -220,7 +283,7 @@ include('../function/connection.php');  # Sambung Ke database
 
         <!-- Footer -->
         <footer class="bg-[#428D41] text-white p-4 text-center w-full">
-        &copy; 2025 KAFELIP. Semua hak terpelihara.
+            &copy; 2025 KAFELIP. Semua hak terpelihara.
         </footer>
     </div>
 
@@ -346,7 +409,7 @@ include('../function/connection.php');  # Sambung Ke database
                                     plugins: {
                                         title: {
                                             display: true,
-                                            text: `Statistik Tempahan dan Jualan Bulan ${data.bulan}/${data.tahun}`,
+                                            text: `Statistik Tempahan Bulan ${data.bulan}/${data.tahun}`,
                                             font: {
                                                 size: 16
                                             }

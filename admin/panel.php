@@ -60,6 +60,18 @@ include('../function/connection.php');  # Sambung Ke database
             font-style: normal;
         }
 
+        @font-face {
+            font-family: 'Poppin';
+            src: url('../lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fonttext {
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
+        }
+
         .fontkafelip {
             font-family: 'LobsterTwo', sans-serif;
         }
@@ -232,7 +244,7 @@ include('../function/connection.php');  # Sambung Ke database
             </div>
 
             <!-- Main Content -->
-            <div id="mainContent" class="bg-[#FAF3DD] flex-1 p-6 transition-all duration-300 content-expanded">
+            <div id="mainContent" class="bg-[#FAF3DD] fonttext flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <div class="bg-white p-4 rounded shadow flex items-center">
                         <i class="fas fa-calendar-day text-[#428D41] text-3xl mr-4"></i>
@@ -310,7 +322,8 @@ include('../function/connection.php');  # Sambung Ke database
                             </thead>
                             <tbody class="fontlaporan">
                                 <tr>
-                                    <td colspan="4" class="text-center text-xl text-black py-4 no-data fontlaporan">Loading...</td>
+                                    <td colspan="4" class="text-center text-xl text-black py-4 no-data fontlaporan">
+                                        Loading...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -332,7 +345,7 @@ include('../function/connection.php');  # Sambung Ke database
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -499,7 +512,7 @@ include('../function/connection.php');  # Sambung Ke database
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",

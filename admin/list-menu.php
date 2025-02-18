@@ -259,6 +259,67 @@ if (isset($_POST['upload'])) {
     <script src="../lib/js/sweetalert2@11.js"></script>
     <link rel="stylesheet" href="../lib/css/cropper.min.css">
     <style>
+        @font-face {
+            font-family: 'BebasNeue';
+            src: url('../lib/fonts/BebasNeue-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LilitiaOne';
+            src: url('../lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LobsterTwo';
+            src: url('../lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Merriweather';
+            src: url('../lib/fonts/Merriweather-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Teko';
+            src: url('../lib/fonts/Teko-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppin';
+            src: url('../lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fontkafelip {
+            font-family: 'LobsterTwo', sans-serif;
+        }
+
+        .fontnav {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+        }
+
+        .fonttext {
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
+        }
+
+        .fontbutton {
+            font-size: 19px;
+            font-family: 'BebasNeue', sans-serif;
+        }
+
         .drawer-open {
             transform: translateX(0);
         }
@@ -472,8 +533,10 @@ if (isset($_POST['upload'])) {
         select:focus {
             border-width: 1px;
             outline: none;
-            border-color: #3b82f6; /* Warna biru */
-            box-shadow: 0 0 0 1px #3b82f6; /* Tambah shadow untuk efek lebih jelas */
+            border-color: #3b82f6;
+            /* Warna biru */
+            box-shadow: 0 0 0 1px #3b82f6;
+            /* Tambah shadow untuk efek lebih jelas */
         }
 
         /* Pastikan style focus tidak terganggu dengan style error */
@@ -493,20 +556,20 @@ if (isset($_POST['upload'])) {
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
-            <div class="text-[150%] font-bold mx-auto">Senarai Makanan KafeLip</div>
+            <div class="text-[150%] font-bold mx-auto fontkafelip">Senarai Makanan KafeLip</div>
             <div class="w-12"></div>
         </header>
 
         <div class="flex flex-1 pt-16">
-            <!-- Sidebar -->
-            <div id="drawer"
+             <!-- Sidebar -->
+             <div id="drawer"
                 class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
-                <nav class="flex-1 p-4 overflow-y-auto">
+                <nav class="flex-1 p-4 overflow-y-auto fontnav">
                     <ul>
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
+                            Admin
+                        </div>
                         <li class="mb-4">
-                            <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
-                                Admin
-                            </div>
                             <a href="panel.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
                             </a>
@@ -531,7 +594,7 @@ if (isset($_POST['upload'])) {
                                 <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
-                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
                             Pelanggan
                         </div>
                         <li class="mb-4">
@@ -543,10 +606,11 @@ if (isset($_POST['upload'])) {
                 </nav>
             </div>
 
+
             <!-- Main Content -->
             <div id="mainContent" class="bg-[#FAF3DD] flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="senarai-menu bg-white p-6 rounded-lg shadow relative">
-                    <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
+                    <div class="text-[30px] font-bold mb-4 flex justify-between fontkafelip items-center">
                         <span>Senarai Makanan</span>
                     </div>
                     <div class="text-center text-gray-600 mb-4">
@@ -556,21 +620,21 @@ if (isset($_POST['upload'])) {
                                     value="<?php echo htmlspecialchars($_GET['nama_makanan'] ?? ''); ?>"
                                     class="border rounded-2xl p-2 w-2/5">
                                 <button type="submit"
-                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                                    class="bg-[#428D41] fontbutton hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
                                 </button>
                                 <button type="button" onclick="window.location.href='list-menu.php';"
-                                    class="bg-red-800 text-white p-2 rounded flex items-center">
+                                    class="bg-red-800 fontbutton text-white p-2 rounded flex items-center">
                                     <i class="fas fa-redo mr-1"></i> Reset
                                 </button>
                             </form>
                             <div class="flex space-x-2">
                                 <button id="DaftarMenuButton"
-                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
+                                    class="bg-[#428D41] fontbutton hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Daftar Menu
                                 </button>
                                 <button id="uploadButton"
-                                    class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
+                                    class="bg-[#428D41] fontbutton hover:bg-[#68B0AB] text-white p-2 rounded flex items-center whitespace-nowrap">
                                     <i class="fas fa-plus mr-1"></i> Muat Naik Menu
                                 </button>
                             </div>
@@ -604,7 +668,7 @@ if (isset($_POST['upload'])) {
                                     <th width='20%' class="px-[47px] py-2">Tindakan</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="fonttext">
                                 <?php if (mysqli_num_rows($laksana) > 0) { ?>
                                     <?php while ($m = mysqli_fetch_assoc($laksana)) { ?>
                                         <tr class='bg-white border-b hover:bg-blue-50'>
@@ -632,12 +696,12 @@ if (isset($_POST['upload'])) {
                                             <td class='px-4 py-2 text-center'>
                                                 <div class="flex flex-col items-center space-y-4">
                                                     <button onclick="updateMenu('<?= $m['kod_makanan'] ?>')"
-                                                        class="bg-[#428D41] hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
+                                                        class="bg-[#428D41] fontbutton hover:bg-[#68B0AB] text-white py-2 px-4 rounded flex items-center justify-center">
                                                         <i class="fas fa-edit mr-1"></i> Kemaskini
                                                     </button>
                                                     <button data-id="<?php echo urlencode($m['kod_makanan']); ?>"
                                                         data-nama_makanan="<?php echo htmlspecialchars($m['nama_makanan']); ?>"
-                                                        class="delete-btn bg-red-800 text-white py-2 px-7 rounded flex items-center justify-center">
+                                                        class="delete-btn fontbutton bg-red-800 text-white py-2 px-7 rounded flex items-center justify-center">
                                                         <i class="fas fa-trash mr-1"></i> Hapus
                                                     </button>
                                                 </div>
@@ -804,7 +868,7 @@ if (isset($_POST['upload'])) {
                 <input type="hidden" name="current_page" value="<?php echo isset($_GET['halaman']) ? $_GET['halaman'] : '1'; ?>">
                 <input type="hidden" name="search_query" value="<?php echo isset($_GET['nama_makanan']) ? htmlspecialchars($_GET['nama_makanan']) : ''; ?>">
                 <input type="hidden" name="sort" value="<?php echo isset($_GET['sort']) ? htmlspecialchars($_GET['sort']) : ''; ?>">
-                
+
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
                     <input type="hidden" name="id_menu" id="id_menu">
@@ -878,7 +942,7 @@ if (isset($_POST['upload'])) {
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -912,7 +976,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function () {
+            reader.onload = function() {
                 var imgElement = document.getElementById('preview');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -925,7 +989,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function () {
+            reader.onload = function() {
                 var imgElement = document.getElementById('preview_kemas');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -942,16 +1006,16 @@ if (isset($_POST['upload'])) {
         const btn = document.getElementById("uploadButton");
 
 
-        btn.onclick = function () {
+        btn.onclick = function() {
             menu.style.display = "block";
         }
 
-        btnDaftarmenu.onclick = function () {
+        btnDaftarmenu.onclick = function() {
             Daftarmenu.style.display = "block";
         }
 
 
-        window.onclick = function (event) {
+        window.onclick = function(event) {
             if (event.target == Kemaskinimenu) {
                 Kemaskinimenu.style.display = "none";
             }
@@ -969,7 +1033,7 @@ if (isset($_POST['upload'])) {
         const notifinfo = new Audio('../lib/audio/info.mp3'); //  Path fail audio info
         const notifwarning = new Audio('../lib/audio/warning.mp3'); // Path fail audio amaran
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
                 notifsuccess.play();
@@ -1005,7 +1069,7 @@ if (isset($_POST['upload'])) {
                     const id = this.dataset.id;
                     const nama_makanan = this.dataset.nama_makanan;
                     notifwarning.play();
-                    
+
                     Swal.fire({
                         title: 'Anda pasti?',
                         text: `Anda akan memadam ${nama_makanan} dan tidak dapat memulihkannya!`,
@@ -1021,13 +1085,13 @@ if (isset($_POST['upload'])) {
                             const currentPage = new URLSearchParams(window.location.search).get('halaman') || '1';
                             const searchQuery = new URLSearchParams(window.location.search).get('nama_makanan') || '';
                             const sort = new URLSearchParams(window.location.search).get('sort') || '';
-                            
+
                             // Bina URL dengan parameter
                             let deleteUrl = `../function/del-menu.php?id_menu=${id}`;
                             if (currentPage) deleteUrl += `&current_page=${currentPage}`;
                             if (searchQuery) deleteUrl += `&search_query=${encodeURIComponent(searchQuery)}`;
                             if (sort) deleteUrl += `&sort=${sort}`;
-                            
+
                             window.location.href = deleteUrl;
                         }
                     });
@@ -1049,7 +1113,7 @@ if (isset($_POST['upload'])) {
 
             // Form validation dengan SweetAlert
             document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function (e) {
+                form.addEventListener('submit', function(e) {
                     // Contoh validasi untuk fail
                     const fileInput = this.querySelector('input[type="file"]');
                     if (fileInput && fileInput.files.length > 0) {
@@ -1128,7 +1192,7 @@ if (isset($_POST['upload'])) {
 
                 originalFile = file;
                 const reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     const cropModal = document.getElementById('cropModal');
                     const cropImage = document.getElementById('cropImage');
 
@@ -1313,7 +1377,7 @@ if (isset($_POST['upload'])) {
             modal.classList.add('flex');
 
             // Tutup modal bila klik di luar gambar
-            modal.onclick = function (e) {
+            modal.onclick = function(e) {
                 if (e.target === modal) {
                     closeImagePopup();
                 }
@@ -1327,7 +1391,7 @@ if (isset($_POST['upload'])) {
         }
 
         // Tutup modal dengan kekunci ESC
-        document.addEventListener('keydown', function (e) {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeImagePopup();
             }
@@ -1339,7 +1403,7 @@ if (isset($_POST['upload'])) {
         let originalFile = null;
 
         // Add crop modal handlers
-        document.getElementById('cropDone').addEventListener('click', function () {
+        document.getElementById('cropDone').addEventListener('click', function() {
             if (!cropper) return;
 
             const cropModal = document.getElementById('cropModal');
@@ -1386,7 +1450,7 @@ if (isset($_POST['upload'])) {
         });
 
 
-        document.getElementById('cropCancel').addEventListener('click', function () {
+        document.getElementById('cropCancel').addEventListener('click', function() {
             const cropModal = document.getElementById('cropModal');
             const inputId = cropModal.dataset.inputId;
 
@@ -1428,11 +1492,10 @@ if (isset($_POST['upload'])) {
         document.getElementById('gambarDaftar').addEventListener('change', checkFormCompletion);
 
         // Tambah event listener untuk reset form
-        document.getElementById('closeDaftarPreview').addEventListener('click', function () {
+        document.getElementById('closeDaftarPreview').addEventListener('click', function() {
             document.getElementById('gambarDaftar').value = '';
             checkFormCompletion();
         });
-
     </script>
 
     <script>
@@ -1486,7 +1549,7 @@ if (isset($_POST['upload'])) {
             }
         }
 
-        document.getElementById('closePreview').addEventListener('click', function () {
+        document.getElementById('closePreview').addEventListener('click', function() {
             document.getElementById('gambar').value = '';
             checkUpdateFormCompletion()
         });
@@ -1518,7 +1581,7 @@ if (isset($_POST['upload'])) {
     </script>
 
     <script>
-        document.getElementById('kod_makanan').addEventListener('input', function () {
+        document.getElementById('kod_makanan').addEventListener('input', function() {
             const kodMakanan = this.value;
             const errorSpan = document.getElementById('kod_makanan_error');
 

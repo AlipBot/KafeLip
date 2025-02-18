@@ -70,6 +70,67 @@ $laksql = mysqli_query($condb, $sql);
     <link rel="stylesheet" href="../lib/css/flatpickr.min.css">
     <script src="../lib/js/flatpickr.js"></script>
     <style>
+        @font-face {
+            font-family: 'BebasNeue';
+            src: url('../lib/fonts/BebasNeue-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LilitiaOne';
+            src: url('../lib/fonts/LilitaOne-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'LobsterTwo';
+            src: url('../lib/fonts/LobsterTwo-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Merriweather';
+            src: url('../lib/fonts/Merriweather-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Teko';
+            src: url('../lib/fonts/Teko-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppin';
+            src: url('../lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fontkafelip {
+            font-family: 'LobsterTwo', sans-serif;
+        }
+
+        .fontnav {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+        }
+
+        .fonttext {
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
+        }
+
+        .fontbutton {
+            font-size: 19px;
+            font-family: 'BebasNeue', sans-serif;
+        }
+
         .drawer-open {
             transform: translateX(0);
         }
@@ -197,7 +258,7 @@ $laksql = mysqli_query($condb, $sql);
 
         .flatpickr-day.today {
             border: 2px solid #428D41 !important;
-            color: rgb(0, 0, 0) ;
+            color: rgb(0, 0, 0);
         }
 
         .flatpickr-day.today:hover {
@@ -215,21 +276,21 @@ $laksql = mysqli_query($condb, $sql);
             <button id="drawerToggle" class="bg-[#3a5a40] text-white p-2 rounded">
                 <i class="fas fa-bars"></i> Menu
             </button>
-            <div class="text-[150%] font-bold mx-auto">Sejarah Laporan Tempahan KafeLip</div>
+            <div class="text-[150%] font-bold mx-auto fontkafelip">Sejarah Laporan Tempahan KafeLip</div>
             <div class="w-12"></div>
         </header>
 
         <!-- Content -->
         <div class="flex flex-1 pt-16">
-            <!-- Sidebar -->
-            <div id="drawer"
+             <!-- Sidebar -->
+             <div id="drawer"
                 class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
-                <nav class="flex-1 p-4 overflow-y-auto">
+                <nav class="flex-1 p-4 overflow-y-auto fontnav">
                     <ul>
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
+                            Admin
+                        </div>
                         <li class="mb-4">
-                            <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
-                                Admin
-                            </div>
                             <a href="panel.php" class="flex items-center p-2 hover:bg-[#68B0AB] rounded">
                                 <i class="fas fa-tachometer-alt mr-2"></i> Panel Admin
                             </a>
@@ -254,7 +315,7 @@ $laksql = mysqli_query($condb, $sql);
                                 <i class="fas fa-analytics mr-2"></i> Statistik
                             </a>
                         </li>
-                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB]">
+                        <div class="p-4 text-center text-2xl font-bold border-b border-[#68B0AB] fontkafelip">
                             Pelanggan
                         </div>
                         <li class="mb-4">
@@ -266,13 +327,14 @@ $laksql = mysqli_query($condb, $sql);
                 </nav>
             </div>
 
+
             <!-- Main Content -->
             <div id="mainContent" class="bg-[#FAF3DD] flex-1 p-6 transition-all duration-300 content-expanded">
                 <div class="senarai-menu bg-white p-6 rounded-lg shadow relative">
-                    <div class="text-[30px] font-bold mb-4 flex justify-between items-center">
+                    <div class="text-[30px] font-bold mb-4 fontkafelip flex justify-between items-center">
                         <span>Sejarah Laporan Tempahan</span>
                     </div>
-                    <div class="text-center text-gray-600 mb-4">
+                    <div class="text-center fonttext text-gray-600 mb-4">
                         <span class="font-bold text-lg">Tarikh: </span>
                         <span id="currentDate" class="font-bold text-lg"></span>
                         <br>
@@ -283,34 +345,34 @@ $laksql = mysqli_query($condb, $sql);
                         <span id="currentDay" class="font-bold text-lg"></span>
                         <form action="laporan.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                             <input type="text" id="tarikh_semasa" name="tarikh_semasa" value="<?= $tarikhsemasa ?>"
-                                class="border-2 rounded p-2" placeholder="Pilih Tarikh">
+                                class="border-2 fonttext  rounded p-2" placeholder="Pilih Tarikh">
                             <button type="submit"
-                                class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
+                                class="bg-[#428D41] fontbutton hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                 <i class="fas fa-search mr-1"></i> Cari
                             </button>
                             <button type="button" onclick="window.location.href='laporan.php'"
-                                class="bg-red-800 hover:bg-red-600 text-white p-2 rounded flex items-center">
+                                class="bg-red-800 fontbutton  hover:bg-red-600 text-white p-2 rounded flex items-center">
                                 <i class="fas fa-redo mr-1"></i> Reset
                             </button>
                         </form>
-                        <div class="flex space-x-2">
+                        <div class="flex fonttext space-x-2">
                             <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">Laporan pada
                                 Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>
                             <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">
                                 Hari : <?php
-                                $tarikh = date_create($tarikhsemasa);
-                                $hari = date_format($tarikh, "l");
-                                $hari_melayu = [
-                                    'Sunday' => 'Ahad',
-                                    'Monday' => 'Isnin',
-                                    'Tuesday' => 'Selasa',
-                                    'Wednesday' => 'Rabu',
-                                    'Thursday' => 'Khamis',
-                                    'Friday' => 'Jumaat',
-                                    'Saturday' => 'Sabtu'
-                                ];
-                                echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
-                                ?>
+                                        $tarikh = date_create($tarikhsemasa);
+                                        $hari = date_format($tarikh, "l");
+                                        $hari_melayu = [
+                                            'Sunday' => 'Ahad',
+                                            'Monday' => 'Isnin',
+                                            'Tuesday' => 'Selasa',
+                                            'Wednesday' => 'Rabu',
+                                            'Thursday' => 'Khamis',
+                                            'Friday' => 'Jumaat',
+                                            'Saturday' => 'Sabtu'
+                                        ];
+                                        echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
+                                        ?>
                             </span>
                         </div>
                         <!-- Jadual laporan tempahan -->
@@ -333,17 +395,17 @@ $laksql = mysqli_query($condb, $sql);
                                                 <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['email']); ?>
                                                 </td>
                                                 <td class='px-4 py-2 '><?php
-                                                $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
+                                                                        $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
                                               FROM tempahan t
                                               JOIN makanan m ON t.kod_makanan = m.kod_makanan
                                               WHERE t.email = '" . $m['email'] . "'
                                               AND t.tarikh = '" . $m['tarikh'] . "'";
-                                                $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
+                                                                        $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
 
-                                                while ($mm = mysqli_fetch_array($lakpaparmenu)) {
-                                                    echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
-                                                }
-                                                ?></td>
+                                                                        while ($mm = mysqli_fetch_array($lakpaparmenu)) {
+                                                                            echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
+                                                                        }
+                                                                        ?></td>
                                                 <td class='px-4 py-2 text-center'>RM
                                                     <?php echo htmlspecialchars($m['jumlah_harga_semua']); ?>
                                                 </td>
@@ -445,7 +507,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -534,10 +596,10 @@ $laksql = mysqli_query($condb, $sql);
             },
             animate: true,
             // Tambah animasi dan styling
-            onOpen: function (selectedDates, dateStr, instance) {
+            onOpen: function(selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.add('open');
             },
-            onClose: function (selectedDates, dateStr, instance) {
+            onClose: function(selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.remove('open');
             }
         });

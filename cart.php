@@ -391,10 +391,10 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 </div>
                 <div class="mt-5">
                     <button class="buang-btn bg-[#CA0000D9] text-white px-4 py-2 rounded button hover:bg-[#d33]">
-                        Batal Tempahan
+                        <i class="fas fa-times-circle mr-2"></i>Reset
                     </button>
                     <button class="Sahkan-btn bg-[#4A7C59] text-white px-4 py-2 rounded button hover:bg-[#68B0AB]">
-                        Tempah
+                        <i class="fas fa-check-circle mr-2"></i>Tempah Sekarang
                     </button>
                 </div>
             </div>
