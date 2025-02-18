@@ -144,12 +144,57 @@ include('../function/connection.php');  # Sambung Ke database
             color: #fff;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        /* Tambah style untuk loading screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FAF3DD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #428D41;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Poppin', sans-serif;
+            color: #428D41;
+        }
     </style>
 
 </head>
 
 <body class="font-roboto bg-gray-100">
-
+    <!-- loading screen -->
+    <div id="loadingScreen">
+        <div class="text-center">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Sila tunggu sebentar...</div>
+        </div>
+    </div>
 
     <div class="flex h-screen flex-col">
         <!-- Header -->
@@ -222,7 +267,8 @@ include('../function/connection.php');  # Sambung Ke database
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="bulan">
                                     Bulan
                                 </label>
-                                <select id="bulan" name="bulan" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <select id="bulan" name="bulan"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                     <?php
                                     $bulan_array = [
                                         "01" => "Januari",
@@ -249,7 +295,8 @@ include('../function/connection.php');  # Sambung Ke database
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="tahun">
                                     Tahun
                                 </label>
-                                <select id="tahun" name="tahun" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <select id="tahun" name="tahun"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                     <?php
                                     $tahun_sekarang = date('Y');
                                     for ($tahun = $tahun_sekarang; $tahun >= $tahun_sekarang - 5; $tahun--) {
@@ -259,7 +306,8 @@ include('../function/connection.php');  # Sambung Ke database
                                     ?>
                                 </select>
                             </div>
-                            <button type="submit" class="bg-[#428D41] hover:bg-[#68B0AB] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit"
+                                class="bg-[#428D41] hover:bg-[#68B0AB] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Tunjuk Statistik
                             </button>
                         </form>
@@ -294,7 +342,7 @@ include('../function/connection.php');  # Sambung Ke database
     </button>
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -325,7 +373,7 @@ include('../function/connection.php');  # Sambung Ke database
 
 
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             let salesChart = null; // Variable untuk simpan instance graf
             let currentInterval = null; // Variable untuk simpan interval semasa
             let menuChart = null; // Variable untuk simpan instance graf menu
@@ -355,21 +403,21 @@ include('../function/connection.php');  # Sambung Ke database
                                 data: {
                                     labels: labels,
                                     datasets: [{
-                                            label: 'Jumlah Tempahan',
-                                            data: dataTempahan,
-                                            borderColor: 'rgb(75, 192, 192)',
-                                            tension: 0.1,
-                                            fill: false,
-                                            yAxisID: 'y'
-                                        },
-                                        {
-                                            label: 'Jumlah Jualan (RM)',
-                                            data: dataJualan,
-                                            borderColor: 'rgb(255, 99, 132)',
-                                            tension: 0.1,
-                                            fill: false,
-                                            yAxisID: 'y1'
-                                        }
+                                        label: 'Jumlah Tempahan',
+                                        data: dataTempahan,
+                                        borderColor: 'rgb(75, 192, 192)',
+                                        tension: 0.1,
+                                        fill: false,
+                                        yAxisID: 'y'
+                                    },
+                                    {
+                                        label: 'Jumlah Jualan (RM)',
+                                        data: dataJualan,
+                                        borderColor: 'rgb(255, 99, 132)',
+                                        tension: 0.1,
+                                        fill: false,
+                                        yAxisID: 'y1'
+                                    }
                                     ]
                                 },
                                 options: {
@@ -537,7 +585,7 @@ include('../function/connection.php');  # Sambung Ke database
             }
 
             // Update event listener form
-            document.getElementById('filterForm').addEventListener('submit', function(e) {
+            document.getElementById('filterForm').addEventListener('submit', function (e) {
                 e.preventDefault();
                 const bulan = document.getElementById('bulan').value;
                 const tahun = document.getElementById('tahun').value;
@@ -555,7 +603,7 @@ include('../function/connection.php');  # Sambung Ke database
             startRealtimeUpdates(bulanSemasa, tahunSemasa);
 
             // Bersihkan interval apabila pengguna meninggalkan halaman
-            window.addEventListener('beforeunload', function() {
+            window.addEventListener('beforeunload', function () {
                 if (currentInterval) {
                     clearInterval(currentInterval);
                 }
@@ -617,7 +665,14 @@ include('../function/connection.php');  # Sambung Ke database
             <?php endif; ?>
         })
     </script>
-
+    <script>  // script Loading
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tunggu semua imej dan resources siap diload
+            window.addEventListener('load', function () {
+                document.getElementById('loadingScreen').style.display = 'none';
+            });
+        });
+    </script>
 </body>
 
 </html>

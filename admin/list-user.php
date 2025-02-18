@@ -174,14 +174,16 @@ if (isset($_POST['upload'])) {
             font-size: 20px;
         }
 
-        .fonttext{
+        .fonttext {
             font-size: 17px;
             font-family: 'Poppin', sans-serif;
         }
-        .fontbutton{
+
+        .fontbutton {
             font-size: 19px;
             font-family: 'BebasNeue', sans-serif;
         }
+
         .drawer-open {
             transform: translateX(0);
         }
@@ -355,11 +357,56 @@ if (isset($_POST['upload'])) {
             box-shadow: 0 0 0 1px #3b82f6;
             /* Tambah shadow untuk efek lebih jelas */
         }
+
+        /* Tambah style untuk loading screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FAF3DD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #428D41;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Poppin', sans-serif;
+            color: #428D41;
+        }
     </style>
 </head>
 
 <body class="font-roboto bg-gray-100">
-
+    <!-- loading screen -->
+    <div id="loadingScreen">
+        <div class="text-center">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Sila tunggu sebentar...</div>
+        </div>
+    </div>
     <div class="flex h-screen flex-col">
         <!-- Header -->
         <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
@@ -430,9 +477,9 @@ if (isset($_POST['upload'])) {
                                 <select name="tapis_tahap" class="border p-2 rounded ">
                                     <option value="">Semua</option>
                                     <option value="ADMIN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'ADMIN')
-                                                                echo 'selected'; ?>>Admin</option>
+                                        echo 'selected'; ?>>Admin</option>
                                     <option value="PELANGGAN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'PELANGGAN')
-                                                                    echo 'selected'; ?>>Pelanggan</option>
+                                        echo 'selected'; ?>>Pelanggan</option>
                                 </select>
                                 <button type="submit"
                                     class="bg-[#428D41] hover:bg-[#68B0AB] text-white p-2 rounded flex items-center fontbutton">
@@ -618,9 +665,12 @@ if (isset($_POST['upload'])) {
                 <input type="hidden" name="tahap_lama" id="tahap_lama">
 
                 <!-- input tersembunyi untuk parameter URL -->
-                <input type="hidden" name="current_page" value="<?php echo isset($_GET['halaman']) ? $_GET['halaman'] : '1'; ?>">
-                <input type="hidden" name="search_query" value="<?php echo isset($_GET['nama']) ? htmlspecialchars($_GET['nama']) : ''; ?>">
-                <input type="hidden" name="filter_tahap" value="<?php echo isset($_GET['tapis_tahap']) ? htmlspecialchars($_GET['tapis_tahap']) : ''; ?>">
+                <input type="hidden" name="current_page"
+                    value="<?php echo isset($_GET['halaman']) ? $_GET['halaman'] : '1'; ?>">
+                <input type="hidden" name="search_query"
+                    value="<?php echo isset($_GET['nama']) ? htmlspecialchars($_GET['nama']) : ''; ?>">
+                <input type="hidden" name="filter_tahap"
+                    value="<?php echo isset($_GET['tapis_tahap']) ? htmlspecialchars($_GET['tapis_tahap']) : ''; ?>">
 
                 Nama :
                 <input type="text" name="nama" id="nama" class="w-full border p-2 mb-1" minlength="3" maxlength="50"
@@ -760,7 +810,7 @@ if (isset($_POST['upload'])) {
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -920,15 +970,15 @@ if (isset($_POST['upload'])) {
         const btn = document.getElementById("uploadButton");
         const span = document.getElementsByClassName("close")[0];
 
-        btn.onclick = function() {
+        btn.onclick = function () {
             pekerja.style.display = "block";
         }
 
-        span.onclick = function() {
+        span.onclick = function () {
             pekerja.style.display = "none";
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == pekerja) {
                 pekerja.style.display = "none";
             }
@@ -943,7 +993,7 @@ if (isset($_POST['upload'])) {
         const notifwarning = new Audio('../lib/audio/warning.mp3'); // Path fail audio amaran
 
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
                 notifsuccess.play();
@@ -952,7 +1002,7 @@ if (isset($_POST['upload'])) {
                     title: '<?php echo $_SESSION['success']; ?>',
                     showConfirmButton: false,
                     timer: 1500
-                }).then(() => {});
+                }).then(() => { });
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
@@ -964,7 +1014,7 @@ if (isset($_POST['upload'])) {
                     title: '<?php echo $_SESSION['error']; ?>',
                     showConfirmButton: false,
                     timer: 1500
-                }).then(() => {});
+                }).then(() => { });
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
 
@@ -972,7 +1022,7 @@ if (isset($_POST['upload'])) {
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const id = this.dataset.id;
                     const nama = this.dataset.namauser;
@@ -1020,7 +1070,7 @@ if (isset($_POST['upload'])) {
 
             // Form validation dengan SweetAlert
             document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function (e) {
                     // Contoh validasi untuk fail
                     const fileInput = this.querySelector('input[type="file"]');
                     if (fileInput && fileInput.files.length > 0) {
@@ -1064,7 +1114,7 @@ if (isset($_POST['upload'])) {
     </script>
 
     <script>
-        document.getElementById('notel').addEventListener('input', function() {
+        document.getElementById('notel').addEventListener('input', function () {
             const phonePattern = /^(01)[0-46-9][0-9]{7,8}$/;
             const phoneError = document.getElementById('notelError');
             const phone = this.value;
@@ -1156,7 +1206,14 @@ if (isset($_POST['upload'])) {
             }
         }
     </script>
-
+    <script>  // script Loading
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tunggu semua imej dan resources siap diload
+            window.addEventListener('load', function () {
+                document.getElementById('loadingScreen').style.display = 'none';
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -183,10 +183,52 @@ include('../function/connection.php');  # Sambung Ke database
             color: #fff;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        /* Tambah style untuk loading screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FAF3DD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #428D41;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Poppin', sans-serif;
+            color: #428D41;
+        }
     </style>
 </head>
 
-<bod class="font-roboto bg-gray-100">
+<body class="font-roboto bg-gray-100">
+    <!-- loading screen -->
+    <div id="loadingScreen">
+        <div class="text-center">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Sila tunggu sebentar...</div>
+        </div>
+    </div>
+
     <div class="flex h-screen flex-col">
         <!-- Header -->
         <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
@@ -601,6 +643,14 @@ include('../function/connection.php');  # Sambung Ke database
 
         // Dapatkan nilai awal
         checkOrderChanges();
+
+        // script Loading
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tunggu semua imej dan resources siap diload
+            window.addEventListener('load', function() {
+                document.getElementById('loadingScreen').style.display = 'none';
+            });
+        });
     </script>
     <audio id="notifSound" src="../lib/audio/tutru.mp3"></audio>
     <!-- Tambah audio untuk pembatalan -->

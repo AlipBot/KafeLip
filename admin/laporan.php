@@ -265,11 +265,57 @@ $laksql = mysqli_query($condb, $sql);
             background: #A4D153 !important;
             color: black !important;
         }
+
+        /* Tambah style untuk loading screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FAF3DD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #428D41;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Poppin', sans-serif;
+            color: #428D41;
+        }
     </style>
 
 </head>
 
 <body class="font-roboto bg-gray-100 ">
+    <!-- loading screen -->
+    <div id="loadingScreen">
+        <div class="text-center">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Sila tunggu sebentar...</div>
+        </div>
+    </div>
     <div class="flex min-h-screen flex-col">
         <!-- Header -->
         <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
@@ -282,8 +328,8 @@ $laksql = mysqli_query($condb, $sql);
 
         <!-- Content -->
         <div class="flex flex-1 pt-16">
-             <!-- Sidebar -->
-             <div id="drawer"
+            <!-- Sidebar -->
+            <div id="drawer"
                 class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto fontnav">
                     <ul>
@@ -360,19 +406,19 @@ $laksql = mysqli_query($condb, $sql);
                                 Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>
                             <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">
                                 Hari : <?php
-                                        $tarikh = date_create($tarikhsemasa);
-                                        $hari = date_format($tarikh, "l");
-                                        $hari_melayu = [
-                                            'Sunday' => 'Ahad',
-                                            'Monday' => 'Isnin',
-                                            'Tuesday' => 'Selasa',
-                                            'Wednesday' => 'Rabu',
-                                            'Thursday' => 'Khamis',
-                                            'Friday' => 'Jumaat',
-                                            'Saturday' => 'Sabtu'
-                                        ];
-                                        echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
-                                        ?>
+                                $tarikh = date_create($tarikhsemasa);
+                                $hari = date_format($tarikh, "l");
+                                $hari_melayu = [
+                                    'Sunday' => 'Ahad',
+                                    'Monday' => 'Isnin',
+                                    'Tuesday' => 'Selasa',
+                                    'Wednesday' => 'Rabu',
+                                    'Thursday' => 'Khamis',
+                                    'Friday' => 'Jumaat',
+                                    'Saturday' => 'Sabtu'
+                                ];
+                                echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
+                                ?>
                             </span>
                         </div>
                         <!-- Jadual laporan tempahan -->
@@ -395,17 +441,17 @@ $laksql = mysqli_query($condb, $sql);
                                                 <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['email']); ?>
                                                 </td>
                                                 <td class='px-4 py-2 '><?php
-                                                                        $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
+                                                $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
                                               FROM tempahan t
                                               JOIN makanan m ON t.kod_makanan = m.kod_makanan
                                               WHERE t.email = '" . $m['email'] . "'
                                               AND t.tarikh = '" . $m['tarikh'] . "'";
-                                                                        $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
+                                                $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
 
-                                                                        while ($mm = mysqli_fetch_array($lakpaparmenu)) {
-                                                                            echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
-                                                                        }
-                                                                        ?></td>
+                                                while ($mm = mysqli_fetch_array($lakpaparmenu)) {
+                                                    echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
+                                                }
+                                                ?></td>
                                                 <td class='px-4 py-2 text-center'>RM
                                                     <?php echo htmlspecialchars($m['jumlah_harga_semua']); ?>
                                                 </td>
@@ -507,7 +553,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -596,15 +642,22 @@ $laksql = mysqli_query($condb, $sql);
             },
             animate: true,
             // Tambah animasi dan styling
-            onOpen: function(selectedDates, dateStr, instance) {
+            onOpen: function (selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.add('open');
             },
-            onClose: function(selectedDates, dateStr, instance) {
+            onClose: function (selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.remove('open');
             }
         });
     </script>
-
+    <script>  // script Loading
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tunggu semua imej dan resources siap diload
+            window.addEventListener('load', function () {
+                document.getElementById('loadingScreen').style.display = 'none';
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -544,12 +544,57 @@ if (isset($_POST['upload'])) {
             border-color: red !important;
             box-shadow: 0 0 0 1px red !important;
         }
+
+        /* Tambah style untuk loading screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FAF3DD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #428D41;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Poppin', sans-serif;
+            color: #428D41;
+        }
     </style>
 
 </head>
 
 <body class="font-roboto bg-gray-100">
-
+    <!-- loading screen -->
+    <div id="loadingScreen">
+        <div class="text-center">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Sila tunggu sebentar...</div>
+        </div>
+    </div>
     <div class="flex h-screen flex-col">
         <!-- Header -->
         <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
@@ -561,8 +606,8 @@ if (isset($_POST['upload'])) {
         </header>
 
         <div class="flex flex-1 pt-16">
-             <!-- Sidebar -->
-             <div id="drawer"
+            <!-- Sidebar -->
+            <div id="drawer"
                 class="w-64 bg-[#428D41] text-white flex flex-col fixed h-full transition-transform duration-300 drawer-closed z-10">
                 <nav class="flex-1 p-4 overflow-y-auto fontnav">
                     <ul>
@@ -865,9 +910,12 @@ if (isset($_POST['upload'])) {
             <h2 class="text-2xl font-bold mb-4">Kemaskini Menu Baru</h2>
             <form action="../function/update-menu.php" method="POST" enctype="multipart/form-data">
                 <!-- Input tersembunyi untuk parameter URL -->
-                <input type="hidden" name="current_page" value="<?php echo isset($_GET['halaman']) ? $_GET['halaman'] : '1'; ?>">
-                <input type="hidden" name="search_query" value="<?php echo isset($_GET['nama_makanan']) ? htmlspecialchars($_GET['nama_makanan']) : ''; ?>">
-                <input type="hidden" name="sort" value="<?php echo isset($_GET['sort']) ? htmlspecialchars($_GET['sort']) : ''; ?>">
+                <input type="hidden" name="current_page"
+                    value="<?php echo isset($_GET['halaman']) ? $_GET['halaman'] : '1'; ?>">
+                <input type="hidden" name="search_query"
+                    value="<?php echo isset($_GET['nama_makanan']) ? htmlspecialchars($_GET['nama_makanan']) : ''; ?>">
+                <input type="hidden" name="sort"
+                    value="<?php echo isset($_GET['sort']) ? htmlspecialchars($_GET['sort']) : ''; ?>">
 
                 <div class="mb-4">
                     <label class="block text-gray-700">Sila Lengkapkan Maklumat di bawah</label>
@@ -942,7 +990,7 @@ if (isset($_POST['upload'])) {
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -976,7 +1024,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function() {
+            reader.onload = function () {
                 var imgElement = document.getElementById('preview');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -989,7 +1037,7 @@ if (isset($_POST['upload'])) {
             var input = event.target;
             var reader = new FileReader();
 
-            reader.onload = function() {
+            reader.onload = function () {
                 var imgElement = document.getElementById('preview_kemas');
                 imgElement.src = reader.result;
                 imgElement.style.display = 'block';
@@ -1006,16 +1054,16 @@ if (isset($_POST['upload'])) {
         const btn = document.getElementById("uploadButton");
 
 
-        btn.onclick = function() {
+        btn.onclick = function () {
             menu.style.display = "block";
         }
 
-        btnDaftarmenu.onclick = function() {
+        btnDaftarmenu.onclick = function () {
             Daftarmenu.style.display = "block";
         }
 
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == Kemaskinimenu) {
                 Kemaskinimenu.style.display = "none";
             }
@@ -1033,7 +1081,7 @@ if (isset($_POST['upload'])) {
         const notifinfo = new Audio('../lib/audio/info.mp3'); //  Path fail audio info
         const notifwarning = new Audio('../lib/audio/warning.mp3'); // Path fail audio amaran
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Untuk popup success
             <?php if (isset($_SESSION['success'])): ?>
                 notifsuccess.play();
@@ -1064,7 +1112,7 @@ if (isset($_POST['upload'])) {
 
             // Untuk delete button
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     const id = this.dataset.id;
                     const nama_makanan = this.dataset.nama_makanan;
@@ -1113,7 +1161,7 @@ if (isset($_POST['upload'])) {
 
             // Form validation dengan SweetAlert
             document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function (e) {
                     // Contoh validasi untuk fail
                     const fileInput = this.querySelector('input[type="file"]');
                     if (fileInput && fileInput.files.length > 0) {
@@ -1192,7 +1240,7 @@ if (isset($_POST['upload'])) {
 
                 originalFile = file;
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const cropModal = document.getElementById('cropModal');
                     const cropImage = document.getElementById('cropImage');
 
@@ -1377,7 +1425,7 @@ if (isset($_POST['upload'])) {
             modal.classList.add('flex');
 
             // Tutup modal bila klik di luar gambar
-            modal.onclick = function(e) {
+            modal.onclick = function (e) {
                 if (e.target === modal) {
                     closeImagePopup();
                 }
@@ -1391,7 +1439,7 @@ if (isset($_POST['upload'])) {
         }
 
         // Tutup modal dengan kekunci ESC
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeImagePopup();
             }
@@ -1403,7 +1451,7 @@ if (isset($_POST['upload'])) {
         let originalFile = null;
 
         // Add crop modal handlers
-        document.getElementById('cropDone').addEventListener('click', function() {
+        document.getElementById('cropDone').addEventListener('click', function () {
             if (!cropper) return;
 
             const cropModal = document.getElementById('cropModal');
@@ -1450,7 +1498,7 @@ if (isset($_POST['upload'])) {
         });
 
 
-        document.getElementById('cropCancel').addEventListener('click', function() {
+        document.getElementById('cropCancel').addEventListener('click', function () {
             const cropModal = document.getElementById('cropModal');
             const inputId = cropModal.dataset.inputId;
 
@@ -1492,7 +1540,7 @@ if (isset($_POST['upload'])) {
         document.getElementById('gambarDaftar').addEventListener('change', checkFormCompletion);
 
         // Tambah event listener untuk reset form
-        document.getElementById('closeDaftarPreview').addEventListener('click', function() {
+        document.getElementById('closeDaftarPreview').addEventListener('click', function () {
             document.getElementById('gambarDaftar').value = '';
             checkFormCompletion();
         });
@@ -1549,7 +1597,7 @@ if (isset($_POST['upload'])) {
             }
         }
 
-        document.getElementById('closePreview').addEventListener('click', function() {
+        document.getElementById('closePreview').addEventListener('click', function () {
             document.getElementById('gambar').value = '';
             checkUpdateFormCompletion()
         });
@@ -1581,7 +1629,7 @@ if (isset($_POST['upload'])) {
     </script>
 
     <script>
-        document.getElementById('kod_makanan').addEventListener('input', function() {
+        document.getElementById('kod_makanan').addEventListener('input', function () {
             const kodMakanan = this.value;
             const errorSpan = document.getElementById('kod_makanan_error');
 
@@ -1601,7 +1649,14 @@ if (isset($_POST['upload'])) {
                 });
         });
     </script>
-
+    <script>  // script Loading
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tunggu semua imej dan resources siap diload
+            window.addEventListener('load', function () {
+                document.getElementById('loadingScreen').style.display = 'none';
+            });
+        });
+    </script>
 </body>
 
 </html>

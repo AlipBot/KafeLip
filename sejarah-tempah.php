@@ -106,7 +106,7 @@ $laksql = mysqli_query($condb, $sql);
         .nav {
             font-family: 'Teko', sans-serif;
             font-size: 20px;
-
+            position: relative;
         }
 
         #scrollToTopBtn:hover {
@@ -265,6 +265,22 @@ $laksql = mysqli_query($condb, $sql);
             background: #A4D153 !important;
             color: black !important;
         }
+
+        /* Buang garis statik */
+        .nav a::after {
+            display: none;
+            /* Sembunyikan garis statik */
+        }
+
+        /* Garis bergerak */
+        .nav .moving-line {
+            position: absolute;
+            bottom: -4px;
+            height: 2px;
+            background-color: #4A7C59;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -279,18 +295,22 @@ $laksql = mysqli_query($condb, $sql);
                 <span class="text-black fontkafelip">Lip</span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
-                <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
+                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'menu.php' ? 'active' : '' ?>"
+                    href="menu.php">
                     <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
                     <span>MENU</span>
                 </a>
-                <a class="text-black font-bold active:text-[#4A7C59]" href="cart.php">
+                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'cart.php' ? 'active' : '' ?>"
+                    href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART <?= $bil ?></span>
                 </a>
-                <a class="text-black font-bold active:text-[#4A7C59]" href="sejarah-tempah.php">
+                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'sejarah-tempah.php' ? 'active' : '' ?>"
+                    href="sejarah-tempah.php">
                     <i class="fas fa-history text-[#4A7C59] mr-1"></i>
                     <span>SEJARAH TEMPAHAN</span>
                 </a>
+                <div class="moving-line"></div>
             </div>
             <div class="relative">
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
@@ -353,7 +373,7 @@ $laksql = mysqli_query($condb, $sql);
                         <tbody>
                             <?php while ($m = mysqli_fetch_array($laksql)):
                                 $tarikh = date_create($m['tarikh']);
-                            ?>
+                                ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
                                     <td class="border-0 shadow-lg px-4 py-2">
                                         <i class="fas fa-clock text-[#4A7C59]"></i> Masa:
@@ -430,7 +450,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Tunjukkan dan sorokkan butang scroll up
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -471,7 +491,7 @@ $laksql = mysqli_query($condb, $sql);
         window.onresize = adjustFooter;
 
         // Fungsi untuk mengira masa yang tinggal
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const countdowns = document.querySelectorAll('.countdown');
 
             countdowns.forEach(countdown => {
@@ -512,7 +532,7 @@ $laksql = mysqli_query($condb, $sql);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -553,7 +573,7 @@ $laksql = mysqli_query($condb, $sql);
 
 
         document.querySelectorAll('.batal-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 const tarikh = this.dataset.id;
                 e.preventDefault();
                 notifwarning.play();
@@ -655,11 +675,54 @@ $laksql = mysqli_query($condb, $sql);
                 }
             },
             animate: true,
-            onOpen: function(selectedDates, dateStr, instance) {
+            onOpen: function (selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.add('open');
             },
-            onClose: function(selectedDates, dateStr, instance) {
+            onClose: function (selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.remove('open');
+            }
+        });
+    </script>
+    <script>
+        //script animation navigation
+        document.addEventListener('DOMContentLoaded', function () {
+            const nav = document.querySelector('.nav');
+            const movingLine = nav.querySelector('.moving-line');
+            const links = nav.querySelectorAll('a');
+
+            // Tetapkan posisi awal garis untuk link aktif
+            const activeLink = nav.querySelector('a.active');
+            if (activeLink) {
+                updateLinePosition(activeLink);
+            }
+
+            // Fungsi untuk kemaskini posisi garis
+            function updateLinePosition(link) {
+                const rect = link.getBoundingClientRect();
+                const navRect = nav.getBoundingClientRect();
+
+                movingLine.style.width = `${rect.width}px`;
+                movingLine.style.left = `${rect.left - navRect.left}px`;
+            }
+
+            // Event listeners untuk hover
+            links.forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    updateLinePosition(link);
+                });
+            });
+
+            // Kembalikan ke link aktif apabila cursor keluar dari nav
+            nav.addEventListener('mouseleave', () => {
+                const activeLink = nav.querySelector('a.active');
+                if (activeLink) {
+                    updateLinePosition(activeLink);
+                }
+            });
+
+            // Set posisi awal garis
+            if (activeLink) {
+                updateLinePosition(activeLink);
             }
         });
     </script>

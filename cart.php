@@ -30,7 +30,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         return $count >= 1;
     });
 
-?>
+    ?>
     <!-- Kod HTML & CSS + TAILWIND & JAVASCRIPT  -->
 
     <html lang="ms">
@@ -102,7 +102,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             .nav {
                 font-family: 'Teko', sans-serif;
                 font-size: 20px;
-
+                position: relative;
             }
 
             .button {
@@ -259,6 +259,21 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 min-width: 30px;
                 text-align: center;
             }
+
+            /* Buang garis statik */
+            .nav a::after {
+                display: none;
+            }
+
+            /* Garis bergerak */
+            .nav .moving-line {
+                position: absolute;
+                bottom: -4px;
+                height: 2px;
+                background-color: #4A7C59;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                pointer-events: none;
+            }
         </style>
     </head>
 
@@ -272,18 +287,22 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                     <span class="text-black fontkafelip">Lip</span>
                 </div>
                 <div class="nav flex gap-6 -ml-10 mr-20">
-                    <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
+                    <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'menu.php' ? 'active' : '' ?>"
+                        href="menu.php">
                         <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
                         <span>MENU</span>
                     </a>
-                    <a class="text-black font-bold active:text-[#4A7C59]" href="cart.php">
+                    <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'cart.php' ? 'active' : '' ?>"
+                        href="cart.php">
                         <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                         <span>CART <?= $bil ?></span>
                     </a>
-                    <a class="text-black font-bold active:text-[#4A7C59]" href="sejarah-tempah.php">
+                    <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'sejarah-tempah.php' ? 'active' : '' ?>"
+                        href="sejarah-tempah.php">
                         <i class="fas fa-history text-[#4A7C59] mr-1"></i>
                         <span>SEJARAH TEMPAHAN</span>
                     </a>
+                    <div class="moving-line"></div>
                 </div>
                 <div class="relative">
                     <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
@@ -337,7 +356,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 $sql = "select* from makanan where kod_makanan = '$key'";
                                 $lak = mysqli_query($condb, $sql);
                                 $m = mysqli_fetch_array($lak);
-                            ?>
+                                ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-white">
                                     <td class="shadow-lg px-4 py-2 font-semibold text-table"><?= $m['nama_makanan'] ?></td>
                                     <td class='px-8 py-4 flex justify-center items-center'>
@@ -358,11 +377,13 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                         <div class="flex items-center justify-center h-full min-h-[160px]">
                                             <div class="quantity-controls">
                                                 <button class="quantity-btn minus bg-[#CA0000D9] hover:bg-[#d33]"
-                                                    onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'decrease', <?= $m['harga'] ?>)"><i class="fas fa-minus"></i></button>
+                                                    onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'decrease', <?= $m['harga'] ?>)"><i
+                                                        class="fas fa-minus"></i></button>
                                                 <span id="quantity-<?= $m['kod_makanan'] ?>"
                                                     class="quantity-value"><?= $bil ?></span>
                                                 <button class="quantity-btn plus"
-                                                    onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'increase', <?= $m['harga'] ?>)"><i class="fas fa-plus"></i></button>
+                                                    onclick="updateCartQuantity('<?= $m['kod_makanan'] ?>', 'increase', <?= $m['harga'] ?>)"><i
+                                                        class="fas fa-plus"></i></button>
                                             </div>
                                         </div>
                                     </td>
@@ -466,7 +487,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             window.onresize = adjustFooter;
 
             // Show or hide the scroll to top button
-            window.onscroll = function() {
+            window.onscroll = function () {
                 var scrollToTopBtn = document.getElementById("scrollToTopBtn");
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                     scrollToTopBtn.style.display = "block";
@@ -501,7 +522,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 }
             });
 
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 <?php if (isset($_SESSION['success'])): ?>
                     Toast.fire({
                         icon: "success",
@@ -541,7 +562,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             })
 
             document.querySelectorAll('.Sahkan-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     notifinfo.play();
 
@@ -565,12 +586,12 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         if (result.isConfirmed) {
                             // Hantar data kuantiti terkini ke server
                             fetch('function/update-cart.php', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify(updatedQuantities)
-                                })
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(updatedQuantities)
+                            })
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.success) {
@@ -589,7 +610,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             });
 
             document.querySelectorAll('.buang-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
+                button.addEventListener('click', function (e) {
                     e.preventDefault();
                     notifwarning.play();
 
@@ -638,7 +659,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 modal.classList.add('flex');
 
                 // Tutup modal bila klik di luar gambar
-                modal.onclick = function(e) {
+                modal.onclick = function (e) {
                     if (e.target === modal) {
                         closeImagePopup();
                     }
@@ -652,7 +673,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             }
 
             // Tutup modal dengan kekunci ESC
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape') {
                     closeImagePopup();
                 }
@@ -697,15 +718,15 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
                 // Hantar perubahan ke server menggunakan AJAX
                 fetch('function/update-quantity.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            menuId: menuId,
-                            quantity: quantity
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        menuId: menuId,
+                        quantity: quantity
                     })
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (!data.success) {
@@ -720,14 +741,14 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
             function removeItem(menuId) {
                 fetch('function/del-item.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            menuId: menuId
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        menuId: menuId
                     })
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -765,6 +786,49 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 document.getElementById('grand-total').textContent = grandTotal.toFixed(2);
 
             }
+        </script>
+        <script>
+            //script animation navigation
+            document.addEventListener('DOMContentLoaded', function () {
+                const nav = document.querySelector('.nav');
+                const movingLine = nav.querySelector('.moving-line');
+                const links = nav.querySelectorAll('a');
+
+                // Tetapkan posisi awal garis untuk link aktif
+                const activeLink = nav.querySelector('a.active');
+                if (activeLink) {
+                    updateLinePosition(activeLink);
+                }
+
+                // Fungsi untuk kemaskini posisi garis
+                function updateLinePosition(link) {
+                    const rect = link.getBoundingClientRect();
+                    const navRect = nav.getBoundingClientRect();
+
+                    movingLine.style.width = `${rect.width}px`;
+                    movingLine.style.left = `${rect.left - navRect.left}px`;
+                }
+
+                // Event listeners untuk hover
+                links.forEach(link => {
+                    link.addEventListener('mouseenter', () => {
+                        updateLinePosition(link);
+                    });
+                });
+
+                // Kembalikan ke link aktif apabila cursor keluar dari nav
+                nav.addEventListener('mouseleave', () => {
+                    const activeLink = nav.querySelector('a.active');
+                    if (activeLink) {
+                        updateLinePosition(activeLink);
+                    }
+                });
+
+                // Set posisi awal garis
+                if (activeLink) {
+                    updateLinePosition(activeLink);
+                }
+            });
         </script>
     </body>
 

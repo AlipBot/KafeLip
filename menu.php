@@ -101,7 +101,7 @@ function semakKuantitiOrders($kod_makanan)
         .nav {
             font-family: 'Teko', sans-serif;
             font-size: 20px;
-
+            position: relative;
         }
 
         body {
@@ -463,6 +463,22 @@ function semakKuantitiOrders($kod_makanan)
             align-items: center;
             justify-content: center;
         }
+
+        /* Buang garis statik */
+        .nav a::after {
+            display: none;
+            /* Sembunyikan garis statik */
+        }
+
+        /* Garis bergerak */
+        .nav .moving-line {
+            position: absolute;
+            bottom: -4px;
+            height: 2px;
+            background-color: #4A7C59;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
     </style>
 
 </head>
@@ -478,18 +494,22 @@ function semakKuantitiOrders($kod_makanan)
                 <span class="text-black fontkafelip">Lip</span>
             </div>
             <div class="nav flex gap-6 -ml-10 mr-20">
-                <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
+                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'menu.php' ? 'active' : '' ?>"
+                    href="menu.php">
                     <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
                     <span>MENU</span>
                 </a>
-                <a class="text-black font-bold active:text-[#4A7C59]" href="cart.php">
+                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'cart.php' ? 'active' : '' ?>"
+                    href="cart.php">
                     <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
                     <span>CART <?= $bil ?></span>
                 </a>
-                <a class="text-black font-bold active:text-[#4A7C59]" href="sejarah-tempah.php">
+                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'sejarah-tempah.php' ? 'active' : '' ?>"
+                    href="sejarah-tempah.php">
                     <i class="fas fa-history text-[#4A7C59] mr-1"></i>
                     <span>SEJARAH TEMPAHAN</span>
                 </a>
+                <div class="moving-line"></div>
             </div>
             <div class="relative">
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
@@ -613,7 +633,7 @@ function semakKuantitiOrders($kod_makanan)
                             </button>
                         </div>
                     </div>
-            <?php endwhile;
+                <?php endwhile;
             } else {
                 # jika tiada menu makanan di dalama database
                 echo "<p style='color: red;'>TIADA MAKANAN TERSEDIA SEKARANG</p>";
@@ -665,7 +685,7 @@ function semakKuantitiOrders($kod_makanan)
     <script>
         // script untuk butang scroll ke atas
         // Show or hide the scroll to top button
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -824,7 +844,7 @@ function semakKuantitiOrders($kod_makanan)
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -875,7 +895,7 @@ function semakKuantitiOrders($kod_makanan)
             modal.classList.add('flex');
 
             // Tutup modal bila klik di luar gambar
-            modal.onclick = function(e) {
+            modal.onclick = function (e) {
                 if (e.target === modal) {
                     closeImagePopup();
                 }
@@ -889,7 +909,7 @@ function semakKuantitiOrders($kod_makanan)
         }
 
         // Tutup modal dengan kekunci ESC
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeImagePopup();
             }
@@ -921,7 +941,7 @@ function semakKuantitiOrders($kod_makanan)
         }
 
         // Kembalikan posisi scroll selepas page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Dapatkan posisi scroll yang disimpan
             let scrollPosition = sessionStorage.getItem('scrollPosition');
 
@@ -973,6 +993,49 @@ function semakKuantitiOrders($kod_makanan)
 
         setInterval(kemaskiniMasaTarikh, 1000);
         kemaskiniMasaTarikh();
+    </script>
+    <script>
+        //script animation navigation
+        document.addEventListener('DOMContentLoaded', function () {
+            const nav = document.querySelector('.nav');
+            const movingLine = nav.querySelector('.moving-line');
+            const links = nav.querySelectorAll('a');
+
+            // Tetapkan posisi awal garis untuk link aktif
+            const activeLink = nav.querySelector('a.active');
+            if (activeLink) {
+                updateLinePosition(activeLink);
+            }
+
+            // Fungsi untuk kemaskini posisi garis
+            function updateLinePosition(link) {
+                const rect = link.getBoundingClientRect();
+                const navRect = nav.getBoundingClientRect();
+
+                movingLine.style.width = `${rect.width}px`;
+                movingLine.style.left = `${rect.left - navRect.left}px`;
+            }
+
+            // Event listeners untuk hover
+            links.forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    updateLinePosition(link);
+                });
+            });
+
+            // Kembalikan ke link aktif apabila cursor keluar dari nav
+            nav.addEventListener('mouseleave', () => {
+                const activeLink = nav.querySelector('a.active');
+                if (activeLink) {
+                    updateLinePosition(activeLink);
+                }
+            });
+
+            // Set posisi awal garis
+            if (activeLink) {
+                updateLinePosition(activeLink);
+            }
+        });
     </script>
 </body>
 
