@@ -47,7 +47,7 @@ WHERE p.email = ?;
 
 $stmt = mysqli_prepare($condb, $sql);
 # Cara  execute sql lebih selamat dan mengelak injection SQL daripada digodam 
-mysqli_stmt_bind_param($stmt, "sssssss", $email, $email, $email, $email, $email, $email, $email,);
+mysqli_stmt_bind_param($stmt, "sssssss", $email, $email, $email, $email, $email, $email, $email, );
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $user_data = mysqli_fetch_assoc($result);
@@ -126,6 +126,18 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             src: url('lib/fonts/Teko-Regular.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppin';
+            src: url('lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fonttext {
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
         }
 
         .fontkafelip {
@@ -234,9 +246,10 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
 
 <body class="bg-[#FAF3DD] min-h-screen flex flex-col">
     <!-- Header -->
-    <div class="w-full bg-[#FAF3DD]">
+    <div class="w-full bg-[#FAF3DD] fixed top-0 left-0 z-50 border-b border-gray-200">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
-            <div class="logo text-2xl font-bold flex items-center mr-4">
+            <div class="logo text-2xl font-bold flex items-center mr-4 cursor-pointer"
+                onclick="window.location.href='index.php'">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
                 <span class="text-black fontkafelip">Kafe</span>
@@ -260,7 +273,8 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                 <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
                     <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
                 </button>
-                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                <div id="dropdownMenu"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
                     <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
                         <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
@@ -280,9 +294,10 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
             </div>
         </div>
     </div>
+    <div class="h-24"></div>
 
     <!-- Content -->
-    <div class="flex-grow flex items-center justify-center py-8">
+    <div class="flex-grow flex items-center justify-center py-8 fonttext">
         <div class="w-full max-w-4xl">
             <div class="w-full flex flex-col items-center">
                 <div class="text-center mb-6">
@@ -294,27 +309,33 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
                     <h3 class="text-xl font-semibold mb-4 ml-5">Statistik</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div class="stat-box text-center">
-                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-calendar-day mr-2"></i>Jumlah Tempahan Hari Ini</h4>
+                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-calendar-day mr-2"></i>Jumlah
+                                Tempahan Hari Ini</h4>
                             <p class="text-2xl font-bold"><?= $user_data['tempahan_hari'] ?? 0 ?></p>
                         </div>
                         <div class="stat-box text-center">
-                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-calendar-alt mr-2"></i>Jumlah Tempahan Bulan Ini</h4>
+                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-calendar-alt mr-2"></i>Jumlah
+                                Tempahan Bulan Ini</h4>
                             <p class="text-2xl font-bold"><?= $user_data['tempahan_bulan'] ?? 0 ?></p>
                         </div>
                         <div class="stat-box text-center">
-                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-calendar mr-2"></i>Jumlah Tempahan Tahun Ini</h4>
+                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-calendar mr-2"></i>Jumlah Tempahan
+                                Tahun Ini</h4>
                             <p class="text-2xl font-bold"><?= $user_data['tempahan_tahun'] ?? 0 ?></p>
                         </div>
                         <div class="stat-box text-center">
-                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-money-bill-wave mr-2"></i>Jumlah Harga Hari Ini</h4>
+                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-money-bill-wave mr-2"></i>Jumlah
+                                Harga Hari Ini</h4>
                             <p class="text-2xl font-bold">RM <?= number_format($user_data['harga_hari'] ?? 0, 2) ?></p>
                         </div>
                         <div class="stat-box text-center">
-                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-money-bill-wave mr-2"></i>Jumlah Harga Bulan Ini</h4>
+                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-money-bill-wave mr-2"></i>Jumlah
+                                Harga Bulan Ini</h4>
                             <p class="text-2xl font-bold">RM <?= number_format($user_data['harga_bulan'] ?? 0, 2) ?></p>
                         </div>
                         <div class="stat-box text-center">
-                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-money-bill-wave mr-2"></i>Jumlah Harga Tahun Ini</h4>
+                            <h4 class="text-lg font-semibold mb-2"><i class="fas fa-money-bill-wave mr-2"></i>Jumlah
+                                Harga Tahun Ini</h4>
                             <p class="text-2xl font-bold">RM <?= number_format($user_data['harga_tahun'] ?? 0, 2) ?></p>
                         </div>
                     </div>
@@ -368,7 +389,7 @@ while ($row = mysqli_fetch_assoc($result_menu)) {
 
     <script>
         // Scrip butang keatas
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";

@@ -355,12 +355,13 @@ $m = mysqli_fetch_array($laksana);
 
 <body class="bg-[#FAF3DD]">
   <!-- Header -->
-  <div class="w-full bg-[#FAF3DD]">
+  <div class="w-full bg-[#FAF3DD] fixed top-0 left-0 z-50 border-b border-gray-200">
     <div class="container mx-auto flex justify-between items-center py-6 px-4">
-      <div class="logo text-2xl font-bold flex items-center mr-4">
+      <div class="logo text-2xl font-bold flex items-center mr-4 cursor-pointer"
+        onclick="window.location.href='index.php'">
         <i class="fas fa-coffee text-[#4A7C59] mr-2">
         </i>
-        <span class="text-black fontkafelip">Kafe </span>
+        <span class="text-black fontkafelip">Kafe</span>
         <span class="text-black fontkafelip">Lip</span>
       </div>
       <div class="nav flex gap-6 -ml-10 mr-20">
@@ -401,6 +402,7 @@ $m = mysqli_fetch_array($laksana);
       </div>
     </div>
   </div>
+  <div class="h-24"></div>
 
   <!-- Body -->
   <main class="container mx-auto px-4 py-8">
@@ -589,7 +591,7 @@ $m = mysqli_fetch_array($laksana);
 
   <script>
     // Tunjukan atau sorokkan butang scroll keatas
-    window.onscroll = function() {
+    window.onscroll = function () {
       var scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         scrollToTopBtn.style.display = "block";
@@ -606,7 +608,7 @@ $m = mysqli_fetch_array($laksana);
   </script>
   <script>
     //  Function Untuk memamparkan syarat untuk isi borang mengikut jenis data diperlukan 
-    document.getElementById('email').addEventListener('input', function() {
+    document.getElementById('email').addEventListener('input', function () {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const emailError = document.getElementById('emailError');
       if (!emailPattern.test(this.value) || this.value == "<?= $m['email'] ?>") {
@@ -618,7 +620,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('deleteEmail').addEventListener('input', function() {
+    document.getElementById('deleteEmail').addEventListener('input', function () {
       const emailUser = "<?= $m['email'] ?>";
       const emailError = document.getElementById('deleteEmailError');
       if (this.value != emailUser) {
@@ -630,7 +632,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('password').addEventListener('input', function() {
+    document.getElementById('password').addEventListener('input', function () {
       const confirmPasswordField = document.getElementById('confirm-password');
       const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,12}$/;
       const passwordError = document.getElementById('passwordError');
@@ -650,7 +652,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('repeat-password').addEventListener('input', function() {
+    document.getElementById('repeat-password').addEventListener('input', function () {
       const passwordField = document.getElementById('password');
       const confirmPasswordError = document.getElementById('confirmPasswordError');
       if (this.value !== passwordField.value) {
@@ -664,7 +666,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.getElementById('notel').addEventListener('input', function() {
+    document.getElementById('notel').addEventListener('input', function () {
       const notelSekarang = "<?= $m['notel'] ?>";
       const notelError = document.getElementById('notelError');
       const notelValue = this.value.trim();
@@ -710,14 +712,14 @@ $m = mysqli_fetch_array($laksana);
     }
 
     // Tambah event listeners untuk setiap form
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       // Validasi nama
       const namaInput = document.querySelector('input[name="nama"]');
       const namaSaveBtn = document.querySelector('button[name="KemaskiniNama"]');
       namaSaveBtn.disabled = true;
       namaSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      namaInput.addEventListener('input', function() {
+      namaInput.addEventListener('input', function () {
         if (validateNama(this.value)) {
           namaSaveBtn.disabled = false;
           namaSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -733,7 +735,7 @@ $m = mysqli_fetch_array($laksana);
       emailSaveBtn.disabled = true;
       emailSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      emailInput.addEventListener('input', function() {
+      emailInput.addEventListener('input', function () {
         if (validateEmail(this.value)) {
           emailSaveBtn.disabled = false;
           emailSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -749,7 +751,7 @@ $m = mysqli_fetch_array($laksana);
       notelSaveBtn.disabled = true;
       notelSaveBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-      notelInput.addEventListener('input', function() {
+      notelInput.addEventListener('input', function () {
         if (validateNotel(this.value)) {
           notelSaveBtn.disabled = false;
           notelSaveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -817,7 +819,7 @@ $m = mysqli_fetch_array($laksana);
       }
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       <?php if (isset($_SESSION['success'])): ?>
         Toast.fire({
           icon: "success",

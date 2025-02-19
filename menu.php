@@ -485,9 +485,9 @@ function semakKuantitiOrders($kod_makanan)
 
 <body class="bg-[#FAF3DD] font-poppins">
     <!-- Header -->
-    <div class="w-full bg-[#FAF3DD]">
+    <div class="w-full bg-[#FAF3DD] fixed top-0 left-0 z-50 border-b border-gray-200">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
-            <div class="logo text-2xl font-bold flex items-center mr-4">
+            <div class="logo text-2xl font-bold flex items-center mr-4 cursor-pointer" onclick="window.location.href='index.php'">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
                 <span class="text-black fontkafelip">Kafe</span>
@@ -536,6 +536,7 @@ function semakKuantitiOrders($kod_makanan)
             </div>
         </div>
     </div>
+    <div class="h-24"></div>
 
     <!-- Slider 3 slide gambar -->
     <div class="slidebro">

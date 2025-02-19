@@ -98,6 +98,18 @@ $laksql = mysqli_query($condb, $sql);
             font-style: normal;
         }
 
+        @font-face {
+            font-family: 'Poppin';
+            src: url('lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fonttext {
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
+        }
+
         .fontkafelip,
         h2 {
             font-family: 'LobsterTwo', sans-serif;
@@ -286,9 +298,10 @@ $laksql = mysqli_query($condb, $sql);
 
 <body class="bg-[#FAF3DD] text-gray-800">
     <!-- Header -->
-    <div class="w-full bg-[#FAF3DD]">
+    <div class="w-full bg-[#FAF3DD] fixed top-0 left-0 z-50 border-b border-gray-200">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
-            <div class="logo text-2xl font-bold flex items-center mr-4">
+            <div class="logo text-2xl font-bold flex items-center mr-4 cursor-pointer"
+                onclick="window.location.href='index.php'">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
                 <span class="text-black fontkafelip">Kafe</span>
@@ -337,12 +350,13 @@ $laksql = mysqli_query($condb, $sql);
             </div>
         </div>
     </div>
+    <div class="h-24"></div>
 
     <!-- Content -->
     <div class="content">
-        <div class="container mx-auto text-center py-8 px-4">
-            <h2 class="text-2xl font-bold mb-6 relative inline-block text-center w-full text-black">
-                <i class="fas fa-history text-[#4A7C59] mr-1"></i> Sejarah Tempahan
+        <div class="container mx-auto text-center py-8 px-4 fonttext">
+            <h2 class="text-4xl  font-bold mb-6 relative inline-block text-center w-full text-black">
+                Sejarah Tempahan
             </h2>
             <form action="sejarah-tempah.php" method="GET"
                 class="py-5 flex items-center space-x-2 w-full justify-center">

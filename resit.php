@@ -205,7 +205,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
             .mb-4 {
                 margin-bottom: 0.6rem;
             }
-            
+
             .text-left.mb-4.flex {
                 gap: 0.8rem;
                 margin-bottom: 0.4rem;
@@ -216,9 +216,10 @@ $laksana = mysqli_query($condb, $sql_pilih);
 
 <body class="bg-[#FAF3DD] text-gray-800">
     <!-- Header -->
-    <div class="w-full bg-[#FAF3DD]">
+    <div class="w-full bg-[#FAF3DD] fixed top-0 left-0 z-50 border-b border-gray-200">
         <div class="container mx-auto flex justify-between items-center py-6 px-4">
-            <div class="logo text-2xl font-bold flex items-center mr-4">
+            <div class="logo text-2xl font-bold flex items-center mr-4 cursor-pointer"
+                onclick="window.location.href='index.php'">
                 <i class="fas fa-coffee text-[#4A7C59] mr-2">
                 </i>
                 <span class="text-black fontkafelip">Kafe</span>
@@ -263,6 +264,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
             </div>
         </div>
     </div>
+    <div class="h-24"></div>
 
     <!-- Content  Resit -->
     <div class="conten container mx-auto text-center py-8 px-4 print-area">
@@ -372,7 +374,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
                     <i class="fab fa-twitter"></i>
                 </a>
                 <a class="text-[#4A7C59]" href="https://www.instagram.com/alipje29/#">
-                <i class="fab fa-instagram"></i>
+                    <i class="fab fa-instagram"></i>
                 </a>
             </div>
         </div>
@@ -385,7 +387,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
 
     <script>
         // Tunjukkan dan sorokkan kata laluan
-        window.onscroll = function() {
+        window.onscroll = function () {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -420,7 +422,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
