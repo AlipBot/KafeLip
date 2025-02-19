@@ -118,9 +118,22 @@ if (isset($_POST['DaftarMasuk'])) {
     <script src="lib/js/tailwind.js"></script>
     <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
     <script src="lib/js/sweetalert2@11.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Poppin';
+            src: url('lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fonttext {
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
+        }
+    </style>
 </head>
 
-<body class="bg-[#FAF3DD]  font-roboto">
+<body class="bg-[#FAF3DD]  fonttext">
     <!-- Content -->
     <div class="min-h-screen flex items-center justify-center px-4">
         <div class="bg-[#A1CCA5] p-8 rounded-lg shadow-lg my-10 w-full max-w-md">

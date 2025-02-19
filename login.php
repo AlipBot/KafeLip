@@ -114,9 +114,22 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
     <script src="lib/js/tailwind.js"></script>
     <link rel="stylesheet" href="lib/css/sweetalert2.min.css">
     <script src="lib/js/sweetalert2@11.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Poppin';
+            src: url('lib/fonts/Poppins-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .fonttext {
+            font-size: 17px;
+            font-family: 'Poppin', sans-serif;
+        }
+    </style>
 </head>
 
-<body class="bg-[#FAF3DD] font-roboto">
+<body class="bg-[#FAF3DD] fonttext ">
     <!-- Kandungan -->
     <div class="min-h-screen flex items-center justify-center px-4">
         <div class="bg-[#A1CCA5] p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -133,7 +146,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
                     </label>
                     <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Masukkan email atau Nombor Telefon Anda" type="text" name='emailOrNotel' required />
                 </div>
-                <div class="mb-4 relative">
+                <div class="mb-8 relative">
                     <label class="block text-gray-700" for="password">
                         Kata Laluan
                     </label>
@@ -152,14 +165,9 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
-                    <p class="text-red-500 text-sm mt-1 hidden" id="passwordError">
+                    <p class="text-red-500 text-sm mt-1   hidden" id="passwordError">
                         Kata laluan mestilah sekurang-kurangnya 8 aksara
                     </p>
-                </div>
-                <div class="flex items-center justify-between mb-4">
-                    <a class="text-blue-500 hover:underline" href="#">
-                        Lupa Kata Laluan?
-                    </a>
                 </div>
                 <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200" type="submit" id="submit" name="LogMasuk" value="Login">
                     Log Masuk
