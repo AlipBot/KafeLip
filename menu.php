@@ -493,7 +493,7 @@ function semakKuantitiOrders($kod_makanan)
                 <span class="text-black fontkafelip">Kafe</span>
                 <span class="text-black fontkafelip">Lip</span>
             </div>
-            <div class="nav flex gap-6 -ml-10 mr-20">
+            <div class="nav flex gap-6 -ml-10 mr-12">
                 <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'menu.php' ? 'active' : '' ?>"
                     href="menu.php">
                     <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>

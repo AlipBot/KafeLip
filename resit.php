@@ -225,7 +225,7 @@ $laksana = mysqli_query($condb, $sql_pilih);
                 <span class="text-black fontkafelip">Kafe</span>
                 <span class="text-black fontkafelip">Lip</span>
             </div>
-            <div class="nav flex gap-6 -ml-10 mr-20">
+            <div class="nav flex gap-6 -ml-10 mr-12">
                 <a class="text-black font-bold active:text-[#4A7C59]" href="menu.php">
                     <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
                     <span>MENU</span>
