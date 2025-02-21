@@ -428,8 +428,8 @@ if (isset($_POST['upload'])) {
                         <div class="flex items-center justify-between space-x-5">
                             <form action="list-user.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama" placeholder="Carian Nama pengguna"
-                                    value="<?= $_GET['nama'] ?>" class="border rounded-2xl p-2 w-2/5">
-                                <select name="tapis_tahap" class="border p-2 rounded ">
+                                    value="<?= $_GET['nama'] ?>" class="border rounded-2xl p-2 w-2/5 fonttext">
+                                <select name="tapis_tahap" class="border p-2 rounded fonttext">
                                     <option value="">Semua</option>
                                     <option value="ADMIN" <?php if (isset($_GET['tapis_tahap']) && $_GET['tapis_tahap'] == 'ADMIN')
                                                                 echo 'selected'; ?>>Admin</option>
@@ -579,7 +579,7 @@ if (isset($_POST['upload'])) {
 
     <!-- Borang pekerja -->
     <div id="uploadPekerja" class="pekerja">
-        <div class="pekerja-content">
+        <div class="pekerja-content fonttext">
             <span class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Muat Naik Pekerja</h2>
             <form action="" method="POST" enctype="multipart/form-data">
@@ -609,7 +609,7 @@ if (isset($_POST['upload'])) {
 
     <!--  Borang Kemakini Pengguna -->
     <div id="kemaskiniPengguna" class="KemaskiniPengguna">
-        <div class="kemaskiniPengguna-content">
+        <div class="kemaskiniPengguna-content fonttext">
             <span onclick="kemaskiniPengguna.style.display = 'none' " class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Kemaskini Pengguna</h2>
             <form id="updateForm" action="../function/update-user.php" method="POST">

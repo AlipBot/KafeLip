@@ -620,7 +620,7 @@ if (isset($_POST['upload'])) {
                             <form action="list-menu.php" method="GET" class="py-5 flex items-center space-x-2 w-full">
                                 <input type="text" name="nama_makanan" placeholder="Carian Menu"
                                     value="<?php echo htmlspecialchars($_GET['nama_makanan'] ?? ''); ?>"
-                                    class="border rounded-2xl p-2 w-2/5">
+                                    class="border rounded-2xl p-2 w-2/5 fonttext">
                                 <button type="submit"
                                     class="bg-[#428D41] fontbutton hover:bg-[#68B0AB] text-white p-2 rounded flex items-center">
                                     <i class="fas fa-search mr-1"></i> Cari
@@ -786,7 +786,7 @@ if (isset($_POST['upload'])) {
 
     <!-- menu -->
     <div id="uploadmenu" class="menu">
-        <div class="menu-content">
+        <div class="menu-content fonttext">
             <span onclick="uploadmenu.style.display = 'none';" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Muat Naik Menu</h2>
             <form action="" method="POST" enctype="multipart/form-data">
@@ -817,7 +817,7 @@ if (isset($_POST['upload'])) {
 
     <!-- Daftar Menu -->
     <div id="DaftarMenu" class="DaftarMenu">
-        <div class="DaftarMenu-content">
+        <div class="DaftarMenu-content fonttext">
             <span onclick="DaftarMenu.style.display = 'none';" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Pendaftaran Menu Baru</h2>
             <form action="" method="POST" enctype="multipart/form-data" id="daftarMenuForm">
@@ -862,7 +862,7 @@ if (isset($_POST['upload'])) {
 
     <!-- Kemaskini Menu -->
     <div id="KemaskiniMenu" class="KemaskiniMenu">
-        <div class="KemaskiniMenu-content">
+        <div class="KemaskiniMenu-content fonttext">
             <span onclick="Kemaskinimenu.style.display = 'none';" class="close">&times;</span>
             <h2 class="text-2xl font-bold mb-4">Kemaskini Menu Baru</h2>
             <form action="../function/update-menu.php" method="POST" enctype="multipart/form-data">
@@ -912,7 +912,7 @@ if (isset($_POST['upload'])) {
 
     <!-- Image Popup Modal -->
     <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
-        <div class="relative max-w-2xl mx-auto p-4">
+        <div class="relative max-w-2xl mx-auto p-4 fonttext">
             <button onclick="closeImagePopup()"
                 class="absolute top-0 right-0 -mt-[14.5px] -mr-[14px] text-white text-3xl font-bold hover:text-gray-300">&times;</button>
             <div class="max-h-[70vh] max-w-[600px]">
