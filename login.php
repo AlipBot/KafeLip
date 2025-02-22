@@ -79,8 +79,8 @@ if (isset($_POST['LogMasuk'])) {
     }
 }
 
-// jika data session tahap telah wujud atau pengguna sudah login maka redirect ke page menu tidak perlu login semula
-if (!empty($_SESSION['tahap'])) {
+// jika data session telah wujud atau pengguna sudah login maka redirect ke page menu tidak perlu login semula
+if (!empty($_SESSION['tahap']) || !empty($_SESSION['nama']) || !empty($_SESSION['notel']) || !empty($_SESSION['email'])) {
     header("Location: menu.php");
     exit();
 }
@@ -88,6 +88,10 @@ if (!empty($_SESSION['tahap'])) {
 //  jika pengguna logout dan terdapat parameter status logout keluar toast
 if (isset($_GET['status']) && $_GET['status'] === 'logout') {
     $_SESSION['success'] = "Berjaya Log Keluar";
+    header("Location: login.php");
+    exit();
+} elseif (isset($_GET['status']) && $_GET['status'] === 'reset') {
+    $_SESSION['error'] = "Sila Login Semula";
     header("Location: login.php");
     exit();
 }

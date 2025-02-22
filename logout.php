@@ -8,6 +8,11 @@ session_destroy();
 if (ini_get("session.use_cookies")) {
     setcookie(session_name(), '', time() - 3600, '/');
 }
-# redirect ke halaman login
-header("Location: login.php?status=logout");
-exit();
+
+if (isset($_GET['reset']) && $_GET['reset'] === '1') {
+    header("Location: login.php?status=reset");
+    exit();
+} else {
+    header("Location: login.php?status=logout");
+    exit();
+}

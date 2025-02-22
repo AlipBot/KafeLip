@@ -4,8 +4,9 @@ session_set_cookie_params($lifetime);
 session_start(); # mula session
 
 # Semak pengguna login ke belum
-if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
-    echo " <script> window.location.href = '../index.php'; </script>";
+if (empty($_SESSION['tahap']) || empty($_SESSION['nama']) || empty($_SESSION['notel']) || empty($_SESSION['email'])) {
+    header("Location: ../logout.php?reset=1");
+    exit();
 } else {
 
     include("connection.php"); # sambung ke database
@@ -23,9 +24,8 @@ if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
     if (mysqli_num_rows($cek) != 1) {
         #jika tak wujud logout terus
         die("<script> window.location.href='../logout.php';</script>");
-    }elseif ($m['tahap'] != "ADMIN"){
+    } elseif ($m['tahap'] != "ADMIN") {
         #jika tahap admin ditukar pelanggan di page panel  admin  terus redirect logout terus
         die("<script> window.location.href='../logout.php';</script>");
     }
 }
-?>

@@ -4,8 +4,9 @@ session_set_cookie_params($lifetime);
 session_start(); # mula baca session
 
 # semak pengguna belum login ke belum
-if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
-    echo " <script> window.location.href = 'index.php'; </script>";
+if (empty($_SESSION['tahap']) || empty($_SESSION['nama']) || empty($_SESSION['notel']) || empty($_SESSION['email'])) {
+    header("Location: logout.php?reset=1");
+    exit();
 } else {
 
     include("connection.php"); # sambung ke database
@@ -19,14 +20,13 @@ if (empty($_SESSION['tahap']) || empty($_SESSION['nama'])) {
 
     $cek = mysqli_query($condb, $cari);
     $m = mysqli_fetch_array($cek);
-    
+
     if (mysqli_num_rows($cek) != 1) {
         # tak wujud logout
         die("<script> window.location.href='logout.php';</script>");
-    }elseif ($_SESSION['tahap'] != $m['tahap']){
+    } elseif ($_SESSION['tahap'] != $m['tahap']) {
         # wujud tapi tahap tak sama dengan session tukar baru 
         # berlaku apabila admin tukar tahap di panel
         $_SESSION['tahap'] = $m['tahap'];
     }
 }
-?>
