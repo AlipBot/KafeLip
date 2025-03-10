@@ -30,7 +30,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         return $count >= 1;
     });
 
-    ?>
+?>
     <!-- Kod HTML & CSS + TAILWIND & JAVASCRIPT  -->
 
     <html lang="ms">
@@ -278,59 +278,60 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
     </head>
 
     <body class="bg-[#FAF3DD] text-gray-800">
-         <!-- Header -->
-    <div class="w-full bg-[#FAF3DD] fixed top-0 left-0 z-50 border-b border-gray-200">
-        <div class="container mx-auto flex justify-between items-center py-6 px-4">
-            <div class="logo text-2xl font-bold flex items-center mr-4 cursor-pointer" onclick="window.location.href='index.php'">
-                <i class="fas fa-coffee text-[#4A7C59] mr-2">
-                </i>
-                <span class="text-black fontkafelip">Kafe</span>
-                <span class="text-black fontkafelip">Lip</span>
-            </div>
-            <div class="nav flex gap-6 -ml-10 mr-12">
-                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'menu.php' ? 'active' : '' ?>"
-                    href="menu.php">
-                    <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
-                    <span>MENU</span>
-                </a>
-                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'cart.php' ? 'active' : '' ?>"
-                    href="cart.php">
-                    <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
-                    <span>CART <?= $bil ?></span>
-                </a>
-                <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'sejarah-tempah.php' ? 'active' : '' ?>"
-                    href="sejarah-tempah.php">
-                    <i class="fas fa-history text-[#4A7C59] mr-1"></i>
-                    <span>SEJARAH TEMPAHAN</span>
-                </a>
-                <div class="moving-line"></div>
-            </div>
-            <div class="relative">
-                <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
-                    <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
-                </button>
-                <div id="dropdownMenu"
-                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                    <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
-                        <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
+        <!-- Header -->
+        <div class="w-full bg-[#FAF3DD] fixed top-0 left-0 z-50 border-b border-gray-200">
+            <div class="container mx-auto flex justify-between items-center py-6 px-4">
+                <div class="logo text-2xl font-bold flex items-center mr-4 cursor-pointer"
+                    onclick="window.location.href='index.php'">
+                    <i class="fas fa-coffee text-[#4A7C59] mr-2">
+                    </i>
+                    <span class="text-black fontkafelip">Kafe</span>
+                    <span class="text-black fontkafelip">Lip</span>
+                </div>
+                <div class="nav flex gap-6 -ml-10 mr-12">
+                    <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'menu.php' ? 'active' : '' ?>"
+                        href="menu.php">
+                        <i class="fas fa-utensils text-[#4A7C59] mr-1"></i>
+                        <span>MENU</span>
+                    </a>
+                    <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'cart.php' ? 'active' : '' ?>"
+                        href="cart.php">
+                        <i class="fas fa-shopping-cart text-[#4A7C59] mr-1"></i>
+                        <span>CART <?= $bil ?></span>
+                    </a>
+                    <a class="text-black font-bold <?= basename($_SERVER['PHP_SELF']) == 'sejarah-tempah.php' ? 'active' : '' ?>"
+                        href="sejarah-tempah.php">
+                        <i class="fas fa-history text-[#4A7C59] mr-1"></i>
+                        <span>SEJARAH TEMPAHAN</span>
+                    </a>
+                    <div class="moving-line"></div>
+                </div>
+                <div class="relative">
+                    <button id="menuButton" class="p-2 hover:bg-gray-100 rounded-full">
+                        <i class="fas fa-bars text-[#4A7C59] text-xl"></i>
+                    </button>
+                    <div id="dropdownMenu"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                        <?php if ($_SESSION['tahap'] == "ADMIN"): ?>
+                            <a href="admin/panel.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fa fa-list-alt mr-2 text-[#4A7C59]"></i>Panel Admin
+                            </a>
+                        <?php endif; ?>
+                        <a href="profil.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-user mr-2 text-[#4A7C59]"></i>Profil
                         </a>
-                    <?php endif; ?>
-                    <a href="profil.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <i class="fas fa-user mr-2 text-[#4A7C59]"></i>Profil
-                    </a>
-                    <a href="account.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <i class="fas fa-cog mr-2 text-[#4A7C59]"></i>Akaun
-                    </a>
-                    <hr class="my-1">
-                    <a href="logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <i class="fas fa-sign-out-alt mr-2 text-[#4A7C59]"></i>Log Keluar
-                    </a>
+                        <a href="account.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-cog mr-2 text-[#4A7C59]"></i>Akaun
+                        </a>
+                        <hr class="my-1">
+                        <a href="logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-sign-out-alt mr-2 text-[#4A7C59]"></i>Log Keluar
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="h-24"></div>
+        <div class="h-24"></div>
 
 
         <!-- Body -->
@@ -359,7 +360,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                                 $sql = "select* from makanan where kod_makanan = '$key'";
                                 $lak = mysqli_query($condb, $sql);
                                 $m = mysqli_fetch_array($lak);
-                                ?>
+                            ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-white">
                                     <td class="shadow-lg px-4 py-2 font-semibold text-table"><?= $m['nama_makanan'] ?></td>
                                     <td class='px-8 py-4 flex justify-center items-center'>
@@ -490,7 +491,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             window.onresize = adjustFooter;
 
             // Show or hide the scroll to top button
-            window.onscroll = function () {
+            window.onscroll = function() {
                 var scrollToTopBtn = document.getElementById("scrollToTopBtn");
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                     scrollToTopBtn.style.display = "block";
@@ -525,7 +526,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 }
             });
 
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 <?php if (isset($_SESSION['success'])): ?>
                     Toast.fire({
                         icon: "success",
@@ -565,7 +566,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             })
 
             document.querySelectorAll('.Sahkan-btn').forEach(button => {
-                button.addEventListener('click', function (e) {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
                     notifinfo.play();
 
@@ -589,12 +590,12 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                         if (result.isConfirmed) {
                             // Hantar data kuantiti terkini ke server
                             fetch('function/update-cart.php', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(updatedQuantities)
-                            })
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(updatedQuantities)
+                                })
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.success) {
@@ -613,7 +614,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             });
 
             document.querySelectorAll('.buang-btn').forEach(button => {
-                button.addEventListener('click', function (e) {
+                button.addEventListener('click', function(e) {
                     e.preventDefault();
                     notifwarning.play();
 
@@ -662,7 +663,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
                 modal.classList.add('flex');
 
                 // Tutup modal bila klik di luar gambar
-                modal.onclick = function (e) {
+                modal.onclick = function(e) {
                     if (e.target === modal) {
                         closeImagePopup();
                     }
@@ -676,7 +677,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
             }
 
             // Tutup modal dengan kekunci ESC
-            document.addEventListener('keydown', function (e) {
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeImagePopup();
                 }
@@ -721,15 +722,15 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
                 // Hantar perubahan ke server menggunakan AJAX
                 fetch('function/update-quantity.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        menuId: menuId,
-                        quantity: quantity
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            menuId: menuId,
+                            quantity: quantity
+                        })
                     })
-                })
                     .then(response => response.json())
                     .then(data => {
                         if (!data.success) {
@@ -744,14 +745,14 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
 
             function removeItem(menuId) {
                 fetch('function/del-item.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        menuId: menuId
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            menuId: menuId
+                        })
                     })
-                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -792,7 +793,7 @@ if (!isset($_SESSION['orders']) or count($_SESSION['orders']) == 0) {
         </script>
         <script>
             //script animation navigation
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const nav = document.querySelector('.nav');
                 const movingLine = nav.querySelector('.moving-line');
                 const links = nav.querySelectorAll('a');

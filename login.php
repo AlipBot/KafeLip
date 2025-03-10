@@ -91,7 +91,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'logout') {
     header("Location: login.php");
     exit();
 } elseif (isset($_GET['status']) && $_GET['status'] === 'reset') {
-    $_SESSION['error'] = "Sila Login Semula";
+    $_SESSION['error'] = "Sila Login Terlebih Dahulu";
     header("Location: login.php");
     exit();
 }
