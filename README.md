@@ -15,7 +15,7 @@
 <a href="https://github.com/AlipBot/KafeLip/watchers"><img title="Watching" src="https://img.shields.io/github/watchers/AlipBot/KafeLip?label=Watchers&color=red&style=flat-square"></a>
 <a href="https://github.com/AlipBot/KafeLip"><img title="Open Source" src="https://badges.frapsoft.com/os/v2/open-source.svg?v=103"></a>
 <a href="https://github.com/AlipBot/KafeLip/"><img title="Size" src="https://img.shields.io/github/repo-size/AlipBot/KafeLip?style=flat-square&color=darkred"></a>
-<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FAlipBot%2FKafeLip%2Fhit-counter&count_bg=%2379C83D&title_bg=%23555555&icon=probot.svg&icon_color=%2304FF00&title=hits&edge_flat=false"/></a>
+<a href="https://hits.sh/github.com/AlipBot/KafeLip/"><img src="https://hits.sh/github.com/AlipBot/KafeLip.svg?view=today-total)](https://hits.sh/github.com/AlipBot/KafeLip/"/></a>
 <a href="https://github.com/AlipBot/KafeLip/graphs/commit-activity"><img height="20" src="https://img.shields.io/badge/Maintained-No-red.svg"></a>&nbsp;&nbsp;
 </p>
 
