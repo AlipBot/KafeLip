@@ -265,14 +265,12 @@ $laksql = mysqli_query($condb, $sql);
             background: #A4D153 !important;
             color: black !important;
         }
-
-       
     </style>
 
 </head>
 
 <body class="font-roboto bg-gray-100 ">
-    
+
     <div class="flex min-h-screen flex-col">
         <!-- Header -->
         <header class="bg-[#428D41] text-white p-4 flex justify-between items-center fixed w-full z-10">
@@ -363,19 +361,19 @@ $laksql = mysqli_query($condb, $sql);
                                 Tarikh : <?= date_format(date_create($tarikhsemasa), "d/m/Y"); ?> </span>
                             <span class="font-bold text-lg p-2 rounded flex items-center whitespace-nowrap">
                                 Hari : <?php
-                                $tarikh = date_create($tarikhsemasa);
-                                $hari = date_format($tarikh, "l");
-                                $hari_melayu = [
-                                    'Sunday' => 'Ahad',
-                                    'Monday' => 'Isnin',
-                                    'Tuesday' => 'Selasa',
-                                    'Wednesday' => 'Rabu',
-                                    'Thursday' => 'Khamis',
-                                    'Friday' => 'Jumaat',
-                                    'Saturday' => 'Sabtu'
-                                ];
-                                echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
-                                ?>
+                                        $tarikh = date_create($tarikhsemasa);
+                                        $hari = date_format($tarikh, "l");
+                                        $hari_melayu = [
+                                            'Sunday' => 'Ahad',
+                                            'Monday' => 'Isnin',
+                                            'Tuesday' => 'Selasa',
+                                            'Wednesday' => 'Rabu',
+                                            'Thursday' => 'Khamis',
+                                            'Friday' => 'Jumaat',
+                                            'Saturday' => 'Sabtu'
+                                        ];
+                                        echo $hari_melayu[$hari]; // Paparkan nama hari dalam Bahasa Melayu
+                                        ?>
                             </span>
                         </div>
                         <!-- Jadual laporan tempahan -->
@@ -398,17 +396,17 @@ $laksql = mysqli_query($condb, $sql);
                                                 <td class='px-4 py-2 text-center'><?php echo htmlspecialchars($m['email']); ?>
                                                 </td>
                                                 <td class='px-4 py-2 '><?php
-                                                $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
-                                              FROM tempahan t
-                                              JOIN makanan m ON t.kod_makanan = m.kod_makanan
-                                              WHERE t.email = '" . $m['email'] . "'
-                                              AND t.tarikh = '" . $m['tarikh'] . "'";
-                                                $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
+                                                                        $sqlpaparmenu = "SELECT m.nama_makanan, t.kuantiti, m.harga
+                                                                        FROM tempahan t
+                                                                        JOIN makanan m ON t.kod_makanan = m.kod_makanan
+                                                                        WHERE t.email = '" . $m['email'] . "'
+                                                                        AND t.tarikh = '" . $m['tarikh'] . "'";
+                                                                        $lakpaparmenu = mysqli_query($condb, $sqlpaparmenu);
 
-                                                while ($mm = mysqli_fetch_array($lakpaparmenu)) {
-                                                    echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
-                                                }
-                                                ?></td>
+                                                                        while ($mm = mysqli_fetch_array($lakpaparmenu)) {
+                                                                            echo $mm['nama_makanan'] . " ( RM" . number_format($mm['harga'], 2) . " ) X" . $mm['kuantiti'] . "<br>";
+                                                                        }
+                                                                        ?></td>
                                                 <td class='px-4 py-2 text-center'>RM
                                                     <?php echo htmlspecialchars($m['jumlah_harga_semua']); ?>
                                                 </td>
@@ -444,7 +442,7 @@ $laksql = mysqli_query($condb, $sql);
                                 <?php if ($jumlahHalaman > 1): ?>
                                     <!-- First Page -->
                                     <?php if ($halaman > 1): ?>
-                                        <a href="?halaman=1"
+                                        <a href="?tarikh_semasa=<?= $tarikhsemasa?>&halaman=1"
                                             class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                             <i class="fas fa-angle-double-left"></i>
                                         </a>
@@ -452,7 +450,7 @@ $laksql = mysqli_query($condb, $sql);
 
                                     <!-- Previous Page -->
                                     <?php if ($halaman > 1): ?>
-                                        <a href="?halaman=<?= $halaman - 1 ?>"
+                                        <a href="?tarikh_semasa=<?= $tarikhsemasa?>&halaman=<?= $halaman - 1 ?>"
                                             class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                             <i class="fas fa-angle-left"></i>
                                         </a>
@@ -464,7 +462,7 @@ $laksql = mysqli_query($condb, $sql);
                                     $end = min($jumlahHalaman, $halaman + 2);
 
                                     for ($i = $start; $i <= $end; $i++): ?>
-                                        <a href="?halaman=<?= $i ?>"
+                                        <a href="?tarikh_semasa=<?= $tarikhsemasa?>&halaman=<?= $i ?>"
                                             class="px-3 py-1 <?= $i == $halaman ? 'bg-[#68B0AB] text-white' : 'bg-[#428D41] text-white hover:bg-[#68B0AB]' ?> rounded">
                                             <?= $i ?>
                                         </a>
@@ -472,7 +470,7 @@ $laksql = mysqli_query($condb, $sql);
 
                                     <!-- Next Page -->
                                     <?php if ($halaman < $jumlahHalaman): ?>
-                                        <a href="?halaman=<?= $halaman + 1 ?>"
+                                        <a href="?tarikh_semasa=<?= $tarikhsemasa?>&halaman=<?= $halaman + 1 ?>"
                                             class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                             <i class="fas fa-angle-right"></i>
                                         </a>
@@ -480,7 +478,7 @@ $laksql = mysqli_query($condb, $sql);
 
                                     <!-- Last Page -->
                                     <?php if ($halaman < $jumlahHalaman): ?>
-                                        <a href="?halaman=<?= $jumlahHalaman ?>"
+                                        <a href="?tarikh_semasa=<?= $tarikhsemasa?>&halaman=<?= $jumlahHalaman ?>"
                                             class="px-3 py-1 bg-[#428D41] text-white rounded hover:bg-[#68B0AB]">
                                             <i class="fas fa-angle-double-right"></i>
                                         </a>
@@ -510,7 +508,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -599,10 +597,10 @@ $laksql = mysqli_query($condb, $sql);
             },
             animate: true,
             // Tambah animasi dan styling
-            onOpen: function (selectedDates, dateStr, instance) {
+            onOpen: function(selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.add('open');
             },
-            onClose: function (selectedDates, dateStr, instance) {
+            onClose: function(selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.remove('open');
             }
         });

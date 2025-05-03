@@ -1,11 +1,10 @@
 <?php
-//―――――――――――――――――――――――――――――――――― ┏  Setkan session ┓ ―――――――――――――――――――――――――――――――― \\
 $lifetime = 60 * 60 * 24 * 30;  // 30 days
 session_set_cookie_params($lifetime);
 session_start();
-//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
+
 include("function\connection.php"); # sambung ke dalam database
-//―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
+
 #  semak jika session tahap wujud redirect ke menu.php
 if (!empty($_SESSION['tahap'])) { ?>
     <script>
@@ -66,16 +65,16 @@ if (isset($_POST['DaftarMasuk'])) {
     }
 
     $sql_semakemail = "select email from pelanggan where email = '$email' ";
-    $check = mysqli_query($condb, $sql_semakemail);
-    if (mysqli_num_rows($check) == 1) {
+    $checke = mysqli_query($condb, $sql_semakemail);
+    if (mysqli_num_rows($checke) == 1) {
         $_SESSION['error'] = "EMAIL SUDAH DIGUNAKAN SILA GUNA EMAIL LAIN";
         header("Location: signup.php");
         exit();
     }
 
     $sql_semaknotel = "select notel from pelanggan where notel = '$notel' ";
-    $check = mysqli_query($condb, $sql_semaknotel);
-    if (mysqli_num_rows($check) == 1) {
+    $checkn = mysqli_query($condb, $sql_semaknotel);
+    if (mysqli_num_rows($checkn) == 1) {
         $_SESSION['error'] = "NOMBOR TELEFON SUDAH DIGUNAKAN SILA GUNA NOMBOR TELEFON LAIN";
         header("Location: signup.php");
         exit();
@@ -173,7 +172,7 @@ if (isset($_POST['DaftarMasuk'])) {
                     </label>
                     <input class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="email" placeholder="Masukkan Email Anda" type="email" name='email' minlength="4" maxlength="50" required />
                     <p class="text-red-500 text-sm mt-1 hidden" id="emailError">
-                        Please enter a valid email address.
+                        Sila masukkan email yang sah.
                     </p>
                 </div>
                 <div class="mb-4 relative">

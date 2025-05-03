@@ -16,15 +16,15 @@ if (isset($_GET['tarikh_semasa'])) {
     $tarikhsemasa = date("Y-m-d");
 }
 
-# Query Dapatkan Senarai tarikh
-$sqltarikh = "SELECT DATE(tarikh) AS tarikh, count(*) as bilangan 
-FROM tempahan 
-WHERE email = '" . $_SESSION['email'] . "'
-GROUP BY DATE(tarikh)
-ORDER BY DATE(tarikh) DESC";
+# Query Dapatkan Senarai tarikh pengguna pernah buat tempahan
+$sqltarikh = "SELECT DATE(tarikh) AS tarikh
+              FROM tempahan 
+              WHERE email = '" . $_SESSION['email'] . "'
+              GROUP BY DATE(tarikh)
+              ORDER BY DATE(tarikh) DESC";
 $laktarikh = mysqli_query($condb, $sqltarikh);
 
-# Query dapatkan semua senarai tempahan
+# Query dapatkan semua senarai tempahan mengikut tarikh semasa
 $sql = "SELECT t.email, 
                t.tarikh,
                TIMESTAMPDIFF(SECOND, t.tarikh, NOW()) as seconds_passed,
@@ -387,7 +387,7 @@ $laksql = mysqli_query($condb, $sql);
                         <tbody>
                             <?php while ($m = mysqli_fetch_array($laksql)):
                                 $tarikh = date_create($m['tarikh']);
-                                ?>
+                            ?>
                                 <tr class="bg-[#FAF3DD] hover:bg-[#A3B18A]">
                                     <td class="border-0 shadow-lg px-4 py-2">
                                         <i class="fas fa-clock text-[#4A7C59]"></i> Masa:
@@ -464,7 +464,7 @@ $laksql = mysqli_query($condb, $sql);
 
     <script>
         // Tunjukkan dan sorokkan butang scroll up
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -505,7 +505,7 @@ $laksql = mysqli_query($condb, $sql);
         window.onresize = adjustFooter;
 
         // Fungsi untuk mengira masa yang tinggal
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const countdowns = document.querySelectorAll('.countdown');
 
             countdowns.forEach(countdown => {
@@ -546,7 +546,7 @@ $laksql = mysqli_query($condb, $sql);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -587,7 +587,7 @@ $laksql = mysqli_query($condb, $sql);
 
 
         document.querySelectorAll('.batal-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
+            button.addEventListener('click', function(e) {
                 const tarikh = this.dataset.id;
                 e.preventDefault();
                 notifwarning.play();
@@ -689,17 +689,17 @@ $laksql = mysqli_query($condb, $sql);
                 }
             },
             animate: true,
-            onOpen: function (selectedDates, dateStr, instance) {
+            onOpen: function(selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.add('open');
             },
-            onClose: function (selectedDates, dateStr, instance) {
+            onClose: function(selectedDates, dateStr, instance) {
                 instance.calendarContainer.classList.remove('open');
             }
         });
     </script>
     <script>
         //script animation navigation
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const nav = document.querySelector('.nav');
             const movingLine = nav.querySelector('.moving-line');
             const links = nav.querySelectorAll('a');

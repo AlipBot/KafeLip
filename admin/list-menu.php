@@ -223,7 +223,7 @@ if (isset($_POST['upload'])) {
             header("Location: list-menu.php");
             exit();
         } else {
-            $_SESSION['success'] = "Import fail Data Selesai. Sebanyak $bil data telah disimpan. KEMASKINI MENU DAN UPLOAD GAMBAR";
+            $_SESSION['success'] = "Import fail Data Selesai. Sebanyak $bil data telah disimpan.Sila Muat Naik Gambar Menu";
             header("Location: list-menu.php");
             exit();
         }

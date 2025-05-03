@@ -1,8 +1,6 @@
 <?php
-//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
 include('../function/autoKeluarAdmin.php'); # fail function auto logout jika pengguna belum login dan bukan admin
 include('../function/connection.php');  # Sambung Ke database
-//――――――――――――――――――――――――――――――――――――――― ┏  Code Php ┓ ――――――――――――――――――――――――――――――――――――――― \\
 
 $rekodSehalaman = 10; # Tetapkan bilangan rekod per halaman
 
@@ -10,6 +8,7 @@ $rekodSehalaman = 10; # Tetapkan bilangan rekod per halaman
 $halaman = isset($_GET['halaman']) ? $_GET['halaman'] : 1;
 
 // Kira offset untuk query
+// Apa itu offset?  nombor data yang tidak akan paparkan dari list mmengikut susunan atas ke bawah
 $offset = ($halaman - 1) * $rekodSehalaman;
 
 // Ubahsuai query untuk pagination
@@ -37,14 +36,14 @@ $result_total = mysqli_query($condb, $sql_total);
 $jumlahRekod = mysqli_num_rows($result_total);
 
 // Kira jumlah halaman
+// apa tu ceil? bahagi dan pulangkan nombor bulat sahaja
 $jumlahHalaman = ceil($jumlahRekod / $rekodSehalaman);
 
 // Tambah LIMIT dan OFFSET pada query utama
 $sql .= " LIMIT $rekodSehalaman OFFSET $offset";
 $laksana = mysqli_query($condb, $sql);
 
-//――――――――――――――――――――――――――――――――――――――― ┏  KAWALAN POST ┓ ――――――――――――――――――――――――――――――――――――――― \\
-
+# Bahagian Memproses Data yang dimuat naik 
 # POST data upload pekerja form
 if (isset($_POST['upload'])) {
     $namafailsementara = $_FILES["data_pengguna"]["tmp_name"];

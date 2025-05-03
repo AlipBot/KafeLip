@@ -4,12 +4,7 @@ $lifetime = 60 * 60 * 24 * 30; # Setkan 30 hari atau 1 bulan
 session_set_cookie_params($lifetime);
 session_start();
 
-//―――――――――――――――――――――――――――――――――― ┏  Panggil Fail Function ┓ ―――――――――――――――――――――――――――――――― \\
-
-
 include("function/connection.php"); # sambung ke database
-
-//―――――――――――――――――――――――――――――――――― ┏  Kod Php ┓ ―――――――――――――――――――――――――――――――― \\
 
 # function semak data yang dimasukan
 function SemakLogin($input)

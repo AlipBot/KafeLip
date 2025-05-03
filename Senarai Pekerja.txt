@@ -1,0 +1,4 @@
+muhaaliff@admin.kafelip.com|01158962991|Muhammad Aliff Bin Ramli|Alipje29|
+staf1@staf.kafelip.com|01155662992|Pekerja 1|Staf@123|
+staf2@staf.kafelip.com|01177962900|Pekerja 2|Staf@123|
+staf3@staf.kafelip.com|01988992980|Pekerja 3|Staf@123|

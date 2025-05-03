@@ -208,8 +208,13 @@ include('../function/connection.php');  # Sambung Ke database
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .loading-text {
@@ -387,7 +392,7 @@ include('../function/connection.php');  # Sambung Ke database
 
     <script>
         // Show or hide the scroll to top button
-        window.onscroll = function () {
+        window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTopBtn");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 scrollToTopBtn.style.display = "block";
@@ -554,7 +559,7 @@ include('../function/connection.php');  # Sambung Ke database
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             <?php if (isset($_SESSION['success'])): ?>
                 Toast.fire({
                     icon: "success",
@@ -655,6 +660,6 @@ include('../function/connection.php');  # Sambung Ke database
     <audio id="notifSound" src="../lib/audio/tutru.mp3"></audio>
     <!-- Tambah audio untuk pembatalan -->
     <audio id="cancelSound" src="../lib/audio/order-batal.mp3"></audio>
-    </body>
+</body>
 
 </html>
